@@ -2,7 +2,7 @@ package geometries;
 
 import java.util.Vector;
 
-import structural.Coordinate;
+import structural.identifiers.Coordinate;
 
 public abstract class Geometry {
 

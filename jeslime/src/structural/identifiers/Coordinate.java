@@ -1,9 +1,11 @@
-package structural;
+package structural.identifiers;
+
+import structural.Flags;
 
 
 public class Coordinate {
-	private int x, y, z;
-	private int flags;
+	protected int x, y, z;
+	protected int flags;
 	
 	public Coordinate(int x, int y, int flags) {
 		this.x = x;
@@ -22,6 +24,18 @@ public class Coordinate {
 		this.flags = flags;	
 	}
 	
+	/**
+	 * Copy constructor.
+	 * 
+	 * @param c
+	 */
+	public Coordinate(Coordinate c) {
+		this.x = c.x;
+		this.y = c.y;
+		this.z = c.z;
+		this.flags = c.flags;
+	}
+
 	public int x() {
 		return x;
 	}
@@ -82,7 +96,7 @@ public class Coordinate {
 		return canonical("<", ">", false);
 	}
 	
-	private String canonical(String open, String close, boolean useFlags) {
+	protected String canonical(String open, String close, boolean useFlags) {
 		StringBuilder ss = new StringBuilder();
 		
 		ss.append(open);

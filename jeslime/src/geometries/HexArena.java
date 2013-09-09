@@ -8,8 +8,8 @@ package geometries;
 
 import java.util.ArrayList;
 
-import structural.Coordinate;
 import structural.Flags;
+import structural.identifiers.Coordinate;
 
 public class HexArena extends Geometry {
 	private int height;

@@ -7,10 +7,10 @@ import java.util.Random;
 import cells.Cell;
 import cells.SimpleCell;
 
-import structural.Coordinate;
 import structural.HaltException;
 import structural.Lattice;
 import structural.LatticeFullException;
+import structural.identifiers.Coordinate;
 
 public class Scatter extends CellProcess {
 	
@@ -46,14 +46,13 @@ public class Scatter extends CellProcess {
 				// Choose target randomly
 				Coordinate[] cVec = candidates.toArray(new Coordinate[0]);
 				
-				int o = random.nextInt() % cVec.length;
+				int o = random.nextInt(cVec.length);
 				Coordinate target = cVec[o];
 
 				// Create and assign cell
 				Cell cell = new SimpleCell(i);
 
 				lattice.place(cell, target);
-
 				highlight.add(target);
 			}
 		}

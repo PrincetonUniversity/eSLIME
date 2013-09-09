@@ -3,8 +3,8 @@ import java.util.HashSet;
 import cells.Cell;
 import cells.SimpleCell;
 import junit.framework.TestCase;
-import structural.Coordinate;
 import structural.Lattice;
+import structural.identifiers.Coordinate;
 import geometries.HexRing;
 
 

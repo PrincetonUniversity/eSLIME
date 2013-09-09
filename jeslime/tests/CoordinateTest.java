@@ -1,8 +1,8 @@
 import java.util.HashSet;
 
 import junit.framework.TestCase;
-import structural.Coordinate;
 import structural.Flags;
+import structural.identifiers.Coordinate;
 
 
 public class CoordinateTest extends TestCase {

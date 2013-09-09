@@ -1,7 +1,7 @@
 import java.util.HashSet;
 
-import structural.Coordinate;
 import structural.Flags;
+import structural.identifiers.Coordinate;
 import geometries.HexArena;
 import junit.framework.TestCase;
 

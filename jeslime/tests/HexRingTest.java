@@ -2,8 +2,8 @@ import java.util.HashSet;
 
 import geometries.HexArena;
 import geometries.HexRing;
-import structural.Coordinate;
 import structural.Flags;
+import structural.identifiers.Coordinate;
 import junit.framework.TestCase;
 
 

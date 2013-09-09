@@ -1,8 +1,8 @@
 package processes;
 
-import structural.Coordinate;
 import structural.HaltException;
 import structural.Lattice;
+import structural.identifiers.Coordinate;
 
 public abstract class CellProcess {
 	protected Lattice lattice;

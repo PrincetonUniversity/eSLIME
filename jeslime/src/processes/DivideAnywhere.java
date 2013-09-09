@@ -5,11 +5,11 @@ import java.util.Random;
 
 import cells.Cell;
 
-import structural.Coordinate;
 import structural.FixationException;
 import structural.Flags;
 import structural.HaltException;
 import structural.Lattice;
+import structural.identifiers.Coordinate;
 
 import geometries.Geometry;
 
@@ -18,7 +18,8 @@ public class DivideAnywhere extends CellProcess {
 	private Geometry geom;
 	
 	private Random random;
-	DivideAnywhere(Lattice lattice, Geometry geom) {
+	
+	public DivideAnywhere(Lattice lattice, Geometry geom) {
 		super(lattice);
 		this.geom = geom;
 		
@@ -41,7 +42,7 @@ public class DivideAnywhere extends CellProcess {
 			return new Coordinate[0];
 		} else {
 
-			int i = random.nextInt() % candidates.length;
+			int i = random.nextInt(candidates.length);
 			origin = candidates[i];
 		}
 
@@ -50,7 +51,7 @@ public class DivideAnywhere extends CellProcess {
 		if (targets.length == 0) {
 			throw new FixationException();
 		} else {
-			int i = random.nextInt() % targets.length;
+			int i = random.nextInt(targets.length);
 			target = targets[i];
 		}
 
@@ -74,6 +75,7 @@ public class DivideAnywhere extends CellProcess {
 			}
 
 		}
+		
 		// Divide the child cell into the vacancy left by the parent
 		lattice.place(child, origin);
 

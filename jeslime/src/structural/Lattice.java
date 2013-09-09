@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import structural.identifiers.Coordinate;
+
 public class Lattice {
 	// Geometry (passed to Lattice at construction time)
     private Geometry geom;
@@ -530,5 +532,42 @@ public class Lattice {
 	    return res;
 	}
 
+	public double getGillespieTime() {
+		return 0;
+	}
 
+	public int[] getStateVector() {
+		Coordinate[] cArr = getCanonicalSites();
+		
+		int[] sArr = new int[cArr.length];
+		
+		for (int i = 0; i < cArr.length; i++) {
+			Cell c = map.get(cArr[i]);
+			if (c == null) { 
+				sArr[i] = 0;
+			} else {
+				sArr[i] = map.get(cArr[i]).getState();
+			}
+		}
+		
+		return sArr;
+	}
+	
+	public double[] getFitnessVector() {
+		Coordinate[] cArr = getCanonicalSites();
+		
+		double[] fArr = new double[cArr.length];
+		
+		for (int i = 0; i < cArr.length; i++) {
+			Cell c = map.get(cArr[i]);
+			if (c == null) { 
+				fArr[i] = 0D;
+			} else {
+				fArr[i] = map.get(cArr[i]).getFitness();
+			}
+		}
+		
+		return fArr;
+	}
+	
 }
