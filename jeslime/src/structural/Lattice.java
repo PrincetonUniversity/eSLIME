@@ -10,6 +10,7 @@ import java.util.HashSet;
 import structural.identifiers.Coordinate;
 
 public class Lattice {
+
 	// Geometry (passed to Lattice at construction time)
     private Geometry geom;
 
@@ -339,7 +340,7 @@ public class Lattice {
 		checkExists(coord);
 
 		if (occupiedSites.contains(coord)) {
-			throw new IllegalStateException("Illegal state: Attempting to place a cell into an occupied site.");
+			throw new IllegalStateException("Illegal state: Attempting to place a cell into an occupied site at " + coord.toString() + ".");
 		}
 
 		// Place cell in cell lattice
@@ -442,7 +443,7 @@ public class Lattice {
 		checkExists(qCoord);
 
 		// Validate
-		if (vacantSites.contains(qCoord)) {
+		if (vacantSites.contains(pCoord)) {
 			throw  new IllegalStateException("Attempting to move a vacant cell.");
 		}
 		if (occupiedSites.contains(qCoord)) {
@@ -530,10 +531,6 @@ public class Lattice {
 		Cell res = map.get(coord);
 
 	    return res;
-	}
-
-	public double getGillespieTime() {
-		return 0;
 	}
 
 	public int[] getStateVector() {

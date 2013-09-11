@@ -1,5 +1,7 @@
 package control;
 
+import postprocess.ImageSequence;
+import geometries.Geometry;
 import models.*;
 
 /**
@@ -19,7 +21,15 @@ public class SandboxRunner implements Runnable {
 	public void run() {
 		Parameters p = new Parameters();
 		Model model = new ExponentialGrowth(p);
+		
+		Geometry geom = model.getGeometry();
+		
 		model.initialize();
 		model.go();
+		
+		ImageSequence imgSequence = new ImageSequence(geom, p);
+		
+		imgSequence.generate();
+		
 	}
 }

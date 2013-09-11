@@ -68,7 +68,7 @@ public class TemporalCoordinate extends Coordinate {
 			ss.append(flags);
 		}
 		
-		ss.append(" @ ");
+		ss.append(" | ");
 		ss.append(t);
 		
 		ss.append(close);

@@ -304,7 +304,7 @@ public class BufferedStateWriter {
 	 * @param lattice
 	 */
 	private void writeState(int[] v, double gillespie) {
-		StringBuilder sb = new StringBuilder(">color:");
+		StringBuilder sb = new StringBuilder(">state:");
 		sb.append(gillespie);
 		sb.append('\n');
 

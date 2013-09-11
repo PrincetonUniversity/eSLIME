@@ -37,6 +37,10 @@ public class ExponentialGrowth extends Model {
 		division = new DivideAnywhere(lattice, geom);
 	}
 	
+	public Geometry getGeometry() {
+		return geom;
+	}
+	
 	public void initialize() {
 		// Scatter some cells
 		System.out.print("Initializing...");
@@ -51,7 +55,7 @@ public class ExponentialGrowth extends Model {
 		System.out.println("done.");
 		
 		System.out.print("Recording...");
-		bsw.push(lattice.getStateVector(), lattice.getFitnessVector(), lattice.getGillespieTime());
+		bsw.push(lattice.getStateVector(), lattice.getFitnessVector(), 0D);
 		System.out.println("done.");
 	}
 	
@@ -74,7 +78,7 @@ public class ExponentialGrowth extends Model {
 			System.out.println("done.");
 			
 			System.out.println("   Recording...");
-			bsw.push(lattice.getStateVector(), lattice.getFitnessVector(), lattice.getGillespieTime());
+			bsw.push(lattice.getStateVector(), lattice.getFitnessVector(), (i + 1.0D) * 1.0D);
 		}
 		
 		conclude();

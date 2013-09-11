@@ -28,6 +28,7 @@ public class DivideAnywhere extends CellProcess {
 	}
 
 	public Coordinate[] iterate() throws HaltException {
+		System.out.println("In DivideAnywhere::iterate()");
 		HashSet<Coordinate> preliminary = new HashSet<Coordinate>();
 		HashSet<Coordinate> highlight = new HashSet<Coordinate>();
 
@@ -54,7 +55,7 @@ public class DivideAnywhere extends CellProcess {
 			int i = random.nextInt(targets.length);
 			target = targets[i];
 		}
-
+		
 		// Get child cell
 		Cell child = lattice.divide(origin);
 
@@ -102,8 +103,7 @@ public class DivideAnywhere extends CellProcess {
 		// Choose whether to go horizontally or vertically, weighted
 		// by the number of steps remaining in each direction
 		int nv = norm(d);
-
-
+		
 		// Take a step in the chosen direction.
 		int[] dNext;				// Displacement vector, one step closer
 		Coordinate nextLoc;
@@ -113,9 +113,9 @@ public class DivideAnywhere extends CellProcess {
 
 		// Loop if the move is illegal.
 		do {
-			int n = random.nextInt() % nv;
+			int n = random.nextInt(nv);
 
-			dNext = d;
+			dNext = d.clone();
 			for (int i = 0; i < 3; i++) {rel[i] = 0;}
 			// Decrement the displacement vector by one unit in a randomly chosen
 			// direction, weighted so that the path is, on average, straight.
@@ -132,6 +132,7 @@ public class DivideAnywhere extends CellProcess {
 
 			nextLoc = geom.rel2abs(curLoc, rel);
 
+			
 			if (nextLoc.hasFlag(Flags.BEYOND_BOUNDS) && nv == 1) {
 				throw new IllegalStateException("There's only one place to push cells and it's illegal!");
 			} else if (!nextLoc.hasFlag(Flags.BEYOND_BOUNDS)) {
