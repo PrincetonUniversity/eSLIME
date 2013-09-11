@@ -1,6 +1,6 @@
 package models;
 
-import io.BufferedStateWriter;
+import io.serialize.BufferedStateWriter;
 import control.Parameters;
 import processes.DivideAnywhere;
 import processes.Scatter;
@@ -22,8 +22,9 @@ public class ExponentialGrowth extends Model {
 		this.p = p;
 		
 		// Build geometry
-		geom = new HexRing(p.W(), p.W());
-		
+		//geom = new HexRing(p.W(), p.W());
+		geom = new HexArena(p.W(), p.W());
+
 		// Build lattice
 		lattice = new Lattice(geom);
 		
@@ -45,7 +46,7 @@ public class ExponentialGrowth extends Model {
 		// Scatter some cells
 		System.out.print("Initializing...");
 		
-		Coordinate[] highlight;
+		Coordinate[] highlight = new Coordinate[0];
 		try {
 			highlight = scatter.iterate();
 		} catch (HaltException ex) {
@@ -55,12 +56,12 @@ public class ExponentialGrowth extends Model {
 		System.out.println("done.");
 		
 		System.out.print("Recording...");
-		bsw.push(lattice.getStateVector(), lattice.getFitnessVector(), 0D);
+		bsw.push(lattice.getStateVector(), lattice.getFitnessVector(), highlight, 0D);
 		System.out.println("done.");
 	}
 	
 	public void go() {
-		for (int i = 0; i < MAX_STEP; i++) {
+		for (int i = 0; i < p.getMaxStep(); i++) {
 			System.out.println("Step " + i );
 			
 			System.out.print("   Iterating...");
@@ -78,7 +79,7 @@ public class ExponentialGrowth extends Model {
 			System.out.println("done.");
 			
 			System.out.println("   Recording...");
-			bsw.push(lattice.getStateVector(), lattice.getFitnessVector(), (i + 1.0D) * 1.0D);
+			bsw.push(lattice.getStateVector(), lattice.getFitnessVector(), highlight, (i + 1.0D) * 1.0D);
 		}
 		
 		conclude();

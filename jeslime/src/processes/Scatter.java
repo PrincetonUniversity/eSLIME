@@ -31,11 +31,20 @@ public class Scatter extends CellProcess {
 	public Coordinate[] iterate() throws HaltException {
 
 		ArrayList<Coordinate> highlight = new ArrayList<Coordinate>();
-
+		
+		// Construct initial set of candidates
+		Coordinate[] canonicals = lattice.getCanonicalSites();
+		
+		HashSet<Coordinate> candidates = new HashSet<Coordinate> (canonicals.length);
+		
+		for (Coordinate c : canonicals) {
+			if (!lattice.getOccupiedSites().contains(c)) {
+				candidates.add(c);
+			}
+		}
+		
 		for (int i = 0; i < numGroups; i++) {
 			for (int j = 0; j < groupSize; j++) {
-				// Get candidate sites
-				HashSet<Coordinate> candidates = lattice.getVacantSites();
 
 				// TODO: This should be a unified exception that gets passed up to
 				//       the Simulator.
@@ -54,6 +63,7 @@ public class Scatter extends CellProcess {
 
 				lattice.place(cell, target);
 				highlight.add(target);
+				candidates.remove(target);
 			}
 		}
 

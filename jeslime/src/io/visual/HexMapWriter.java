@@ -1,6 +1,8 @@
-package io;
+package io.visual;
 
 import geometries.*;
+
+import io.deserialize.ConditionViewer;
 
 import java.awt.Color;
 import java.awt.Graphics;
@@ -8,6 +10,7 @@ import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.HashSet;
 
 import javax.imageio.ImageIO;
 
@@ -31,8 +34,8 @@ import control.Parameters;
  * http://creativecommons.org/licenses/by-nc/3.0/legalcode
  * 
  * 
- * Displays the state of up to 3 scalar fields in a composite heat map.
- * Results are written to file. 
+ * Color map shows different color for each state value represented in
+ * the system.
  * 
  * @author dbborens@princeton.edu
  *
@@ -45,12 +48,16 @@ public class HexMapWriter {
 	private Point limits = new Point();
 	private Point pixels = new Point();
 	
-	Parameters p;
-	Geometry geom;
+	private Parameters p;
+	private Geometry geom;
+	private ColorManager colorManager;
 	
 	public HexMapWriter(Parameters p) {
 		this.p = p;
-		geom = new HexRing(p.W(), p.W());
+		//geom = new HexRing(p.W(), p.W());
+		geom = new HexArena(p.W(), p.W());
+
+		colorManager = new ColorManager(p);
 		init();
 	}
 	
@@ -92,7 +99,9 @@ public class HexMapWriter {
 	
     private void render(Graphics gfx, Coordinate c, ConditionViewer condition) {
 		Point center = indexToPixels(c);
-		Color color = getColor(condition.getState(c));
+		
+		boolean isHighlight = checkHighlight(c, condition);
+		Color color = getColor(condition.getState(c), isHighlight);
 		
 		if (condition.isVacant(c)) {
 			drawOutlineHexagon(gfx, center);
@@ -101,7 +110,12 @@ public class HexMapWriter {
 		}
 	}
     
-    private void drawOutlineHexagon(Graphics g, Point center) {
+    private boolean checkHighlight(Coordinate c, ConditionViewer condition) {
+		HashSet<Coordinate> highlights = condition.getHighlights();
+		return highlights.contains(c);
+	}
+
+	private void drawOutlineHexagon(Graphics g, Point center) {
     	
 		Polygon p = makeHexagon(center);
 		
@@ -165,10 +179,14 @@ public class HexMapWriter {
 	    return(target);
 	}
 
-	private Color getColor(int state) {
-		return Color.WHITE;
+	private Color getColor(int state, boolean isHighlight) {
+		if (isHighlight) {
+			return colorManager.highlightColor(state);
+		} else {
+			return colorManager.basicColor(state);
+		}
     }
-    
+
 	private void calcDimensions() {
     // Find limits of coordinate range
 	Coordinate[] sites = geom.getCanonicalSites();

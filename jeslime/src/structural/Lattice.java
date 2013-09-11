@@ -20,15 +20,9 @@ public class Lattice {
 	// Mapping of sites to cell pointers -- the lattice itself.		
 	private HashMap<Coordinate, Cell> map;
 
-	// Cells with adjacent vacancies
-	private HashSet<Coordinate> frontierSites;
-
 	// Coordinate sets. We often need to know all the sites that
 	// have a particular property so we can iterate over them, 
 	// so we track them as sets.
-
-	// Vacant sites
-	private HashSet<Coordinate> vacantSites;
 
 	// Occupied sites (non-vacant sites)
 	private HashSet<Coordinate> occupiedSites;
@@ -45,7 +39,6 @@ public class Lattice {
 
 		// Initialize data structures
 		map = new HashMap<Coordinate, Cell>();
-		vacantSites = new HashSet<Coordinate>();
 		occupiedSites = new HashSet<Coordinate>();
 		divisibleSites = new HashSet<Coordinate>();
 				
@@ -55,7 +48,6 @@ public class Lattice {
 
 			// Initialize each site to null (empty)
 			map.put(coord, null);	
-	        vacantSites.add(coord);
 		}
 	}
 
@@ -118,14 +110,14 @@ public class Lattice {
 	// argument for unbounded searching?
 	public Coordinate[] getNearestVacancies(Coordinate coord, int maxDistance) {
 
-		HashSet<Coordinate> vacancies = vacantSites;
-
 		checkExists(coord);
 
 
 		// If there are no vacancies, just return now. This should prevent infinite
 		// loop even when searching without bound.
-	    if (vacancies.size() == 0) {
+		if (occupiedSites.size() > canonicalSites.length) {
+			throw new IllegalStateException("Consistency failure.");
+		} else if (occupiedSites.size() == canonicalSites.length) {
 	    	return new Coordinate[0];
 		}
 
@@ -153,7 +145,7 @@ public class Lattice {
 				// Sanity check
 				checkExists(query);
 
-				if (vacancies.contains(query) && !incl.contains(query)) {
+				if (!occupiedSites.contains(query) && !incl.contains(query)) {
 			
 					incl.add(query);
 					res.add(query);
@@ -196,18 +188,6 @@ public class Lattice {
 	public HashSet<Coordinate> getOccupiedSites() {
 		// Construct a copy of internal state
 		HashSet<Coordinate> res = new HashSet<Coordinate>(occupiedSites);
-
-		// Return it
-		return res;
-	}
-
-	/** 
-	 * Returns a list of the canonical coordinate of each divisible
-	 * site on the lattice.
-	 */
-	public HashSet<Coordinate> getVacantSites() {
-		// Construct a copy of internal state
-		HashSet<Coordinate> res = new HashSet<Coordinate>(vacantSites);
 
 		// Return it
 		return res;
@@ -259,7 +239,7 @@ public class Lattice {
 		HashSet<Coordinate> div = divisibleSites;
 
 		// If cell was divisible and is now dead, remove it from list
-		if (div.contains(coord) && vacantSites.contains(coord)) {
+		if (div.contains(coord) && !occupiedSites.contains(coord)) {
 			div.remove(coord);
 		}
 
@@ -347,7 +327,6 @@ public class Lattice {
 		map.put(coord, cell);
 		
 		// Update occupancy indices
-		(vacantSites).remove(coord);
 		(occupiedSites).add(coord);
 
 		// If cell is divisible, add to divisibility index
@@ -362,14 +341,8 @@ public class Lattice {
 		// TODO Verify that there is no outstanding lock.
 		checkExists(coord);
 
-		if ((!coord.hasFlag(Flags.END_OF_WORLD)) && (vacantSites.contains(coord))) {
+		if ((!coord.hasFlag(Flags.END_OF_WORLD)) && (!occupiedSites.contains(coord))) {
 			throw new IllegalStateException("Attempting to banish cell at empty site");
-		}
-
-
-		// Update the data structures
-		if (coord.hasFlag(Flags.END_OF_WORLD)) {
-			(vacantSites).add(coord);
 		}
 
 		(occupiedSites).remove(coord);
@@ -395,13 +368,13 @@ public class Lattice {
 
 		// If both sites are vacant, return
 
-		else if (vacantSites.contains(pCoord) && vacantSites.contains(qCoord)) {
+		else if (!occupiedSites.contains(pCoord) && !occupiedSites.contains(qCoord)) {
 
 			return;
 		}
 
 		// If p is vacant and q is not, move q to p.
-		else if (vacantSites.contains(pCoord) && occupiedSites.contains(qCoord)) {
+		else if (!occupiedSites.contains(pCoord) && occupiedSites.contains(qCoord)) {
 
 			move(qCoord, pCoord);
 
@@ -409,7 +382,7 @@ public class Lattice {
 		}
 
 		// If q is vacant and p is not, move p to q.
-		else if (occupiedSites.contains(pCoord) && vacantSites.contains(qCoord)) {
+		else if (occupiedSites.contains(pCoord) && !occupiedSites.contains(qCoord)) {
 
 			move(pCoord, qCoord);
 
@@ -443,7 +416,7 @@ public class Lattice {
 		checkExists(qCoord);
 
 		// Validate
-		if (vacantSites.contains(pCoord)) {
+		if (!occupiedSites.contains(pCoord)) {
 			throw  new IllegalStateException("Attempting to move a vacant cell.");
 		}
 		if (occupiedSites.contains(qCoord)) {
@@ -457,13 +430,11 @@ public class Lattice {
 		
 		// Remove cell from old location
 		m.put(pCoord, null);
-		(vacantSites).add(pCoord);
 		(occupiedSites).remove(pCoord);
 		
 		// Add it to its new location
 		m.put(qCoord, cell);
 		(occupiedSites).add(qCoord);
-		(vacantSites).remove(qCoord);
 
 		// Update divisibility indices
 		refreshDivisibility(pCoord);
@@ -481,10 +452,10 @@ public class Lattice {
 		checkExists(qCoord);
 
 	    // Validate
-		if (vacantSites.contains(pCoord)) {
+		if (!occupiedSites.contains(pCoord)) {
 	        throw new IllegalStateException("Called swap on a vacant site. Use 'move' for this purpose.");
 	    }
-		if (vacantSites.contains(qCoord)) {
+		if (!occupiedSites.contains(qCoord)) {
 	        throw new IllegalStateException("Called swap on a vacant site. Use 'move' for this purpose.");
 	    }
 

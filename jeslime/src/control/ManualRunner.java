@@ -10,10 +10,10 @@ import models.*;
  * @author dbborens
  *
  */
-public class SandboxRunner implements Runnable {
+public class ManualRunner implements Runnable {
 
 	public static void main(String[] args) {
-		SandboxRunner runner = new SandboxRunner();
+		ManualRunner runner = new ManualRunner();
 		runner.run();
 	}
 

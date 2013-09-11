@@ -1,4 +1,4 @@
-package io;
+package io.serialize;
 
 import geometries.Geometry;
 
@@ -231,20 +231,32 @@ public class BufferedStateWriter {
 	 * @param f Cell fitness array, in canonical order.
 	 * @param gillespie Interval (in simulated time) between the last time step and the current one.
 	 */
-	public void push(int[] s, double[] f, double gillespie) {
+	public void push(int[] s, double[] f, Coordinate[] highlights, double gillespie) {
 		long time = System.currentTimeMillis();
 		long interval = time - prevTime;
 		prevTime = time;
 		
 		if (p.getOutput().equalsIgnoreCase("FULL") && (prevGillespie == 0 || oom(gillespie) > oom(prevGillespie))) {
 			System.out.println("Writing time step " + gillespie);
-			writeVector(f, ef, gillespie, "fitness");
-			writeState(s, gillespie);
+			writeDoubleArray(f, ef, gillespie, "fitness");
+			writeIntegerArray(s, gillespie, "state");
+			
+			int[] h = coordToInt(highlights);
+			writeIntegerArray(h, gillespie, "highlight");
 		}
 		
-		interval(n, gillespie, time);
+		interval(n, gillespie, interval);
 		prevGillespie = gillespie;
 		n++;
+	}
+
+	protected int[] coordToInt(Coordinate[] highlights) {
+		int[] hl = new int[highlights.length];
+		for (int i = 0; i < highlights.length; i++) {
+			hl[i] = coordMap.get(highlights[i]);
+		}
+		
+		return hl;
 	}	
 	
 	private static int oom(double x) {
@@ -303,14 +315,16 @@ public class BufferedStateWriter {
 	 * 
 	 * @param lattice
 	 */
-	private void writeState(int[] v, double gillespie) {
-		StringBuilder sb = new StringBuilder(">state:");
+	private void writeIntegerArray(int[] v, double gillespie, String name) {
+		StringBuilder sb = new StringBuilder(">" + name + ":");
 		sb.append(gillespie);
 		sb.append('\n');
 
 		for (int i = 0; i < v.length; i++) {
 			sb.append(v[i]);
 			if (i % p.W() == p.W() - 1)
+				sb.append('\n');
+			else if (i == v.length - 1)
 				sb.append('\n');
 			else
 				sb.append('\t');
@@ -322,6 +336,7 @@ public class BufferedStateWriter {
 			throw new RuntimeException(e);
 		}
 	}
+	
 	/**
 	 * Writes a vector to the file. The format is as follows:
 	 * 
@@ -338,7 +353,7 @@ public class BufferedStateWriter {
 	 *  
 	 *  The delimiters are tabs, and there are p.W() tokens per line.
 	 */
-	private void writeVector(double[] v, Extrema extrema, double gillespie, String title) {
+	private void writeDoubleArray(double[] v, Extrema extrema, double gillespie, String title) {
 
 		StringBuilder sb = new StringBuilder();;
 		sb.append('>');

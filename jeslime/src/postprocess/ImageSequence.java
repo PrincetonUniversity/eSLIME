@@ -3,9 +3,9 @@ package postprocess;
 import java.util.HashSet;
 
 import geometries.Geometry;
-import io.ConditionViewer;
-import io.HexMapWriter;
-import io.StateReader;
+import io.deserialize.ConditionViewer;
+import io.deserialize.StateReader;
+import io.visual.HexMapWriter;
 import control.Parameters;
 
 public class ImageSequence {

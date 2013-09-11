@@ -1,4 +1,5 @@
-package io;
+package io.deserialize;
+
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -6,6 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -100,6 +102,7 @@ public class StateReader {
 		VectorViewer f = null;		// Fitness
 		
 		int[] states = new int[p.W() * p.W()];
+		HashSet<Coordinate> highlights = new HashSet<Coordinate>();
 		while (prevLine != null) {
 			// We come into this loop with a header line in prevLine
 			String[] tokens = prevLine.split(">")[1].split(":");
@@ -113,16 +116,39 @@ public class StateReader {
 				f = readVector(ef);
 			else if (tokens[0].equals("state"))
 				states = readStates();
+			else if (tokens[0].equals("highlight"))
+				readHighlights(highlights);
 			else
 				throw new IOException("Unrecognized field " + tokens[0]);
 		}
 		
-		System.out.println(gCurrent);
-		return new ConditionViewer(f, states, gCurrent, coordMap);
+		return new ConditionViewer(f, states, highlights, gCurrent, coordMap);
 	}
 	
-	public void close() {
+	private void readHighlights(HashSet<Coordinate> highlights) throws IOException {
 		
+		prevLine = br.readLine();
+		
+		while (prevLine != null && !(prevLine.startsWith(">"))) {
+			
+			String[] valueTokens = prevLine.trim().split("\t");
+			
+			for (int j = 0; j < valueTokens.length; j++) {
+				int index = Integer.valueOf(valueTokens[j]);
+				Coordinate coord = coordArr[index];
+				highlights.add(coord);
+			}
+			
+			prevLine = br.readLine();
+		}		
+	}
+
+	public void close() {
+		try {
+			br.close();
+		} catch (IOException ex) {
+			throw new RuntimeException(ex);
+		}
 	}
 	
 	private void loadCoordinates() throws IOException {
@@ -290,13 +316,10 @@ public class StateReader {
 		
 		while (prevLine != null && !(prevLine.startsWith(">"))) {
 			
-			// This gives a byte representing the ASCII value of the characters
 			String[] valueTokens = prevLine.trim().split("\t");
 			
 			if (valueTokens.length != p.W())
 				throw new IOException("Unexpected line length! Expected " + p.W() + " but got " + valueTokens.length + ".");
-			
-			int[] values = new int[valueTokens.length];
 			
 			for (int j = 0; j < valueTokens.length; j++) {
 				states[i * p.W() + j] = Integer.valueOf(valueTokens[j]);

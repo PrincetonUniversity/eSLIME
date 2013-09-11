@@ -174,19 +174,10 @@ public class LatticeTest extends TestCase {
 
 		// Unoccupied lattice: occupied and divisible sites should be empty, vacant == canonical
 		Coordinate[] canonical = geom.getCanonicalSites();
-		HashSet<Coordinate> vSet = lattice.getVacantSites();
-
-		Coordinate[] vacant = vSet.toArray(new Coordinate[0]);
-
-		assertEquals(canonical.length, vacant.length);
 
 		HashSet<Coordinate> cSet = new HashSet<Coordinate>(canonical.length);
 		for (int i = 0; i < canonical.length; i++)
 			cSet.add(canonical[i]);
-		
-		for (int i = 0; i < vacant.length; i++) {
-			assertTrue(cSet.contains(vacant[i]));
-		}
 
 		assertEquals(0, lattice.getDivisibleSites().size());
 		assertEquals(0, lattice.getOccupiedSites().size());
@@ -199,7 +190,6 @@ public class LatticeTest extends TestCase {
 		// Indices should reflect the placement
 		assertEquals(1, lattice.getOccupiedSites().size());
 		assertEquals(1, lattice.getDivisibleSites().size());
-		assertEquals(canonical.length - 1, lattice.getVacantSites().size());
 
 		// Divide cell to a neighboring site
 		Coordinate[] targets = lattice.getNearestVacancies(coord, -1);
@@ -213,8 +203,6 @@ public class LatticeTest extends TestCase {
 		assertEquals(2, lattice.getOccupiedSites().size());
 
 		assertEquals(2, lattice.getDivisibleSites().size());
-
-		assertEquals(canonical.length - 2, lattice.getVacantSites().size());
 
 		// Tell only one cell to consider...
 		assertEquals(1, lattice.consider(child));
@@ -234,7 +222,6 @@ public class LatticeTest extends TestCase {
 		// Indices should reflect the move
 		assertEquals(2, lattice.getOccupiedSites().size());
 		assertEquals(2, lattice.getDivisibleSites().size());
-		assertEquals(canonical.length - 2, lattice.getVacantSites().size());
 
 		// Banish the other one
 		lattice.banish(child);
@@ -242,14 +229,13 @@ public class LatticeTest extends TestCase {
 		// Indices should reflect the banishment
 		assertEquals(1, lattice.getOccupiedSites().size());
 		assertEquals(1, lattice.getDivisibleSites().size());
-		assertEquals(canonical.length - 1, lattice.getVacantSites().size());
 
 		// Check exact values of indices
 		assertEquals(destination, (lattice.getOccupiedSites().iterator().next()));
 		assertEquals(destination, (lattice.getDivisibleSites().iterator().next()));
 
-		vSet = lattice.getVacantSites();
-		assertFalse(vSet.contains(destination));
+		HashSet<Coordinate>oSet = lattice.getOccupiedSites();
+		assertTrue(oSet.contains(destination));
 	}
 
 }

@@ -1,6 +1,7 @@
-package io;
+package io.deserialize;
 
 import java.util.HashMap;
+import java.util.HashSet;
 
 import structural.VectorViewer;
 import structural.identifiers.Coordinate;
@@ -12,15 +13,17 @@ public class ConditionViewer {
 	private VectorViewer f;
 	private int[] states;
 	private double gCurrent;
+	private HashSet<Coordinate> highlights;
 	private HashMap<Coordinate, Integer> coordMap;
 	
-	public ConditionViewer(VectorViewer f, int[] states, double gCurrent,
-			HashMap<Coordinate, Integer> coordMap) {
+	public ConditionViewer(VectorViewer f, int[] states, HashSet<Coordinate> highlights,
+			double gCurrent, HashMap<Coordinate, Integer> coordMap) {
 		
 		this.f = f;
 		this.states = states;
 		this.gCurrent = gCurrent;
 		this.coordMap = coordMap;
+		this.highlights = highlights;
 	}
 
 	public int getState(Coordinate c) {
@@ -35,8 +38,8 @@ public class ConditionViewer {
 		return f.get(i);
 	}
 	
-	public Coordinate[] getHighlight() {
-		throw new UnsupportedOperationException();
+	public HashSet<Coordinate> getHighlights() {
+		return highlights;
 	}
 
 	public boolean isVacant(Coordinate c) {

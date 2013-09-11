@@ -1,5 +1,7 @@
 package control;
 
+import java.util.Random;
+
 /**
  * Currently a hard-coded parameters class. Once the program works,
  * I will implement a more involved parameter framework.
@@ -10,9 +12,11 @@ package control;
 public class Parameters {
 
 	private double epsilon;
+	private Random random;
 	
 	public Parameters() {
 		epsilon  = calcEpsilon();
+		random = new Random();
 	}
 	
 	/**
@@ -60,7 +64,7 @@ public class Parameters {
 	}
 	
 	public String getPath() {
-		return "/Users/dbborens/state/jeSLIME/2013-09-11/";
+		return "/Users/dbborens/state/jeSLIME/2013-09-11/arena/";
 	}
 	
 	public boolean isStamp() {
@@ -68,11 +72,19 @@ public class Parameters {
 	}
 	
 	public String getVersionIdentifier() {
-		return "v0.0.1";
+		return "v0.0.3";
 	}
 	
 	public String getLatticeShape() {
 		return "HexRing";
+	}
+	
+	public int getMaxStep() {
+		return 1001;
+	}
+
+	public Random getRandom() {
+		return random;
 	}
 	
 }
