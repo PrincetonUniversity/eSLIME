@@ -1,0 +1,32 @@
+<simulation>
+	<general>
+		<version>v0.0.5</version>
+		<random-seed>*</random-seed>
+		<width>32</width>
+		<height>32</height>
+		<instances>1</instances>
+		<write-state-histogram>true</write-state-histogram>
+		<write-lineage-map>true</write-lineage-map>
+		<write-state>true</write-state>
+		<write-metadata>true</write-metadata>
+		<path>/Users/dbborens/state/jeSLIME</path>
+		<date-stamp>true</date-stamp>
+		<max-step>1001</max-step>
+		<output-frames>
+			<frame>10</frame>
+			<frame>100</frame>
+			<frame>200</frame>
+			<frame>300</frame>
+			<frame>400</frame>
+			<frame>500</frame>
+			<frame>600</frame>
+			<frame>700</frame>
+			<frame>800</frame>
+			<frame>900</frame>
+			<frame>1000</frame>
+		</output-frames>
+	</general>
+	<geometry>
+		<class>HexRing</class>
+	</geometry>
+</simulation>

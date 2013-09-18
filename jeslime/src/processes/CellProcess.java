@@ -1,7 +1,7 @@
 package processes;
 
-import structural.HaltException;
 import structural.Lattice;
+import structural.exceptions.HaltException;
 import structural.identifiers.Coordinate;
 
 public abstract class CellProcess {

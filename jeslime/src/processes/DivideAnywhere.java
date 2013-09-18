@@ -5,10 +5,10 @@ import java.util.Random;
 
 import cells.Cell;
 
-import structural.FixationException;
 import structural.Flags;
-import structural.HaltException;
 import structural.Lattice;
+import structural.exceptions.FixationException;
+import structural.exceptions.HaltException;
 import structural.identifiers.Coordinate;
 
 import geometries.Geometry;
@@ -28,7 +28,6 @@ public class DivideAnywhere extends CellProcess {
 	}
 
 	public Coordinate[] iterate() throws HaltException {
-		System.out.println("In DivideAnywhere::iterate()");
 		HashSet<Coordinate> preliminary = new HashSet<Coordinate>();
 		HashSet<Coordinate> highlight = new HashSet<Coordinate>();
 

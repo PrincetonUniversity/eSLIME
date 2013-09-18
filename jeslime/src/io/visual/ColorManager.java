@@ -4,14 +4,15 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-import control.Parameters;
+import structural.GeneralParameters;
+
 
 public class ColorManager {
 
 	private Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
 	
 	private Random random;
-	public ColorManager(Parameters p) {
+	public ColorManager(GeneralParameters p) {
 		random = p.getRandom();
 	}
 

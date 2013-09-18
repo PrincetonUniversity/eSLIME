@@ -3,9 +3,9 @@ package io.deserialize;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import structural.GeneralParameters;
 import structural.VectorViewer;
 import structural.identifiers.Coordinate;
-import control.Parameters;
 import geometries.*;
 
 public class ConditionViewer {
@@ -13,16 +13,18 @@ public class ConditionViewer {
 	private VectorViewer f;
 	private int[] states;
 	private double gCurrent;
+	private int frame;
 	private HashSet<Coordinate> highlights;
 	private HashMap<Coordinate, Integer> coordMap;
 	
 	public ConditionViewer(VectorViewer f, int[] states, HashSet<Coordinate> highlights,
-			double gCurrent, HashMap<Coordinate, Integer> coordMap) {
+			int frame, double gCurrent, HashMap<Coordinate, Integer> coordMap) {
 		
 		this.f = f;
 		this.states = states;
 		this.gCurrent = gCurrent;
 		this.coordMap = coordMap;
+		this.frame = frame;
 		this.highlights = highlights;
 	}
 
@@ -50,6 +52,10 @@ public class ConditionViewer {
 	
 	public double getGillespie() {
 		return gCurrent;
+	}
+	
+	public int getFrame() {
+		return frame;
 	}
 
 }

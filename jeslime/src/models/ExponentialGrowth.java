@@ -1,24 +1,25 @@
 package models;
 
 import io.serialize.BufferedStateWriter;
-import control.Parameters;
+import io.serialize.SerializationManager;
 import processes.DivideAnywhere;
 import processes.Scatter;
-import structural.HaltException;
 import structural.Lattice;
+import structural.GeneralParameters;
+import structural.exceptions.HaltException;
 import structural.identifiers.Coordinate;
 import geometries.*;
 
 public class ExponentialGrowth extends Model {
 
-	private Parameters p;
-	private BufferedStateWriter bsw;
+	private GeneralParameters p;
+	private SerializationManager mgr;
 	private Geometry geom;
 	private Lattice lattice;
 	private Scatter scatter;
 	private DivideAnywhere division;
 	
-	public ExponentialGrowth(Parameters p) {
+	public ExponentialGrowth(GeneralParameters p) {
 		this.p = p;
 		
 		// Build geometry
@@ -28,8 +29,8 @@ public class ExponentialGrowth extends Model {
 		// Build lattice
 		lattice = new Lattice(geom);
 		
-		// Build state writer
-		bsw = new BufferedStateWriter(p, geom);
+		// Build serialization manager (output)
+		mgr = new SerializationManager(p, lattice, geom);
 		
 		// Build scatter transform
 		scatter = new Scatter(lattice, 5, 10);
@@ -43,8 +44,13 @@ public class ExponentialGrowth extends Model {
 	}
 	
 	public void initialize() {
+		System.out.print("Initializing serialization manager...");
+		// Initialize output manager
+		mgr.init();
+		System.out.println("done.");
+		
 		// Scatter some cells
-		System.out.print("Initializing...");
+		System.out.print("Initializing simulation...");
 		
 		Coordinate[] highlight = new Coordinate[0];
 		try {
@@ -56,16 +62,12 @@ public class ExponentialGrowth extends Model {
 		System.out.println("done.");
 		
 		System.out.print("Recording...");
-		bsw.push(lattice.getStateVector(), lattice.getFitnessVector(), highlight, 0D);
+		mgr.step(highlight, 0D, 0);
 		System.out.println("done.");
 	}
 	
 	public void go() {
-		for (int i = 0; i < p.getMaxStep(); i++) {
-			System.out.println("Step " + i );
-			
-			System.out.print("   Iterating...");
-			
+		for (int i = 0; i < p.T(); i++) {
 			Coordinate[] highlight;
 			
 			try {
@@ -75,18 +77,15 @@ public class ExponentialGrowth extends Model {
 				System.err.println("Halting simulation.");
 				break;
 			}
-			
-			System.out.println("done.");
-			
-			System.out.println("   Recording...");
-			bsw.push(lattice.getStateVector(), lattice.getFitnessVector(), highlight, (i + 1.0D) * 1.0D);
+			mgr.step(highlight, (i + 1.0D) * 1.0D, i+1);
+
 		}
 		
 		conclude();
 	}
 	
 	private void conclude() {
-		bsw.close();
+		mgr.close();
 		System.out.println("Simulation ended.");
 	}
 }

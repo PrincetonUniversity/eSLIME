@@ -1,41 +1,29 @@
-package postprocess;
+package structural.postprocess;
 
 import java.util.HashSet;
+
+import structural.GeneralParameters;
 
 import geometries.Geometry;
 import io.deserialize.ConditionViewer;
 import io.deserialize.StateReader;
 import io.visual.HexMapWriter;
-import control.Parameters;
 
 public class ImageSequence {
-
-	private boolean processAll;
-	private HashSet<Integer> frameSet;
 	
 	private Geometry geom;
-	private Parameters p;
+	private GeneralParameters p;
 	
 	private HexMapWriter mapWriter;
 	
-	public ImageSequence(Geometry geom, Parameters p) {
+	public ImageSequence(Geometry geom, GeneralParameters p) {
 		System.out.print("Initializing image sequence writer...");
 
 		this.geom = geom;
 		this.p = p;
-		processAll = true;
 		mapWriter = new HexMapWriter(p);
 		
 		System.out.println("done.");
-	}
-	
-	public ImageSequence(Geometry geom, Parameters p, int[] frames) {
-		processAll = false;
-		this.geom = geom;
-		this.p = p;
-
-		for (int i = 0; i < frames.length; i++)
-			frameSet.add(frames[i]);
 	}
 	
 	public void generate() {
@@ -47,14 +35,14 @@ public class ImageSequence {
 		
 		System.out.println("C");
 
-		Integer frame = 0;
+		int frame;
 		
 		while (condition != null) {
+			frame = condition.getFrame();
 			System.out.println("   Rendering frame " + frame);
-			if (processAll || frameSet.contains(frame)) {
+			if (p.isFrame(frame)) {
 				mapWriter.renderImage(condition, frame + ".png");
 			}
-			frame++;
 			condition = reader.next();
 		}
 		

@@ -14,9 +14,9 @@ import java.util.HashSet;
 
 import javax.imageio.ImageIO;
 
+import structural.GeneralParameters;
 import structural.identifiers.Coordinate;
 
-import control.Parameters;
 
 /**
  * 
@@ -48,11 +48,11 @@ public class HexMapWriter {
 	private Point limits = new Point();
 	private Point pixels = new Point();
 	
-	private Parameters p;
+	private GeneralParameters p;
 	private Geometry geom;
 	private ColorManager colorManager;
 	
-	public HexMapWriter(Parameters p) {
+	public HexMapWriter(GeneralParameters p) {
 		this.p = p;
 		//geom = new HexRing(p.W(), p.W());
 		geom = new HexArena(p.W(), p.W());

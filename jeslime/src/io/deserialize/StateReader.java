@@ -18,14 +18,14 @@ import no.uib.cipr.matrix.Vector;
 import structural.identifiers.Coordinate;
 import structural.identifiers.Extrema;
 import structural.identifiers.TemporalCoordinate;
+import structural.GeneralParameters;
 import structural.VectorViewer;
 
 import geometries.Geometry;
-import control.Parameters;
 
 public class StateReader {
 
-	private Parameters p;
+	private GeneralParameters p;
 	private Geometry g;
 	
 	private static final String DATA_FILENAME = "data.txt";
@@ -44,7 +44,9 @@ public class StateReader {
 	
 	private double gillespie;
 	
-	public StateReader(Parameters p, Geometry geom) {
+	private int frame;
+	
+	public StateReader(GeneralParameters p, Geometry geom) {
 		this.g = geom;
 		this.p = p;
 		
@@ -85,7 +87,8 @@ public class StateReader {
 			
 			if (prevLine.startsWith(">")) {
 				String[] tokens = prevLine.split(":");
-				gillespie = Double.valueOf(tokens[1]);
+				frame = Integer.valueOf(tokens[1]);
+				gillespie = Double.valueOf(tokens[2]);
 
 				return readConditions();
 			}
@@ -108,7 +111,8 @@ public class StateReader {
 			String[] tokens = prevLine.split(">")[1].split(":");
 			
 			// When we reach the next time step, stop reading
-			gillespie = Double.valueOf(tokens[1]);
+			frame = Integer.valueOf(tokens[1]);
+			gillespie = Double.valueOf(tokens[2]);
 			if (!p.epsilonEquals(gillespie, gCurrent))
 				break;
 			
@@ -122,7 +126,7 @@ public class StateReader {
 				throw new IOException("Unrecognized field " + tokens[0]);
 		}
 		
-		return new ConditionViewer(f, states, highlights, gCurrent, coordMap);
+		return new ConditionViewer(f, states, highlights, frame, gCurrent, coordMap);
 	}
 	
 	private void readHighlights(HashSet<Coordinate> highlights) throws IOException {

@@ -1,6 +1,11 @@
 package control;
 
-import postprocess.ImageSequence;
+import io.parameters.ParameterLoader;
+
+import java.io.File;
+
+import structural.GeneralParameters;
+import structural.postprocess.ImageSequence;
 import geometries.Geometry;
 import models.*;
 
@@ -19,7 +24,16 @@ public class ManualRunner implements Runnable {
 
 	@Override
 	public void run() {
-		Parameters p = new Parameters();
+		
+		GeneralParameters p = null;
+		try {
+			File f = new File("/Users/dbborens/github/jeSLIME/jeslime/projects/sandbox.xml");
+			ParameterLoader pp = new ParameterLoader(f);
+			p = new GeneralParameters(pp);
+		} catch (Exception ex) {
+			throw new RuntimeException(ex);
+		}
+		
 		Model model = new ExponentialGrowth(p);
 		
 		Geometry geom = model.getGeometry();

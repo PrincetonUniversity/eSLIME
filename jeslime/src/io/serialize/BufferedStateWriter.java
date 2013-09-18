@@ -12,9 +12,10 @@ import java.util.HashMap;
 
 import no.uib.cipr.matrix.Vector;
 
-import control.Parameters;
 
 import cells.Cell;
+import structural.GeneralParameters;
+import structural.Lattice;
 import structural.identifiers.Coordinate;
 import structural.identifiers.Extrema;
 import structural.identifiers.NonZeroExtrema;
@@ -49,7 +50,7 @@ import structural.identifiers.NonZeroExtrema;
  * @author dbborens@princeton.edu
  *
  */
-public class BufferedStateWriter {
+public class BufferedStateWriter extends TemporalMetricWriter {
 
 	private long prevTime;
 	
@@ -75,17 +76,11 @@ public class BufferedStateWriter {
 	// Time step
 	int n;
 	
-	// Parameters
-	private Parameters p;
-	
 	// I/O handle for the state file
 	private BufferedWriter stateWriter;
 	
 	// I/O handle for the interval file (What changed at each time step, and how long it took)
 	private BufferedWriter intervalWriter;
-	
-	// Directory path to the state file
-	private String simPath;
 	
 	// Timestamp for project
 	private Date date = new Date();
@@ -100,26 +95,27 @@ public class BufferedStateWriter {
 	private HashMap<Coordinate, Integer> coordMap;
 	
 	//public BufferedStateWriter(String stateDir, Parameters p, int n) {
-	public BufferedStateWriter(Parameters p, Geometry geom) {
-		this.p = p;
-		initStructures(p, geom);
+	public BufferedStateWriter(GeneralParameters p, Lattice lattice, Geometry geom) {
+		super(p, lattice, geom);
+	}
+
+	public void init() {
+		initStructures(p, geometry);
 		
 		makeFiles(p);
 
 		initFiles(p);
 		
 		prevTime = System.currentTimeMillis();
-		
 	}
-
-	private void initFiles(Parameters p) {
+	private void initFiles(GeneralParameters p) {
 		// Create the state & interval files
-		String stateFileStr = simPath + '/' + STATE_FILENAME;
-		String intervalFileStr = simPath + '/' + INTERVAL_FILENAME;
+		String stateFileStr = p.getInstancePath() + '/' + STATE_FILENAME;
+		String intervalFileStr = p.getInstancePath() + '/' + INTERVAL_FILENAME;
 		
 		try {
 			
-			if (p.getOutput().equalsIgnoreCase("FULL")) {
+			if (p.isWriteState()) {
 				File stateFile = new File(stateFileStr);
 				FileWriter fw = new FileWriter(stateFile);
 				stateWriter = new BufferedWriter(fw, 1048576);
@@ -135,7 +131,7 @@ public class BufferedStateWriter {
 		}
 		
 		try {
-			String paramsFileStr = simPath + '/' + PARAMS_FILENAME;			
+			String paramsFileStr = p.getInstancePath() + '/' + PARAMS_FILENAME;			
 			File paramsFile = new File(paramsFileStr);
 			FileWriter fw = new FileWriter(paramsFile);
 			BufferedWriter bwp = new BufferedWriter(fw);
@@ -151,7 +147,7 @@ public class BufferedStateWriter {
 
 	protected void makeCoordinateMap() {
 		try {
-			String coordMapFileStr = simPath + '/' + COORDMAP_FILENAME;
+			String coordMapFileStr = p.getInstancePath() + '/' + COORDMAP_FILENAME;
 			File coordMapFile = new File(coordMapFileStr);
 			FileWriter fw = new FileWriter(coordMapFile);
 			BufferedWriter bwp = new BufferedWriter(fw);
@@ -169,7 +165,7 @@ public class BufferedStateWriter {
 		}
 	}
 
-	private void initStructures(Parameters p, Geometry geom) {
+	private void initStructures(GeneralParameters p, Geometry geom) {
 		// Initialize extrema
 		ef = new Extrema(p.W());
 		
@@ -181,26 +177,17 @@ public class BufferedStateWriter {
 			coordMap.put(coordArr[i], i);
 	}
 
-	private void makeFiles(Parameters p) {
+	private void makeFiles(GeneralParameters p) {
 		// Create the directory for state files, if needed
 		mkDir(p.getPath(), true);
 		
-		if (p.isStamp()) {
-			// Create a directory for the current time. Also, if it
-			// does not exist, create a directory for the current date.
-			//simPath = stateDir + date() + "/n=" + n;
-			simPath = p.getPath() + date();
-		} else {
-			simPath = p.getPath();
-		}
+		mkDir(p.getInstancePath(), true);
 		
-		mkDir(simPath, true);
-		
-		System.out.println(simPath);
+		System.out.println(p.getInstancePath());
 	}
 
 	public String getSimPath() {
-		return simPath;
+		return p.getInstancePath();
 	}
 	
 	private String date() {
@@ -209,20 +196,7 @@ public class BufferedStateWriter {
 		return sdf.format(date);
 	}
 	
-	private void mkDir(String pathStr, boolean recursive) {
-		File path = new File(pathStr);
-		if (!path.exists()) {
-			try {
-				if (recursive)
-					path.mkdirs();
-				else
-					path.mkdir();
-			} catch (Exception ex) {
-				System.out.println("Could not create directory tree " + pathStr);
-				throw new RuntimeException(ex);
-			}			
-		}
-	}
+
 	
 	/**
 	 * Appends a state to the file.
@@ -231,13 +205,17 @@ public class BufferedStateWriter {
 	 * @param f Cell fitness array, in canonical order.
 	 * @param gillespie Interval (in simulated time) between the last time step and the current one.
 	 */
-	public void push(int[] s, double[] f, Coordinate[] highlights, double gillespie) {
+	public void push(Coordinate[] highlights, double gillespie, int frame) {
+		int[] s = lattice.getStateVector();
+		double[] f = lattice.getFitnessVector();
+		
 		long time = System.currentTimeMillis();
 		long interval = time - prevTime;
 		prevTime = time;
 		
-		if (p.getOutput().equalsIgnoreCase("FULL") && (prevGillespie == 0 || oom(gillespie) > oom(prevGillespie))) {
-			System.out.println("Writing time step " + gillespie);
+		//if (p.isWriteState() && (prevGillespie == 0 || oom(gillespie) > oom(prevGillespie))) {
+		if (p.isWriteState() && p.isFrame(n)) {
+			System.out.println("Writing frame " + n + " (time step " + gillespie + ")");
 			writeDoubleArray(f, ef, gillespie, "fitness");
 			writeIntegerArray(s, gillespie, "state");
 			
@@ -317,6 +295,8 @@ public class BufferedStateWriter {
 	 */
 	private void writeIntegerArray(int[] v, double gillespie, String name) {
 		StringBuilder sb = new StringBuilder(">" + name + ":");
+		sb.append(n);
+		sb.append(':');
 		sb.append(gillespie);
 		sb.append('\n');
 
@@ -359,6 +339,8 @@ public class BufferedStateWriter {
 		sb.append('>');
 		sb.append(title);
 		sb.append(':');
+		sb.append(n);
+		sb.append(':');
 		sb.append(gillespie);
 		sb.append("\n");
 		for (int i = 0; i < v.length; i++) {
@@ -385,7 +367,7 @@ public class BufferedStateWriter {
 		System.out.println("Final Gillespie time: " + prevGillespie);
 		try {
 			
-			if (p.getOutput().equalsIgnoreCase("FULL"))
+			if (p.isWriteState())
 				stateWriter.close();
 			
 			intervalWriter.close();
@@ -393,10 +375,10 @@ public class BufferedStateWriter {
 			throw new RuntimeException(e);
 		}
 		
-		if (p.getOutput().equalsIgnoreCase("FULL")) {
+		if (p.isWriteMetadata()) {
 			// Write the metadata file.
 			try {
-				File metadata = new File(simPath + '/' + METADATA_FILENAME);
+				File metadata = new File(p.getInstancePath() + '/' + METADATA_FILENAME);
 				FileWriter mfw = new FileWriter(metadata);
 				BufferedWriter mbw = new BufferedWriter(mfw);
 				
@@ -411,4 +393,5 @@ public class BufferedStateWriter {
 			}
 		}
 	}
+
 }

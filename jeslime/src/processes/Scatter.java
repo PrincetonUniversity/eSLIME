@@ -7,9 +7,9 @@ import java.util.Random;
 import cells.Cell;
 import cells.SimpleCell;
 
-import structural.HaltException;
 import structural.Lattice;
-import structural.LatticeFullException;
+import structural.exceptions.HaltException;
+import structural.exceptions.LatticeFullException;
 import structural.identifiers.Coordinate;
 
 public class Scatter extends CellProcess {
