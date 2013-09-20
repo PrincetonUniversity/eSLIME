@@ -40,7 +40,7 @@ import structural.identifiers.Coordinate;
  * @author dbborens@princeton.edu
  *
  */
-public class HexMapWriter {
+public class HexMapWriter implements Visualization {
 	
 	private static final int EDGE = 6;
 	
@@ -52,11 +52,15 @@ public class HexMapWriter {
 	private Geometry geom;
 	private ColorManager colorManager;
 	
-	public HexMapWriter(GeneralParameters p) {
+	// The path may not match any in the parameters passed to this
+	// object, so we just track one.
+	private String path;
+	
+	public HexMapWriter(GeneralParameters p, String path, Geometry geom) {
 		this.p = p;
-		//geom = new HexRing(p.W(), p.W());
-		geom = new HexArena(p.W(), p.W());
-
+		this.path = path;
+		this.geom = geom;
+		
 		colorManager = new ColorManager(p);
 		init();
 	}
@@ -67,7 +71,7 @@ public class HexMapWriter {
 	}
 	
 	private void export(BufferedImage img, String filename) {
-		File f = new File(p.getPath() + filename);
+		File f = new File(path + filename);
 		
 		try {
 			ImageIO.write(img,  "png", f);

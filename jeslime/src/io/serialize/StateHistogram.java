@@ -11,6 +11,8 @@ import java.util.TreeSet;
 import geometries.Geometry;
 import structural.GeneralParameters;
 import structural.Lattice;
+import structural.StateMapViewer;
+import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
 /**
@@ -21,8 +23,10 @@ import structural.identifiers.Coordinate;
  * @author dbborens
  *
  */
-public class StateHistogram extends TemporalMetricWriter {
+public class StateHistogram extends Writer {
 
+	private boolean closed = true;
+	
 	private static final String FILENAME = "histo.txt";
 	private BufferedWriter bw;
 
@@ -35,59 +39,48 @@ public class StateHistogram extends TemporalMetricWriter {
 	
 	HashSet<Integer> observedStates = new HashSet<Integer>();
 	
-	public StateHistogram(GeneralParameters p, Lattice lattice, Geometry geometry) {
-		super(p, lattice, geometry);
+	public StateHistogram(GeneralParameters p, Geometry geometry) {
+		super(p, geometry);
 		
 		histo = new HashMap<Integer, HashMap<Integer, Integer>>();
 	}
 
 	@Override
-	public void init() {
+	public void init(Lattice l) {
+		if (!closed) {
+			throw new IllegalStateException("Attempted to initialize active writer.");
+		}
+		closed = false;
+		lattice = l;
+
 		String filename = p.getInstancePath() + '/' + FILENAME;
 		mkDir(p.getInstancePath(), true);
 		bw = makeBufferedWriter(filename);
 	}
 
 	@Override
-	public void push(Coordinate[] highlights, double gillespie, int frame) {
+	public void step(Coordinate[] highlights, double gillespie, int frame) {
 		frames.add(frame);
 		
-		Set<Coordinate> sites = lattice.getOccupiedSites();
-
-		for (Coordinate site : sites) {
-
-			Integer state = lattice.getState(site);
-			
-			// Add the state to the set of observed states, if needed
-			observedStates.add(state);	
-			
-			// If we've never seen this FRAME, create a bucket for it.
-			if (!histo.containsKey(frame)) {
-				HashMap<Integer, Integer> observations = new HashMap<Integer, Integer>();
-				histo.put(frame, observations);
-			}
-			
-			// Retrieve the histogram bucket for this FRAME.
-			HashMap<Integer, Integer> observations = histo.get(frame);
-			
-			// If this is the first observation for the current state in this frame, 
-			// create the KVP.
-			if (!observations.containsKey(state)) {
-				observations.put(state, 0);
-			}
-			
-			// Get current count of this state for this frame
-			Integer current = observations.get(state);
-			
-			// Increment the count by one individual
-			observations.put(state, current + 1);
-			
+		// Create a bucket for this frame.
+		HashMap<Integer, Integer> observations = new HashMap<Integer, Integer>();
+		histo.put(frame, observations);
+		
+		// Iterate over all observed states for this frame.
+		StateMapViewer smv = lattice.getStateMapViewer();
+		for (Integer state : smv.getStates()) {
+			Integer count = smv.getCount(state);
+			observations.put(state, count);
 		}
 		
 	}
 
-	@Override
-	public void close() {
+	public void dispatchHalt(HaltCondition ex) {
+		conclude();
+		closed = true;
+	}
+	
+	private void conclude() {
 	
 		// Sort the states numerically
 		TreeSet<Integer> sortedStates = new TreeSet<Integer>(observedStates);
@@ -126,4 +119,7 @@ public class StateHistogram extends TemporalMetricWriter {
 		hClose(bw);
 	}
 
+	public void close() {
+		// Doesn't do anything.
+	}
 }

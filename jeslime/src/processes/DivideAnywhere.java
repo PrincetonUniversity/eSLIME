@@ -7,8 +7,9 @@ import cells.Cell;
 
 import structural.Flags;
 import structural.Lattice;
-import structural.exceptions.FixationException;
-import structural.exceptions.HaltException;
+import structural.halt.FixationEvent;
+import structural.halt.HaltCondition;
+import structural.halt.LatticeFullEvent;
 import structural.identifiers.Coordinate;
 
 import geometries.Geometry;
@@ -27,7 +28,7 @@ public class DivideAnywhere extends CellProcess {
 		random = new Random();
 	}
 
-	public Coordinate[] iterate() throws HaltException {
+	public Coordinate[] iterate() throws HaltCondition {
 		HashSet<Coordinate> preliminary = new HashSet<Coordinate>();
 		HashSet<Coordinate> highlight = new HashSet<Coordinate>();
 
@@ -49,7 +50,7 @@ public class DivideAnywhere extends CellProcess {
 		// Get nearest vacancies to the cell
 		Coordinate[] targets = lattice.getNearestVacancies(origin, -1);
 		if (targets.length == 0) {
-			throw new FixationException();
+			throw new LatticeFullEvent(lattice.getGillespie());
 		} else {
 			int i = random.nextInt(targets.length);
 			target = targets[i];

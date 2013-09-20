@@ -16,6 +16,7 @@ import no.uib.cipr.matrix.Vector;
 import cells.Cell;
 import structural.GeneralParameters;
 import structural.Lattice;
+import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 import structural.identifiers.Extrema;
 import structural.identifiers.NonZeroExtrema;
@@ -50,13 +51,15 @@ import structural.identifiers.NonZeroExtrema;
  * @author dbborens@princeton.edu
  *
  */
-public class BufferedStateWriter extends TemporalMetricWriter {
+public class BufferedStateWriter extends Writer {
 
+	private boolean closed = true;
+	
 	private long prevTime;
 	
 	private static final double log10 = Math.log(10D);
 
-	private double prevGillespie = 0;
+	private double prevGillespie;
 	
 	// This file contains state vectors, with vector indices corresponding
 	// to coordinates. The mapping between index value and coordinate is
@@ -73,8 +76,9 @@ public class BufferedStateWriter extends TemporalMetricWriter {
 	
 	// This file specifies the relationship between vector index and coordinate.
 	private final String COORDMAP_FILENAME = "coordmap.txt";
-	// Time step
-	int n;
+	
+	// Dictates how many data to write per line. 
+	private final int DATA_PER_LINE = 20;
 	
 	// I/O handle for the state file
 	private BufferedWriter stateWriter;
@@ -95,11 +99,17 @@ public class BufferedStateWriter extends TemporalMetricWriter {
 	private HashMap<Coordinate, Integer> coordMap;
 	
 	//public BufferedStateWriter(String stateDir, Parameters p, int n) {
-	public BufferedStateWriter(GeneralParameters p, Lattice lattice, Geometry geom) {
-		super(p, lattice, geom);
+	public BufferedStateWriter(GeneralParameters p, Geometry geom) {
+		super(p, geom);
 	}
 
-	public void init() {
+	public void init(Lattice l) {
+		if (!closed) {
+			throw new IllegalStateException("Attempting to initialize active writer!");
+		}
+		
+		lattice = l;
+		
 		initStructures(p, geometry);
 		
 		makeFiles(p);
@@ -107,7 +117,9 @@ public class BufferedStateWriter extends TemporalMetricWriter {
 		initFiles(p);
 		
 		prevTime = System.currentTimeMillis();
+		prevGillespie = 0;
 	}
+	
 	private void initFiles(GeneralParameters p) {
 		// Create the state & interval files
 		String stateFileStr = p.getInstancePath() + '/' + STATE_FILENAME;
@@ -167,7 +179,7 @@ public class BufferedStateWriter extends TemporalMetricWriter {
 
 	private void initStructures(GeneralParameters p, Geometry geom) {
 		// Initialize extrema
-		ef = new Extrema(p.W());
+		ef = new Extrema();
 		
 		// Initialize coordinate structures
 		coordArr = geom.getCanonicalSites();
@@ -205,7 +217,7 @@ public class BufferedStateWriter extends TemporalMetricWriter {
 	 * @param f Cell fitness array, in canonical order.
 	 * @param gillespie Interval (in simulated time) between the last time step and the current one.
 	 */
-	public void push(Coordinate[] highlights, double gillespie, int frame) {
+	public void step(Coordinate[] highlights, double gillespie, int frame) {
 		int[] s = lattice.getStateVector();
 		double[] f = lattice.getFitnessVector();
 		
@@ -214,18 +226,17 @@ public class BufferedStateWriter extends TemporalMetricWriter {
 		prevTime = time;
 		
 		//if (p.isWriteState() && (prevGillespie == 0 || oom(gillespie) > oom(prevGillespie))) {
-		if (p.isWriteState() && p.isFrame(n)) {
-			System.out.println("Writing frame " + n + " (time step " + gillespie + ")");
-			writeDoubleArray(f, ef, gillespie, "fitness");
-			writeIntegerArray(s, gillespie, "state");
+		if (p.isWriteState() && p.isFrame(frame)) {
+			//System.out.println("Writing frame " + frame + " (time step " + gillespie + ")");
+			writeDoubleArray(f, ef, gillespie, frame, "fitness");
+			writeIntegerArray(s, gillespie, frame, "state");
 			
 			int[] h = coordToInt(highlights);
-			writeIntegerArray(h, gillespie, "highlight");
+			writeIntegerArray(h, gillespie, frame, "highlight");
 		}
 		
-		interval(n, gillespie, interval);
+		interval(frame, gillespie, interval);
 		prevGillespie = gillespie;
-		n++;
 	}
 
 	protected int[] coordToInt(Coordinate[] highlights) {
@@ -293,16 +304,16 @@ public class BufferedStateWriter extends TemporalMetricWriter {
 	 * 
 	 * @param lattice
 	 */
-	private void writeIntegerArray(int[] v, double gillespie, String name) {
+	private void writeIntegerArray(int[] v, double gillespie, int frame, String name) {
 		StringBuilder sb = new StringBuilder(">" + name + ":");
-		sb.append(n);
+		sb.append(frame);
 		sb.append(':');
 		sb.append(gillespie);
 		sb.append('\n');
 
 		for (int i = 0; i < v.length; i++) {
 			sb.append(v[i]);
-			if (i % p.W() == p.W() - 1)
+			if (i % DATA_PER_LINE == DATA_PER_LINE - 1)
 				sb.append('\n');
 			else if (i == v.length - 1)
 				sb.append('\n');
@@ -333,13 +344,13 @@ public class BufferedStateWriter extends TemporalMetricWriter {
 	 *  
 	 *  The delimiters are tabs, and there are p.W() tokens per line.
 	 */
-	private void writeDoubleArray(double[] v, Extrema extrema, double gillespie, String title) {
+	private void writeDoubleArray(double[] v, Extrema extrema, double gillespie, int frame, String title) {
 
 		StringBuilder sb = new StringBuilder();;
 		sb.append('>');
 		sb.append(title);
 		sb.append(':');
-		sb.append(n);
+		sb.append(frame);
 		sb.append(':');
 		sb.append(gillespie);
 		sb.append("\n");
@@ -347,7 +358,9 @@ public class BufferedStateWriter extends TemporalMetricWriter {
 			Double u = v[i];
 			extrema.consider(u, coordArr[i], gillespie);
 			sb.append(v[i]);
-			if (i % p.W() == p.W() - 1)
+			if (i % DATA_PER_LINE == DATA_PER_LINE - 1)
+				sb.append('\n');
+			else if (i == v.length - 1)
 				sb.append('\n');
 			else
 				sb.append('\t');
@@ -359,10 +372,8 @@ public class BufferedStateWriter extends TemporalMetricWriter {
 			throw new RuntimeException(e);
 		}
 	}
-	/**
-	 * Finalizes the file. Writes a summary file.
-	 */
-	public void close() {
+
+	private void conclude() {
 		// Close the state data file.
 		System.out.println("Final Gillespie time: " + prevGillespie);
 		try {
@@ -392,6 +403,15 @@ public class BufferedStateWriter extends TemporalMetricWriter {
 				throw new RuntimeException(e);
 			}
 		}
+	}
+	
+	public void close() {
+		// Doesn't do anything.
+	}
+	
+	public void dispatchHalt(HaltCondition ex) {
+		conclude();
+		closed = true;
 	}
 
 }

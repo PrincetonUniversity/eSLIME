@@ -8,8 +8,8 @@ import cells.Cell;
 import cells.SimpleCell;
 
 import structural.Lattice;
-import structural.exceptions.HaltException;
-import structural.exceptions.LatticeFullException;
+import structural.halt.HaltCondition;
+import structural.halt.LatticeFullEvent;
 import structural.identifiers.Coordinate;
 
 public class Scatter extends CellProcess {
@@ -28,7 +28,7 @@ public class Scatter extends CellProcess {
 		random = new Random();
 	}
 
-	public Coordinate[] iterate() throws HaltException {
+	public Coordinate[] iterate() throws HaltCondition {
 
 		ArrayList<Coordinate> highlight = new ArrayList<Coordinate>();
 		
@@ -49,7 +49,7 @@ public class Scatter extends CellProcess {
 				// TODO: This should be a unified exception that gets passed up to
 				//       the Simulator.
 				if (candidates.isEmpty()) {
-					throw new LatticeFullException(); 
+					throw new LatticeFullEvent(lattice.getGillespie()); 
 				}
 
 				// Choose target randomly

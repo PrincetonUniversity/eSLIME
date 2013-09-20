@@ -1,7 +1,7 @@
 package processes;
 
 import structural.Lattice;
-import structural.exceptions.HaltException;
+import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
 public abstract class CellProcess {
@@ -11,5 +11,5 @@ public abstract class CellProcess {
 		this.lattice = lattice;
 	}
 	
-	public abstract Coordinate[] iterate() throws HaltException;
+	public abstract Coordinate[] iterate() throws HaltCondition;
 }

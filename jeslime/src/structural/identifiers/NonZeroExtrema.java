@@ -27,10 +27,6 @@ package structural.identifiers;
  */
 public class NonZeroExtrema extends Extrema {
 
-	public NonZeroExtrema(int w) {
-		super(w);
-	}
-
 	@Override
 	public boolean consider(double u, Coordinate c, double t) {
 		boolean assigned = false;

@@ -30,10 +30,17 @@ public class Lattice {
 	// Divisible sites
 	private HashSet<Coordinate> divisibleSites;
 	
+	// Map that tracks count of cells with each state
+	private HashMap<Integer, Integer> stateMap;
+	
+	private double gillespie;
+	
 	public Lattice(Geometry geom) {
 		// Assign geometry
 	    this.geom = geom;
 
+	    gillespie = 0;
+	    
 		// Get canonical site list
 	    canonicalSites = geom.getCanonicalSites();
 
@@ -41,7 +48,8 @@ public class Lattice {
 		map = new HashMap<Coordinate, Cell>();
 		occupiedSites = new HashSet<Coordinate>();
 		divisibleSites = new HashSet<Coordinate>();
-				
+		stateMap = new HashMap<Integer, Integer>();
+		
 		// Initialize conditional indices
 	    for (int i = 0; i < canonicalSites.length; i++) {
 			Coordinate coord = canonicalSites[i];
@@ -115,9 +123,9 @@ public class Lattice {
 
 		// If there are no vacancies, just return now. This should prevent infinite
 		// loop even when searching without bound.
-		if (occupiedSites.size() > canonicalSites.length) {
+		if (!geom.isInfinite() && (occupiedSites.size() > canonicalSites.length)) {
 			throw new IllegalStateException("Consistency failure.");
-		} else if (occupiedSites.size() == canonicalSites.length) {
+		} else if (!geom.isInfinite() && (occupiedSites.size() == canonicalSites.length)) {
 	    	return new Coordinate[0];
 		}
 
@@ -225,13 +233,36 @@ public class Lattice {
 	 * @param coord
 	 */
 	public void apply(Coordinate coord) {
-		// TODO Verify that there is no outstanding lock.
 	    Cell cell = getCellAt(coord);
+	    
+	    // Decrement CURRENT cell state count
+		decrStateCount(cell);
+		
 	    cell.apply();
 
+	    // Increment NEW cell state count, which may be the same as the old one
+	    incrStateCount(cell);
+	    
 	    refreshDivisibility(coord);
 	}
 
+	private void incrStateCount(Cell cell) {
+		Integer currentState = cell.getState();
+		
+		if (!stateMap.containsKey(currentState)) {
+			stateMap.put(currentState, 0);
+		}
+		
+		Integer currentCount = stateMap.get(currentState);
+		stateMap.put(currentState, currentCount+1);
+	}
+
+	private void decrStateCount(Cell cell) {
+		Integer currentState = cell.getState();
+		Integer currentCount = stateMap.get(currentState);
+		stateMap.put(currentState, currentCount-1);
+	}
+	
 	private void refreshDivisibility(Coordinate coord) {
 
 		checkExists(coord);
@@ -277,9 +308,11 @@ public class Lattice {
 	public void divideTo(Coordinate pCoord, Coordinate cCoord) {
 		checkExists(cCoord);
 
+		// Note: divide(...) updates state index for parent
 		Cell child = divide(pCoord);
-
+		
 		// Attempt to place child
+		// Note: place(...) updates state index for child
 		place(child, cCoord);
 
 		// Update divisibility index
@@ -301,7 +334,9 @@ public class Lattice {
 
 		// Divide parent
 		Cell parent = getCellAt(pCoord);
+		decrStateCount(parent);
 		Cell child = parent.divide();
+		incrStateCount(parent);
 
 		return child;
 	}
@@ -325,6 +360,7 @@ public class Lattice {
 
 		// Place cell in cell lattice
 		map.put(coord, cell);
+		incrStateCount(cell);
 		
 		// Update occupancy indices
 		(occupiedSites).add(coord);
@@ -345,6 +381,8 @@ public class Lattice {
 			throw new IllegalStateException("Attempting to banish cell at empty site");
 		}
 
+		decrStateCount(map.get(coord));
+		
 		(occupiedSites).remove(coord);
 		map.put(coord, null);
 
@@ -538,4 +576,15 @@ public class Lattice {
 		return fArr;
 	}
 	
+	public StateMapViewer getStateMapViewer() {
+		return new StateMapViewer(stateMap);
+	}
+	
+	public void advanceClock(double incr) {
+		gillespie += incr;
+	}
+	
+	public double getGillespie() {
+		return gillespie;
+	}
 }

@@ -171,6 +171,10 @@ public class HexArena extends Geometry {
 			return sites;
 		}
 		
+		public int getSiteCount() {
+			return height * width;
+		}
+		
 		public int[] getDisplacement(Coordinate p, Coordinate q) {
 			int[] displacement = new int[3];
 
@@ -292,5 +296,13 @@ public class HexArena extends Geometry {
 		private Coordinate wrap2(int x, int y) {
 			Coordinate res = wrap(x, y, 0);
 			return res;
+		}
+		
+		/**
+		 * The number of legitimate sites in this geometry is infinite,
+		 * as some sites will just lead to cells falling off.
+		 */
+		public boolean isInfinite() {
+			return true;
 		}
 }

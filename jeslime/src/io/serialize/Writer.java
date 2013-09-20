@@ -1,9 +1,16 @@
 package io.serialize;
 
+import geometries.Geometry;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+
+import structural.GeneralParameters;
+import structural.Lattice;
+import structural.halt.HaltCondition;
+import structural.identifiers.Coordinate;
 
 /**
  * Contains convenience methods for 
@@ -11,6 +18,37 @@ import java.io.IOException;
  *
  */
 public abstract class Writer {
+	protected Lattice lattice;
+	protected Geometry geometry;
+	protected GeneralParameters p;
+	
+	public Writer(GeneralParameters p, Geometry geometry) {
+		this.geometry = geometry;
+		this.p = p;
+	}
+	
+	/**
+	 * Initialize data structures for an instance.
+	 * @param l 
+	 */
+	public abstract void init(Lattice l);
+	
+	/**
+	 * Step to the next frame of the current instance.
+	 */
+	public abstract void step(Coordinate[] highlights, double gillespie, int frame);
+	
+	/**
+	 * Signal that the current instance is concluded. Conclude analysis, finish
+	 * writing to files, and close handles for instance.
+	 */
+	public abstract void dispatchHalt(HaltCondition ex);
+	
+	/**
+	 * Conclude analysis, finish writing to files, and close for entire project.
+	 */
+	public abstract void close();
+	
 	protected void mkDir(String pathStr, boolean recursive) {
 		File path = new File(pathStr);
 		if (!path.exists()) {

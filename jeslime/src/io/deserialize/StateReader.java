@@ -24,7 +24,7 @@ import structural.VectorViewer;
 import geometries.Geometry;
 
 public class StateReader {
-
+	
 	private GeneralParameters p;
 	private Geometry g;
 	
@@ -46,33 +46,33 @@ public class StateReader {
 	
 	private int frame;
 	
-	public StateReader(GeneralParameters p, Geometry geom) {
+	// The simulation being visualized may be a single instance of a multi-
+	// replicate project. The StateReader is currently agnostic to that fact,
+	// so we just pass in a path.
+	private String path;
+	
+	public StateReader(String path, GeneralParameters p, Geometry geom) {
 		this.g = geom;
 		this.p = p;
+		this.path = path;
 		
-		
-		File dataFile = new File(p.getPath() + '/' + DATA_FILENAME);
-		File metadataFile = new File(p.getPath() + '/' + METADATA_FILENAME);
+		File dataFile = new File(path + '/' + DATA_FILENAME);
+		File metadataFile = new File(path + '/' + METADATA_FILENAME);
 		
 		try {
-			System.out.println("   1");
 			// Read coordinate map
 			loadCoordinates();
-			System.out.println("   2");
 
 			// Read the metadata file to get the extrema
+			System.out.println("   Trying to read " + metadataFile);
 			extractMetadata(metadataFile);
-			System.out.println("   3");
 
 			// Initialize read-through
 			FileReader fr = new FileReader(dataFile);
-			System.out.println("   4");
 
 			br = new BufferedReader(fr);
-			System.out.println("   5");
 
 			prevLine = br.readLine().trim();
-			System.out.println("   6");
 
 		} catch (Exception e) {
 			throw new RuntimeException(e);
@@ -104,15 +104,15 @@ public class StateReader {
 		
 		VectorViewer f = null;		// Fitness
 		
-		int[] states = new int[p.W() * p.W()];
+		int[] states = new int[g.getSiteCount()];
 		HashSet<Coordinate> highlights = new HashSet<Coordinate>();
 		while (prevLine != null) {
 			// We come into this loop with a header line in prevLine
 			String[] tokens = prevLine.split(">")[1].split(":");
 			
 			// When we reach the next time step, stop reading
-			frame = Integer.valueOf(tokens[1]);
-			gillespie = Double.valueOf(tokens[2]);
+			gCurrent = Double.valueOf(tokens[2]);
+			
 			if (!p.epsilonEquals(gillespie, gCurrent))
 				break;
 			
@@ -126,7 +126,7 @@ public class StateReader {
 				throw new IOException("Unrecognized field " + tokens[0]);
 		}
 		
-		return new ConditionViewer(f, states, highlights, frame, gCurrent, coordMap);
+		return new ConditionViewer(f, states, highlights, frame, gillespie, coordMap);
 	}
 	
 	private void readHighlights(HashSet<Coordinate> highlights) throws IOException {
@@ -159,7 +159,7 @@ public class StateReader {
 		ArrayList<Coordinate> coordList = new ArrayList<Coordinate>();
 		coordMap = new HashMap<Coordinate, Integer>();
 		
-		String fn = p.getPath() + '/' + COORDMAP_FILENAME;
+		String fn = path + '/' + COORDMAP_FILENAME;
 		FileReader mfr = new FileReader(fn);
 		BufferedReader mbr = new BufferedReader(mfr);
 		String next = mbr.readLine();
@@ -209,6 +209,7 @@ public class StateReader {
 	}
 	
 	private TemporalCoordinate parseTemporalCoordinate(String token) {
+		System.out.println("  Attempting to parse " + token);
 		String pStr = ("\\((\\d+), (\\d+)(, (\\d+))? \\| (\\d+) \\| (\\d+\\.\\d+)\\)");
 		TemporalCoordinate c;
 		Pattern pattern = Pattern.compile(pStr);
@@ -242,7 +243,7 @@ public class StateReader {
 		else
 			ec = new Extrema(p.W());*/
 		
-		ef = new Extrema(p.W());
+		ef = new Extrema();
 		
 		while (next != null) {
 			next = next.trim();
@@ -279,7 +280,7 @@ public class StateReader {
 	}
 	
 	private VectorViewer readVector(Extrema ex) throws IOException {
-		Vector v = new DenseVector(p.W() * p.W());
+		Vector v = new DenseVector(g.getSiteCount());
 		prevLine = br.readLine();
 		
 		// Line counter. Should reach p.H(). 
@@ -288,21 +289,15 @@ public class StateReader {
 		// Iterate until we hit the end of the file or the start of a new data field
 		while (prevLine != null && !(prevLine.startsWith(">"))) {
 			String[] tokens = prevLine.trim().split("\t");
-			if (tokens.length != p.W()) {
-				throw new IOException("Unexpected column count: expected " + p.W() + ", but got " + tokens.length);
-			}
-			
-			// Each row contains p.W() values (tab-delimited), and we expect p.H() rows. 
-			for (int j = 0; j < p.W(); j++) {
+
+			// TODO: Replace this logic with something that goes until it gets an EOL character.
+			for (int j = 0; j < tokens.length; j++) {
 				double x = Double.valueOf(tokens[j]);
-				v.set(i * p.W() + j, x);
+				v.set(i, x);
+				i++;
 			}
 			prevLine = br.readLine();
-			i++;
 		}
-		
-		if (i != p.W())
-			throw new IOException("Unexpected row count: expected " + p.W() + ", but got " + i);
 
 		return new VectorViewer(v, ex.min(), ex.max());
 	}
@@ -311,7 +306,7 @@ public class StateReader {
 	 * Skip ahead to the next field or end of file
 	 */
 	private int[] readStates() throws IOException {
-		int[] states = new int[p.W() * p.W()];
+		int[] states = new int[g.getSiteCount()];
 		
 		prevLine = br.readLine();
 		
@@ -322,15 +317,12 @@ public class StateReader {
 			
 			String[] valueTokens = prevLine.trim().split("\t");
 			
-			if (valueTokens.length != p.W())
-				throw new IOException("Unexpected line length! Expected " + p.W() + " but got " + valueTokens.length + ".");
-			
 			for (int j = 0; j < valueTokens.length; j++) {
-				states[i * p.W() + j] = Integer.valueOf(valueTokens[j]);
+				states[i] = Integer.valueOf(valueTokens[j]);
+				i++;
 			}
 			
 			prevLine = br.readLine();
-			i++;
 		}
 		
 		return states;

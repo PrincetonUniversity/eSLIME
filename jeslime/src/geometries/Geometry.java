@@ -2,6 +2,8 @@ package geometries;
 
 import java.util.Vector;
 
+import no.uib.cipr.matrix.io.MatrixVectorReader;
+
 import structural.identifiers.Coordinate;
 
 public abstract class Geometry {
@@ -73,4 +75,23 @@ public abstract class Geometry {
 
 		return(res);
 	}
+
+	/**
+	 * Returns the number of canonical sites in the system. Should be O(1).
+	 * @return
+	 */
+	public abstract int getSiteCount();
+
+	/**
+	 * If false, we are allowed to check against the size of the canonical site
+	 * array to determine the number of legal lattice sites. If false, we should
+	 * treat the number of legal lattice sites as infinite. 
+	 * 
+	 * Note that, if an infinite number of sites is promised, this promise must
+	 * be kept (for annulus, etc.) or else jeSLIME is likely to enter infinite
+	 * loop conditions and hang.
+	 * 
+	 * @return
+	 */
+	public abstract boolean isInfinite();
 }

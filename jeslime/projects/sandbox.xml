@@ -1,10 +1,8 @@
 <simulation>
 	<general>
-		<version>v0.0.5</version>
+		<version>v0.0.6</version>
 		<random-seed>*</random-seed>
-		<width>32</width>
-		<height>32</height>
-		<instances>1</instances>
+		<instances>5</instances>
 		<write-state-histogram>true</write-state-histogram>
 		<write-lineage-map>true</write-lineage-map>
 		<write-state>true</write-state>
@@ -27,6 +25,8 @@
 		</output-frames>
 	</general>
 	<geometry>
-		<class>HexRing</class>
+		<class>HexArena</class>
+		<width>32</width>
+		<height>32</height>
 	</geometry>
 </simulation>

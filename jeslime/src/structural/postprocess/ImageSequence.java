@@ -16,37 +16,45 @@ public class ImageSequence {
 	
 	private HexMapWriter mapWriter;
 	
-	public ImageSequence(Geometry geom, GeneralParameters p) {
+	// The simulation being visualized may be a single instance of a multi-
+	// replicate project. The ImageSequence is currently agnostic to that fact,
+	// so we just pass in a path.
+	private String path;
+	
+	public ImageSequence(String path, Geometry geom, GeneralParameters p) {
 		System.out.print("Initializing image sequence writer...");
 
 		this.geom = geom;
 		this.p = p;
-		mapWriter = new HexMapWriter(p);
+		this.path = path;
+		
+		mapWriter = new HexMapWriter(p, path, geom);
 		
 		System.out.println("done.");
 	}
 	
 	public void generate() {
 		System.out.println("Generating image sequence.");
-		StateReader reader = new StateReader(p, geom);
+		StateReader reader = new StateReader(path, p, geom);
 		
-		System.out.println("B");
 		ConditionViewer condition = reader.next();
-		
-		System.out.println("C");
 
 		int frame;
 		
+		int oldFrame = -1;
+		double oldGillespie = -1D;
 		while (condition != null) {
 			frame = condition.getFrame();
+			System.out.println("   *** " + oldFrame + " " + oldGillespie + " " + frame + " " + condition.getGillespie());
+
 			System.out.println("   Rendering frame " + frame);
 			if (p.isFrame(frame)) {
 				mapWriter.renderImage(condition, frame + ".png");
 			}
+			oldFrame = frame;
+			oldGillespie = condition.getGillespie();
 			condition = reader.next();
 		}
-		
-		System.out.println("D");
 
 	}
 

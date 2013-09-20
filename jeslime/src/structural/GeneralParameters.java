@@ -21,13 +21,11 @@ public class GeneralParameters {
 
 	// Version -- checked against parameters file to make sure they're
 	// compatible
-	private final static String VERSION = "v0.0.5";
-	
-
+	private final static String VERSION = "v0.0.6";
 
 	// Dimensions
-	private int width;
-	private int height;
+	//private int width;
+	//private int height;
 	private int maxStep;
 	private int instances;
 	
@@ -161,8 +159,8 @@ public class GeneralParameters {
 	}
 
 	private void loadDimensions(Element g) {
-		width = Integer.valueOf(get(g, "width"));
-		height = Integer.valueOf(get(g, "height"));
+		//width = Integer.valueOf(get(g, "width"));
+		//height = Integer.valueOf(get(g, "height"));
 		maxStep = Integer.valueOf(get(g, "max-step"));
 		instances = Integer.valueOf(get(g, "instances"));
 	}
@@ -230,18 +228,18 @@ public class GeneralParameters {
 	 * 
 	 * @return
 	 */
-	public int W() {
+	/*public int W() {
 		return width;
-	}
+	}*/
 
 	/**
 	 * Returns system height. Due to frequent calls, this getter's
 	 * name has been shortened.
 	 * @return
 	 */
-	public int H() {
+	/*public int H() {
 		return height;
-	}
+	}*/
 
 	/**
 	 * Returns max time step. Due to frequent calls, this getter's
@@ -252,7 +250,7 @@ public class GeneralParameters {
 		return maxStep;
 	}
 
-	public int getInstances() {
+	public int getNumInstances() {
 		return instances;
 	}
 

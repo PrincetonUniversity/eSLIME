@@ -39,12 +39,6 @@ public class Extrema {
 	protected double max = Double.NEGATIVE_INFINITY;
 	protected TemporalCoordinate argMax = null;
 	
-	protected int width;
-	
-	public Extrema (int w) {
-		width = w;
-	}
-	
 	/**
 	 * Initialize all fields to a set of loaded values. Used when importing
 	 * metadata from a previous run.

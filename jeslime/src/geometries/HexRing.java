@@ -14,48 +14,6 @@ import structural.Flags;
 import structural.identifiers.Coordinate;
 
 public class HexRing extends Geometry {
-	/*
-	public:
-		// System height and width
-		HexRing(int,int);
-
-		Coordinate wrap(int, int, int);
-		bool isBeyondBounds(int, int);
-		std::vector<Coordinate> getCellNeighbors(Coordinate);
-		std::vector<Coordinate> getSoluteNeighbors(Coordinate);
-		std::vector<Coordinate> getAnnulus(Coordinate, int, bool);
-		std::vector<Coordinate> getCanonicalSites();
-		std::vector<int> getDisplacement(Coordinate, Coordinate);
-
-		double getL2Distance(Coordinate, Coordinate);
-
-		Coordinate rel2abs(Coordinate, std::vector<int>);
-
-	private:
-		int height, width;
-
-		// Get (naive) size of an annulus of the specified L1 radius from a 
-		// point, i.e., size assuming no out-of-bounds points.
-		int getAnnulusSize_(int);
-
-		// True iff the coordinate is unwrappably out of bounds.
-		bool isBeyondBounds_(int, int);
-
-		// Evaluates whether or not to include a point in an annulus.
-		void annulusJudge(int, int, int, Coordinate, bool, std::vector<Coordinate>&);
-
-		// Convenience 2D wrap wrapper
-		Coordinate wrap2(int, int);
-
-		// Signum operator.
-		int sign_(int);
-
-		// Check to see if a coordinate should be rejected form an annulus on
-		// circumnavigation grounds.
-		bool circumnavigated_(const bool, Coordinate, Coordinate,
-									   const int, const int, const int);
-									   */
-
 	private int height;
 	private int width;
 
@@ -72,6 +30,10 @@ public class HexRing extends Geometry {
 		this.width = width;
 	}
 
+	public int getSiteCount() {
+		return height * width;
+	}
+	
 	public Coordinate wrap(int x0, int y0, int z0) {
 
 		if (z0 != 0) {
@@ -524,5 +486,9 @@ public class HexRing extends Geometry {
 		}
 
 		return(6 * radius);
+	}
+	
+	public boolean isInfinite() {
+		return false;
 	}
 }

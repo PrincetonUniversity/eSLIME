@@ -4,6 +4,7 @@ import cells.Cell;
 import cells.SimpleCell;
 import junit.framework.TestCase;
 import structural.Lattice;
+import structural.StateMapViewer;
 import structural.identifiers.Coordinate;
 import geometries.HexRing;
 
@@ -168,10 +169,13 @@ public class LatticeTest extends TestCase {
 	/* FUNCTIONAL TEST */
 	/*******************/
 	
-	public void latticeFunctionalTest() {
+	public void testLatticeFunctionality() {
 		HexRing geom = new HexRing(6, 6);
 		Lattice lattice = new Lattice(geom);
 
+		// There shouldn't be anything in the state map yet.
+		assertEquals(0, lattice.getStateMapViewer().getStates().length);
+		
 		// Unoccupied lattice: occupied and divisible sites should be empty, vacant == canonical
 		Coordinate[] canonical = geom.getCanonicalSites();
 
@@ -187,6 +191,12 @@ public class LatticeTest extends TestCase {
 		Coordinate coord = new Coordinate(2, 3, 0);
 		lattice.place(toPlace, coord);
 
+		// Verify state index integrity
+		StateMapViewer v = lattice.getStateMapViewer();
+		assertEquals(1, v.getStates().length);
+		assertEquals(1, v.getStates()[0].intValue());
+		assertEquals(1, v.getCount(1).intValue());
+
 		// Indices should reflect the placement
 		assertEquals(1, lattice.getOccupiedSites().size());
 		assertEquals(1, lattice.getDivisibleSites().size());
@@ -197,6 +207,13 @@ public class LatticeTest extends TestCase {
 
 		lattice.divideTo(coord, child);
 
+		// Verify state index integrity
+		v = lattice.getStateMapViewer();
+		assertEquals(1, v.getStates().length);
+		assertEquals(1, v.getStates()[0].intValue());
+		assertEquals(2, v.getCount(1).intValue());
+		
+		// Verify state
 		assertEquals(lattice.getState(coord), lattice.getState(child));
 
 		// Indices should reflect the division
@@ -226,6 +243,12 @@ public class LatticeTest extends TestCase {
 		// Banish the other one
 		lattice.banish(child);
 
+		// Verify state index integrity
+		v = lattice.getStateMapViewer();
+		assertEquals(1, v.getStates().length);
+		assertEquals(1, v.getStates()[0].intValue());
+		assertEquals(1, v.getCount(1).intValue());
+		
 		// Indices should reflect the banishment
 		assertEquals(1, lattice.getOccupiedSites().size());
 		assertEquals(1, lattice.getDivisibleSites().size());
@@ -236,6 +259,7 @@ public class LatticeTest extends TestCase {
 
 		HashSet<Coordinate>oSet = lattice.getOccupiedSites();
 		assertTrue(oSet.contains(destination));
+
 	}
 
 }
