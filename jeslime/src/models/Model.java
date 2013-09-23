@@ -4,6 +4,7 @@ import io.serialize.SerializationManager;
 import geometries.Geometry;
 import structural.GeneralParameters;
 import structural.Lattice;
+import structural.StateMapViewer;
 import structural.halt.*;
 
 public abstract class Model {
@@ -27,5 +28,16 @@ public abstract class Model {
 		
 		// Call back to serialization manager
 		mgr.nextSimulation(lattice);
+	}
+	
+	protected void checkForFixation() throws FixationEvent {
+		StateMapViewer smv = lattice.getStateMapViewer();
+		
+		for (Integer state : smv.getStates()) {
+			if (smv.getCount(state) == g.getSiteCount()) {
+				throw new FixationEvent(state, lattice.getGillespie());
+			}
+		}
+		
 	}
 }

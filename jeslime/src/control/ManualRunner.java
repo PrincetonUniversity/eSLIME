@@ -65,6 +65,7 @@ public class ManualRunner implements Runnable {
 			// of the instance.
 			mgr.dispatchHalt(ex);
 			
+			System.out.println(p.getInstancePath());
 			// This instructs the parameter handler to re-initialize the random
 			// number generator and to update paths to reflect the next 
 			// iterate. It is only invoked if there are remaining iterates.

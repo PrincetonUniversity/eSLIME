@@ -60,19 +60,22 @@ public class StateHistogram extends Writer {
 
 	@Override
 	public void step(Coordinate[] highlights, double gillespie, int frame) {
-		frames.add(frame);
 		
-		// Create a bucket for this frame.
-		HashMap<Integer, Integer> observations = new HashMap<Integer, Integer>();
-		histo.put(frame, observations);
-		
-		// Iterate over all observed states for this frame.
-		StateMapViewer smv = lattice.getStateMapViewer();
-		for (Integer state : smv.getStates()) {
-			Integer count = smv.getCount(state);
-			observations.put(state, count);
+		if (p.isFrame(frame)) {
+			frames.add(frame);
+			
+			// Create a bucket for this frame.
+			HashMap<Integer, Integer> observations = new HashMap<Integer, Integer>();
+			histo.put(frame, observations);
+			
+			// Iterate over all observed states for this frame.
+			StateMapViewer smv = lattice.getStateMapViewer();
+			for (Integer state : smv.getStates()) {
+				Integer count = smv.getCount(state);
+				observations.put(state, count);
+				observedStates.add(state);
+			}
 		}
-		
 	}
 
 	public void dispatchHalt(HaltCondition ex) {
@@ -81,22 +84,24 @@ public class StateHistogram extends Writer {
 	}
 	
 	private void conclude() {
-	
 		// Sort the states numerically
 		TreeSet<Integer> sortedStates = new TreeSet<Integer>(observedStates);
 		
 		// Write out the header
 		StringBuilder line = new StringBuilder();
 		line.append("frame");
+		
 		for (Integer state : sortedStates) {
 			line.append("\t");
 			line.append(state);
 		}
+		
 		line.append("\n");
 		
 		hAppend(bw, line);
 		
-		for (Integer frame : histo.keySet()) {
+		TreeSet<Integer> sortedFrames = new TreeSet<Integer>(histo.keySet());
+		for (Integer frame : sortedFrames) {
 			HashMap<Integer, Integer> observations = histo.get(frame);
 			
 			line = new StringBuilder();
@@ -117,6 +122,7 @@ public class StateHistogram extends Writer {
 			
 		}
 		hClose(bw);
+
 	}
 
 	public void close() {

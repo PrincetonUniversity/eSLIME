@@ -20,6 +20,8 @@ public class DivideAnywhere extends CellProcess {
 	
 	private Random random;
 	
+	private int debug = 0;
+	
 	public DivideAnywhere(Lattice lattice, Geometry geom) {
 		super(lattice);
 		this.geom = geom;
@@ -32,8 +34,7 @@ public class DivideAnywhere extends CellProcess {
 		HashSet<Coordinate> preliminary = new HashSet<Coordinate>();
 		HashSet<Coordinate> highlight = new HashSet<Coordinate>();
 
-		// Choose a random frontier cell
-
+		// Choose a random active cell.
 		HashSet<Coordinate> candSet = lattice.getDivisibleSites();
 		Coordinate[] candidates = candSet.toArray(new Coordinate[0]);
 		
@@ -46,7 +47,10 @@ public class DivideAnywhere extends CellProcess {
 			int i = random.nextInt(candidates.length);
 			origin = candidates[i];
 		}
-
+		
+		highlight.add(origin);
+		debug++;
+		
 		// Get nearest vacancies to the cell
 		Coordinate[] targets = lattice.getNearestVacancies(origin, -1);
 		if (targets.length == 0) {
@@ -56,6 +60,8 @@ public class DivideAnywhere extends CellProcess {
 			target = targets[i];
 		}
 		
+		//System.out.println(debug + " DivideAnywhere: dividing " + origin.toString() + " to " + target.toString());
+
 		// Get child cell
 		Cell child = lattice.divide(origin);
 

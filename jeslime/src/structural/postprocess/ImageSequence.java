@@ -45,9 +45,7 @@ public class ImageSequence {
 		double oldGillespie = -1D;
 		while (condition != null) {
 			frame = condition.getFrame();
-			System.out.println("   *** " + oldFrame + " " + oldGillespie + " " + frame + " " + condition.getGillespie());
 
-			System.out.println("   Rendering frame " + frame);
 			if (p.isFrame(frame)) {
 				mapWriter.renderImage(condition, frame + ".png");
 			}

@@ -1,10 +1,9 @@
 package cells;
 
 public abstract class Cell {
-
-	protected int state;
-	protected double fitness;
-	protected boolean divisible;
+	private int state;
+	private double fitness;
+	private boolean divisible;
 	
 	public int getState() {
 		return state;
@@ -23,4 +22,20 @@ public abstract class Cell {
 	public abstract void apply();
 	
 	public abstract Cell divide();
+
+	protected void setState(int state) {
+		if (state == 0) {
+			throw new IllegalStateException("Attempted to assign special 'dead' state code 0 to an active cell.");
+		}
+		
+		this.state = state;
+	}
+
+	protected void setFitness(double fitness) {
+		this.fitness = fitness;
+	}
+
+	protected void setDivisible(boolean divisible) {
+		this.divisible = divisible;
+	}
 }

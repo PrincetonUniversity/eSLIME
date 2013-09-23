@@ -13,9 +13,11 @@ public class SimpleCell extends Cell {
 	private int considerCount;
 	
 	public SimpleCell(int state) {
-		this.state = state;
-		fitness = 0D;
-		divisible = true;
+
+		setState(state);
+		setFitness(0D);
+		setDivisible(true);
+		
 		considerCount = 0;
 	}
 	
@@ -31,7 +33,7 @@ public class SimpleCell extends Cell {
 	
 	public SimpleCell divide() {
 		// Make a copy of this SimpleCell
-		SimpleCell child = new SimpleCell(state);
+		SimpleCell child = new SimpleCell(getState());
 		
 		// Return it
 		return child;

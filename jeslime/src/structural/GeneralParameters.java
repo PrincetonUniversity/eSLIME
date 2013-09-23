@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.Random;
 
+import org.dom4j.Attribute;
 import org.dom4j.Element;
 
 /**
@@ -21,7 +22,7 @@ public class GeneralParameters {
 
 	// Version -- checked against parameters file to make sure they're
 	// compatible
-	private final static String VERSION = "v0.0.6";
+	private final static String VERSION = "v0.0.7";
 
 	// Dimensions
 	//private int width;
@@ -36,10 +37,17 @@ public class GeneralParameters {
 	
 	// Output flags
 	private boolean stateHisto;				// Create a running histogram of cell states
-	private boolean lineageMap;				// Visualize lineages as they grow
-	private boolean writeState;			// Capture state for visualization
-	private boolean metadata;
 	
+	private boolean lineageMap;				// Visualize lineages as they grow
+	
+	private boolean writeState;				// Capture state for visualization
+	
+	private boolean metadata;				// Write metadata file? Contains 
+											// extrema, used for visualization.
+	
+	private boolean interval;				// Write intervals file? Contains 
+											// temporal data--running time,
+											// Gillespie intervals, etc.
 	// Output frames (blank means all)
 	private Set<Integer> frames;
 	
@@ -132,11 +140,67 @@ public class GeneralParameters {
 
 		frames = new HashSet<Integer>();
 		
+		// Did we specify an automatic frame pattern?
+		if (fElem.element("auto") != null) {
+			Element auto = fElem.element("auto");
+			
+			// All -- render every frame. IF YOU USE A HUGE MAX STEP, THIS
+			// *WILL* CRASH THE PROGRAM.
+			if (auto.attribute("mode").getData().toString().equalsIgnoreCase("all")) {
+				for (int i = 0; i <= maxStep; i++) {
+					frames.add(i);
+				}
+				System.out.println();
+			// Linear mode -- step n frames from the first one
+			} else if (auto.attribute("mode").getData().toString().equalsIgnoreCase("linear")) {
+				Attribute stepAttr = auto.attribute("step");
+				if (stepAttr == null) {
+					throw new IllegalArgumentException("Linear mode requires a 'step' argument.");
+				}
+				
+				int step = Integer.valueOf(stepAttr.getData().toString());
+				
+				for (int i = 0; i <= maxStep; i += step) {
+					frames.add(i);
+				}
+				
+			// Log mode -- 1 frame per OOM
+			} else if (auto.attribute("mode").getData().toString().equalsIgnoreCase("log")) {
+				frames.add(0);
+				for (int i = 1; i <= maxStep; i *= 10) {
+					frames.add(i);
+				}
+				
+			// Decilog mode -- 10 frames per OOM
+			} else if (auto.attribute("mode").getData().toString().equalsIgnoreCase("decilog")) {
+				frames.add(0);
+				int i = 1;
+				int magnitude = 1;
+				while (i <= maxStep) {
+					for (int j = 1; i <= maxStep && j < 10; j++) {
+						frames.add(i);
+						i += magnitude;
+					}
+					magnitude *= 10;
+				}
+				
+			// Unrecognized auto mode
+			} else {
+				throw new IllegalArgumentException("Automatic frameset mode '" + 
+						auto.attribute("mode").getData().toString()
+						+ "' not recognized.");
+			}
+		}
+
 		for (Object o : fElem.elements("frame")) {
 			Element e = (Element) o;
 			
 			Integer frame = Integer.valueOf(e.getData().toString());
 			frames.add(frame);
+		}
+		
+		if (frames.size() == 0) {
+			System.err.println("WARNING! No frames specified.");
 		}
 	}
 	
@@ -144,6 +208,7 @@ public class GeneralParameters {
 		stateHisto = Boolean.valueOf(get(g, "write-state-histogram"));
 		lineageMap = Boolean.valueOf(get(g, "write-lineage-map"));
 		writeState = Boolean.valueOf(get(g, "write-state"));
+		interval   = Boolean.valueOf(get(g, "write-interval"));
 		metadata = Boolean.valueOf(get(g, "write-metadata"));
 	}
 
@@ -310,5 +375,9 @@ public class GeneralParameters {
 	 */
 	public boolean isFrame(Integer frame) {
 		return frames.contains(frame);
+	}
+	
+	public boolean isInterval() {
+		return interval;
 	}
 }

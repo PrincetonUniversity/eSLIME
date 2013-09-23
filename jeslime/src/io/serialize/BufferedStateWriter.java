@@ -135,8 +135,11 @@ public class BufferedStateWriter extends Writer {
 			
 			File intervalFile = new File(intervalFileStr);
 			FileWriter ifw = new FileWriter(intervalFile);
-			intervalWriter = new BufferedWriter(ifw, 1048576);
-			intervalWriter.append("Step,Gillespie,Running time\n");
+			
+			if (p.isInterval()) {
+				intervalWriter = new BufferedWriter(ifw, 1048576);
+				intervalWriter.append("Step,Gillespie,Running time\n");
+			}
 			
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -235,7 +238,9 @@ public class BufferedStateWriter extends Writer {
 			writeIntegerArray(h, gillespie, frame, "highlight");
 		}
 		
-		interval(frame, gillespie, interval);
+		if (p.isInterval()) {
+			interval(frame, gillespie, interval);
+		}
 		prevGillespie = gillespie;
 	}
 
@@ -381,7 +386,9 @@ public class BufferedStateWriter extends Writer {
 			if (p.isWriteState())
 				stateWriter.close();
 			
-			intervalWriter.close();
+			if (p.isInterval()) {
+				intervalWriter.close();
+			}
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}

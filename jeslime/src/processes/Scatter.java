@@ -59,7 +59,7 @@ public class Scatter extends CellProcess {
 				Coordinate target = cVec[o];
 
 				// Create and assign cell
-				Cell cell = new SimpleCell(i);
+				Cell cell = new SimpleCell(i+1);
 
 				lattice.place(cell, target);
 				highlight.add(target);

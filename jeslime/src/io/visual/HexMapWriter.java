@@ -42,7 +42,7 @@ import structural.identifiers.Coordinate;
  */
 public class HexMapWriter implements Visualization {
 	
-	private static final int EDGE = 6;
+	private static final int EDGE = 40;
 	
 	private Point origin = new Point();
 	private Point limits = new Point();
@@ -51,6 +51,9 @@ public class HexMapWriter implements Visualization {
 	private GeneralParameters p;
 	private Geometry geom;
 	private ColorManager colorManager;
+	
+	// For now, this hidden feature is for debug only
+	private boolean showNumbers = true;
 	
 	// The path may not match any in the parameters passed to this
 	// object, so we just track one.
@@ -112,6 +115,10 @@ public class HexMapWriter implements Visualization {
 		} else {
 			drawFilledHexagon(gfx, center, color);
 		}
+		
+		if (showNumbers) {
+			makeLabel(c, gfx);
+		}
 	}
     
     private boolean checkHighlight(Coordinate c, ConditionViewer condition) {
@@ -128,7 +135,21 @@ public class HexMapWriter implements Visualization {
 		g.drawPolygon(p);		
 		
 	}
-
+	
+	private void makeLabel(Coordinate coord, Graphics g) {
+		Point c = indexToPixels(coord);
+		
+		String label = "(" + coord.x() + ", " + coord.y() + ")";
+		char[] labelArr = label.toCharArray();
+		
+		
+		int wAdj = g.getFontMetrics().charsWidth(labelArr, 0, labelArr.length) / 2;
+		int hAdj = g.getFontMetrics().getHeight() / 2;
+		
+		g.setColor(Color.DARK_GRAY);
+		g.drawChars(labelArr, 0, labelArr.length, c.x - wAdj, c.y + hAdj);
+	}
+	
 	void drawFilledHexagon(Graphics g, Point center, Color color) {
 
 		Polygon p = makeHexagon(center);
@@ -234,8 +255,8 @@ public class HexMapWriter implements Visualization {
     limits.y = (yMax - yMin) - (limits.x / 2);
 
 	// Calculate pixel bounds.
-    float heightFP = (float) Math.sqrt(3.0f) * ((float) (limits.y) + 0.5f) * EDGE;
-    float widthFP  = 1.5f * ((float) (limits.x) + 0.5f) * EDGE;
+    float heightFP = (float) Math.sqrt(3.0f) * ((float) (limits.y) + 1.5f) * EDGE;
+    float widthFP  = 1.5f * ((float) (limits.x) + 1.5f) * EDGE;
 
     pixels.x = (int) Math.ceil(widthFP);
     pixels.y = (int) Math.ceil(heightFP);

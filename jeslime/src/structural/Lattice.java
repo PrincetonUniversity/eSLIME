@@ -513,7 +513,7 @@ public class Lattice {
 		
 		// First check to see if this cell is supposed to be retained even though
 		// it is not a "real" coordinate.
-		if (coord.hasFlag(Flags.END_OF_WORLD)) {
+		if (geom.isInfinite() && coord.hasFlag(Flags.END_OF_WORLD)) {
 			return coord;
 		}
 
@@ -542,6 +542,13 @@ public class Lattice {
 	    return res;
 	}
 
+	/**
+	 * Returns true iff the specified lattice site contains a cell.
+	 */
+	public boolean isOccupied(Coordinate coord) {
+		checkExists(coord);
+		return occupiedSites.contains(coord);
+	}
 	public int[] getStateVector() {
 		Coordinate[] cArr = getCanonicalSites();
 		

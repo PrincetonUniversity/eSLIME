@@ -1,50 +1,45 @@
 package models;
 
-import io.serialize.BufferedStateWriter;
 import io.serialize.SerializationManager;
-import processes.DivideAnywhere;
-import processes.Scatter;
-import structural.Lattice;
+import processes.*;
 import structural.GeneralParameters;
 import structural.halt.*;
 import structural.identifiers.Coordinate;
-import structural.postprocess.ImageSequence;
 import geometries.*;
 
 public class ExponentialGrowth extends Model {
 
 	private Scatter scatter;
-	private DivideAnywhere division;
+	private DivideAnywhere divide;
+	private NeighborSwap swap;
 	
+	private final int SWAP_PERIOD = 10;
 	public ExponentialGrowth(GeneralParameters p, Geometry geom, SerializationManager mgr) {
 		super(p, geom, mgr);
 
-		// Build scatter transform
-		scatter = new Scatter(lattice, 5, 10);
+		// Build scatter process
+		scatter = new Scatter(lattice, 2, 1);
 		
-		// Build growth transform
-		division = new DivideAnywhere(lattice, geom);
+		// Build growth process
+		divide = new DivideAnywhere(lattice, geom);
+		
+		// Build swap process
+		swap = new NeighborSwap(lattice, geom, p);
 	}
 	
 	public void initialize() {
 
-		System.out.println("done.");
-		
 		// Scatter some cells
-		System.out.print("Initializing simulation...");
 		
 		Coordinate[] highlight = new Coordinate[0];
 		try {
 			highlight = scatter.iterate();
+			
 		} catch (HaltCondition ex) {
 			ex.printStackTrace();
 			System.err.println("Halting simulation.");
 		}
-		System.out.println("done.");
-		
-		System.out.print("Recording...");
 		mgr.step(highlight, 0D, 0);
-		System.out.println("done.");
 	}
 	
 	public HaltCondition go() {
@@ -52,7 +47,11 @@ public class ExponentialGrowth extends Model {
 			Coordinate[] highlight;
 			
 			try {
-				highlight = division.iterate();
+				highlight = divide.iterate();
+				
+				if (i % SWAP_PERIOD == 0) {
+					swap.iterate();
+				}
 			} catch (HaltCondition ex) {
 				//ex.printStackTrace();
 				//System.err.println("Halting simulation.");
@@ -60,11 +59,20 @@ public class ExponentialGrowth extends Model {
 			}
 			lattice.advanceClock(1.0);
 			mgr.step(highlight, lattice.getGillespie(), i+1);
+	
+			try {
+				checkForFixation();
+			} catch (FixationEvent ex) {
+				return ex;
+			}
 		}
 		
 		return new StepMaxReachedEvent(lattice.getGillespie());
 	}
-	
+
+
+
+
 	private void conclude(HaltCondition ex) {
 		//System.out.println("Simulation ended.");
 	}
