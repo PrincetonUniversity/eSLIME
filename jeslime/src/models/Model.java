@@ -1,5 +1,9 @@
 package models;
 
+import processes.Process;
+import processes.StepState;
+import io.parameters.ProcessFactory;
+import io.parameters.ProcessLoader;
 import io.serialize.SerializationManager;
 import geometries.Geometry;
 import structural.GeneralParameters;
@@ -7,29 +11,122 @@ import structural.Lattice;
 import structural.StateMapViewer;
 import structural.halt.*;
 
-public abstract class Model {
+public class Model {
 	
-	protected GeneralParameters p;
-	protected Geometry g;
-	protected SerializationManager mgr;
-	protected Lattice lattice;
+	private GeneralParameters p;
+	private Geometry g;
+	private SerializationManager mgr;
+	private Lattice lattice;
 	
-	public abstract void initialize();
-	public abstract HaltCondition go();
-	public abstract void postprocess(HaltCondition ex);
+	private Process[] processes;
 	
-	public Model(GeneralParameters p, Geometry g, SerializationManager mgr) {
+	public Model(GeneralParameters p, ProcessLoader loader, Geometry g,
+			SerializationManager mgr) {
+		
+		// Assign member variables.
 		this.p = p;
 		this.g = g;
 		this.mgr = mgr;
 		
-		// Build lattice
+		// Build lattice.
 		lattice = new Lattice(g);
 		
-		// Call back to serialization manager
+		// Build process factory.
+		ProcessFactory factory = new ProcessFactory(loader, lattice, p, g);
+		
+		Integer[] ids = loader.getProcesses();
+		processes = new Process[ids.length];
+		
+		// Build processes.
+		for (int i = 0; i < ids.length; i++) {
+			int id = ids[i];
+			processes[i] = factory.instantiate(id);
+		}
+			
+		// Call back to serialization manager.
 		mgr.nextSimulation(lattice);
 	}
 	
+	/**
+	 * Call the iterate() method of any processes whose
+	 * period is 0, and no others. Returns a halt condition
+	 * if one was thrown; otherwise, it returns null. This
+	 * is the initial condition (t=0).
+	 */
+	public HaltCondition initialize() {
+		StepState state = new StepState();
+		
+		for (Process process : processes) {
+			try {
+				// A period of 0 means that the process should occur
+				// at initialization and no other time. Only processes
+				// with a period of 0 are called at initialize.
+				if (process.getPeriod() == 0) {
+					process.iterate(state);
+				}
+			} catch (HaltCondition hc) {
+				return hc;
+			}
+		}
+		
+		// Signal to state object that we are done modifying it.
+		state.close();
+		
+		// Send the results to the serialization manager.
+		mgr.step(state.getHighlights(), state.getDt(), 0);
+		
+		// If we get here, the initialization proceeded without halting.
+		return null;
+	}
+	
+	/**
+	 * Run all iterations after t=0, updating any solutes and
+	 * cells, as well as advancing the clock, according to the
+	 * processes specified in the project file.
+	 * @return
+	 */
+	public HaltCondition go() {
+
+		for (int t = 1; t < p.T(); t++) {
+			StepState state = new StepState();
+
+			for (Process process : processes) {
+				try {
+					
+					int period = process.getPeriod();
+					
+					// A period of 0 means that the process should occur
+					// at initialization and no other time. Only processes
+					// with a period of 0 are called at initialize.
+					if (period != 0 && t % period == 0) {
+						process.iterate(state);
+					}
+				} catch (HaltCondition hc) {
+					return hc;
+				}
+
+			}
+			
+			// Check to see if the system has entered a fixation state.
+			try {
+				checkForFixation();
+			} catch (FixationEvent ex) {
+				return ex;
+			}
+			
+			// Signal to state object that we are done modifying it.
+			state.close();
+
+			// Send the results to the serialization manager.
+			mgr.step(state.getHighlights(), state.getDt(), t);
+		}
+		
+		// If we got here, it's because we got through the outermost
+		// loop, which proceeds for a specified number of iterations
+		// before terminating. (This prevents infinite loops.)
+		return new StepMaxReachedEvent(lattice.getGillespie());
+		
+	}
 	protected void checkForFixation() throws FixationEvent {
 		StateMapViewer smv = lattice.getStateMapViewer();
 		
@@ -38,6 +135,13 @@ public abstract class Model {
 				throw new FixationEvent(state, lattice.getGillespie());
 			}
 		}
-		
+	}
+	
+	private void conclude(HaltCondition ex) {
+		//System.out.println("Simulation ended.");
+	}
+	
+	public void postprocess(HaltCondition ex) {
+		conclude(ex);
 	}
 }

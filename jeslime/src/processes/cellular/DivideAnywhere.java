@@ -1,11 +1,17 @@
-package processes;
+package processes.cellular;
+
+import io.parameters.ProcessLoader;
 
 import java.util.HashSet;
 import java.util.Random;
 
+import processes.StepState;
+
+
 import cells.Cell;
 
 import structural.Flags;
+import structural.GeneralParameters;
 import structural.Lattice;
 import structural.halt.FixationEvent;
 import structural.halt.HaltCondition;
@@ -16,23 +22,18 @@ import geometries.Geometry;
 
 public class DivideAnywhere extends CellProcess {
 	
-	private Geometry geom;
-	
 	private Random random;
 	
-	private int debug = 0;
-	
-	public DivideAnywhere(Lattice lattice, Geometry geom) {
-		super(lattice);
-		this.geom = geom;
+	public DivideAnywhere(ProcessLoader loader, Lattice lattice, int id,
+			Geometry geom, GeneralParameters p) {
 		
-		// TODO: This will need to use centralized infrastructure.
-		random = new Random();
+		super(loader, lattice, id, geom, p);
+
+		random = p.getRandom();
 	}
 
-	public Coordinate[] iterate() throws HaltCondition {
+	public void iterate(StepState state) throws HaltCondition {
 		HashSet<Coordinate> preliminary = new HashSet<Coordinate>();
-		HashSet<Coordinate> highlight = new HashSet<Coordinate>();
 
 		// Choose a random active cell.
 		HashSet<Coordinate> candSet = lattice.getDivisibleSites();
@@ -41,15 +42,14 @@ public class DivideAnywhere extends CellProcess {
 		Coordinate origin, target;
 
 		if (candidates.length == 0) {
-			return new Coordinate[0];
+			return;
 		} else {
 
 			int i = random.nextInt(candidates.length);
 			origin = candidates[i];
 		}
 		
-		highlight.add(origin);
-		debug++;
+		state.highlight(origin);
 		
 		// Get nearest vacancies to the cell
 		Coordinate[] targets = lattice.getNearestVacancies(origin, -1);
@@ -60,8 +60,6 @@ public class DivideAnywhere extends CellProcess {
 			target = targets[i];
 		}
 		
-		//System.out.println(debug + " DivideAnywhere: dividing " + origin.toString() + " to " + target.toString());
-
 		// Get child cell
 		Cell child = lattice.divide(origin);
 
@@ -78,15 +76,13 @@ public class DivideAnywhere extends CellProcess {
 			if (toCheck.hasFlag(Flags.END_OF_WORLD)) {
 				lattice.banish(toCheck);
 			} else {
-				highlight.add(toCheck);
+				state.highlight(toCheck);
 			}
 
 		}
 		
 		// Divide the child cell into the vacancy left by the parent
 		lattice.place(child, origin);
-
-		return highlight.toArray(new Coordinate[0]);
 	}
 
 	private int norm(int[] vec) {

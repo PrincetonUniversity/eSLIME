@@ -230,7 +230,6 @@ public class BufferedStateWriter extends Writer {
 		
 		//if (p.isWriteState() && (prevGillespie == 0 || oom(gillespie) > oom(prevGillespie))) {
 		if (p.isWriteState() && p.isFrame(frame)) {
-			//System.out.println("Writing frame " + frame + " (time step " + gillespie + ")");
 			writeDoubleArray(f, ef, gillespie, frame, "fitness");
 			writeIntegerArray(s, gillespie, frame, "state");
 			
@@ -380,7 +379,6 @@ public class BufferedStateWriter extends Writer {
 
 	private void conclude() {
 		// Close the state data file.
-		System.out.println("Final Gillespie time: " + prevGillespie);
 		try {
 			
 			if (p.isWriteState())

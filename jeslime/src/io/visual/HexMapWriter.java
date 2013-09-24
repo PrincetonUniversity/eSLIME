@@ -68,7 +68,7 @@ public class HexMapWriter implements Visualization {
 		init();
 	}
 	
-	public void renderImage(ConditionViewer condition, String filename) {
+	public void renderImage(ConditionViewer condition, String filename) {		
 		BufferedImage img = buildImage(condition);
 		export(img, filename);
 	}
@@ -77,7 +77,7 @@ public class HexMapWriter implements Visualization {
 		File f = new File(path + filename);
 		
 		try {
-			ImageIO.write(img,  "png", f);
+			ImageIO.write(img,  "gif", f);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}		
@@ -94,7 +94,7 @@ public class HexMapWriter implements Visualization {
 	}
 
 	private BufferedImage buildImage(ConditionViewer condition) {
-		BufferedImage img = new BufferedImage(pixels.x, pixels.y, BufferedImage.TYPE_INT_RGB);
+		BufferedImage img = new BufferedImage(pixels.x, pixels.y, BufferedImage.TYPE_BYTE_INDEXED);
 		Graphics gfx = img.getGraphics();
 				
 		for (Coordinate c : geom.getCanonicalSites()) {

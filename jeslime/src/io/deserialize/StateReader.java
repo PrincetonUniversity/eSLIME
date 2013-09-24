@@ -64,7 +64,6 @@ public class StateReader {
 			loadCoordinates();
 
 			// Read the metadata file to get the extrema
-			System.out.println("   Trying to read " + metadataFile);
 			extractMetadata(metadataFile);
 
 			// Initialize read-through
@@ -100,7 +99,7 @@ public class StateReader {
 	}
 	
 	private ConditionViewer readConditions() throws IOException {
-		double gCurrent = gillespie;
+		int fCurrent = frame;
 		
 		VectorViewer f = null;		// Fitness
 		
@@ -111,9 +110,9 @@ public class StateReader {
 			String[] tokens = prevLine.split(">")[1].split(":");
 			
 			// When we reach the next time step, stop reading
-			gCurrent = Double.valueOf(tokens[2]);
+			fCurrent = Integer.valueOf(tokens[1]);
 			
-			if (!p.epsilonEquals(gillespie, gCurrent))
+			if (frame != fCurrent)
 				break;
 			
 			if (tokens[0].equals("fitness"))
@@ -209,7 +208,6 @@ public class StateReader {
 	}
 	
 	private TemporalCoordinate parseTemporalCoordinate(String token) {
-		System.out.println("  Attempting to parse " + token);
 		String pStr = ("\\((\\d+), (\\d+)(, (\\d+))? \\| (\\d+) \\| (\\d+\\.\\d+)\\)");
 		TemporalCoordinate c;
 		Pattern pattern = Pattern.compile(pStr);

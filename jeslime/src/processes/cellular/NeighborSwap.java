@@ -1,8 +1,13 @@
-package processes;
+package processes.cellular;
+
+import io.parameters.ProcessLoader;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
+import processes.StepState;
+
 
 import geometries.Geometry;
 import structural.GeneralParameters;
@@ -19,23 +24,23 @@ import structural.identifiers.Coordinate;
  */
 public class NeighborSwap extends CellProcess {
 
-	private Geometry geom;
-	private GeneralParameters p;
-	public NeighborSwap(Lattice lattice, Geometry geom, GeneralParameters p) {
-		super(lattice);
+	public NeighborSwap(ProcessLoader loader, Lattice lattice, int id,
+			Geometry geom, GeneralParameters p) {
 		
-		this.geom = geom;
-		this.p = p;
+		super(loader, lattice, id, geom, p);
+		
 	}
 
 	@Override
-	public Coordinate[] iterate() throws HaltCondition {
-		
+	public void iterate(StepState state) throws HaltCondition {
+		//System.out.println("In NeighborSwap::iterate().");
+
 		SwapTuple target = selectTarget();
 		
 		lattice.swap(target.p, target.q);
 		
-		return target.toArray();
+		state.highlight(target.p);
+		state.highlight(target.q);
 	}
 
 	private SwapTuple selectTarget() {
@@ -78,15 +83,6 @@ public class NeighborSwap extends CellProcess {
 		public SwapTuple(Coordinate p, Coordinate q) {
 			this.p = p;
 			this.q = q;
-		}
-		
-		public Coordinate[] toArray() {
-			Coordinate[] arr = new Coordinate[2];
-			
-			arr[0] = p;
-			arr[1] = q;
-			
-			return arr;
 		}
 	}
 }

@@ -1,40 +1,33 @@
 package control;
 
+import geometries.Geometry;
 import io.parameters.GeometryFactory;
-import io.parameters.ParameterLoader;
+import io.parameters.ProcessLoader;
+import io.parameters.ProjectLoader;
 import io.serialize.SerializationManager;
 
 import java.io.File;
 
+import models.Model;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;
-import structural.postprocess.ImageSequence;
-import geometries.Geometry;
-import models.*;
 
-/**
- * The manual runner specifies a hard-coded parameters file to be loaded.
- * It is used for ad-hoc simulations and testing. Batch executions use
- * a command line argument to specify a parameters file.
- * 
- * @author dbborens
- *
- */
-public class ManualRunner implements Runnable {
+public class Runner implements Runnable {
 
-	public static void main(String[] args) {
-		ManualRunner runner = new ManualRunner();
-		runner.run();
+	private String fn;
+	public Runner(String fn) {
+		this.fn = fn;
 	}
-
-	@Override
+	
 	public void run() {
 		
 		GeneralParameters p = null;
 		Geometry g;
+		ProcessLoader loader;
 		try {
-			File f = new File("/Users/dbborens/github/jeSLIME/jeslime/projects/sandbox.xml");
-			ParameterLoader pp = new ParameterLoader(f);
+			File f = new File(fn);
+			ProjectLoader pp = new ProjectLoader(f);
+			loader = new ProcessLoader(pp);
 			p = new GeneralParameters(pp);
 			g = GeometryFactory.make(pp);
 		} catch (Exception ex) {
@@ -44,8 +37,8 @@ public class ManualRunner implements Runnable {
 		SerializationManager mgr = new SerializationManager(p, g);
 		
 		for (int i = 0; i < p.getNumInstances(); i++) {
-			
-			Model model = new ExponentialGrowth(p, g, mgr);
+		
+			Model model = new Model(p, loader, g, mgr);
 			
 			// This step includes setting up the initial conditions, as well as
 			// some data structure initializations.

@@ -6,7 +6,7 @@ import org.dom4j.Element;
 
 public abstract class GeometryFactory {
 
-	public static Geometry make(ParameterLoader p) {
+	public static Geometry make(ProjectLoader p) {
 		Element baseElement = p.getElement("geometry");
 		String className = get(baseElement, "class");
 		

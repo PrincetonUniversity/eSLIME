@@ -21,11 +21,11 @@ import org.dom4j.io.*;
  * @author dbborens
  *
  */
-public class ParameterLoader {
+public class ProjectLoader {
 
 	private Element root;
 	
-	public ParameterLoader(File toLoad) throws DocumentException {
+	public ProjectLoader(File toLoad) throws DocumentException {
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(toLoad);
 		validate(document);
@@ -37,7 +37,7 @@ public class ParameterLoader {
 		
 	}
 
-	public ParameterLoader(String toLoad) throws DocumentException {
+	public ProjectLoader(String toLoad) throws DocumentException {
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(toLoad);
 		validate(document);

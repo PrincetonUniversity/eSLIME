@@ -1,12 +1,21 @@
-package processes;
+package processes.cellular;
+
+import geometries.Geometry;
+import io.parameters.ProcessLoader;
 
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
 
+import org.dom4j.Element;
+
+import processes.StepState;
+
+
 import cells.Cell;
 import cells.SimpleCell;
 
+import structural.GeneralParameters;
 import structural.Lattice;
 import structural.halt.HaltCondition;
 import structural.halt.LatticeFullEvent;
@@ -19,19 +28,21 @@ public class Scatter extends CellProcess {
 	
 	private Random random;
 	
-	public Scatter(Lattice lattice, int numGroups, int groupSize) {
-		super(lattice);
-		this.numGroups = numGroups;
-		this.groupSize = groupSize;
+	public Scatter(ProcessLoader loader, Lattice lattice, int id,
+			Geometry geom, GeneralParameters p) {
 		
-		// TODO This should be core infrastructure
-		random = new Random();
+		super(loader, lattice, id, geom, p);
+
+		random = p.getRandom();
+
+		Element e = loader.getProcess(id);
+		numGroups = Integer.valueOf(get(e, "types"));
+		groupSize = Integer.valueOf(get(e, "tokens"));
 	}
 
-	public Coordinate[] iterate() throws HaltCondition {
+	public void iterate(StepState state) throws HaltCondition {
+		//System.out.println("In Scatter::iterate().");
 
-		ArrayList<Coordinate> highlight = new ArrayList<Coordinate>();
-		
 		// Construct initial set of candidates
 		Coordinate[] canonicals = lattice.getCanonicalSites();
 		
@@ -62,11 +73,10 @@ public class Scatter extends CellProcess {
 				Cell cell = new SimpleCell(i+1);
 
 				lattice.place(cell, target);
-				highlight.add(target);
+				state.highlight(target);
 				candidates.remove(target);
 			}
 		}
 
-		return highlight.toArray(new Coordinate[0]);
 	}
 }

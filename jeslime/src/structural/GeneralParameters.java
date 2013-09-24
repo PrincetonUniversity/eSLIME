@@ -1,6 +1,6 @@
 package structural;
 
-import io.parameters.ParameterLoader;
+import io.parameters.ProjectLoader;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class GeneralParameters {
 
 	// Version -- checked against parameters file to make sure they're
 	// compatible
-	private final static String VERSION = "v0.0.7";
+	private final static String VERSION = "v0.1.0";
 
 	// Dimensions
 	//private int width;
@@ -59,7 +59,7 @@ public class GeneralParameters {
 	// State members
 	private int instance;
 	
-	public GeneralParameters(ParameterLoader loader) {
+	public GeneralParameters(ProjectLoader loader) {
 		calcEpsilon();
 		load(loader);
 		
@@ -85,6 +85,7 @@ public class GeneralParameters {
 		instance++;
 		updateInstancePath();
 	}
+	
 	// Pull in a single-datum element
 	private String get(Element g, String key) {
 		Element vElem = g.element(key);
@@ -98,7 +99,8 @@ public class GeneralParameters {
 		return value.toString();
 			
 	}
-	private void load(ParameterLoader loader) {
+	
+	private void load(ProjectLoader loader) {
 		Element g = loader.getElement("general");
 		
 		// Verify version number

@@ -41,16 +41,13 @@ public class ImageSequence {
 
 		int frame;
 		
-		int oldFrame = -1;
-		double oldGillespie = -1D;
 		while (condition != null) {
 			frame = condition.getFrame();
-
+			
 			if (p.isFrame(frame)) {
 				mapWriter.renderImage(condition, frame + ".png");
 			}
-			oldFrame = frame;
-			oldGillespie = condition.getGillespie();
+			
 			condition = reader.next();
 		}
 
