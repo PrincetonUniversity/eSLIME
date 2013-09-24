@@ -1,6 +1,6 @@
 package structural;
 
-import io.parameters.ProjectLoader;
+import io.project.ProjectLoader;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -22,7 +22,7 @@ public class GeneralParameters {
 
 	// Version -- checked against parameters file to make sure they're
 	// compatible
-	private final static String VERSION = "v0.1.0";
+	private final static String VERSION = "v0.1.1";
 
 	// Dimensions
 	//private int width;
@@ -36,7 +36,8 @@ public class GeneralParameters {
 	private String instancePath;	// Includes instance number (if applies)
 	
 	// Output flags
-	private boolean stateHisto;				// Create a running histogram of cell states
+	private boolean stateHisto;				// Create a running histogram of 
+											// cell states?
 	
 	private boolean lineageMap;				// Visualize lineages as they grow
 	
@@ -48,6 +49,9 @@ public class GeneralParameters {
 	private boolean interval;				// Write intervals file? Contains 
 											// temporal data--running time,
 											// Gillespie intervals, etc.
+	
+	private boolean writeFixTime;			// Write a chart of time to fixation
+											// per instance?
 	// Output frames (blank means all)
 	private Set<Integer> frames;
 	
@@ -212,6 +216,7 @@ public class GeneralParameters {
 		writeState = Boolean.valueOf(get(g, "write-state"));
 		interval   = Boolean.valueOf(get(g, "write-interval"));
 		metadata = Boolean.valueOf(get(g, "write-metadata"));
+		writeFixTime = Boolean.valueOf(get(g, "write-fix-time"));
 	}
 
 	private void loadPaths(Element g) {
@@ -234,7 +239,7 @@ public class GeneralParameters {
 
 	private void checkVersion(Element g) {
 		if (!get(g, "version").equalsIgnoreCase(VERSION)) {
-			String msg = "Version mismatch. Parameter file written for jeSLIME"
+			String msg = "Version mismatch. Parameter file written for jeSLIME "
 					+ get(g, "version") + ", but this is " + VERSION + ".";
 			
 			throw new IllegalArgumentException(msg);
@@ -381,5 +386,9 @@ public class GeneralParameters {
 	
 	public boolean isInterval() {
 		return interval;
+	}
+
+	public boolean isWriteFixTime() {
+		return writeFixTime;
 	}
 }

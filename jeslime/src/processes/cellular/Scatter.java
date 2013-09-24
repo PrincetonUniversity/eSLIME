@@ -1,7 +1,7 @@
 package processes.cellular;
 
 import geometries.Geometry;
-import io.parameters.ProcessLoader;
+import io.project.ProcessLoader;
 
 import java.util.ArrayList;
 import java.util.HashSet;

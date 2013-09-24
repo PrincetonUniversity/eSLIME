@@ -2,8 +2,8 @@ package models;
 
 import processes.Process;
 import processes.StepState;
-import io.parameters.ProcessFactory;
-import io.parameters.ProcessLoader;
+import io.project.ProcessFactory;
+import io.project.ProcessLoader;
 import io.serialize.SerializationManager;
 import geometries.Geometry;
 import structural.GeneralParameters;

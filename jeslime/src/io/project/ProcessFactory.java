@@ -1,4 +1,4 @@
-package io.parameters;
+package io.project;
 
 import org.dom4j.Element;
 
@@ -7,7 +7,7 @@ import processes.cellular.CellProcess;
 import processes.cellular.DivideAnywhere;
 import processes.cellular.NeighborSwap;
 import processes.cellular.Scatter;
-import processes.temporal.PopulationTrack;
+import processes.temporal.SimpleGillespie;
 import processes.temporal.TimeProcess;
 
 import structural.GeneralParameters;
@@ -51,8 +51,8 @@ public class ProcessFactory {
 
 		Integer id = Integer.valueOf(get(e, "id"));
 
-		if (processClass.equalsIgnoreCase("PopulationTrack")) {
-			return new PopulationTrack(loader, lattice, id, geom, p);	
+		if (processClass.equalsIgnoreCase("SimpleGillespie")) {
+			return new SimpleGillespie(loader, lattice, id, geom, p);	
 		} else {
 			String msg = "Unrecognized time process '" +
 					processClass + "' (id=" + id + ").";

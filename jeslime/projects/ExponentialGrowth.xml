@@ -1,6 +1,6 @@
 <simulation>
 	<general>
-		<version>v0.1.0</version>
+		<version>v0.1.1</version>
 		<random-seed>*</random-seed>
 		<instances>1</instances>
 		<write-state-histogram>true</write-state-histogram>
@@ -8,6 +8,7 @@
 		<write-state>true</write-state>
 		<write-metadata>true</write-metadata>
 		<write-interval>false</write-interval>
+		<write-fix-time>true</write-fix-time>
 		<path>/Users/dbborens/state/jeSLIME/</path>
 		<date-stamp>true</date-stamp>
 		<max-step>100001</max-step>

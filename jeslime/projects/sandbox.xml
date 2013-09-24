@@ -1,16 +1,17 @@
 <simulation>
 	<general>
-		<version>v0.1.0</version>
+		<version>v0.1.1</version>
 		<random-seed>*</random-seed>
-		<instances>1</instances>
+		<instances>10</instances>
 		<write-state-histogram>true</write-state-histogram>
-		<write-lineage-map>true</write-lineage-map>
-		<write-state>true</write-state>
+		<write-lineage-map>false</write-lineage-map>
+		<write-state>false</write-state>
 		<write-metadata>true</write-metadata>
 		<write-interval>false</write-interval>
+		<write-fix-time>true</write-fix-time>
 		<path>/Users/dbborens/state/jeSLIME/</path>
 		<date-stamp>true</date-stamp>
-		<max-step>100001</max-step>
+		<max-step>1000001</max-step>
 		<output-frames>
 			<auto mode="decilog" />
 		</output-frames>
@@ -23,7 +24,7 @@
 	<processes>
 		<time-process>
 			<id>0</id>
-			<class>PopulationTrack</class>
+			<class>SimpleGillespie</class>
 			<period>1</period>
 		</time-process>
 		<cell-process>

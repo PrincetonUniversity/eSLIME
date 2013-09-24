@@ -1,4 +1,4 @@
-package io.parameters;
+package io.project;
 
 import java.util.HashMap;
 import java.util.Set;

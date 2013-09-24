@@ -1,4 +1,4 @@
-package io.parameters;
+package io.project;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;

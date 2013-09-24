@@ -31,6 +31,11 @@ public class SerializationManager {
 			StateHistogram sh = new StateHistogram(p, g);
 			writers.add(sh);
 		}
+		
+		if (p.isWriteFixTime()) {
+			FixationTimeWriter ftw = new FixationTimeWriter(p, g);
+			writers.add(ftw);
+		}
 	}
 	
 	/**

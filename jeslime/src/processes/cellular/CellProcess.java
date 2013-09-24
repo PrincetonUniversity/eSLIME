@@ -2,7 +2,7 @@ package processes.cellular;
 
 import processes.Process;
 import geometries.Geometry;
-import io.parameters.ProcessLoader;
+import io.project.ProcessLoader;
 import structural.GeneralParameters;
 import structural.Lattice;
 

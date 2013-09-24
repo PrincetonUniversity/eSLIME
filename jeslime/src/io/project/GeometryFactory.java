@@ -1,4 +1,4 @@
-package io.parameters;
+package io.project;
 
 import geometries.*;
 
