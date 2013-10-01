@@ -1,6 +1,7 @@
 package processes.cellular;
 
 import geometries.Geometry;
+import io.project.CellFactory;
 import io.project.ProcessLoader;
 
 import java.util.ArrayList;
@@ -34,14 +35,12 @@ public class Scatter extends CellProcess {
 		super(loader, lattice, id, geom, p);
 
 		random = p.getRandom();
-
-		Element e = loader.getProcess(id);
-		numGroups = Integer.valueOf(get(e, "types"));
-		groupSize = Integer.valueOf(get(e, "tokens"));
+		
+		numGroups = Integer.valueOf(get("types"));
+		groupSize = Integer.valueOf(get("tokens"));
 	}
 
 	public void iterate(StepState state) throws HaltCondition {
-		//System.out.println("In Scatter::iterate().");
 
 		// Construct initial set of candidates
 		Coordinate[] canonicals = lattice.getCanonicalSites();
@@ -55,6 +54,9 @@ public class Scatter extends CellProcess {
 		}
 		
 		for (int i = 0; i < numGroups; i++) {
+			CellFactory factory = getCellFactory(lattice);
+			
+			// Create a cell factory for this group 
 			for (int j = 0; j < groupSize; j++) {
 
 				// TODO: This should be a unified exception that gets passed up to
@@ -69,9 +71,8 @@ public class Scatter extends CellProcess {
 				int o = random.nextInt(cVec.length);
 				Coordinate target = cVec[o];
 
-				// Create and assign cell
-				Cell cell = new SimpleCell(i+1);
-
+				Cell cell = factory.instantiate();
+				
 				lattice.place(cell, target);
 				state.highlight(target);
 				candidates.remove(target);

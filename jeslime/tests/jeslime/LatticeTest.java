@@ -1,6 +1,8 @@
+package jeslime;
 import java.util.HashSet;
 
 import cells.Cell;
+import cells.FissionCell;
 import cells.SimpleCell;
 import junit.framework.TestCase;
 import structural.Lattice;
@@ -38,6 +40,29 @@ public class LatticeTest extends TestCase {
 		assertEquals(toPlace.getState(), lattice.getState(coord));
 	}
 
+	public void testFeed() {
+		HexRing geom = new HexRing(6, 6);
+		Lattice lattice = new Lattice(geom);
+
+		Cell toPlace = new FissionCell(1, 0.5, 1.0);
+		Coordinate coord = new Coordinate(2, 3, 0);
+		
+		lattice.place(toPlace, coord);
+		
+		assertEquals(lattice.getFitness(coord), 0.5);
+		assertTrue(!lattice.getDivisibleSites().contains(coord));
+		
+		lattice.feed(coord, 1.0);
+		
+		assertEquals(lattice.getFitness(coord), 0.5);
+		assertTrue(!lattice.getDivisibleSites().contains(coord));
+
+		lattice.apply(coord);
+		
+		assertEquals(lattice.getFitness(coord), 1.5);
+		assertTrue(lattice.getDivisibleSites().contains(coord));
+	}
+	
 	public void testNeighborStates() {
 		HexRing geom = new HexRing(6, 6);
 		Lattice lattice = new Lattice(geom);
@@ -102,14 +127,14 @@ public class LatticeTest extends TestCase {
 
 		// Fill all but one canonical neighbor
 		for (int i = 0; i < nVec.length - 1; i++) {
-			lattice.place(new SimpleCell(0), nVec[i]);
+			lattice.place(new SimpleCell(100), nVec[i]);
 		}
 
 		// List of vacancies should be only remaining canonical neighbor
 		assertEquals(1, lattice.getNearestVacancies(coord, -1).length);
 
 		// Fill that one -- should have 12 nearest vacancies now
-		lattice.place(new SimpleCell(0), nVec[nVec.length - 1]);
+		lattice.place(new SimpleCell(100), nVec[nVec.length - 1]);
 		assertEquals(12, lattice.getNearestVacancies(coord, -1).length);
 
 		// Now try getNearestVacancies with a maximum radius of 1--shouldn't have any
@@ -165,9 +190,9 @@ public class LatticeTest extends TestCase {
 		
 	}
 
-	/*******************/
-	/* FUNCTIONAL TEST */
-	/*******************/
+	/********************/
+	/* FUNCTIONAL TESTS */
+	/********************/
 	
 	public void testLatticeFunctionality() {
 		HexRing geom = new HexRing(6, 6);
@@ -261,5 +286,4 @@ public class LatticeTest extends TestCase {
 		assertTrue(oSet.contains(destination));
 
 	}
-
 }

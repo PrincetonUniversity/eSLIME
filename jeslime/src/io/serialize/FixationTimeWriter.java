@@ -18,6 +18,7 @@ public class FixationTimeWriter extends Writer {
 
 	public FixationTimeWriter(GeneralParameters p, Geometry geometry) {
 		super(p, geometry);
+
 		// We use the non-instance path because this metric aggregates over
 		// all instances.
 		String filename = p.getPath() + '/' + FILENAME;

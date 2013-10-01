@@ -9,6 +9,6 @@ package io.visual;
  * @author dbborens
  *
  */
-public interface Visualization {
+public abstract class Visualization {
 
 }

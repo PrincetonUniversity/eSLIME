@@ -40,9 +40,12 @@ import structural.identifiers.Coordinate;
  * @author dbborens@princeton.edu
  *
  */
-public class HexMapWriter implements Visualization {
+public class HexMapWriter extends Visualization {
 	
-	private static final int EDGE = 40;
+	private static final int EDGE = 10;
+	
+	// For now, this hidden feature is for debug only
+	private boolean showNumbers = false;
 	
 	private Point origin = new Point();
 	private Point limits = new Point();
@@ -51,9 +54,7 @@ public class HexMapWriter implements Visualization {
 	private GeneralParameters p;
 	private Geometry geom;
 	private ColorManager colorManager;
-	
-	// For now, this hidden feature is for debug only
-	private boolean showNumbers = true;
+
 	
 	// The path may not match any in the parameters passed to this
 	// object, so we just track one.

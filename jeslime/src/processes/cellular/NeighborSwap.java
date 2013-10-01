@@ -37,6 +37,10 @@ public class NeighborSwap extends CellProcess {
 
 		SwapTuple target = selectTarget();
 		
+		if (target == null) {
+			return;
+		}
+		
 		lattice.swap(target.p, target.q);
 		
 		state.highlight(target.p);
@@ -64,6 +68,10 @@ public class NeighborSwap extends CellProcess {
 				}
 			}
 			
+		}
+		
+		if (candidates.size() == 0) {
+			return null;
 		}
 		
 		// Choose a candidate

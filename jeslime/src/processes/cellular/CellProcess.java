@@ -12,6 +12,7 @@ public abstract class CellProcess extends Process {
 	protected GeneralParameters p;
 	
 	private final String elementName = "cell-process";
+	
 	public CellProcess(ProcessLoader loader, Lattice lattice, int id, 
 			Geometry geom, GeneralParameters p) {
 		super(loader, id);

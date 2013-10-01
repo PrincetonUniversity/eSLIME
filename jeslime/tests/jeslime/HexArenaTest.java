@@ -1,13 +1,13 @@
+package jeslime;
 import java.util.HashSet;
 
-import geometries.HexArena;
-import geometries.HexRing;
 import structural.Flags;
 import structural.identifiers.Coordinate;
+import geometries.HexArena;
 import junit.framework.TestCase;
 
 
-public class HexRingTest extends TestCase {
+public class HexArenaTest extends TestCase {
 
 	private void checkCtorException(int x, int y, boolean expected) {
 		boolean actual = false;
@@ -20,9 +20,7 @@ public class HexRingTest extends TestCase {
 		assertEquals(actual, expected);
 	}
 	
-	// DONE
 	public void testConstructor() {
-		// These should blow up (for now)
 		checkCtorException(3,  2,  true);
 		checkCtorException(2,  3,  true);
 		checkCtorException(0,  2,  true);
@@ -31,7 +29,7 @@ public class HexRingTest extends TestCase {
 		checkCtorException(4,  4,  false);
 	}
 
-	// DONE
+
 	// Test indexing and de-indexing behavior in 2D and 3D.
 	//
 	// Note that indexing works whether or not the coordinates are
@@ -41,7 +39,7 @@ public class HexRingTest extends TestCase {
 	// Also note that calling the z coordinate of a 2D point will,
 	// by design, return 0.
 	public void testIndex() {
-		HexRing hr = new HexRing(4, 4);
+		HexArena hr = new HexArena(4, 4);
 
 		Coordinate o2 = new Coordinate(0, 0, 0);
 		Coordinate o3 = new Coordinate(0, 0, 0, 0);
@@ -67,16 +65,13 @@ public class HexRingTest extends TestCase {
 		assertEquals(24, p2.x());
 		assertEquals(99, p2.y());
 		assertEquals(0, p2.z());
-
-		
 	}
 
-	// DONE
 	public void testCanonicalSites() {
-		// Produce 6x4 HexRing
+		// Produce 6x4 HexArena
 		int height = 6;
 		int width = 4;
-		HexRing hr = new HexRing(height, width);
+		HexArena hr = new HexArena(height, width);
 
 		// Create unordered set of all expected coordinates
 		HashSet<Coordinate> s = new HashSet<Coordinate>();
@@ -96,14 +91,12 @@ public class HexRingTest extends TestCase {
 			Coordinate coord = sites[i];
 			assertTrue(s.contains(coord));
 		}
-
-		
 	}
 
 	// "DONE"
 	// getL2Distance(...)
 	public void testL2Distance() {
-		HexRing hr = new HexRing(4, 4);
+		HexArena hr = new HexArena(4, 4);
 
 		Coordinate p = new Coordinate(3, 3, 0);
 		Coordinate q = new Coordinate(4, 4, 0);
@@ -117,15 +110,13 @@ public class HexRingTest extends TestCase {
 		}
 		
 		assertTrue(actual);
-
-		
 	}
 
-	// DONE
+
 	// getL1Distance(...)
 	// getDisplacement(...)
 	public void testL1AndDisplacement() {
-		HexRing hr = new HexRing(4, 6);
+		HexArena hr = new HexArena(4, 6);
 
 		Coordinate p = new Coordinate(1, 1, 0);
 		Coordinate q = new Coordinate(2, 4, 0);
@@ -156,45 +147,42 @@ public class HexRingTest extends TestCase {
 		assertEquals(0, disp[1]);
 		assertEquals(0, disp[1]);
 		assertEquals(0, hr.getL1Distance(p, q));
-
-		
 	}
 
-	// DONE
-	// Test wrapping
+
+	// Test (non-)wrapping
 	public void testWrap() {
 
-		HexRing hr = new HexRing(4, 4);
+		HexArena hr = new HexArena(4, 4);
 
 		// Over right edge
 		Coordinate actual = hr.wrap(4, 2, 0);
-		Coordinate expected = new Coordinate(0, 0, 0);
+		Coordinate expected = new Coordinate(4, 2, Flags.END_OF_WORLD);
 		assertEquals(actual, expected);
 
 		// Over left edge
 		actual = hr.wrap(-1, 0, 0);
-		expected = new Coordinate(3, 2, 0);
+		expected = new Coordinate(-1, 0, Flags.END_OF_WORLD);
 		assertEquals(actual, expected);
 
-		// Out of bounds
+		// Above
 		actual = hr.wrap(4, 0, 0);
-		assertTrue(actual.hasFlag(Flags.BEYOND_BOUNDS));
+		expected = new Coordinate(4, 0, Flags.END_OF_WORLD);
 
 		// No wrap (internal coordinate)
 		actual = hr.wrap(2, 3, 0);
 		expected = actual;
 		assertEquals(actual, expected);
 
-		// Around twice
+		// More than twice the system width
 		actual = hr.wrap(9, 6, 0);
-		expected = new Coordinate(1, 2, 0);
+		expected = new Coordinate(9, 6, Flags.END_OF_WORLD);
 		assertEquals(actual, expected);
 
-		
 	}
 
 	public void testCellNeighbors() {
-		HexRing hr = new HexRing(6, 6);
+		HexArena hr = new HexArena(6, 6);
 
 		// Interior
 		Coordinate coord = hr.wrap(3, 4, 0);
@@ -212,7 +200,6 @@ public class HexRingTest extends TestCase {
 		assertEquals(neighbors.length, 6);
 		for (int i = 0; i < neighbors.length; i++) {
 			Coordinate neighbor = neighbors[i];
-
 			assertTrue(interior_exp.contains(neighbor));
 		}
 
@@ -221,8 +208,8 @@ public class HexRingTest extends TestCase {
 
 		HashSet<Coordinate> side_exp = new HashSet<Coordinate>();
 		side_exp.add(new Coordinate(5, 6, 0));
-		side_exp.add(new Coordinate(0, 3, 0));
-		side_exp.add(new Coordinate(0, 2, 0));
+		side_exp.add(new Coordinate(6, 6, Flags.END_OF_WORLD));
+		side_exp.add(new Coordinate(6, 5, Flags.END_OF_WORLD));
 		side_exp.add(new Coordinate(5, 4, 0));
 		side_exp.add(new Coordinate(4, 4, 0));
 		side_exp.add(new Coordinate(4, 5, 0));
@@ -234,10 +221,11 @@ public class HexRingTest extends TestCase {
 			assertTrue(side_exp.contains(neighbor));
 		}
 
-		// Bottom -- check south is missing
+		// Bottom
 		coord = hr.wrap(2, 1, 0);
 
 		HashSet<Coordinate> bottom_exp = new HashSet<Coordinate>();
+		bottom_exp.add(new Coordinate(2, 0, Flags.END_OF_WORLD));
 		bottom_exp.add(new Coordinate(1, 0, 0));
 		bottom_exp.add(new Coordinate(1, 1, 0));
 		bottom_exp.add(new Coordinate(2, 2, 0));
@@ -246,21 +234,21 @@ public class HexRingTest extends TestCase {
 
 		neighbors = hr.getCellNeighbors(coord);
 
-		assertEquals(5, neighbors.length);
+		assertEquals(6, neighbors.length);
 		for (int i = 0; i < neighbors.length; i++) {
 			Coordinate neighbor = neighbors[i];
 			assertTrue(bottom_exp.contains(neighbor));
 		}
-
-		
 	}
 
 	// All cases but top/bottom should be same as getCellNeighbors(...)
 	// for the HexTorus geometry.
 	// getSoluteNeighbors(...)
 	public void testSoluteNeighbors() {
-		HexRing hr = new HexRing(6, 6);
-		
+		HexArena hr = new HexArena(6, 6);
+
+		Coordinate[] neighbors;
+
 		// Interior
 		Coordinate coord = new Coordinate(3, 4, 0);
 
@@ -272,7 +260,7 @@ public class HexRingTest extends TestCase {
 		interior_exp.add(new Coordinate(2, 3, 0));
 		interior_exp.add(new Coordinate(2, 4, 0));
 
-		Coordinate[] neighbors = hr.getSoluteNeighbors(coord);
+		neighbors = hr.getSoluteNeighbors(coord);
 
 		assertEquals(neighbors.length, 6);
 		for (int i = 0; i < neighbors.length; i++) {
@@ -280,13 +268,13 @@ public class HexRingTest extends TestCase {
 			assertTrue(interior_exp.contains(neighbor));
 		}
 
-		// Side -- check wrapped
+		// Side
 		coord = new Coordinate(5, 5, 0);
 
 		HashSet<Coordinate> side_exp = new HashSet<Coordinate>();
 		side_exp.add(new Coordinate(5, 6, 0));
-		side_exp.add(new Coordinate(0, 3, 0));
-		side_exp.add(new Coordinate(0, 2, 0));
+		side_exp.add(new Coordinate(6, 5, Flags.END_OF_WORLD));
+		side_exp.add(new Coordinate(6, 6, Flags.END_OF_WORLD));
 		side_exp.add(new Coordinate(5, 4, 0));
 		side_exp.add(new Coordinate(4, 4, 0));
 		side_exp.add(new Coordinate(4, 5, 0));
@@ -298,7 +286,7 @@ public class HexRingTest extends TestCase {
 			assertTrue(side_exp.contains(neighbor));
 		}
 
-		// Bottom -- check south is REFLECTED
+		// Bottom
 		coord = new Coordinate(2, 1, 0);
 
 		HashSet<Coordinate> bottom_exp = new HashSet<Coordinate>();
@@ -310,7 +298,7 @@ public class HexRingTest extends TestCase {
 
 		// The cell is counted as a "neighbor" because southerly-moving
 		// solute is reflected back.
-		bottom_exp.add(new Coordinate(2, 1, 0));
+		bottom_exp.add(new Coordinate(2, 0, Flags.END_OF_WORLD));
 
 		neighbors = hr.getSoluteNeighbors(coord);
 		assertEquals(6, neighbors.length);
@@ -318,22 +306,21 @@ public class HexRingTest extends TestCase {
 		for (int i = 0; i < neighbors.length; i++) {
 
 			Coordinate neighbor = neighbors[i];
-
 			assertTrue(bottom_exp.contains(neighbor));
 		}
 
-		
 	}
 
 	// getAnnulus(...)
 	public void testAnnulus() {
-		HexRing hr = new HexRing(4, 4);
-
+		HexArena hr = new HexArena(4, 4);
 
 		Coordinate coord = new Coordinate(0, 2, 0);
 
+		Coordinate[] result;
+
 		// Point
-		Coordinate[] result = hr.getAnnulus(coord, 0, false);
+		result = hr.getAnnulus(coord, 0, false);
 		assertEquals(1, result.length);
 		assertEquals(coord, result[0]);
 
@@ -345,56 +332,36 @@ public class HexRingTest extends TestCase {
 		result = hr.getAnnulus(coord, 1, true);
 		assertEquals(6, result.length);
 
-		// r=2 (big)--restrict circumnavigation. Note that I have some trouble
-		// visualizing the smaller circles, so check this functionally as well.
+		// r=2 (big)--circumnavigation shouldn't matter.
 		result = hr.getAnnulus(coord, 2, true);
-
-		// Top and bottom are truncated, and wrapped cells that circumnavigate
-		// are rejected, so 6:
-		// (2, 4); (2, 3); (2, 2); (1, 1); (0, 0); (3, 2)
-		//
-		// Rejected circumanvigators are all double counts of existing cells.
-
-		assertEquals(6, result.length);
-
-		// r=2--don't restrict circumnavigation
+		assertEquals(12, result.length);
 		result = hr.getAnnulus(coord, 2, false);
-
-		// We count some of the positions twice, but top/bottom
-		// are truncated, so 9:
-		//
-		// (0, 0); (1, 1); (3, 2) <-- each counted once
-		// (2, 2); (2, 3); (2, 4) <-- each counted twice
-
-		assertEquals(9, result.length);
-
-
-
+		assertEquals(12, result.length);
 	}
 
 	// Tests for correct behavior in vicinity of origin when dimensions
 	// are 6x6, as in the lattice tests.
-	public void testOriginWrap() {
+	public void originWrap() {
 		// Explicitly test wrapping behavior in vicinity of origin
-		HexRing hr = new HexRing(6, 6);
+		HexArena hr = new HexArena(6, 6);
 
 		// (1, 0) stays (1, 0)
-		assertEquals(hr.wrap(1, 0, 0), new Coordinate(1, 0, 0));
+		assertTrue(hr.wrap(1, 0, 0) == new Coordinate(1, 0, 0));
 
 		// (1, 1) stays (1, 1)
-		assertEquals(hr.wrap(1, 1, 0), new Coordinate(1, 1, 0));
+		assertTrue(hr.wrap(1, 1, 0) == new Coordinate(1, 1, 0));
 
 		// (0, 1) stays (0, 1)
-		assertEquals(hr.wrap(0, 1, 0), new Coordinate(0, 1, 0));
+		assertTrue(hr.wrap(0, 1, 0) == new Coordinate(0, 1, 0));
 
-		// (-1, -1) becomes (5, 2)
-		assertEquals(hr.wrap(-1, -1, 0), new Coordinate(5, 2, 0));
+		// (-1, -1) gets a flag
+		assertTrue(hr.wrap(-1, -1, 0) == new Coordinate(-1, -1, Flags.END_OF_WORLD));
 
-		// (-1, 0) becomes (5, 3)
-		assertEquals(hr.wrap(-1, 0, 0), new Coordinate(5, 3, 0));
+		// (-1, 0) gets a flag
+		assertTrue(hr.wrap(-1, 0, 0) == new Coordinate(-1, 0, Flags.END_OF_WORLD));
 
-		// (0, -1) is out of bounds
-		assertTrue(hr.wrap(0, -1, 0).hasFlag(Flags.BEYOND_BOUNDS));
+		// (0, -1) gets a flag
+		assertTrue(hr.wrap(0, -1, 0) == new Coordinate(0, -1, Flags.END_OF_WORLD));
 	}
 
 }

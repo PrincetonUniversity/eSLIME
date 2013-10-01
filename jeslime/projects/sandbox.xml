@@ -1,25 +1,25 @@
 <simulation>
 	<general>
-		<version>v0.1.1</version>
+		<version>v0.1.2</version>
 		<random-seed>*</random-seed>
-		<instances>10</instances>
+		<instances>2</instances>
 		<write-state-histogram>true</write-state-histogram>
-		<write-lineage-map>false</write-lineage-map>
-		<write-state>false</write-state>
+		<write-lineage-map>true</write-lineage-map>
+		<write-state>true</write-state>
 		<write-metadata>true</write-metadata>
 		<write-interval>false</write-interval>
 		<write-fix-time>true</write-fix-time>
 		<path>/Users/dbborens/state/jeSLIME/</path>
 		<date-stamp>true</date-stamp>
-		<max-step>1000001</max-step>
+		<max-step>10000001</max-step>
 		<output-frames>
 			<auto mode="decilog" />
 		</output-frames>
 	</general>
 	<geometry>
 		<class>HexArena</class>
-		<width>16</width>
-		<height>16</height>
+		<width>32</width>
+		<height>32</height>
 	</geometry>
 	<processes>
 		<time-process>
@@ -30,9 +30,22 @@
 		<cell-process>
 			<id>100</id>
 			<class>Scatter</class>
+			<cell-descriptor>
+				<class>FissionCell</class>
+				<state>sequential</state>
+				<initial-fitness>0.5</initial-fitness>
+				<threshold>1.0</threshold>
+			</cell-descriptor>
 			<period>0</period>
-			<types>2</types>
-			<tokens>2</tokens>
+			<types>4</types>
+			<tokens>3</tokens>
+		</cell-process>
+		<cell-process>
+			<id>150</id>
+			<class>UniformBiomassGrowth</class>
+			<delta>0.05</delta>
+			<period>1</period>
+			<defer>false</defer>
 		</cell-process>
 		<cell-process>
 			<id>200</id>
@@ -45,4 +58,11 @@
 			<period>10</period>
 		</cell-process>
 	</processes>
+	<visualizations>
+		<state-map>
+			<edge-length>10</edge-length>
+			<labels>false</labels>
+			<format>png</format>
+		</state-map>
+	</visualizations>
 </simulation>

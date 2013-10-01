@@ -23,6 +23,12 @@ public abstract class Cell {
 	
 	public abstract Cell divide();
 
+	/**
+	 * Informs the cell that it has been given a direct benefit.
+	 * The effect of this benefit depends on the cell class. 
+	 */
+	public abstract void feed(double delta);
+	
 	protected void setState(int state) {
 		if (state == 0) {
 			throw new IllegalStateException("Attempted to assign special 'dead' state code 0 to an active cell.");

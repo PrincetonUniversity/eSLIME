@@ -1,3 +1,4 @@
+package jeslime;
 import cells.Cell;
 import cells.SimpleCell;
 import junit.framework.TestCase;
@@ -38,5 +39,16 @@ public class SimpleCellTest extends TestCase {
 		Cell child  = parent.divide();
 		
 		assertEquals(state, child.getState());
+	}
+	
+	public void testFeedThrowsException() {
+		Cell c = new SimpleCell(state);
+		try {
+			c.feed(0.01D);
+		} catch (UnsupportedOperationException e) {
+			return;
+		}
+		
+		fail();
 	}
 }

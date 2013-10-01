@@ -1,13 +1,12 @@
+package cells;
+
 /**
  * class SimpleCell
  *
  * As its name suggests, a simple cell is the minimal implementation of the
- * cell class. It does not have an associated fitness value and
- * does not interact with any solute field. The cell state field can be used
+ * cell class. It does not interact with any solute field. The cell state field can be used
  * to differentiate between genotypes.
  */
-
-package cells;
 public class SimpleCell extends Cell {
 
 	private int considerCount;
@@ -39,4 +38,8 @@ public class SimpleCell extends Cell {
 		return child;
 	}
 	
+	@Override
+	public void feed(double delta) {
+		throw new UnsupportedOperationException("SimpleCell does not use a nutrient metric.");
+	}
 }

@@ -1,17 +1,17 @@
 <simulation>
 	<general>
-		<version>v0.1.1</version>
+		<version>v0.1.2</version>
 		<random-seed>*</random-seed>
-		<instances>1</instances>
+		<instances>2</instances>
 		<write-state-histogram>true</write-state-histogram>
 		<write-lineage-map>true</write-lineage-map>
 		<write-state>true</write-state>
 		<write-metadata>true</write-metadata>
 		<write-interval>false</write-interval>
 		<write-fix-time>true</write-fix-time>
-		<path>/Users/dbborens/state/jeSLIME/</path>
-		<date-stamp>true</date-stamp>
-		<max-step>100001</max-step>
+		<path>/Users/dbborens/state/jeSLIME/9-26-2013/battle</path>
+		<date-stamp>false</date-stamp>
+		<max-step>1000001</max-step>
 		<output-frames>
 			<auto mode="decilog" />
 		</output-frames>
@@ -24,15 +24,15 @@
 	<processes>
 		<time-process>
 			<id>0</id>
-			<class>PopulationTrack</class>
+			<class>SimpleGillespie</class>
 			<period>1</period>
 		</time-process>
 		<cell-process>
 			<id>100</id>
 			<class>Scatter</class>
 			<period>0</period>
-			<types>2</types>
-			<tokens>2</tokens>
+			<types>4</types>
+			<tokens>64</tokens>
 		</cell-process>
 		<cell-process>
 			<id>200</id>

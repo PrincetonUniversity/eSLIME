@@ -7,6 +7,7 @@ import processes.cellular.CellProcess;
 import processes.cellular.DivideAnywhere;
 import processes.cellular.NeighborSwap;
 import processes.cellular.Scatter;
+import processes.cellular.UniformBiomassGrowth;
 import processes.temporal.SimpleGillespie;
 import processes.temporal.TimeProcess;
 
@@ -52,7 +53,7 @@ public class ProcessFactory {
 		Integer id = Integer.valueOf(get(e, "id"));
 
 		if (processClass.equalsIgnoreCase("SimpleGillespie")) {
-			return new SimpleGillespie(loader, lattice, id, geom, p);	
+			return new SimpleGillespie(loader, lattice, id, geom, p);
 		} else {
 			String msg = "Unrecognized time process '" +
 					processClass + "' (id=" + id + ").";
@@ -74,6 +75,9 @@ public class ProcessFactory {
 			
 		} else if (processClass.equalsIgnoreCase("Scatter")) {
 			return new Scatter(loader, lattice, id, geom, p);
+			
+		} else if (processClass.equalsIgnoreCase("UniformBiomassGrowth")) {
+			return new UniformBiomassGrowth(loader, lattice, id, geom, p);
 			
 		} else {
 			String msg = "Unrecognized cell process '" +

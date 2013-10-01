@@ -34,6 +34,8 @@ public class Lattice {
 	private HashMap<Integer, Integer> stateMap;
 	
 	private double gillespie;
+
+	private double epsilon = calcEpsilon();
 	
 	public Lattice(Geometry geom) {
 		// Assign geometry
@@ -216,7 +218,10 @@ public class Lattice {
 
 	/**
 	 * Instructs the specified cell to calculate its next state. Returns number
-	 * of calls to consider since last call to apply (including this one).
+	 * of calls to consider since last call to apply (including this one). This
+	 * should not change the apparent state of the cell. Therefore no indices
+	 * are updated.
+	 * 
 	 * @param coord
 	 * @return
 	 */
@@ -227,6 +232,25 @@ public class Lattice {
 	    return res;
 	}
 
+	/**
+	 * Signal the cell to respond to a direct benefit or stressor.
+	 * Delta can be negative. The change should not take effect
+	 * until apply() is called.
+	 * 
+	 */
+	public void feed(Coordinate coord, double delta) {
+		
+		double fitness = getFitness(coord);
+		
+		Cell cell = getCellAt(coord);
+		cell.feed(delta);
+		
+		// Sanity check
+		if (!epsilonEquals(fitness, cell.getFitness())) {
+			throw new IllegalStateException("Consistency error: cell fitness changed before apply() was called.");
+		}
+	}
+	
 	/**
 	 * Instructs the specified cell to update its state. Should blow up if
 	 * the cell has not called consider since last apply call.
@@ -264,28 +288,18 @@ public class Lattice {
 	}
 	
 	private void refreshDivisibility(Coordinate coord) {
-
 		checkExists(coord);
-
+		
+		boolean divisible = occupiedSites.contains(coord) && map.get(coord).isDivisible();
 		HashSet<Coordinate> div = divisibleSites;
 
-		// If cell was divisible and is now dead, remove it from list
-		if (div.contains(coord) && !occupiedSites.contains(coord)) {
+		if (div.contains(coord) && !divisible) {
 			div.remove(coord);
 		}
-
-		if (occupiedSites.contains(coord)) {
-			Cell cell = map.get(coord);
-
-	        // If cell was divisible and no longer is, remove it from list
-			if (div.contains(coord) && !(cell.isDivisible())) {
-				div.remove(coord);
-
-	        // If cell was not divisible but now is, add it to the list
-			} else if (!div.contains(coord) && cell.isDivisible()) {
-				div.add(coord);
-	        }
-	    }
+		
+		if (!div.contains(coord) && divisible) {
+			div.add(coord);
+		}
 	}
 
 	/**
@@ -338,6 +352,8 @@ public class Lattice {
 		Cell child = parent.divide();
 		incrStateCount(parent);
 
+		refreshDivisibility(pCoord);
+		
 		return child;
 	}
 
@@ -593,5 +609,28 @@ public class Lattice {
 	
 	public double getGillespie() {
 		return gillespie;
+	}
+	
+	private double calcEpsilon() {
+        double machEps = 1.0d;
+        
+        do {
+           machEps /= 2d;
+        } while (1d + (machEps/2d) != 1d);
+        
+        return machEps;
+	}
+	
+	/**
+	 * Determines whether two doubles are equal to within machine epsilon.
+	 * 
+	 * @param p
+	 * @param q
+	 */
+	private boolean epsilonEquals(double p, double q) {
+		if (Math.abs(p - q) < epsilon)
+			return true;
+		
+		return false;
 	}
 }
