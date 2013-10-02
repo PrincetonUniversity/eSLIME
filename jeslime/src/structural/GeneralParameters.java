@@ -22,7 +22,7 @@ public class GeneralParameters {
 
 	// Version -- checked against parameters file to make sure they're
 	// compatible
-	private final static String VERSION = "v0.1.2";
+	private final static String VERSION = "v0.1.3";
 
 	// Dimensions
 	//private int width;

@@ -43,11 +43,9 @@ public class Scatter extends CellProcess {
 	public void iterate(StepState state) throws HaltCondition {
 
 		// Construct initial set of candidates
-		Coordinate[] canonicals = lattice.getCanonicalSites();
+		HashSet<Coordinate> candidates = new HashSet<Coordinate>();
 		
-		HashSet<Coordinate> candidates = new HashSet<Coordinate> (canonicals.length);
-		
-		for (Coordinate c : canonicals) {
+		for (Coordinate c : activeSites) {
 			if (!lattice.getOccupiedSites().contains(c)) {
 				candidates.add(c);
 			}
@@ -59,8 +57,6 @@ public class Scatter extends CellProcess {
 			// Create a cell factory for this group 
 			for (int j = 0; j < groupSize; j++) {
 
-				// TODO: This should be a unified exception that gets passed up to
-				//       the Simulator.
 				if (candidates.isEmpty()) {
 					throw new LatticeFullEvent(lattice.getGillespie()); 
 				}

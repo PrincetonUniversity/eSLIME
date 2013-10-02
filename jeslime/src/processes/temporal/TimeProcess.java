@@ -14,7 +14,8 @@ public abstract class TimeProcess extends Process {
 	
 	public TimeProcess(ProcessLoader loader, Lattice lattice, int id, 
 			Geometry geom, GeneralParameters p) {
-		super(loader, id);
+		
+		super(loader, id, geom);
 		
 		this.p = p;
 		this.lattice = lattice;

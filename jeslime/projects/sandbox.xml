@@ -1,8 +1,8 @@
 <simulation>
 	<general>
-		<version>v0.1.2</version>
+		<version>v0.1.3</version>
 		<random-seed>*</random-seed>
-		<instances>2</instances>
+		<instances>1</instances>
 		<write-state-histogram>true</write-state-histogram>
 		<write-lineage-map>true</write-lineage-map>
 		<write-state>true</write-state>
@@ -18,8 +18,8 @@
 	</general>
 	<geometry>
 		<class>HexArena</class>
-		<width>32</width>
-		<height>32</height>
+		<width>20</width>
+		<height>20</height>
 	</geometry>
 	<processes>
 		<time-process>
@@ -27,6 +27,23 @@
 			<class>SimpleGillespie</class>
 			<period>1</period>
 		</time-process>
+		<cell-process>
+			<id>50</id>
+			<class>Scatter</class>
+			<cell-descriptor>
+				<class>FissionCell</class>
+				<state>sequential</state>
+				<initial-fitness>0.5</initial-fitness>
+				<threshold>1.0</threshold>
+			</cell-descriptor>
+			<active-sites>
+				<mode>list</mode>
+				<coordinate x="5" y="5" />
+			</active-sites>
+			<period>0</period>
+			<types>1</types>
+			<tokens>1</tokens>
+		</cell-process>
 		<cell-process>
 			<id>100</id>
 			<class>Scatter</class>
@@ -43,14 +60,22 @@
 		<cell-process>
 			<id>150</id>
 			<class>UniformBiomassGrowth</class>
-			<delta>0.05</delta>
-			<period>1</period>
+			<delta>0.001</delta>
 			<defer>false</defer>
+		</cell-process>
+		<cell-process>
+			<id>175</id>
+			<class>UniformBiomassGrowth</class>
+			<delta>0.5</delta>
+			<defer>false</defer>
+			<active-sites>
+				<mode>list</mode>
+				<coordinate x="5" y="5" />
+			</active-sites>			
 		</cell-process>
 		<cell-process>
 			<id>200</id>
 			<class>DivideAnywhere</class>
-			<period>1</period>
 		</cell-process>
 		<cell-process>
 			<id>300</id>

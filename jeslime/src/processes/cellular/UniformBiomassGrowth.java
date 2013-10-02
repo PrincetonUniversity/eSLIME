@@ -45,11 +45,11 @@ public class UniformBiomassGrowth extends CellProcess {
 		this.defer = defer;
 	}
 	public void iterate(StepState state) throws HaltCondition {
-		HashSet<Coordinate> sites = lattice.getOccupiedSites();
-		
 		// Feed the cells.
-		for (Coordinate site : sites) {
-			lattice.feed(site, delta);
+		for (Coordinate site : activeSites) {
+			if (lattice.isOccupied(site)) {
+				lattice.feed(site, delta);
+			}
 		}
 		
 		// If we're not defering updates, tell the cells to use the
@@ -57,8 +57,10 @@ public class UniformBiomassGrowth extends CellProcess {
 		// every cell has been "fed," in case there are non-local
 		// interactions.
 		if (!defer) {
-			for (Coordinate site: sites) {
-				lattice.apply(site);
+			for (Coordinate site : activeSites) {
+				if (lattice.isOccupied(site)) {
+					lattice.apply(site);
+				}
 			}
 		}
 		
