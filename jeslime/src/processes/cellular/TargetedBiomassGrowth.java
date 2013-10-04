@@ -1,5 +1,6 @@
 package processes.cellular;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.dom4j.Element;
@@ -13,12 +14,13 @@ import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
 /**
- * Adds a fixed amount of biomass to every cell.
+ * Adds a fixed amount of biomass to every cell with a cell
+ * state matching the target.
  * 
  * @author dbborens
  *
  */
-public class UniformBiomassGrowth extends CellProcess {
+public class TargetedBiomassGrowth extends CellProcess {
 
 	// How much biomass to accumulate per time step
 	private double delta;
@@ -28,27 +30,45 @@ public class UniformBiomassGrowth extends CellProcess {
 	// a cell before the new biomass accumulates.
 	private boolean defer;
 	
-	public UniformBiomassGrowth(ProcessLoader loader, Lattice lattice, int id,
+	// Only feed cells if they are of the target type.
+	private int target;
+	
+	public TargetedBiomassGrowth(ProcessLoader loader, Lattice lattice, int id,
 			Geometry geom, GeneralParameters p) {
 		super(loader, lattice, id, geom, p);
 		
 		delta = Double.valueOf(get("delta"));
 		
 		defer = Boolean.valueOf(get("defer"));
+		
+		target = Integer.valueOf(get("target"));
+		
 	}
 
-	public UniformBiomassGrowth(Lattice lattice, Geometry geom, 
-			double delta, boolean defer) {
+	public TargetedBiomassGrowth(Lattice lattice, Geometry geom, 
+			double delta, boolean defer, int target) {
 		super(null, lattice, 0, geom, null);
 		
 		this.delta = delta;
 		this.defer = defer;
+		this.target = target;
 	}
+	
 	public void iterate(StepState state) throws HaltCondition {
+		
+		// If the target state doesn't exist, don't waste any time
+		// checking cells.
+		int targetCount = lattice.getStateMapViewer().getCount(target);
+		if (targetCount == 0) {
+			return;
+		}
+		
+		ArrayList<Coordinate> targetSites = new ArrayList<Coordinate>(targetCount);
 		// Feed the cells.
 		for (Coordinate site : activeSites) {
-			if (lattice.isOccupied(site)) {
+			if (lattice.isOccupied(site) && lattice.getState(site) == target) {
 				lattice.feed(site, delta);
+				targetSites.add(site);
 			}
 		}
 		
@@ -57,10 +77,8 @@ public class UniformBiomassGrowth extends CellProcess {
 		// every cell has been "fed," in case there are non-local
 		// interactions.
 		if (!defer) {
-			for (Coordinate site : activeSites) {
-				if (lattice.isOccupied(site)) {
-					lattice.apply(site);
-				}
+			for (Coordinate site : targetSites) {
+				lattice.apply(site);
 			}
 		}
 		

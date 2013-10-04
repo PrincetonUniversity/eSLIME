@@ -7,6 +7,7 @@ import processes.cellular.CellProcess;
 import processes.cellular.DivideAnywhere;
 import processes.cellular.NeighborSwap;
 import processes.cellular.Scatter;
+import processes.cellular.TargetedBiomassGrowth;
 import processes.cellular.UniformBiomassGrowth;
 import processes.temporal.SimpleGillespie;
 import processes.temporal.TimeProcess;
@@ -78,6 +79,9 @@ public class ProcessFactory {
 			
 		} else if (processClass.equalsIgnoreCase("UniformBiomassGrowth")) {
 			return new UniformBiomassGrowth(loader, lattice, id, geom, p);
+
+		} else if (processClass.equalsIgnoreCase("TargetedBiomassGrowth")) {
+			return new TargetedBiomassGrowth(loader, lattice, id, geom, p);
 			
 		} else {
 			String msg = "Unrecognized cell process '" +

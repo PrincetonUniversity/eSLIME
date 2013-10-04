@@ -20,6 +20,12 @@ public class StateMapViewer {
 	}
 	
 	public Integer getCount(Integer state) {
+		
+		// If it doesn't have the key, there are no cells of that state
+		if (!stateMap.containsKey(state)) {
+			return 0;
+		}
+		
 		return stateMap.get(state);
 	}
 }
