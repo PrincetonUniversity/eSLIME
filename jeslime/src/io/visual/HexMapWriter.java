@@ -48,7 +48,6 @@ public class HexMapWriter implements Visualization {
 	private Point limits = new Point();
 	private Point pixels = new Point();
 	
-	private GeneralParameters p;
 	private Geometry geom;
 	private ColorManager colorManager;
 	
@@ -60,7 +59,6 @@ public class HexMapWriter implements Visualization {
 	private String path;
 	
 	public HexMapWriter(GeneralParameters p, String path, Geometry geom) {
-		this.p = p;
 		this.path = path;
 		this.geom = geom;
 		
@@ -77,7 +75,7 @@ public class HexMapWriter implements Visualization {
 		File f = new File(path + filename);
 		
 		try {
-			ImageIO.write(img,  "gif", f);
+			ImageIO.write(img,  "png", f);
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}		

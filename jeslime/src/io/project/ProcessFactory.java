@@ -3,14 +3,8 @@ package io.project;
 import org.dom4j.Element;
 
 import processes.Process;
-import processes.cellular.CellProcess;
-import processes.cellular.DivideAnywhere;
-import processes.cellular.NeighborSwap;
-import processes.cellular.Scatter;
-import processes.cellular.TargetedBiomassGrowth;
-import processes.cellular.UniformBiomassGrowth;
-import processes.temporal.SimpleGillespie;
-import processes.temporal.TimeProcess;
+import processes.cellular.*;
+import processes.temporal.*;
 
 import structural.GeneralParameters;
 import structural.Lattice;
@@ -53,8 +47,8 @@ public class ProcessFactory {
 
 		Integer id = Integer.valueOf(get(e, "id"));
 
-		if (processClass.equalsIgnoreCase("SimpleGillespie")) {
-			return new SimpleGillespie(loader, lattice, id, geom, p);
+		if (processClass.equalsIgnoreCase("ExponentialInverse")) {
+			return new ExponentialInverse(loader, lattice, id, geom, p);
 		} else {
 			String msg = "Unrecognized time process '" +
 					processClass + "' (id=" + id + ").";
@@ -71,11 +65,17 @@ public class ProcessFactory {
 		if (processClass.equalsIgnoreCase("DivideAnywhere")) {
 			return new DivideAnywhere(loader, lattice, id, geom, p);
 			
+		} else if (processClass.equalsIgnoreCase("ActiveLayerDivide")) {
+				return new ActiveLayerDivide(loader, lattice, id, geom, p);		
+				
 		} else if (processClass.equalsIgnoreCase("NeighborSwap")) {
 			return new NeighborSwap(loader, lattice, id, geom, p);
 			
 		} else if (processClass.equalsIgnoreCase("Scatter")) {
 			return new Scatter(loader, lattice, id, geom, p);
+
+		} else if (processClass.equalsIgnoreCase("Fill")) {
+			return new Fill(loader, lattice, id, geom, p);
 			
 		} else if (processClass.equalsIgnoreCase("UniformBiomassGrowth")) {
 			return new UniformBiomassGrowth(loader, lattice, id, geom, p);

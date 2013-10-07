@@ -139,9 +139,81 @@ public abstract class Process {
 			return geom.getCanonicalSites();
 		} else if (modeString.equalsIgnoreCase("list")) {
 			return coordinateList(siteElement);
+		} else if (modeString.equalsIgnoreCase("line")) {
+			return coordinateLine(siteElement);
 		} else {
 			throw new IllegalArgumentException("Coordinate mode '" + modeString +"' not recognized.");
 		}
+	}
+
+	private Coordinate[] coordinateLine(Element siteElement) {
+		ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
+		
+		Element originElem = siteElement.element("origin");
+		Element displacementElem = siteElement.element("displacement");
+		
+		int x0 = Integer.valueOf(originElem.attribute("x").getValue());
+		int y0 = Integer.valueOf(originElem.attribute("y").getValue());
+		
+		int du = Integer.valueOf(displacementElem.attribute("u").getValue());
+		int dv = Integer.valueOf(displacementElem.attribute("v").getValue());
+		
+		// Remember that 2D triangular geometries have a third, non-orthogonal
+		// basis vector.
+		int dw = 0;
+		if (displacementElem.attribute("w") != null) {
+			dw = Integer.valueOf(displacementElem.attribute("w").getValue());
+		}
+		
+		int[] d = new int[] {du, dv, dw};
+				
+		int length = Integer.valueOf(siteElement.element("length").getText());
+		
+		Coordinate c;
+		if (siteElement.attribute("z") != null) {
+			int z0 = Integer.valueOf(originElem.element("z").getText());
+			c = new Coordinate(x0, y0, z0, 0);
+		} else {
+			c = new Coordinate(x0, y0, 0);
+		}
+		
+		coordinates.add(c);
+
+		for (int i = 0; i < length; i++) {
+			Coordinate cNext = geom.rel2abs(c, d);
+			c = cNext;
+			coordinates.add(c);
+		}
+
+		/*int x1 = Integer.valueOf(siteElement.attribute("x1").getValue());
+		int y1 = Integer.valueOf(siteElement.attribute("y1").getValue());		
+
+		
+		if (siteElement.attribute("z0") != null) {
+			int z0 = Integer.valueOf(siteElement.attribute("z0").getValue());
+			int z1 = Integer.valueOf(siteElement.attribute("z1").getValue());
+			int dz = Integer.valueOf(siteElement.attribute("dz").getValue());
+
+			
+			for (int x = x0; x < x1; x += dx) {
+				for (int y = y0; y < y1; y+= dy) {
+					for (int z = z0; z < z1; z+= dz) {
+						
+						Coordinate coord = new Coordinate(x, y, z, 0);
+						coordinates.add(coord);
+					}
+				}
+			}
+		} else {
+			for (int x = x0; x < x1; x += dx) {
+				for (int y = y0; y < y1; y+= dy) {
+					Coordinate coord = new Coordinate(x, y, 0);
+					coordinates.add(coord);
+				}
+			}
+		}*/
+		
+		return coordinates.toArray(new Coordinate[0]);
 	}
 
 	private Coordinate[] coordinateList(Element siteElement) {

@@ -20,17 +20,31 @@ import structural.identifiers.Coordinate;
 
 import geometries.Geometry;
 
-public class DivideAnywhere extends BulkDivisionProcess {
+public class ActiveLayerDivide extends BulkDivisionProcess {
 
-	public DivideAnywhere(ProcessLoader loader, Lattice lattice, int id,
+	int depth;
+	public ActiveLayerDivide(ProcessLoader loader, Lattice lattice, int id,
 			Geometry geom, GeneralParameters p) {
 		super(loader, lattice, id, geom, p);
+		
+		depth = Integer.valueOf(get("depth"));
 	}
 
 	public void iterate(StepState state) throws HaltCondition {
 
 		// Choose a random active cell.
-		HashSet<Coordinate> candSet = lattice.getDivisibleSites();
+		HashSet<Coordinate> superset = lattice.getDivisibleSites();
+		HashSet<Coordinate> candSet = new HashSet<Coordinate>(superset.size());
+		for (Coordinate c : superset) {
+			// Look for vacancies within the active layer depth
+			Coordinate[] vacancies = lattice.getNearestVacancies(c, depth);
+			
+			// It's a division candidate iff it has vacant neighbors within the
+			// active layer depth (i.e., is in the active layer).
+			if (vacancies.length > 0) {
+				candSet.add(c);
+			}
+		}
 		Coordinate[] candidates = candSet.toArray(new Coordinate[0]);
 		
 		execute(state, candidates);

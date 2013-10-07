@@ -70,7 +70,7 @@ public class Scatter extends CellProcess {
 				Cell cell = factory.instantiate();
 				
 				lattice.place(cell, target);
-				state.highlight(target);
+				//state.highlight(target);
 				candidates.remove(target);
 			}
 		}
