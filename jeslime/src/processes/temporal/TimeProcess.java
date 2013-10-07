@@ -10,8 +10,6 @@ public abstract class TimeProcess extends Process {
 	protected Lattice lattice;
 	protected GeneralParameters p;
 	
-	private final String elementName = "time-process";
-	
 	public TimeProcess(ProcessLoader loader, Lattice lattice, int id, 
 			Geometry geom, GeneralParameters p) {
 		
@@ -21,14 +19,9 @@ public abstract class TimeProcess extends Process {
 		this.lattice = lattice;
 	}
 	
-	protected String getElementName() {
-		return elementName;
-	}
-	
 	protected String getProcessClass() {
 		return this.getClass().getSimpleName();
 	}
-	
 
 	/**
 	 * Returns an exponentially distributed random number.

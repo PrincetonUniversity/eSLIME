@@ -36,8 +36,6 @@ public class ProcessLoader {
 			
 			elemsByID.put(id, e);
 		}
-		
-		load();
 	}
 	
 	/**
@@ -50,10 +48,7 @@ public class ProcessLoader {
 	public Element getProcess(int id) {
 		return elemsByID.get(id);
 	}
-	
-	private void load() {
-		
-	}
+
 	public Integer[] getProcesses() {
 		// Get set of process IDs. These are assumed to be unsorted.
 		Set<Integer> processes = elemsByID.keySet();

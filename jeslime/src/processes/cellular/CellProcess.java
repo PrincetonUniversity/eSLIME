@@ -11,8 +11,6 @@ public abstract class CellProcess extends Process {
 	protected Lattice lattice;
 	protected GeneralParameters p;
 	
-	private final String elementName = "cell-process";
-	
 	// This set represents the sites where the process
 	// is allowed to take place. By default, it is set
 	// to all canonical sites.
@@ -30,10 +28,6 @@ public abstract class CellProcess extends Process {
 		activeSites = this.loadSiteList("active-sites");
 	}
 
-	protected String getElementName() {
-		return elementName;
-	}
-	
 	protected String getProcessClass() {
 		return this.getClass().getSimpleName();
 	}

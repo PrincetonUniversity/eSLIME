@@ -27,81 +27,36 @@ public class ProcessFactory {
 	public Process instantiate(Integer id) {
 		Element e = loader.getProcess(id);
 		
-		String type = e.getName();
+		String processClass = e.getName();
 		
-		if (type.equalsIgnoreCase("cell-process")) {
-			return cellProcess(e);
-		} else if (type.equalsIgnoreCase("time-process")) {
-			return temporalProcess(e);
-		} else if (type.equalsIgnoreCase("continuum-process")) {
-			throw new UnsupportedOperationException("Write me!");
-		} else {
-			String msg = "Unrecognized process type '" + type + "' (id=" + id + ").";
-			throw new IllegalArgumentException(msg);
-		}
-		
-	}
-
-	private TimeProcess temporalProcess(Element e) {
-		String processClass = get(e, "class");
-
-		Integer id = Integer.valueOf(get(e, "id"));
-
-		if (processClass.equalsIgnoreCase("ExponentialInverse")) {
+		if (processClass.equalsIgnoreCase("exponential-inverse")) {
 			return new ExponentialInverse(loader, lattice, id, geom, p);
-		} else {
-			String msg = "Unrecognized time process '" +
-					processClass + "' (id=" + id + ").";
-			
-			throw new IllegalArgumentException(msg);
-		}
-	}
-
-	private CellProcess cellProcess(Element e) {
-		String processClass = get(e, "class");
-		
-		Integer id = Integer.valueOf(get(e, "id"));
-		
-		if (processClass.equalsIgnoreCase("DivideAnywhere")) {
+		} else if (processClass.equalsIgnoreCase("divide-anywhere")) {
 			return new DivideAnywhere(loader, lattice, id, geom, p);
 			
-		} else if (processClass.equalsIgnoreCase("ActiveLayerDivide")) {
+		} else if (processClass.equalsIgnoreCase("active-layer-divide")) {
 				return new ActiveLayerDivide(loader, lattice, id, geom, p);		
 				
-		} else if (processClass.equalsIgnoreCase("NeighborSwap")) {
+		} else if (processClass.equalsIgnoreCase("neighbor-swap")) {
 			return new NeighborSwap(loader, lattice, id, geom, p);
 			
-		} else if (processClass.equalsIgnoreCase("Scatter")) {
+		} else if (processClass.equalsIgnoreCase("scatter")) {
 			return new Scatter(loader, lattice, id, geom, p);
 
-		} else if (processClass.equalsIgnoreCase("Fill")) {
+		} else if (processClass.equalsIgnoreCase("fill")) {
 			return new Fill(loader, lattice, id, geom, p);
 			
-		} else if (processClass.equalsIgnoreCase("UniformBiomassGrowth")) {
+		} else if (processClass.equalsIgnoreCase("uniform-biomass-growth")) {
 			return new UniformBiomassGrowth(loader, lattice, id, geom, p);
 
-		} else if (processClass.equalsIgnoreCase("TargetedBiomassGrowth")) {
+		} else if (processClass.equalsIgnoreCase("targeted-biomass-growth")) {
 			return new TargetedBiomassGrowth(loader, lattice, id, geom, p);
 			
 		} else {
-			String msg = "Unrecognized cell process '" +
+			String msg = "Unrecognized process '" +
 					processClass + "' (id=" + id + ").";
 			
 			throw new IllegalArgumentException(msg);
-		}
-	}
-	
-	// Pull in a single-datum element
-	private String get(Element g, String key) {
-		Element vElem = g.element(key);
-		if (vElem == null) {
-			throw new IllegalArgumentException("General parameter " + 
-					key + " not defined.");
-		}
-		
-		Object value = vElem.getData();
-		
-		return value.toString();
-			
+		}		
 	}
 }

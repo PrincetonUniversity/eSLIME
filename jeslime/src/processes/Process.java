@@ -43,8 +43,6 @@ public abstract class Process {
 
 	/* Process identifiers */
 	
-	protected abstract String getElementName();
-
 	protected abstract String getProcessClass();
 
 	public int getID() {
@@ -146,6 +144,75 @@ public abstract class Process {
 		}
 	}
 
+	private Coordinate[] coordinateRectangle(Element siteElement) {
+		ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
+
+		// Specifies one corner of the rectangle/prism. 
+		Element originElem = siteElement.element("origin");
+		
+		// Specifies the delta in each direction to be used. May be negative.
+		Element displacementElem = siteElement.element("displacement");
+		
+		// Specifies the total offset in each direction.
+		Element dimensionsElem = siteElement.element("extension");
+		
+		boolean xyCorrection = siteElement.element("xy-correction") != null;
+		
+		// Use floating point so that w can build in offset corrections for
+		// a particular geometry.
+		double x0 = Double.valueOf(originElem.attribute("x").getValue());
+		double y0 = Double.valueOf(originElem.attribute("y").getValue());
+		
+		double dx = Double.valueOf(displacementElem.attribute("dx").getValue());
+		double dy = Double.valueOf(displacementElem.attribute("dy").getValue());
+		
+		double w = Double.valueOf(dimensionsElem.attribute("x").getValue());	
+		double l = Double.valueOf(dimensionsElem.attribute("y").getValue());
+		
+		// 3D case
+		if (originElem.attribute("z") != null) {
+			double z0 = Double.valueOf(originElem.attribute("z").getValue());
+			double h = Double.valueOf(dimensionsElem.attribute("z").getValue());
+			double dz = Double.valueOf(displacementElem.attribute("dz").getValue());
+
+			for (double x = x0; x < x0 + w; x += dx) {
+				for (double y = y0; y < y0 + l; y += dy) {
+					for (double z = z0; z < z0 + h; z += dz) {
+						
+						int xInt = (int) Math.round(Math.floor(x));
+						int yInt = (int) Math.round(Math.floor(y));
+						int zInt = (int) Math.round(Math.floor(z));
+
+						if (xyCorrection) {
+							yInt += xInt / 2;
+						}
+						
+						Coordinate c = new Coordinate(xInt, yInt, zInt, 0);
+						coordinates.add(c);
+					}
+				}
+			}
+			
+		// 2D case
+		} else {
+			for (double x = x0; x < x0 + w; x += dx) {
+				for (double y = y0; y < y0 + l; y += dy) {
+					int xInt = (int) Math.round(Math.floor(x));
+					int yInt = (int) Math.round(Math.floor(y));
+					
+					if (xyCorrection) {
+						yInt += xInt / 2;
+					}
+					
+					Coordinate c = new Coordinate(xInt, yInt, 0);
+					coordinates.add(c);
+				}
+			}
+		}
+
+		return coordinates.toArray(new Coordinate[0]);
+		
+	}
 	private Coordinate[] coordinateLine(Element siteElement) {
 		ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
 		
@@ -184,34 +251,6 @@ public abstract class Process {
 			c = cNext;
 			coordinates.add(c);
 		}
-
-		/*int x1 = Integer.valueOf(siteElement.attribute("x1").getValue());
-		int y1 = Integer.valueOf(siteElement.attribute("y1").getValue());		
-
-		
-		if (siteElement.attribute("z0") != null) {
-			int z0 = Integer.valueOf(siteElement.attribute("z0").getValue());
-			int z1 = Integer.valueOf(siteElement.attribute("z1").getValue());
-			int dz = Integer.valueOf(siteElement.attribute("dz").getValue());
-
-			
-			for (int x = x0; x < x1; x += dx) {
-				for (int y = y0; y < y1; y+= dy) {
-					for (int z = z0; z < z1; z+= dz) {
-						
-						Coordinate coord = new Coordinate(x, y, z, 0);
-						coordinates.add(coord);
-					}
-				}
-			}
-		} else {
-			for (int x = x0; x < x1; x += dx) {
-				for (int y = y0; y < y1; y+= dy) {
-					Coordinate coord = new Coordinate(x, y, 0);
-					coordinates.add(coord);
-				}
-			}
-		}*/
 		
 		return coordinates.toArray(new Coordinate[0]);
 	}
