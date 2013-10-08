@@ -48,57 +48,24 @@ public class Model {
 	}
 	
 	/**
-	 * Call the iterate() method of any processes whose
-	 * period is 0, and no others. Returns a halt condition
-	 * if one was thrown; otherwise, it returns null. This
-	 * is the initial condition (t=0).
-	 */
-	public HaltCondition initialize() {
-		StepState state = new StepState();
-		
-		for (Process process : processes) {
-			try {
-				// A period of 0 means that the process should occur
-				// at initialization and no other time. Only processes
-				// with a period of 0 are called at initialize.
-				if (process.getPeriod() == 0) {
-					process.iterate(state);
-				}
-			} catch (HaltCondition hc) {
-				return hc;
-			}
-		}
-		
-		// Signal to state object that we are done modifying it.
-		state.close();
-		
-		// Send the results to the serialization manager.
-		mgr.step(state.getHighlights(), state.getDt(), 0);
-		
-		// If we get here, the initialization proceeded without halting.
-		return null;
-	}
-	
-	/**
-	 * Run all iterations after t=0, updating any solutes and
-	 * cells, as well as advancing the clock, according to the
-	 * processes specified in the project file.
+	 * Run all iterations, including the initial condition (t=0), 
+	 * updating any solutes and cells, as well as advancing the clock,
+	 * according to the processes specified in the project file.
 	 * @return
 	 */
 	public HaltCondition go() {
 
-		for (int t = 1; t < p.T(); t++) {
+		for (int t = 0; t < p.T(); t++) {
 			StepState state = new StepState();
 
 			for (Process process : processes) {
 				try {
 					
-					int period = process.getPeriod();
-					
+	
 					// A period of 0 means that the process should occur
 					// at initialization and no other time. Only processes
 					// with a period of 0 are called at initialize.
-					if (period != 0 && t % period == 0) {
+					if (triggered(t, process)) {
 						process.iterate(state);
 					}
 				} catch (HaltCondition hc) {
@@ -127,6 +94,41 @@ public class Model {
 		return new StepMaxReachedEvent(lattice.getGillespie());
 		
 	}
+	private boolean triggered(int t, Process process) {
+		int period = process.getPeriod();
+		int start = process.getStart();
+		
+		// Case 1: this is a 1-time event, and it is that one time.
+		if (period == 0 && start == t) {
+			return true;
+			
+		// Case 2: this is a 1-time event, and it isn't that time.
+		} else if (period == 0 && start != t) {
+			return false;
+		
+		// Case 3: We haven't reached the start time.
+		} else if (t < start) {
+			return false;
+		
+		// Case 4: We have reached the start time.
+		} else if (t >= start) {
+			// Adjust phase.
+			int tt = t - start;
+			
+			// 4a: Phase-adjusted time fits period.
+			if (tt % period == 0) {
+				return true;
+				
+			// 4b: It doesn't.
+			} else {
+				return false;
+			}
+		
+		} else {
+			throw new IllegalStateException("Unconsidered trigger state reached.");
+		}
+	}
+
 	protected void checkForFixation() throws FixationEvent {
 		StateMapViewer smv = lattice.getStateMapViewer();
 		

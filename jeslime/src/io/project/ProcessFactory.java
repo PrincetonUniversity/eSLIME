@@ -52,6 +52,9 @@ public class ProcessFactory {
 		} else if (processClass.equalsIgnoreCase("targeted-biomass-growth")) {
 			return new TargetedBiomassGrowth(loader, lattice, id, geom, p);
 			
+		} else if (processClass.equalsIgnoreCase("mutate-all")) {
+			return new MutateAll(loader, lattice, id, geom, p);
+			
 		} else {
 			String msg = "Unrecognized process '" +
 					processClass + "' (id=" + id + ").";

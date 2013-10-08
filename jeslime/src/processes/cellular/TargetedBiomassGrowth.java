@@ -66,8 +66,8 @@ public class TargetedBiomassGrowth extends CellProcess {
 		ArrayList<Coordinate> targetSites = new ArrayList<Coordinate>(targetCount);
 		// Feed the cells.
 		for (Coordinate site : activeSites) {
-			if (lattice.isOccupied(site) && lattice.getState(site) == target) {
-				lattice.feed(site, delta);
+			if (lattice.isOccupied(site) && lattice.getCell(site).getState() == target) {
+				lattice.getCell(site).feed(delta);
 				targetSites.add(site);
 			}
 		}

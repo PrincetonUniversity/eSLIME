@@ -24,6 +24,10 @@ public class CellFactory {
 	private Element cellDescriptor;
 	private int state;
 	
+	/**
+	 * @param lattice
+	 * @param cellDescriptor
+	 */
 	public CellFactory(Lattice lattice, Element cellDescriptor) {
 		this.lattice = lattice;
 		this.cellDescriptor = cellDescriptor;

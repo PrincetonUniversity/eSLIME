@@ -62,29 +62,6 @@ public class Lattice {
 	}
 
 	/**
-	 * Returns the fitness value of the cell at the specified coordinate.
-	 * @param coord
-	 * @return
-	 */
-	public double getFitness(Coordinate coord) {
-	    Cell cell = getCellAt(coord);
-
-		// Return fitness of cell
-	    return cell.getFitness();
-	}
-
-	/**
-	 * Returns the state of the cell at the specified coordinate.
-	 * @param coord
-	 * @return
-	 */
-	public int getState(Coordinate coord) {
-	    Cell cell = getCellAt(coord);
-
-	    return cell.getState();
-	}
-
-	/**
 	 * Get the state of neighboring cells. Vacant cells are ignored.
 	 * @param coord
 	 * @return
@@ -101,7 +78,7 @@ public class Lattice {
 		// Check state of each neighbor
 	    for (int i = 0; i < neighbors.length; i++) {
 			Coordinate query = neighbors[i];
-			states[i] = getState(query);
+			states[i] = getCell(query).getState();
 		}
 
 		// Return
@@ -227,37 +204,20 @@ public class Lattice {
 	 */
 	public int consider(Coordinate coord) {
 		// TODO Verify that there is no outstanding lock.
-	    Cell cell = getCellAt(coord);
+	    Cell cell = getCell(coord);
 		int res = cell.consider();
 	    return res;
-	}
-
-	/**
-	 * Signal the cell to respond to a direct benefit or stressor.
-	 * Delta can be negative. The change should not take effect
-	 * until apply() is called.
-	 * 
-	 */
-	public void feed(Coordinate coord, double delta) {
-		
-		double fitness = getFitness(coord);
-		
-		Cell cell = getCellAt(coord);
-		cell.feed(delta);
-		
-		// Sanity check
-		if (!epsilonEquals(fitness, cell.getFitness())) {
-			throw new IllegalStateException("Consistency error: cell fitness changed before apply() was called.");
-		}
 	}
 	
 	/**
 	 * Instructs the specified cell to update its state. Should blow up if
-	 * the cell has not called consider since last apply call.
+	 * the cell has not called consider since last apply call. You should
+	 * USE THIS METHOD for updating cells, rather than doing so directly.
+	 * 
 	 * @param coord
 	 */
 	public void apply(Coordinate coord) {
-	    Cell cell = getCellAt(coord);
+	    Cell cell = getCell(coord);
 	    
 	    // Decrement CURRENT cell state count
 		decrStateCount(cell);
@@ -347,7 +307,7 @@ public class Lattice {
 		}
 
 		// Divide parent
-		Cell parent = getCellAt(pCoord);
+		Cell parent = getCell(pCoord);
 		decrStateCount(parent);
 		Cell child = parent.divide();
 		incrStateCount(parent);
@@ -545,7 +505,7 @@ public class Lattice {
 		return coord;
 	}
 
-	private Cell getCellAt(Coordinate coord) {
+	public Cell getCell(Coordinate coord) {
 		checkExists(coord);
 
 		// Validate input

@@ -30,6 +30,17 @@ public class FissionCell extends Cell {
 		considerCount = 0;
 	}
 	
+	public FissionCell clone(int childState) {
+		double fitness = getFitness();
+		
+		FissionCell child = new FissionCell(childState, fitness, threshold);
+		child.considerCount = considerCount;
+		child.nextFitness = nextFitness;
+		child.setDivisible(isDivisible());
+		
+		return child;
+	}
+	
 	private void checkDivisibility() {
 		//System.out.println("   " + getFitness() + " -- " + threshold);
 		if (getFitness() > threshold) {

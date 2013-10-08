@@ -48,7 +48,7 @@ public class UniformBiomassGrowth extends CellProcess {
 		// Feed the cells.
 		for (Coordinate site : activeSites) {
 			if (lattice.isOccupied(site)) {
-				lattice.feed(site, delta);
+				lattice.getCell(site).feed(delta);
 			}
 		}
 		

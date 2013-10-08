@@ -36,8 +36,8 @@ public class UniformBiomassGrowthTest extends TestCase {
 		CellProcess process = new UniformBiomassGrowth(lattice, geom, 1.5, false);
 
 		// Verify that they get fed when the process is invoked
-		assertEquals(lattice.getFitness(coord1), 0.7, epsilon);
-		assertEquals(lattice.getFitness(coord2), 0.3, epsilon);
+		assertEquals(lattice.getCell(coord1).getFitness(), 0.7, epsilon);
+		assertEquals(lattice.getCell(coord2).getFitness(), 0.3, epsilon);
 
 		assertTrue(!lattice.getDivisibleSites().contains(coord1));
 		assertTrue(!lattice.getDivisibleSites().contains(coord2));
@@ -49,8 +49,8 @@ public class UniformBiomassGrowthTest extends TestCase {
 		}
 		
 		// Verify that they get fed when the process is invoked
-		assertEquals(lattice.getFitness(coord1), 2.2, epsilon);
-		assertEquals(lattice.getFitness(coord2), 1.8, epsilon);
+		assertEquals(lattice.getCell(coord1).getFitness(), 2.2, epsilon);
+		assertEquals(lattice.getCell(coord2).getFitness(), 1.8, epsilon);
 		
 		assertTrue(lattice.getDivisibleSites().contains(coord1));
 		assertTrue(!lattice.getDivisibleSites().contains(coord2));
@@ -75,8 +75,8 @@ public class UniformBiomassGrowthTest extends TestCase {
 		CellProcess process = new UniformBiomassGrowth(lattice, geom, 1.5, true);
 
 		// Verify that they get fed when the process is invoked
-		assertEquals(lattice.getFitness(coord1), 0.7, epsilon);
-		assertEquals(lattice.getFitness(coord2), 0.3, epsilon);
+		assertEquals(lattice.getCell(coord1).getFitness(), 0.7, epsilon);
+		assertEquals(lattice.getCell(coord2).getFitness(), 0.3, epsilon);
 
 		assertTrue(!lattice.getDivisibleSites().contains(coord1));
 		assertTrue(!lattice.getDivisibleSites().contains(coord2));
@@ -87,8 +87,8 @@ public class UniformBiomassGrowthTest extends TestCase {
 			fail();
 		}
 		
-		assertEquals(lattice.getFitness(coord1), 0.7, epsilon);
-		assertEquals(lattice.getFitness(coord2), 0.3, epsilon);
+		assertEquals(lattice.getCell(coord1).getFitness(), 0.7, epsilon);
+		assertEquals(lattice.getCell(coord2).getFitness(), 0.3, epsilon);
 
 		assertTrue(!lattice.getDivisibleSites().contains(coord1));
 		assertTrue(!lattice.getDivisibleSites().contains(coord2));
@@ -97,8 +97,8 @@ public class UniformBiomassGrowthTest extends TestCase {
 		lattice.apply(coord2);
 		
 		// Verify that they get fed when the process is invoked
-		assertEquals(lattice.getFitness(coord1), 2.2, epsilon);
-		assertEquals(lattice.getFitness(coord2), 1.8, epsilon);
+		assertEquals(lattice.getCell(coord1).getFitness(), 2.2, epsilon);
+		assertEquals(lattice.getCell(coord2).getFitness(), 1.8, epsilon);
 		
 		assertTrue(lattice.getDivisibleSites().contains(coord1));
 		assertTrue(!lattice.getDivisibleSites().contains(coord2));

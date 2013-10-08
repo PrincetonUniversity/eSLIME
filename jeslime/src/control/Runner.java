@@ -40,12 +40,9 @@ public class Runner implements Runnable {
 		
 			Model model = new Model(p, loader, g, mgr);
 			
-			// This step includes setting up the initial conditions, as well as
-			// some data structure initializations.
-			model.initialize();
-			
 			// This step includes the execution of the simulation until some
-			// end condition(s) defined in the parameters.
+			// end condition(s) defined in the parameters. It includes setting up
+			// the initial conditions.
 			HaltCondition ex = model.go();
 
 			// Instructs the model to perform any final cleanup actions on behalf

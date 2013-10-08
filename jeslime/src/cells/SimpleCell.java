@@ -42,4 +42,11 @@ public class SimpleCell extends Cell {
 	public void feed(double delta) {
 		throw new UnsupportedOperationException("SimpleCell does not use a nutrient metric.");
 	}
+
+	@Override
+	public SimpleCell clone(int childState) {
+		SimpleCell child = new SimpleCell(childState);
+		child.considerCount = considerCount;
+		return child;
+	}
 }

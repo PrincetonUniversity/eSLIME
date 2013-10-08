@@ -18,27 +18,29 @@ public abstract class Process {
 
 	private int id;
 	private int period;
+	private int start;
 	
 	// XML element associated with this process
-	private Element e;
+	protected Element e;
 	
 	protected Geometry geom;
 	
 	/* Constructors */
 	
 	public Process(ProcessLoader loader, int id, Geometry geom) {
-		
+		this.geom = geom;
+
 		if (loader == null) {
 			System.err.println("WARNING: Mock behavior for process loader invoked. Use only for testing!");
 			id = 0;
 			period = 1;
 			return;
 		}
-		
 		this.id = id;
 		e = loader.getProcess(id);
 		period = Integer.valueOf(get("period", "1"));
-		this.geom = geom;
+		start = Integer.valueOf(get("start", "0"));
+		
 	}
 
 	/* Process identifiers */
@@ -100,8 +102,13 @@ public abstract class Process {
 		Object value = vElem.getData();
 		return value.toString();
 	}
+	
 	public int getPeriod() {
 		return period;
+	}
+	
+	public int getStart() {
+		return start;
 	}
 	
 	protected CellFactory getCellFactory(Lattice lattice) {
@@ -117,7 +124,15 @@ public abstract class Process {
 	 * @return
 	 */
 	protected Coordinate[] loadSiteList(String elemName) {
-		Element siteElement = e.element(elemName);
+		Element siteElement;
+		
+		// Include possibility that whole process element is
+		// null, which is true for mock simulations in tests.
+		if (e == null) {
+			siteElement = null;
+		} else {
+			siteElement = e.element(elemName);
+		}
 		
 		String modeString;
 		
@@ -139,6 +154,8 @@ public abstract class Process {
 			return coordinateList(siteElement);
 		} else if (modeString.equalsIgnoreCase("line")) {
 			return coordinateLine(siteElement);
+		} else if (modeString.equalsIgnoreCase("rectangle")) {
+			return coordinateRectangle(siteElement);
 		} else {
 			throw new IllegalArgumentException("Coordinate mode '" + modeString +"' not recognized.");
 		}

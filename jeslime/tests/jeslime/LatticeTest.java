@@ -36,8 +36,8 @@ public class LatticeTest extends TestCase {
 
 		// Get its properties through the lattice.
 		// TODO This should be replaced with epsilon equality
-		assertEquals(toPlace.getFitness(), lattice.getFitness(coord), 1E-10);
-		assertEquals(toPlace.getState(), lattice.getState(coord));
+		assertEquals(toPlace.getFitness(), lattice.getCell(coord).getFitness(), 1E-10);
+		assertEquals(toPlace.getState(), lattice.getCell(coord).getState());
 	}
 
 	public void testFeed() {
@@ -49,17 +49,17 @@ public class LatticeTest extends TestCase {
 		
 		lattice.place(toPlace, coord);
 		
-		assertEquals(lattice.getFitness(coord), 0.5);
+		assertEquals(lattice.getCell(coord).getFitness(), 0.5);
 		assertTrue(!lattice.getDivisibleSites().contains(coord));
 		
-		lattice.feed(coord, 1.0);
+		lattice.getCell(coord).feed(1.0);
 		
-		assertEquals(lattice.getFitness(coord), 0.5);
+		assertEquals(lattice.getCell(coord).getFitness(), 0.5);
 		assertTrue(!lattice.getDivisibleSites().contains(coord));
 
 		lattice.apply(coord);
 		
-		assertEquals(lattice.getFitness(coord), 1.5);
+		assertEquals(lattice.getCell(coord).getFitness(), 1.5);
 		assertTrue(lattice.getDivisibleSites().contains(coord));
 	}
 	
@@ -81,7 +81,7 @@ public class LatticeTest extends TestCase {
 		lattice.place(new SimpleCell(2), coordAbove);
 
 		// Check that the right cell is placed
-		assertFalse(lattice.getState(coord) == lattice.getState(coordAbove));
+		assertFalse(lattice.getCell(coord).getState() == lattice.getCell(coordAbove).getState());
 
 		// Check neighborhood
 		assertEquals(5, lattice.getNearestVacancies(coord, -1).length);
@@ -239,7 +239,7 @@ public class LatticeTest extends TestCase {
 		assertEquals(2, v.getCount(1).intValue());
 		
 		// Verify state
-		assertEquals(lattice.getState(coord), lattice.getState(child));
+		assertEquals(lattice.getCell(coord).getState(), lattice.getCell(coord).getState());
 
 		// Indices should reflect the division
 		assertEquals(2, lattice.getOccupiedSites().size());

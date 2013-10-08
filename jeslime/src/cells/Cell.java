@@ -19,10 +19,45 @@ public abstract class Cell {
 	
 	public abstract int consider();
 	
+	/**
+	 * Applies changes to the cell. DO NOT CALL THIS METHOD DIRECTLY
+	 * FROM A PROCESS. Instead, use lattice.apply().
+	 * 
+	 * TODO: Make it so that this method just calls back on the lattice,
+	 * telling it to update its indices, so that this is no longer an
+	 * issue.
+	 */
 	public abstract void apply();
 	
+	/**
+	 * Instructs the cell to divide and returns the daughter cell.
+	 * This triggers any division-related behaviors.
+	 * 
+	 * DO NOT CALL THIS METHOD DIRECTLY
+	 * FROM A PROCESS. Instead, use lattice.divide().
+	 * 
+	 * TODO: Make it so that this method just calls back on the lattice,
+	 * telling it to update its indices, so that this is no longer an
+	 * issue.
+	 * @return
+	 */
 	public abstract Cell divide();
 
+	/**
+	 * Creates an exact replica of the cell, differing only by the
+	 * state value. Copies all internal state variables. Does not
+	 * trigger any division-related events or changes.
+	 * 
+	 * @param state
+	 * @return
+	 */
+	public abstract Cell clone(int state);
+
+	@Override
+	public Cell clone() {
+		return clone(state);
+	}
+	
 	/**
 	 * Informs the cell that it has been given a direct benefit.
 	 * The effect of this benefit depends on the cell class. 
