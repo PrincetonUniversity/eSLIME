@@ -5,10 +5,10 @@ import java.util.Set;
 
 import org.dom4j.Element;
 
+import processes.gillespie.GillespieState;
 import structural.Lattice;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
-
 import geometries.Geometry;
 import io.project.CellFactory;
 import io.project.ProcessLoader;
@@ -53,7 +53,37 @@ public abstract class Process {
 	
 	/* Process events */
 	
-	public abstract void iterate(StepState state) throws HaltCondition;
+	/**
+	 * Identifies possible update targets in the event of an iteration. Should
+	 * accept a null GillespieState for non-Gillespie events.
+	 * 
+	 * @param state
+	 * @throws HaltCondition
+	 */
+	public abstract void target(GillespieState gs) throws HaltCondition;
+	
+	/**
+	 * Convenience interface for target(...) -- calls it with a null GillespieState
+	 * argument.
+	 * 
+	 * @throws HaltCondition
+	 */
+	public void target() throws HaltCondition {
+		target(null);
+	}
+	
+	/**
+	 * Chooses one of its available targets and executes the update.
+	 * 
+	 * @param state
+	 * @throws HaltCondition
+	 */
+	public abstract void fire(StepState state) throws HaltCondition;
+	
+	public void iterate(StepState state) throws HaltCondition {
+		target();
+		fire(state);
+	}
 	
 	/**
 	 *  Pull in a single-datum element

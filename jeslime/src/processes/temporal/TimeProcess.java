@@ -1,6 +1,7 @@
 package processes.temporal;
 
 import processes.Process;
+import processes.gillespie.GillespieState;
 import geometries.Geometry;
 import io.project.ProcessLoader;
 import structural.GeneralParameters;
@@ -23,6 +24,13 @@ public abstract class TimeProcess extends Process {
 		return this.getClass().getSimpleName();
 	}
 
+	public void target(GillespieState gs) {
+		// There's only one event that can happen--we update.
+		if (gs != null) {
+			gs.add(this.getID(), 1, 0.0D);	
+		}
+	}
+	
 	/**
 	 * Returns an exponentially distributed random number.
 	 */

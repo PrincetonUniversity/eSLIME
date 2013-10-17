@@ -11,11 +11,9 @@ import java.util.Random;
 import org.dom4j.Element;
 
 import processes.StepState;
-
-
+import processes.gillespie.GillespieState;
 import cells.Cell;
 import cells.SimpleCell;
-
 import structural.GeneralParameters;
 import structural.Lattice;
 import structural.halt.HaltCondition;
@@ -29,6 +27,8 @@ public class Scatter extends CellProcess {
 	
 	private Random random;
 	
+	private HashSet<Coordinate> candidates = null;
+	
 	public Scatter(ProcessLoader loader, Lattice lattice, int id,
 			Geometry geom, GeneralParameters p) {
 		
@@ -40,10 +40,9 @@ public class Scatter extends CellProcess {
 		groupSize = Integer.valueOf(get("tokens"));
 	}
 
-	public void iterate(StepState state) throws HaltCondition {
-
+	public void target(GillespieState gs) throws HaltCondition {
 		// Construct initial set of candidates
-		HashSet<Coordinate> candidates = new HashSet<Coordinate>();
+		candidates = new HashSet<Coordinate>();
 		
 		for (Coordinate c : activeSites) {
 			if (!lattice.getOccupiedSites().contains(c)) {
@@ -51,6 +50,13 @@ public class Scatter extends CellProcess {
 			}
 		}
 		
+		gs.add(this.getID(), candidates.size(), candidates.size() * 1.0D);
+	}
+	public void fire(StepState state) throws HaltCondition {
+		if (candidates == null) {
+			throw new IllegalStateException("fire() invoked on scatter before target().");
+		}
+
 		for (int i = 0; i < numGroups; i++) {
 			CellFactory factory = getCellFactory(lattice);
 			
@@ -74,6 +80,9 @@ public class Scatter extends CellProcess {
 				candidates.remove(target);
 			}
 		}
+		
+		// Make sure that a new target must be chosen prior to next invocation.
+		candidates = null;
 
 	}
 }

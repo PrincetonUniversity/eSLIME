@@ -1,0 +1,104 @@
+<simulation>
+	<general>
+		<version>v0.1.5</version>
+		<random-seed>*</random-seed>
+		<instances>2</instances>
+		<write-state-histogram>true</write-state-histogram>
+		<write-lineage-map>true</write-lineage-map>
+		<write-state>true</write-state>
+		<write-metadata>true</write-metadata>
+		<write-interval>false</write-interval>
+		<write-fix-time>true</write-fix-time>
+		<path>/Users/dbborens/state/jeSLIME/</path>
+		<date-stamp>true</date-stamp>
+		<max-step>10000001</max-step>
+		<output-frames>
+			<auto mode="decilog" />
+		</output-frames>
+	</general>
+	<geometry>
+		<class>HexArena</class>
+		<width>32</width>
+		<height>32</height>
+	</geometry>
+	<processes>
+		<time-process>
+			<id>0</id>
+			<class>SimpleGillespie</class>
+			<period>1</period>
+		</time-process>
+		<cell-process>
+			<id>50</id>
+			<class>Scatter</class>
+			<cell-descriptor>
+				<class>FissionCell</class>
+				<state>1</state>
+				<initial-fitness>0.5</initial-fitness>
+				<threshold>1.0</threshold>
+			</cell-descriptor>
+			<active-sites>
+				<mode>list</mode>
+				<coordinate x="10" y="20" />
+			</active-sites>
+			<period>0</period>
+			<types>1</types>
+			<tokens>1</tokens>
+		</cell-process>
+		<cell-process>
+			<id>51</id>
+			<class>Scatter</class>
+			<cell-descriptor>
+				<class>FissionCell</class>
+				<state>2</state>
+				<initial-fitness>0.5</initial-fitness>
+				<threshold>1.0</threshold>
+			</cell-descriptor>
+			<active-sites>
+				<mode>list</mode>
+				<coordinate x="20" y="25" />
+			</active-sites>
+			<period>0</period>
+			<types>1</types>
+			<tokens>1</tokens>
+		</cell-process>		
+		<cell-process>
+			<id>150</id>
+			<class>UniformBiomassGrowth</class>
+			<delta>0.01</delta>
+			<defer>false</defer>
+		</cell-process>
+		<cell-process>
+			<id>175</id>
+			<class>TargetedBiomassGrowth</class>
+			<delta>1.0</delta>
+			<target>1</target>			
+			<defer>false</defer>
+			<active-sites>
+				<mode>list</mode>
+				<coordinate x="15" y="23" />
+				<coordinate x="15" y="24" />
+				<coordinate x="16" y="24" />
+				<coordinate x="16" y="23" />
+				<coordinate x="15" y="22" />
+				<coordinate x="14" y="22" />				
+				<coordinate x="14" y="23" />
+			</active-sites>
+		</cell-process>
+		<cell-process>
+			<id>200</id>
+			<class>DivideAnywhere</class>
+		</cell-process>
+		<cell-process>
+			<id>300</id>
+			<class>NeighborSwap</class>
+			<period>10</period>
+		</cell-process>
+	</processes>
+	<visualizations>
+		<state-map>
+			<edge-length>10</edge-length>
+			<labels>false</labels>
+			<format>png</format>
+		</state-map>
+	</visualizations>
+</simulation>

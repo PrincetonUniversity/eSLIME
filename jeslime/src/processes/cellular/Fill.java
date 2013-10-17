@@ -11,11 +11,9 @@ import java.util.Random;
 import org.dom4j.Element;
 
 import processes.StepState;
-
-
+import processes.gillespie.GillespieState;
 import cells.Cell;
 import cells.SimpleCell;
-
 import structural.GeneralParameters;
 import structural.Lattice;
 import structural.halt.HaltCondition;
@@ -48,7 +46,14 @@ public class Fill extends CellProcess {
 		
 	}
 
-	public void iterate(StepState state) throws HaltCondition {
+	public void target(GillespieState gs) throws HaltCondition {
+		// This process only has one event: it affects all relevant cells.
+		if (gs != null) {
+			gs.add(getID(), 1, 1D);
+		}
+	}
+	
+	public void fire(StepState state) throws HaltCondition {
 		CellFactory factory = getCellFactory(lattice);
 		
 		for (Coordinate c : activeSites) {

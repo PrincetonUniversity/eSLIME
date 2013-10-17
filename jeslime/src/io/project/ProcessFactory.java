@@ -2,10 +2,11 @@ package io.project;
 
 import org.dom4j.Element;
 
+import processes.NullProcess;
 import processes.Process;
 import processes.cellular.*;
+import processes.gillespie.GillespieProcess;
 import processes.temporal.*;
-
 import structural.GeneralParameters;
 import structural.Lattice;
 import geometries.Geometry;
@@ -23,7 +24,7 @@ public class ProcessFactory {
 		this.p = p;
 		this.geom = geom;
 	}
-	
+
 	public Process instantiate(Integer id) {
 		Element e = loader.getProcess(id);
 		
@@ -31,6 +32,10 @@ public class ProcessFactory {
 		
 		if (processClass.equalsIgnoreCase("exponential-inverse")) {
 			return new ExponentialInverse(loader, lattice, id, geom, p);
+			
+		} else if (processClass.equalsIgnoreCase("tick")) {
+			return new Tick(loader, lattice, id, geom, p);
+			
 		} else if (processClass.equalsIgnoreCase("divide-anywhere")) {
 			return new DivideAnywhere(loader, lattice, id, geom, p);
 			
@@ -54,6 +59,12 @@ public class ProcessFactory {
 			
 		} else if (processClass.equalsIgnoreCase("mutate-all")) {
 			return new MutateAll(loader, lattice, id, geom, p);
+			
+		} else if (processClass.equalsIgnoreCase("null-process")) {
+			return new NullProcess(loader, id, geom);
+			
+		} else if (processClass.equalsIgnoreCase("gillespie-process")) {
+			return new GillespieProcess(loader, lattice, id, geom, p);
 			
 		} else {
 			String msg = "Unrecognized process '" +

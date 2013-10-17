@@ -8,6 +8,7 @@ import org.dom4j.Element;
 import geometries.Geometry;
 import io.project.ProcessLoader;
 import processes.StepState;
+import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
 import structural.Lattice;
 import structural.halt.HaltCondition;
@@ -31,7 +32,7 @@ public class TargetedBiomassGrowth extends CellProcess {
 	private boolean defer;
 	
 	// Only feed cells if they are of the target type.
-	private int target;
+	private int targetCellType;
 	
 	public TargetedBiomassGrowth(ProcessLoader loader, Lattice lattice, int id,
 			Geometry geom, GeneralParameters p) {
@@ -41,7 +42,7 @@ public class TargetedBiomassGrowth extends CellProcess {
 		
 		defer = Boolean.valueOf(get("defer"));
 		
-		target = Integer.valueOf(get("target"));
+		targetCellType = Integer.valueOf(get("target"));
 		
 	}
 
@@ -51,14 +52,14 @@ public class TargetedBiomassGrowth extends CellProcess {
 		
 		this.delta = delta;
 		this.defer = defer;
-		this.target = target;
+		this.targetCellType = target;
 	}
 	
-	public void iterate(StepState state) throws HaltCondition {
+	public void fire(StepState state) throws HaltCondition {
 		
 		// If the target state doesn't exist, don't waste any time
 		// checking cells.
-		int targetCount = lattice.getStateMapViewer().getCount(target);
+		int targetCount = lattice.getStateMapViewer().getCount(targetCellType);
 		if (targetCount == 0) {
 			return;
 		}
@@ -66,7 +67,7 @@ public class TargetedBiomassGrowth extends CellProcess {
 		ArrayList<Coordinate> targetSites = new ArrayList<Coordinate>(targetCount);
 		// Feed the cells.
 		for (Coordinate site : activeSites) {
-			if (lattice.isOccupied(site) && lattice.getCell(site).getState() == target) {
+			if (lattice.isOccupied(site) && lattice.getCell(site).getState() == targetCellType) {
 				lattice.getCell(site).feed(delta);
 				targetSites.add(site);
 			}
@@ -84,6 +85,14 @@ public class TargetedBiomassGrowth extends CellProcess {
 		
 		// It would be annoying to highlight cells just for being fed, so we
 		// don't.
+	}
+
+	@Override
+	public void target(GillespieState gs) throws HaltCondition {
+		// There's only one event that can happen--we update.
+		if (gs != null) {
+			gs.add(this.getID(), 1, 0.0D);
+		}
 	}
 
 }

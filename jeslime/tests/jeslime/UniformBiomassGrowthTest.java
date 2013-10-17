@@ -84,7 +84,7 @@ public class UniformBiomassGrowthTest extends TestCase {
 		try {
 			process.iterate(null);
 		} catch (Exception ex) {
-			fail();
+			throw new RuntimeException(ex);
 		}
 		
 		assertEquals(lattice.getCell(coord1).getFitness(), 0.7, epsilon);

@@ -15,13 +15,9 @@ import org.dom4j.Element;
  */
 public class ProcessLoader {
 
-	private Element root;
-	
 	HashMap<Integer, Element> elemsByID;
 	
-	public ProcessLoader(ProjectLoader p) {
-		root = p.getElement("processes");
-		
+	public ProcessLoader(Element root) {
 		elemsByID = new HashMap<Integer, Element>();
 		
 		for (Object o : root.elements()) {

@@ -8,6 +8,8 @@ import io.serialize.SerializationManager;
 
 import java.io.File;
 
+import org.dom4j.Element;
+
 import models.Model;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;
@@ -27,7 +29,8 @@ public class Runner implements Runnable {
 		try {
 			File f = new File(fn);
 			ProjectLoader pp = new ProjectLoader(f);
-			loader = new ProcessLoader(pp);
+			Element processRoot = pp.getElement("processes");
+			loader = new ProcessLoader(processRoot);
 			p = new GeneralParameters(pp);
 			g = GeometryFactory.make(pp);
 		} catch (Exception ex) {

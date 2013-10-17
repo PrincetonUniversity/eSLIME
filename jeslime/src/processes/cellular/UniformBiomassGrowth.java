@@ -7,6 +7,7 @@ import org.dom4j.Element;
 import geometries.Geometry;
 import io.project.ProcessLoader;
 import processes.StepState;
+import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
 import structural.Lattice;
 import structural.halt.HaltCondition;
@@ -44,7 +45,17 @@ public class UniformBiomassGrowth extends CellProcess {
 		this.delta = delta;
 		this.defer = defer;
 	}
-	public void iterate(StepState state) throws HaltCondition {
+
+	@Override
+	public void target(GillespieState gs) throws HaltCondition {
+		// There's only one event that can happen--we update.
+		if (gs != null) {
+		gs.add(this.getID(), 1, 0.0D);	
+		}
+	}
+
+	@Override
+	public void fire(StepState state) throws HaltCondition {
 		// Feed the cells.
 		for (Coordinate site : activeSites) {
 			if (lattice.isOccupied(site)) {

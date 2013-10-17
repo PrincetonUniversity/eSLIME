@@ -28,7 +28,7 @@ public class ExponentialInverse extends TimeProcess {
 	}
 
 	@Override
-	public void iterate(StepState state) throws HaltCondition {
+	public void fire(StepState state) throws HaltCondition {
 		double lambda = 1.0D / lattice.getOccupiedSites().size();
 		double dt = expRandom(lambda);
 		state.advanceClock(dt);
