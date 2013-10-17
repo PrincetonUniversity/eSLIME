@@ -20,9 +20,6 @@
 		</fileset>
 	</path>
 
-	<manifestclasspath property="lib.list" jarfile="build/jeSLIME.jar">
-	   <classpath refid="manifest.class.path" />
-	</manifestclasspath>
 
 	<target name="clean">
 		<delete dir="build"/>
@@ -36,6 +33,9 @@
 	</target>
 
 	<target name="jar">
+		<manifestclasspath property="lib.list" jarfile="build/jeSLIME.jar">
+		   <classpath refid="manifest.class.path" />
+		</manifestclasspath>
 		<jar destfile="build/jeSLIME.jar" basedir="build/classes">
 			<manifest>
 				<attribute name="Main-Class" value="control.ConsoleLauncher"/>
