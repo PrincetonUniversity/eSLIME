@@ -1,0 +1,186 @@
+<simulation>
+
+	<!-- Since the project specification can change between versions, eSLIME
+	     checks the project description against the internal version number.
+	     The simulation will not run if they don't match.
+	-->
+	
+	<version>v0.2.2</version>
+	
+	<!-- Some general parameters about the output of the simulation. -->
+	
+	<general>
+		<random-seed>*</random-seed>
+		<instances>2</instances>
+		<write-lineage-map>true</write-lineage-map>
+		<path>/Users/dbborens/state/jeSLIME/</path>
+		<date-stamp>true</date-stamp>
+		<max-step>1001</max-step>
+		<output-frames>
+			<auto mode="decilog" />
+		</output-frames>
+	</general>
+
+	
+	<!-- Use a rectangular arena geometry with a triangular lattice. -->
+	
+	<geometry>
+		<class>HexRing</class>
+		<width>32</width>
+		<height>96</height>
+	</geometry>
+	
+	<!-- 
+	     Describe how the simulation will proceed. "period=0" means it
+	     happens only once.
+	-->
+	
+	<processes>
+	
+		<!-- 
+		     Place a cell at a central position in the third row from the
+		     bottom. Because we are using rectangular coordinates in a
+		     triangular geometry, it is necessary to add x/2 to the y 
+		     value in order to move parallel to the x axis. Hence, (16, 10)
+		     is in the third "row." 		     
+		-->
+		     
+		<fill>
+			<id>50</id>
+			<cell-descriptor>
+				<class>FissionCell</class>
+				<state>2</state>
+				<initial-fitness>0.5</initial-fitness>
+				<threshold>1.0</threshold>
+			</cell-descriptor>
+			<active-sites>
+				<mode>list</mode>
+				<coordinate x="16" y="10" />
+			</active-sites>
+			<period>0</period>
+			<skip-filled-sites>false</skip-filled-sites>
+		</fill>
+		
+		<!-- 
+		     Fill in all remaining sites in the first three rows with 
+		     non-mutant cells. We are calling mutants "state 2" and
+		     wild-type "state 1." This is, of course, arbitrary. This
+		     fill will go from (0, 0) to (32, 3) in rectangular coord-
+		     inates. Note however that this is not consistent with the
+		     triangular coordinates described above. The correction is
+		     applied through the "xy-correction" tag.
+		     
+		     The "skip-filled-sites" specifies that
+		     eSLIME should skip over the mutant at (16, 10) rather than
+		     blow up.
+		-->
+		
+		<fill>
+			<id>100</id>
+			<cell-descriptor>
+				<class>FissionCell</class>
+				<state>1</state>
+				<initial-fitness>0.5</initial-fitness>
+				<threshold>1.0</threshold>
+			</cell-descriptor>
+			<active-sites>
+				<mode>rectangle</mode>
+				<origin x="0" y="0" />
+				<extension x="32" y="3" />
+				<displacement dx="1" dy="1" />
+				<xy-correction />
+			</active-sites>
+			<period>0</period>
+			<skip-filled-sites>true</skip-filled-sites>
+		</fill>
+		
+		<!--
+		    Advance the simulation clock by 1 AU per cycle. We are
+		    not actually using the clock for anything right now, but
+		    the program breaks if time stands still, so I have to have
+		    this. This is a defect, not a feature, and I'm working on
+		    it.
+		-->
+		
+		<tick>
+			<id>0</id>
+			<dt>1.0</dt>
+		</tick>
+		
+		<!--
+		    TargetedBiomassGrowth increases the total cell "biomass" of
+		    one particular cell type each time that it is invoked. This
+		    is one of a couple of ways to set differential growth rates
+		    between the cell types. FissionCells, which are the kind used
+		    in this model (see the "fill" processes), divide when their
+		    "biomass" exceeds some defined threshold, which is specified
+		    on creation. Here, we set the wild-type cells to grow at 
+		    a rate of .25 units per dt.
+		    
+		    The 'target' tag specifies the cell lineage ("state") affected.
+		 -->
+		<targeted-biomass-growth>
+			<id>400</id>
+			<delta>0.25</delta>
+			<target>1</target>			
+			<defer>false</defer>
+		</targeted-biomass-growth>
+		
+		<!--
+		    Mutants should grow more slowly, so we set their delta at 0.2:
+		    a very big fitness penalty!
+		-->
+		
+		<targeted-biomass-growth>
+			<id>500</id>
+			<delta>0.20</delta>
+			<target>2</target>			
+			<defer>false</defer>
+		</targeted-biomass-growth>
+		
+		<!--
+		    Most importantly, the cells have to actually divide! We use a 
+		    surface growth process whose active layer is restricted to a 
+		    depth of one cell, i.e., only cells right at the surface can
+		    divide. 
+		-->
+		<active-layer-divide>
+			<id>450</id>
+			<depth>1</depth>
+		</active-layer-divide>
+		
+		<!--
+		    This process will loop until the lattice is full or the maximum
+		    step is reached. (NOTE: I tried this on 10/17 and I'm not sure
+		    it actually stopped when the lattice got full. I'll look into it.)
+		-->
+	</processes>
+	
+		
+	<!-- 
+	     Writers are used to specify the kinds of output that should be
+	     created during the simulation. This is the raw output; visualizations
+	     are handled in their own section. Note that visualizations often
+	     have prerequisites.
+	     
+	     State is only captured in the frames specified by the "output-frames"
+	     tag. This will eventually be modified to specify frames by either
+	     simulation time (t) or cycle number (n). 
+	-->
+	<writers>
+	
+		<!-- 
+		    This writer creates a FASTA-like vector representation of the system
+		    state. This includes the phenotype of each cell, the fitness, and so
+		    on. It also writes an index file that specifies the mapping between
+		    vector index and coordinate value. Finally, it records information
+		    about global extrema, such as the minimum and
+		    maximum of each solute field, as well as minimum and maximum fitnesses.
+		    This is used for setting the scale of some visualizations.
+		-->
+		
+		<state-vector />
+		<parameter-writer />
+		<progress-reporter />
+	</writers>
+</simulation>

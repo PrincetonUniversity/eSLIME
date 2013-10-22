@@ -10,6 +10,9 @@ import java.util.Set;
 import java.util.Random;
 
 import org.dom4j.Attribute;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 
 /**
@@ -20,13 +23,9 @@ import org.dom4j.Element;
  */
 public class GeneralParameters {
 
-	// Version -- checked against parameters file to make sure they're
-	// compatible
-	private final static String VERSION = "v0.2.1";
+
 
 	// Dimensions
-	//private int width;
-	//private int height;
 	private int maxStep;
 	private int instances;
 	
@@ -36,22 +35,8 @@ public class GeneralParameters {
 	private String instancePath;	// Includes instance number (if applies)
 	
 	// Output flags
-	private boolean stateHisto;				// Create a running histogram of 
-											// cell states?
 	
 	private boolean lineageMap;				// Visualize lineages as they grow
-	
-	private boolean writeState;				// Capture state for visualization
-	
-	private boolean metadata;				// Write metadata file? Contains 
-											// extrema, used for visualization.
-	
-	private boolean interval;				// Write intervals file? Contains 
-											// temporal data--running time,
-											// Gillespie intervals, etc.
-	
-	private boolean writeFixTime;			// Write a chart of time to fixation
-											// per instance?
 	// Output frames (blank means all)
 	private Set<Integer> frames;
 	
@@ -63,12 +48,17 @@ public class GeneralParameters {
 	// State members
 	private int instance;
 	
+	private String projectXML;
+	
+	private String version;
+	
 	public GeneralParameters(ProjectLoader loader) {
 		calcEpsilon();
 		load(loader);
-		
 		instance = 0;
 		updateInstancePath();
+		
+		
 	}
 	
 	private void updateInstancePath() {		
@@ -107,8 +97,7 @@ public class GeneralParameters {
 	private void load(ProjectLoader loader) {
 		Element g = loader.getElement("general");
 		
-		// Verify version number
-		checkVersion(g);
+		version = loader.getVersion();
 		
 		// Load dimensions
 		loadDimensions(g);
@@ -124,6 +113,9 @@ public class GeneralParameters {
 		
 		// Initialize random-number generator
 		loadRandom(g);
+		
+		System.out.println("Load: project XML is null?" + (loader.toString() == null));
+		projectXML = loader.toString();
 	}
 
 	private void loadRandom(Element g) {
@@ -211,12 +203,7 @@ public class GeneralParameters {
 	}
 	
 	private void loadFlags(Element g) {
-		stateHisto = Boolean.valueOf(get(g, "write-state-histogram"));
 		lineageMap = Boolean.valueOf(get(g, "write-lineage-map"));
-		writeState = Boolean.valueOf(get(g, "write-state"));
-		interval   = Boolean.valueOf(get(g, "write-interval"));
-		metadata = Boolean.valueOf(get(g, "write-metadata"));
-		writeFixTime = Boolean.valueOf(get(g, "write-fix-time"));
 	}
 
 	private void loadPaths(Element g) {
@@ -237,14 +224,6 @@ public class GeneralParameters {
 		instances = Integer.valueOf(get(g, "instances"));
 	}
 
-	private void checkVersion(Element g) {
-		if (!get(g, "version").equalsIgnoreCase(VERSION)) {
-			String msg = "Version mismatch. Parameter file written for jeSLIME "
-					+ get(g, "version") + ", but this is " + VERSION + ".";
-			
-			throw new IllegalArgumentException(msg);
-		}
-	}
 	
 	/**
 	 * Find the machine epsilon for this computer (i.e., the value at which
@@ -290,8 +269,8 @@ public class GeneralParameters {
 		return sdf.format(date);
 	}
 	
-	public static String getVersion() {
-		return VERSION;
+	public String getVersion() {
+		return version;
 	}
 
 	/**
@@ -338,20 +317,8 @@ public class GeneralParameters {
 		return instancePath;
 	}
 
-	public boolean isStateHisto() {
-		return stateHisto;
-	}
-
 	public boolean isLineageMap() {
 		return lineageMap;
-	}
-
-	public boolean isWriteState() {
-		return writeState;
-	}
-	
-	public boolean isWriteMetadata() {
-		return metadata;
 	}
 
 	public double getEpsilon() {
@@ -384,11 +351,45 @@ public class GeneralParameters {
 		return frames.contains(frame);
 	}
 	
-	public boolean isInterval() {
-		return interval;
+	/**
+	 * Returns the XML representation of the project, as loaded
+	 * initially. 
+	 * @return
+	 */
+	public String getProjectXML() {
+		return projectXML;
 	}
-
-	public boolean isWriteFixTime() {
-		return writeFixTime;
+	
+	/**
+	 * Returns an XML project encoding the current instance's
+	 * path and random number generator. The resulting XML file
+	 * should deterministically reproduce the specified simulation
+	 * instance.
+	 * 
+	 * @return
+	 */
+	public String getInstanceXML() {
+		// Load original XML
+		try {
+			Document replica = DocumentHelper.parseText(projectXML);
+			Element rr = replica.getRootElement();
+			Element re = rr.element("general");
+			// Change path to instance path
+			re.element("path").setText(instancePath);			
+			
+			// Disable date stamp
+			re.element("date-stamp").setText("false");
+			
+			// Change random number key to instance key
+			String seed = Long.valueOf(randomSeed).toString();
+			re.element("random-seed").setText(seed);
+			
+			// Change replicates to 1
+			re.element("instances").setText("1");
+			
+			return replica.asXML();
+		} catch (DocumentException e) {
+			throw new RuntimeException(e);
+		}
 	}
 }

@@ -1,7 +1,11 @@
 package io.serialize;
 
+import io.project.ProjectLoader;
+
 import java.util.HashSet;
 import java.util.Set;
+
+import org.dom4j.Element;
 
 import structural.GeneralParameters;
 import structural.Lattice;
@@ -16,25 +20,39 @@ public class SerializationManager {
 	private GeneralParameters p;
 	private Geometry g;
 	
-	public SerializationManager(GeneralParameters p, Geometry g) {
+	public SerializationManager(ProjectLoader l, GeneralParameters p, Geometry g) {
 		this.p = p;
 		this.g = g;
 		
+
 		writers = new HashSet<Writer>();
 		
-		if (p.isWriteState()) {
-			BufferedStateWriter bsw = new BufferedStateWriter(p, g);
-			writers.add(bsw);
-		}
+		Element we = l.getElement("writers");
 		
-		if (p.isStateHisto()) {
-			StateHistogram sh = new StateHistogram(p, g);
-			writers.add(sh);
-		}
-		
-		if (p.isWriteFixTime()) {
-			FixationTimeWriter ftw = new FixationTimeWriter(p, g);
-			writers.add(ftw);
+		for (Object o : we.elements()) {
+			Element e = (Element) o;
+			
+			String writerClass = e.getName();
+			
+			if (writerClass.equalsIgnoreCase("state-vector")) {
+				BufferedStateWriter bsw = new BufferedStateWriter(p, g);
+				writers.add(bsw);
+			} else if (writerClass.equalsIgnoreCase("fixation-time")) {
+				FixationTimeWriter ftw = new FixationTimeWriter(p, g);
+				writers.add(ftw);
+			} else if (writerClass.equalsIgnoreCase("parameter-writer")) {
+				ParameterWriter pw = new ParameterWriter(p, g);
+				writers.add(pw);
+			} else if (writerClass.equalsIgnoreCase("progress-reporter")) {
+				ProgressReporter pr = new ProgressReporter(p, g);
+				writers.add(pr);
+			} else if (writerClass.equalsIgnoreCase("frequency-writer")) {
+				FrequencyWriter freq = new FrequencyWriter(p, g);
+				writers.add(freq);
+			} else if (writerClass.equalsIgnoreCase("interval-writer")) {
+				IntervalWriter iw = new IntervalWriter(p, g);
+				writers.add(iw);
+			}
 		}
 	}
 	

@@ -23,7 +23,7 @@ import structural.identifiers.Coordinate;
  * @author dbborens
  *
  */
-public class StateHistogram extends Writer {
+public class FrequencyWriter extends Writer {
 
 	private boolean closed = true;
 	
@@ -39,7 +39,7 @@ public class StateHistogram extends Writer {
 	
 	HashSet<Integer> observedStates = new HashSet<Integer>();
 	
-	public StateHistogram(GeneralParameters p, Geometry geometry) {
+	public FrequencyWriter(GeneralParameters p, Geometry geometry) {
 		super(p, geometry);
 		
 		histo = new HashMap<Integer, HashMap<Integer, Integer>>();

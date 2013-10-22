@@ -24,7 +24,7 @@ import models.*;
 public class ManualLauncher {
 
 	public static void main(String[] args) {
-		String path = "/Users/dbborens/github/jeSLIME/jeslime/projects/TestGillespie.xml";
+		String path = "/Users/dbborens/github/jeSLIME/jeslime/projects/GeneSurfing.xml";
 		Runner runner = new Runner(path);
 		runner.run();
 	}

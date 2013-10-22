@@ -66,13 +66,7 @@ public class BufferedStateWriter extends Writer {
 	// specified in coordmap.txt.
 	private final String STATE_FILENAME = "data.txt";
 	
-	// This file is a parsable parameters file, which can be used for subsequent
-	// simulations as well as to identify the experimental condition used.
-	private final String PARAMS_FILENAME = "params.txt";
-	
-	
 	private final String METADATA_FILENAME = "metadata.txt";
-	private final String INTERVAL_FILENAME = "interval.txt";
 	
 	// This file specifies the relationship between vector index and coordinate.
 	private final String COORDMAP_FILENAME = "coordmap.txt";
@@ -83,8 +77,6 @@ public class BufferedStateWriter extends Writer {
 	// I/O handle for the state file
 	private BufferedWriter stateWriter;
 	
-	// I/O handle for the interval file (What changed at each time step, and how long it took)
-	private BufferedWriter intervalWriter;
 	
 	// Timestamp for project
 	private Date date = new Date();
@@ -123,39 +115,18 @@ public class BufferedStateWriter extends Writer {
 	private void initFiles(GeneralParameters p) {
 		// Create the state & interval files
 		String stateFileStr = p.getInstancePath() + '/' + STATE_FILENAME;
-		String intervalFileStr = p.getInstancePath() + '/' + INTERVAL_FILENAME;
 		
 		try {
 			
-			if (p.isWriteState()) {
-				File stateFile = new File(stateFileStr);
-				FileWriter fw = new FileWriter(stateFile);
-				stateWriter = new BufferedWriter(fw, 1048576);
-			}
-			
-			File intervalFile = new File(intervalFileStr);
-			FileWriter ifw = new FileWriter(intervalFile);
-			
-			if (p.isInterval()) {
-				intervalWriter = new BufferedWriter(ifw, 1048576);
-				intervalWriter.append("Step,Gillespie,Running time\n");
-			}
+			File stateFile = new File(stateFileStr);
+			FileWriter fw = new FileWriter(stateFile);
+			stateWriter = new BufferedWriter(fw, 1048576);
+
 			
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		
-		try {
-			String paramsFileStr = p.getInstancePath() + '/' + PARAMS_FILENAME;			
-			File paramsFile = new File(paramsFileStr);
-			FileWriter fw = new FileWriter(paramsFile);
-			BufferedWriter bwp = new BufferedWriter(fw);
-			bwp.write(p.toString());
-			bwp.close();
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
-		
+			
 		// Make the coordinate map
 		makeCoordinateMap();
 	}
@@ -224,12 +195,7 @@ public class BufferedStateWriter extends Writer {
 		int[] s = lattice.getStateVector();
 		double[] f = lattice.getFitnessVector();
 		
-		long time = System.currentTimeMillis();
-		long interval = time - prevTime;
-		prevTime = time;
-		
-		//if (p.isWriteState() && (prevGillespie == 0 || oom(gillespie) > oom(prevGillespie))) {
-		if (p.isWriteState() && p.isFrame(frame)) {
+		if (p.isFrame(frame)) {
 			writeDoubleArray(f, ef, gillespie, frame, "fitness");
 			writeIntegerArray(s, gillespie, frame, "state");
 			
@@ -237,9 +203,6 @@ public class BufferedStateWriter extends Writer {
 			writeIntegerArray(h, gillespie, frame, "highlight");
 		}
 		
-		if (p.isInterval()) {
-			interval(frame, gillespie, interval);
-		}
 		prevGillespie = gillespie;
 	}
 
@@ -265,27 +228,7 @@ public class BufferedStateWriter extends Writer {
 		return oom.intValue();
 	}
 	
-	/**
-	 * Wall clock time and simulation time for last time step.
-	 * 
-	 * @param simInterval
-	 * @param realInterval
-	 */
-	private void interval(int n, double gillespie, long interval) {
-		StringBuilder sb = new StringBuilder();
-		sb.append(n);
-		sb.append(',');
-		sb.append(gillespie);
-		sb.append(',');
-		sb.append(interval);
-		sb.append('\n');
-		try {
-			intervalWriter.append(sb.toString());
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			throw new RuntimeException(e);
-		}
-	}
+
 
 	/**
 	 * Write out the cell types, represented by colors. 
@@ -381,32 +324,25 @@ public class BufferedStateWriter extends Writer {
 		// Close the state data file.
 		try {
 			
-			if (p.isWriteState())
-				stateWriter.close();
-			
-			if (p.isInterval()) {
-				intervalWriter.close();
-			}
+			stateWriter.close();
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 		
-		if (p.isWriteMetadata()) {
-			// Write the metadata file.
-			try {
-				File metadata = new File(p.getInstancePath() + '/' + METADATA_FILENAME);
-				FileWriter mfw = new FileWriter(metadata);
-				BufferedWriter mbw = new BufferedWriter(mfw);
-				
-				mbw.write("fitness>");
-				mbw.write(ef.toString());
-				mbw.write('\n');
+		// Write the metadata file.
+		try {
+			File metadata = new File(p.getInstancePath() + '/' + METADATA_FILENAME);
+			FileWriter mfw = new FileWriter(metadata);
+			BufferedWriter mbw = new BufferedWriter(mfw);
+			
+			mbw.write("fitness>");
+			mbw.write(ef.toString());
+			mbw.write('\n');
 
-				mbw.close();
+			mbw.close();
 				
-			} catch (IOException e) {
-				throw new RuntimeException(e);
-			}
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 	

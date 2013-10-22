@@ -25,10 +25,11 @@ public class Runner implements Runnable {
 		
 		GeneralParameters p = null;
 		Geometry g;
+		ProjectLoader pp;
 		ProcessLoader loader;
 		try {
 			File f = new File(fn);
-			ProjectLoader pp = new ProjectLoader(f);
+			pp = new ProjectLoader(f);
 			Element processRoot = pp.getElement("processes");
 			loader = new ProcessLoader(processRoot);
 			p = new GeneralParameters(pp);
@@ -37,7 +38,7 @@ public class Runner implements Runnable {
 			throw new RuntimeException(ex);
 		}
 		
-		SerializationManager mgr = new SerializationManager(p, g);
+		SerializationManager mgr = new SerializationManager(pp, p, g);
 		
 		for (int i = 0; i < p.getNumInstances(); i++) {
 		

@@ -22,19 +22,38 @@ import org.dom4j.io.*;
  *
  */
 public class ProjectLoader {
-
+	
+	// Version -- checked against parameters file to make sure they're
+	// compatible
+	private final static String VERSION = "v0.2.2";
+	
 	private Element root;
+	private String stringForm;
 	
 	public ProjectLoader(File toLoad) throws DocumentException {
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(toLoad);
 		validate(document);
 		root = document.getRootElement();
+		stringForm = document.asXML();
 	}
 	
+	
 	private void validate(Document document) {
-		// TODO Auto-generated method stub
+		Element ve = document.getRootElement().element("version");
 		
+		if (ve == null) {
+			System.out.println("The specified project file does not contain an eSLIME version number.");
+		}
+		String version = ve.getText();
+		
+		if (!version.equalsIgnoreCase(VERSION)) {
+	
+			String msg = "Version mismatch. Parameter file written for eSLIME "
+					+ version + ", but this is " + VERSION + ".";
+			throw new IllegalArgumentException(msg);
+
+		}
 	}
 
 	public ProjectLoader(String toLoad) throws DocumentException {
@@ -42,6 +61,8 @@ public class ProjectLoader {
 		Document document = reader.read(toLoad);
 		validate(document);
 		root = document.getRootElement();
+		
+		stringForm = document.asXML();
 	}
 	
 	public Element getElement(String element) {
@@ -54,5 +75,14 @@ public class ProjectLoader {
 	
 	public void close() {
 		root = null;
+	}
+	
+	public String toString() {
+		return stringForm;
+	}
+
+
+	public String getVersion() {
+		return VERSION;
 	}
 }
