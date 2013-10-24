@@ -11,8 +11,7 @@ import io.project.ProcessLoader;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
-import structural.Lattice;
-import structural.halt.HaltCondition;
+import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
 /**
@@ -28,18 +27,18 @@ public class MutateAll extends CellProcess {
 	private int ancestral;
 	private int mutant;
 	
-	public MutateAll(ProcessLoader loader, Lattice lattice, int id,
+	public MutateAll(ProcessLoader loader, CellLayer layer, int id,
 			Geometry geom, GeneralParameters p) {
-		super(loader, lattice, id, geom, p);
+		super(loader, layer, id, geom, p);
 		
 		ancestral = Integer.valueOf(e.element("mutation").attribute("ancestral").getText());
 		mutant = Integer.valueOf(e.element("mutation").attribute("mutant").getText());
 		
 	}
 
-	public MutateAll(Lattice lattice, Geometry geom, 
+	public MutateAll(CellLayer layer, Geometry geom, 
 			int ancestral, int mutant) {
-		super(null, lattice, 0, geom, null);
+		super(null, layer, 0, geom, null);
 		
 		this.ancestral = ancestral;
 		this.mutant = mutant;
@@ -55,17 +54,17 @@ public class MutateAll extends CellProcess {
 	public void fire(StepState state) throws HaltCondition {
 		// If the target state doesn't exist, don't waste any time
 		// checking cells.
-		int targetCount = lattice.getStateMapViewer().getCount(ancestral);
+		int targetCount = layer.getViewer().getStateMapViewer().getCount(ancestral);
 		if (targetCount == 0) {
 			return;
 		}
 		
 		// Feed the cells.
 		for (Coordinate site : activeSites) {
-			if (lattice.isOccupied(site) && lattice.getCell(site).getState() == ancestral) {
-				Cell child = lattice.getCell(site).clone(mutant);
-				lattice.banish(site);
-				lattice.place(child, site);
+			if (layer.getViewer().isOccupied(site) && layer.getViewer().getCell(site).getState() == ancestral) {
+				Cell child = layer.getViewer().getCell(site).clone(mutant);
+				layer.getUpdateManager().banish(site);
+				layer.getUpdateManager().place(child, site);
 			}
 		}
 	}

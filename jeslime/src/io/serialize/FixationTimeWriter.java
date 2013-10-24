@@ -4,8 +4,7 @@ import java.io.BufferedWriter;
 
 import geometries.Geometry;
 import structural.GeneralParameters;
-import structural.Lattice;
-import structural.halt.FixationEvent;
+import layers.cell.CellLayer; import structural.halt.FixationEvent;
 import structural.halt.HaltCondition;
 import structural.halt.StepMaxReachedEvent;
 import structural.identifiers.Coordinate;
@@ -30,12 +29,12 @@ public class FixationTimeWriter extends Writer {
 	}
 
 	@Override
-	public void init(Lattice l) {
+	public void init(CellLayer l) {
 		if (!closed) {
 			throw new IllegalStateException("Attempted to initialize active writer.");
 		}
 		closed = false;
-		lattice = l;
+		layer = l;
 
 
 	}

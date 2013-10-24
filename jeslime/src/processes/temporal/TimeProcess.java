@@ -5,19 +5,32 @@ import processes.gillespie.GillespieState;
 import geometries.Geometry;
 import io.project.ProcessLoader;
 import structural.GeneralParameters;
-import structural.Lattice;
+import layers.cell.CellLayer;
 
+/**
+ * Convenience superclass for time-specific processes,
+ * including some methods for calculating elapsed time.
+ * Probably not necessary to have a separate superclass
+ * for this.
+ * 
+ * At the moment, TimeProcess is specific to a particular
+ * cell layer.
+ * 
+ * @untested
+ * @author David Bruce Borenstein
+ *
+ */
 public abstract class TimeProcess extends Process {
-	protected Lattice lattice;
+	protected CellLayer layer;
 	protected GeneralParameters p;
 	
-	public TimeProcess(ProcessLoader loader, Lattice lattice, int id, 
+	public TimeProcess(ProcessLoader loader, CellLayer layer, int id, 
 			Geometry geom, GeneralParameters p) {
 		
 		super(loader, id, geom);
 		
 		this.p = p;
-		this.lattice = lattice;
+		this.layer = layer;
 	}
 	
 	protected String getProcessClass() {

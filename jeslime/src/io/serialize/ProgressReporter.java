@@ -2,8 +2,7 @@ package io.serialize;
 
 import geometries.Geometry;
 import structural.GeneralParameters;
-import structural.Lattice;
-import structural.halt.HaltCondition;
+import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
 /**
@@ -21,7 +20,7 @@ public class ProgressReporter extends Writer {
 	}
 
 	@Override
-	public void init(Lattice l) {
+	public void init(CellLayer l) {
 		System.out.println("Instance " + p.getInstance() + ": " + p.getInstancePath());
 	}
 

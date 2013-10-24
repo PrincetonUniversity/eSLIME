@@ -10,8 +10,7 @@ import io.project.ProcessLoader;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
-import structural.Lattice;
-import structural.halt.HaltCondition;
+import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
 /**
@@ -34,9 +33,9 @@ public class TargetedBiomassGrowth extends CellProcess {
 	// Only feed cells if they are of the target type.
 	private int targetCellType;
 	
-	public TargetedBiomassGrowth(ProcessLoader loader, Lattice lattice, int id,
+	public TargetedBiomassGrowth(ProcessLoader loader, CellLayer layer, int id,
 			Geometry geom, GeneralParameters p) {
-		super(loader, lattice, id, geom, p);
+		super(loader, layer, id, geom, p);
 		
 		delta = Double.valueOf(get("delta"));
 		
@@ -46,9 +45,9 @@ public class TargetedBiomassGrowth extends CellProcess {
 		
 	}
 
-	public TargetedBiomassGrowth(Lattice lattice, Geometry geom, 
+	public TargetedBiomassGrowth(CellLayer layer, Geometry geom, 
 			double delta, boolean defer, int target) {
-		super(null, lattice, 0, geom, null);
+		super(null, layer, 0, geom, null);
 		
 		this.delta = delta;
 		this.defer = defer;
@@ -59,7 +58,7 @@ public class TargetedBiomassGrowth extends CellProcess {
 		
 		// If the target state doesn't exist, don't waste any time
 		// checking cells.
-		int targetCount = lattice.getStateMapViewer().getCount(targetCellType);
+		int targetCount = layer.getViewer().getStateMapViewer().getCount(targetCellType);
 		if (targetCount == 0) {
 			return;
 		}
@@ -67,8 +66,8 @@ public class TargetedBiomassGrowth extends CellProcess {
 		ArrayList<Coordinate> targetSites = new ArrayList<Coordinate>(targetCount);
 		// Feed the cells.
 		for (Coordinate site : activeSites) {
-			if (lattice.isOccupied(site) && lattice.getCell(site).getState() == targetCellType) {
-				lattice.getCell(site).feed(delta);
+			if (layer.getViewer().isOccupied(site) && layer.getViewer().getCell(site).getState() == targetCellType) {
+				layer.getViewer().getCell(site).feed(delta);
 				targetSites.add(site);
 			}
 		}
@@ -79,7 +78,7 @@ public class TargetedBiomassGrowth extends CellProcess {
 		// interactions.
 		if (!defer) {
 			for (Coordinate site : targetSites) {
-				lattice.apply(site);
+				layer.getUpdateManager().apply(site);
 			}
 		}
 		

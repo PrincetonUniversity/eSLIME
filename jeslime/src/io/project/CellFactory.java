@@ -6,8 +6,7 @@ import cells.Cell;
 import cells.FissionCell;
 import cells.SimpleCell;
 
-import structural.Lattice;
-
+import layers.cell.CellLayer; 
 /**
  * Instantiates a cell based on specifications from a cell descriptor
  * XML element. The requirements for this element depend on the class
@@ -20,7 +19,7 @@ import structural.Lattice;
  */
 public class CellFactory {
 
-	private Lattice lattice;
+	private CellLayer layer;
 	private Element cellDescriptor;
 	private int state;
 	
@@ -28,8 +27,8 @@ public class CellFactory {
 	 * @param lattice
 	 * @param cellDescriptor
 	 */
-	public CellFactory(Lattice lattice, Element cellDescriptor) {
-		this.lattice = lattice;
+	public CellFactory(CellLayer layer, Element cellDescriptor) {
+		this.layer = layer;
 		this.cellDescriptor = cellDescriptor;
 		
 		String stateText = cellDescriptor.element("state").getTextTrim();
@@ -80,7 +79,7 @@ public class CellFactory {
 	}
 
 	private int getNextState() {
-		Integer[] states = lattice.getStateMapViewer().getStates();
+		Integer[] states = layer.getViewer().getStateMapViewer().getStates();
 		Integer max = 0;
 		for (Integer s : states) {
 			if (s > max) {

@@ -1,4 +1,4 @@
-package jeslime;
+package jeslime.cells;
 import cells.Cell;
 import cells.SimpleCell;
 import junit.framework.TestCase;

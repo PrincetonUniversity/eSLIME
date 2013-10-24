@@ -7,9 +7,9 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
+import layers.cell.CellLayer;
 import structural.GeneralParameters;
-import structural.Lattice;
-import structural.halt.HaltCondition;
+import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
 /**
@@ -18,7 +18,7 @@ import structural.identifiers.Coordinate;
  *
  */
 public abstract class Writer {
-	protected Lattice lattice;
+	protected CellLayer layer;
 	protected Geometry geometry;
 	protected GeneralParameters p;
 	
@@ -31,7 +31,7 @@ public abstract class Writer {
 	 * Initialize data structures for an instance.
 	 * @param l 
 	 */
-	public abstract void init(Lattice l);
+	public abstract void init(CellLayer l);
 	
 	/**
 	 * Step to the next frame of the current instance.

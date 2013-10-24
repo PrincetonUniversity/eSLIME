@@ -10,8 +10,7 @@ import java.util.TreeSet;
 
 import geometries.Geometry;
 import structural.GeneralParameters;
-import structural.Lattice;
-import structural.StateMapViewer;
+import layers.cell.CellLayer; import layers.cell.StateMapViewer;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
@@ -46,12 +45,12 @@ public class FrequencyWriter extends Writer {
 	}
 
 	@Override
-	public void init(Lattice l) {
+	public void init(CellLayer l) {
 		if (!closed) {
 			throw new IllegalStateException("Attempted to initialize active writer.");
 		}
 		closed = false;
-		lattice = l;
+		layer = l;
 
 		String filename = p.getInstancePath() + '/' + FILENAME;
 		mkDir(p.getInstancePath(), true);
@@ -69,7 +68,7 @@ public class FrequencyWriter extends Writer {
 			histo.put(frame, observations);
 			
 			// Iterate over all observed states for this frame.
-			StateMapViewer smv = lattice.getStateMapViewer();
+			StateMapViewer smv = layer.getViewer().getStateMapViewer();
 			for (Integer state : smv.getStates()) {
 				Integer count = smv.getCount(state);
 				observations.put(state, count);

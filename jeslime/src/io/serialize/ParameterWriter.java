@@ -7,8 +7,7 @@ import java.io.IOException;
 
 import geometries.Geometry;
 import structural.GeneralParameters;
-import structural.Lattice;
-import structural.halt.HaltCondition;
+import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
 public class ParameterWriter extends Writer {
@@ -34,7 +33,7 @@ public class ParameterWriter extends Writer {
 	}
 
 	@Override
-	public void init(Lattice l) {
+	public void init(CellLayer l) {
 		// Write out an instance-specific XML file.
 		if (p.getNumInstances() == 1) {
 			return;

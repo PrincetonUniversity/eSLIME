@@ -11,7 +11,7 @@ package cells;
  * take place only on calls to "apply."
  * 
  * @author dbborens
- *
+ * @test FissionCellTest
  */
 public class FissionCell extends Cell {
 

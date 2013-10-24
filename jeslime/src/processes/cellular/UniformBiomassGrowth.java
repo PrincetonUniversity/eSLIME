@@ -9,8 +9,7 @@ import io.project.ProcessLoader;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
-import structural.Lattice;
-import structural.halt.HaltCondition;
+import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
 /**
@@ -29,18 +28,18 @@ public class UniformBiomassGrowth extends CellProcess {
 	// a cell before the new biomass accumulates.
 	private boolean defer;
 	
-	public UniformBiomassGrowth(ProcessLoader loader, Lattice lattice, int id,
+	public UniformBiomassGrowth(ProcessLoader loader, CellLayer layer, int id,
 			Geometry geom, GeneralParameters p) {
-		super(loader, lattice, id, geom, p);
+		super(loader, layer, id, geom, p);
 		
 		delta = Double.valueOf(get("delta"));
 		
 		defer = Boolean.valueOf(get("defer"));
 	}
 
-	public UniformBiomassGrowth(Lattice lattice, Geometry geom, 
+	public UniformBiomassGrowth(CellLayer layer, Geometry geom, 
 			double delta, boolean defer) {
-		super(null, lattice, 0, geom, null);
+		super(null, layer, 0, geom, null);
 		
 		this.delta = delta;
 		this.defer = defer;
@@ -58,8 +57,8 @@ public class UniformBiomassGrowth extends CellProcess {
 	public void fire(StepState state) throws HaltCondition {
 		// Feed the cells.
 		for (Coordinate site : activeSites) {
-			if (lattice.isOccupied(site)) {
-				lattice.getCell(site).feed(delta);
+			if (layer.getViewer().isOccupied(site)) {
+				layer.getViewer().getCell(site).feed(delta);
 			}
 		}
 		
@@ -69,8 +68,8 @@ public class UniformBiomassGrowth extends CellProcess {
 		// interactions.
 		if (!defer) {
 			for (Coordinate site : activeSites) {
-				if (lattice.isOccupied(site)) {
-					lattice.apply(site);
+				if (layer.getViewer().isOccupied(site)) {
+					layer.getUpdateManager().apply(site);
 				}
 			}
 		}

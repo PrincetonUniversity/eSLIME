@@ -1,4 +1,4 @@
-package jeslime;
+package jeslime.processes;
 
 import processes.gillespie.GillespieChooser;
 import processes.gillespie.GillespieState;

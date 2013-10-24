@@ -15,8 +15,7 @@ import processes.gillespie.GillespieState;
 import cells.Cell;
 import cells.SimpleCell;
 import structural.GeneralParameters;
-import structural.Lattice;
-import structural.halt.HaltCondition;
+import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.halt.LatticeFullEvent;
 import structural.identifiers.Coordinate;
 
@@ -29,10 +28,10 @@ public class Scatter extends CellProcess {
 	
 	private HashSet<Coordinate> candidates = null;
 	
-	public Scatter(ProcessLoader loader, Lattice lattice, int id,
+	public Scatter(ProcessLoader loader, CellLayer layer, int id,
 			Geometry geom, GeneralParameters p) {
 		
-		super(loader, lattice, id, geom, p);
+		super(loader, layer, id, geom, p);
 
 		random = p.getRandom();
 		
@@ -45,7 +44,7 @@ public class Scatter extends CellProcess {
 		candidates = new HashSet<Coordinate>();
 		
 		for (Coordinate c : activeSites) {
-			if (!lattice.getOccupiedSites().contains(c)) {
+			if (!layer.getViewer().isOccupied(c)) {
 				candidates.add(c);
 			}
 		}
@@ -58,13 +57,13 @@ public class Scatter extends CellProcess {
 		}
 
 		for (int i = 0; i < numGroups; i++) {
-			CellFactory factory = getCellFactory(lattice);
+			CellFactory factory = getCellFactory(layer);
 			
 			// Create a cell factory for this group 
 			for (int j = 0; j < groupSize; j++) {
 
 				if (candidates.isEmpty()) {
-					throw new LatticeFullEvent(lattice.getGillespie()); 
+					throw new LatticeFullEvent(state.getTime()); 
 				}
 
 				// Choose target randomly
@@ -75,7 +74,8 @@ public class Scatter extends CellProcess {
 
 				Cell cell = factory.instantiate();
 				
-				lattice.place(cell, target);
+				layer.getUpdateManager().place(cell, target);
+				
 				//state.highlight(target);
 				candidates.remove(target);
 			}

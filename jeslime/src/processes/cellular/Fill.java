@@ -15,8 +15,7 @@ import processes.gillespie.GillespieState;
 import cells.Cell;
 import cells.SimpleCell;
 import structural.GeneralParameters;
-import structural.Lattice;
-import structural.halt.HaltCondition;
+import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.halt.LatticeFullEvent;
 import structural.identifiers.Coordinate;
 
@@ -36,10 +35,10 @@ public class Fill extends CellProcess {
 	// that it expected to fill.
 	boolean skipFilled;
 	
-	public Fill(ProcessLoader loader, Lattice lattice, int id,
+	public Fill(ProcessLoader loader, CellLayer layer, int id,
 			Geometry geom, GeneralParameters p) {
 		
-		super(loader, lattice, id, geom, p);
+		super(loader, layer, id, geom, p);
 		
 		skipFilled = Boolean.valueOf(get("skip-filled-sites"));
 		
@@ -54,10 +53,10 @@ public class Fill extends CellProcess {
 	}
 	
 	public void fire(StepState state) throws HaltCondition {
-		CellFactory factory = getCellFactory(lattice);
+		CellFactory factory = getCellFactory(layer);
 		
 		for (Coordinate c : activeSites) {
-			boolean filled = lattice.getOccupiedSites().contains(c);
+			boolean filled = layer.getViewer().isOccupied(c);
 			
 			if (filled && !skipFilled) {
 				String msg = "Attempted to fill coordinate " + c.toString() + 
@@ -68,7 +67,7 @@ public class Fill extends CellProcess {
 				throw new IllegalStateException(msg);
 			} else if (!filled) {
 				Cell cell = factory.instantiate();
-				lattice.place(cell, c);
+				layer.getUpdateManager().place(cell, c);
 			} else {
 				// Do nothing if site is filled and skipFilled is true.
 			}

@@ -6,6 +6,11 @@ import no.uib.cipr.matrix.io.MatrixVectorReader;
 
 import structural.identifiers.Coordinate;
 
+/**
+ * @test (see subclasses)
+ * @author David Bruce Borenstein
+ *
+ */
 public abstract class Geometry {
 
 	/*******************************

@@ -1,4 +1,4 @@
-package jeslime;
+package jeslime.geometries;
 import java.util.HashSet;
 
 import structural.Flags;

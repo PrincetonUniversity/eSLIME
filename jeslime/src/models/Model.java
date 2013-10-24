@@ -1,5 +1,7 @@
 package models;
 
+import layers.cell.CellLayer;
+import layers.cell.StateMapViewer;
 import processes.Process;
 import processes.StepState;
 import io.project.ProcessFactory;
@@ -7,8 +9,6 @@ import io.project.ProcessLoader;
 import io.serialize.SerializationManager;
 import geometries.Geometry;
 import structural.GeneralParameters;
-import structural.Lattice;
-import structural.StateMapViewer;
 import structural.halt.*;
 
 public class Model {
@@ -16,9 +16,11 @@ public class Model {
 	private GeneralParameters p;
 	private Geometry g;
 	private SerializationManager mgr;
-	private Lattice lattice;
+	private CellLayer layer;
 	
 	private Process[] processes;
+	
+	private double time = 0.0D;
 	
 	public Model(GeneralParameters p, ProcessLoader loader, Geometry g,
 			SerializationManager mgr) {
@@ -29,10 +31,10 @@ public class Model {
 		this.mgr = mgr;
 		
 		// Build lattice.
-		lattice = new Lattice(g);
+		layer = new CellLayer(g, 0);
 		
 		// Build process factory.
-		ProcessFactory factory = new ProcessFactory(loader, lattice, p, g);
+		ProcessFactory factory = new ProcessFactory(loader, layer, p, g);
 		
 		Integer[] ids = loader.getProcesses();
 		processes = new Process[ids.length];
@@ -44,7 +46,7 @@ public class Model {
 		}
 			
 		// Call back to serialization manager.
-		mgr.nextSimulation(lattice);
+		mgr.nextSimulation(layer);
 	}
 	
 	/**
@@ -86,12 +88,13 @@ public class Model {
 
 			// Send the results to the serialization manager.
 			mgr.step(state.getHighlights(), state.getDt(), t);
+			time += state.getDt();
 		}
 		
 		// If we got here, it's because we got through the outermost
 		// loop, which proceeds for a specified number of iterations
 		// before terminating. (This prevents infinite loops.)
-		return new StepMaxReachedEvent(lattice.getGillespie());
+		return new StepMaxReachedEvent(time);
 		
 	}
 	private boolean triggered(int t, Process process) {
@@ -130,11 +133,11 @@ public class Model {
 	}
 
 	protected void checkForFixation() throws FixationEvent {
-		StateMapViewer smv = lattice.getStateMapViewer();
+		StateMapViewer smv = layer.getViewer().getStateMapViewer();
 		
 		for (Integer state : smv.getStates()) {
 			if (smv.getCount(state) == g.getSiteCount()) {
-				throw new FixationEvent(state, lattice.getGillespie());
+				throw new FixationEvent(state, time);
 			}
 		}
 	}

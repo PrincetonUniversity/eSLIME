@@ -18,6 +18,7 @@ import models.*;
  * It is used for ad-hoc simulations and testing. Batch executions use
  * a command line argument to specify a parameters file.
  * 
+ * @test (not needed)
  * @author dbborens
  * @see ConsoleLaunch
  */

@@ -10,8 +10,7 @@ import processes.StepState;
 import processes.gillespie.GillespieState;
 import geometries.Geometry;
 import structural.GeneralParameters;
-import structural.Lattice;
-import structural.halt.HaltCondition;
+import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
 /**
@@ -24,10 +23,10 @@ import structural.identifiers.Coordinate;
 public class NeighborSwap extends CellProcess {
 
 	private List<SwapTuple> candidates = null;
-	public NeighborSwap(ProcessLoader loader, Lattice lattice, int id,
+	public NeighborSwap(ProcessLoader loader, CellLayer layer, int id,
 			Geometry geom, GeneralParameters p) {
 		
-		super(loader, lattice, id, geom, p);
+		super(loader, layer, id, geom, p);
 		
 	}
 
@@ -50,7 +49,7 @@ public class NeighborSwap extends CellProcess {
 			return;
 		}
 		
-		lattice.swap(target.p, target.q);
+		layer.getUpdateManager().swap(target.p, target.q);
 		
 		state.highlight(target.p);
 		state.highlight(target.q);
@@ -88,7 +87,7 @@ public class NeighborSwap extends CellProcess {
 		candidates = new ArrayList<SwapTuple>();
 		
 		// Get a list of occupied sites
-		Set<Coordinate> coords = lattice.getOccupiedSites();
+		Set<Coordinate> coords = layer.getViewer().getOccupiedSites();
 		
 		// For each occupied site...
 		for(Coordinate coord : coords) {
@@ -98,7 +97,7 @@ public class NeighborSwap extends CellProcess {
 			
 			// Add each possible swap as a candidate
 			for (Coordinate neighbor : neighbors) {
-				if (lattice.isOccupied(neighbor)) {
+				if (layer.getViewer().isOccupied(neighbor)) {
 					SwapTuple sw = new SwapTuple(coord, neighbor);
 					candidates.add(sw);
 				}

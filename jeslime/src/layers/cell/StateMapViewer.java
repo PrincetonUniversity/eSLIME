@@ -1,9 +1,11 @@
-package structural;
+package layers.cell;
 
 import java.util.Map;
 
 /**
- * Read-only viewer for the state map object.
+ * 
+ * @test StateMapViewerTest
+ * @author David Bruce Borenstein
  *
  */
 public class StateMapViewer {

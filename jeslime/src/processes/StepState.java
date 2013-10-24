@@ -20,8 +20,13 @@ public class StepState {
 
 	private Set<Coordinate> highlights = new HashSet<Coordinate>();
 	private double dt = 0D;
+	private double time;
 	private boolean closed = false;
 	
+	
+	public void stepState(double time) {
+		this.time = time;
+	}
 	public void highlight(Coordinate c) {
 		if (closed)
 			throw new IllegalStateException("Consistency failure in StepState object");
@@ -54,5 +59,15 @@ public class StepState {
 		}
 		
 		return highlights.toArray(new Coordinate[0]);
+	}
+	
+	/**
+	 * Gets the system time as of the start of the cycle. Does not factor
+	 * in the amount of time that has elapsed since the start of the
+	 * cycle (dt).
+	 * @return
+	 */
+	public double getTime() {
+		return time;
 	}
 }

@@ -6,8 +6,7 @@ import java.util.Set;
 import org.dom4j.Element;
 
 import processes.gillespie.GillespieState;
-import structural.Lattice;
-import structural.halt.HaltCondition;
+import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 import geometries.Geometry;
 import io.project.CellFactory;
@@ -141,8 +140,8 @@ public abstract class Process {
 		return start;
 	}
 	
-	protected CellFactory getCellFactory(Lattice lattice) {
-		return new CellFactory(lattice, e.element("cell-descriptor"));
+	protected CellFactory getCellFactory(CellLayer layer) {
+		return new CellFactory(layer, e.element("cell-descriptor"));
 	}
 	
 	/**

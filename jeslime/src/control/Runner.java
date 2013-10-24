@@ -14,6 +14,12 @@ import models.Model;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;
 
+/**
+ * 
+ * @test (not needed)
+ * @author David Bruce Borenstein
+ *
+ */
 public class Runner implements Runnable {
 
 	private String fn;

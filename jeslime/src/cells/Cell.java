@@ -1,5 +1,12 @@
 package cells;
 
+/**
+ * Parent class for cells.
+ * 
+ * @tested (see subclass tests)
+ * @author David Bruce Borenstein
+ *
+ */
 public abstract class Cell {
 	private int state;
 	private double fitness;

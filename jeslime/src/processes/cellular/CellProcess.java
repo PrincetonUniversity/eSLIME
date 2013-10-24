@@ -5,10 +5,9 @@ import geometries.Geometry;
 import structural.identifiers.Coordinate;
 import io.project.ProcessLoader;
 import structural.GeneralParameters;
-import structural.Lattice;
-
+import layers.cell.CellLayer; 
 public abstract class CellProcess extends Process {
-	protected Lattice lattice;
+	protected CellLayer layer;
 	protected GeneralParameters p;
 	
 	// This set represents the sites where the process
@@ -16,14 +15,14 @@ public abstract class CellProcess extends Process {
 	// to all canonical sites.
 	protected Coordinate[] activeSites;
 	
-	public CellProcess(ProcessLoader loader, Lattice lattice, int id, 
+	public CellProcess(ProcessLoader loader, CellLayer layer, int id, 
 			Geometry geom, GeneralParameters p) {
 		
 		
 		super(loader, id, geom);
 		
 		this.p = p;
-		this.lattice = lattice;
+		this.layer = layer;
 		
 		activeSites = this.loadSiteList("active-sites");
 	}

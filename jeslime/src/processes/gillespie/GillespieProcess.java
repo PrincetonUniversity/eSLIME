@@ -12,8 +12,7 @@ import processes.StepState;
 import processes.cellular.CellProcess;
 import processes.Process;
 import structural.GeneralParameters;
-import structural.Lattice;
-import structural.halt.HaltCondition;
+import layers.cell.CellLayer; import structural.halt.HaltCondition;
 
 /**
  * Sets up and executes a Gillespie process. This process takes a list of
@@ -34,9 +33,9 @@ public class GillespieProcess extends CellProcess {
 	private HashMap<Integer, Process> childrenById;
 	private GillespieState substate;
 	
-	public GillespieProcess(ProcessLoader loader, Lattice lattice, int id,
+	public GillespieProcess(ProcessLoader loader, CellLayer layer, int id,
 			Geometry geom, GeneralParameters p) {
-		super(loader, lattice, id, geom, p);
+		super(loader, layer, id, geom, p);
 		
 		loadChildren(loader);
 	}
@@ -46,7 +45,7 @@ public class GillespieProcess extends CellProcess {
 		
 		ProcessLoader subloader = new ProcessLoader(root);
 
-		ProcessFactory factory = new ProcessFactory(subloader, lattice, p, geom);
+		ProcessFactory factory = new ProcessFactory(subloader, layer, p, geom);
 		
 		Integer[] ids = subloader.getProcesses();
 		

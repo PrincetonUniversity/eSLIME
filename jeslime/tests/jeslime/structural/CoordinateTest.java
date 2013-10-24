@@ -1,4 +1,4 @@
-package jeslime;
+package jeslime.structural;
 import java.util.HashSet;
 
 import junit.framework.TestCase;

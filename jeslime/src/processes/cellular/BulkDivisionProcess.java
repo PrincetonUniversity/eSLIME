@@ -11,7 +11,7 @@ import geometries.Geometry;
 import io.project.ProcessLoader;
 import structural.Flags;
 import structural.GeneralParameters;
-import structural.Lattice;
+import layers.cell.CellLayer; 
 import structural.halt.HaltCondition;
 import structural.halt.LatticeFullEvent;
 import structural.identifiers.Coordinate;
@@ -20,9 +20,9 @@ public abstract class BulkDivisionProcess extends CellProcess{
 
 	protected Random random;
 
-	public BulkDivisionProcess(ProcessLoader loader, Lattice lattice, int id,
+	public BulkDivisionProcess(ProcessLoader loader, CellLayer layer, int id,
 			Geometry geom, GeneralParameters p) {
-		super(loader, lattice, id, geom, p);
+		super(loader, layer, id, geom, p);
 		random = p.getRandom();
 
 	}
@@ -44,16 +44,16 @@ public abstract class BulkDivisionProcess extends CellProcess{
 		//state.highlight(origin);
 		
 		// Get nearest vacancies to the cell
-		Coordinate[] targets = lattice.getNearestVacancies(origin, -1);
+		Coordinate[] targets = layer.getLookupManager().getNearestVacancies(origin, -1);
 		if (targets.length == 0) {
-			throw new LatticeFullEvent(lattice.getGillespie());
+			throw new LatticeFullEvent(state.getTime());
 		} else {
 			int i = random.nextInt(targets.length);
 			target = targets[i];
 		}
 		
 		// Get child cell
-		Cell child = lattice.divide(origin);
+		Cell child = layer.getUpdateManager().divide(origin);
 
 		// Move parent cell to the chosen vacancy, if necessary by shoving the
 		// parent and a line of interior cells toward the surface
@@ -66,7 +66,7 @@ public abstract class BulkDivisionProcess extends CellProcess{
 		for (Coordinate toCheck : preliminary) {
 
 			if (toCheck.hasFlag(Flags.END_OF_WORLD)) {
-				lattice.banish(toCheck);
+				layer.getUpdateManager().banish(toCheck);
 			} else {
 				// UNCOMMENT ME AFTER GENERATING IMAGES FOR NED!
 				//state.highlight(toCheck);
@@ -75,7 +75,7 @@ public abstract class BulkDivisionProcess extends CellProcess{
 		}
 		
 		// Divide the child cell into the vacancy left by the parent
-		lattice.place(child, origin);
+		layer.getUpdateManager().place(child, origin);
 
 	}
 	
@@ -129,7 +129,7 @@ public abstract class BulkDivisionProcess extends CellProcess{
 
 		shove(nextLoc, dNext, sites);
 
-		lattice.f_swap(curLoc, nextLoc);
+		layer.getUpdateManager().f_swap(curLoc, nextLoc);
 
 		sites.add(nextLoc);
 	}

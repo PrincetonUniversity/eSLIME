@@ -6,6 +6,9 @@ package cells;
  * As its name suggests, a simple cell is the minimal implementation of the
  * cell class. It does not interact with any solute field. The cell state field can be used
  * to differentiate between genotypes.
+ * 
+ * @author David Bruce Borenstein
+ * @test SimpleCellTest
  */
 public class SimpleCell extends Cell {
 

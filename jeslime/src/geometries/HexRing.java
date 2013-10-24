@@ -1,11 +1,3 @@
-/**
- *
- * HexRing -- a 2D triangular lattice geometry with a rectangular shape, having
- * a periodic boundary condition in the horizontal dimension and a "hard"
- * boundary on the vertical dimension (i.e., reflective for solutes and no-flow
- * for cells.)
- *
- */
 package geometries;
 
 import java.util.ArrayList;
@@ -13,6 +5,17 @@ import java.util.ArrayList;
 import structural.Flags;
 import structural.identifiers.Coordinate;
 
+/**
+ * 
+ * HexRing -- a 2D triangular lattice geometry with a rectangular shape, having
+ * a periodic boundary condition in the horizontal dimension and a "hard"
+ * boundary on the vertical dimension (i.e., reflective for solutes and no-flow
+ * for cells.)
+ * 
+ * @test HexRingTest
+ * @author David Bruce Borenstein
+ *
+ */
 public class HexRing extends Geometry {
 	private int height;
 	private int width;

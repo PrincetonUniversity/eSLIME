@@ -1,9 +1,3 @@
-/**
-  * HexArena -- a 2D triangular lattice with a rectangular shape, having
-  * absorbing boundary conditions on all sides for both cells and solutes.
-  *
-  * Cells which go beyond bounds return ESLIME::END_OF_WORLD.
-  */
 package geometries;
 
 import java.util.ArrayList;
@@ -11,6 +5,16 @@ import java.util.ArrayList;
 import structural.Flags;
 import structural.identifiers.Coordinate;
 
+/**
+ * HexArena -- a 2D triangular lattice with a rectangular shape, having
+ * absorbing boundary conditions on all sides for both cells and solutes.
+ *
+ * Cells which go beyond bounds return ESLIME::END_OF_WORLD.
+ * 
+ * @test HexArenaTest
+ * @author David Bruce Borenstein
+ *
+ */
 public class HexArena extends Geometry {
 	private int height;
 	private int width;

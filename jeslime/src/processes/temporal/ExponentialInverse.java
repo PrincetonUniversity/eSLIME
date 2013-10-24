@@ -4,8 +4,7 @@ import geometries.Geometry;
 import io.project.ProcessLoader;
 import processes.StepState;
 import structural.GeneralParameters;
-import structural.Lattice;
-import structural.halt.HaltCondition;
+import layers.cell.CellLayer; import structural.halt.HaltCondition;
 
 /**
  * Simple stochastic process for time scaling. Assumes all cells
@@ -21,18 +20,17 @@ import structural.halt.HaltCondition;
  */
 public class ExponentialInverse extends TimeProcess {
 
-	public ExponentialInverse(ProcessLoader loader, Lattice lattice, int id,
+	public ExponentialInverse(ProcessLoader loader, CellLayer layer, int id,
 			Geometry geom, GeneralParameters p) {
 		
-		super(loader, lattice, id, geom, p);
+		super(loader, layer, id, geom, p);
 	}
 
 	@Override
 	public void fire(StepState state) throws HaltCondition {
-		double lambda = 1.0D / lattice.getOccupiedSites().size();
+		double lambda = 1.0D / layer.getViewer().getOccupiedSites().size();
 		double dt = expRandom(lambda);
 		state.advanceClock(dt);
-		lattice.advanceClock(dt);
 	}
 
 }

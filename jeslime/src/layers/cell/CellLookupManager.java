@@ -1,0 +1,118 @@
+package layers.cell;
+
+import java.util.ArrayList;
+import java.util.HashSet;
+
+import geometries.Geometry;
+import structural.identifiers.Coordinate;
+
+/**
+ * 
+ * @test CellLookupManagerTest
+ * @author David Bruce Borenstein
+ *
+ */
+public class CellLookupManager {
+	
+	private CellLayerContent content;
+	private CellLayerIndices indices;
+	private Geometry geom;
+	
+	public CellLookupManager(Geometry geom, CellLayerContent content, CellLayerIndices indices) {
+		this.content = content;
+		this.indices = indices;
+		this.geom = geom;
+	}
+	
+	/**
+	 * Get the state of neighboring cells. Vacant cells are ignored.
+	 * @param coord
+	 * @return
+	 */
+	public int[] getNeighborStates(Coordinate coord) {
+		content.checkExists(coord);
+
+	    // Get set of neighbors
+		Coordinate[] neighbors = geom.getCellNeighbors(coord);
+
+		// Allocate return vector
+		int[] states = new int[neighbors.length];
+
+		// Check state of each neighbor
+	    for (int i = 0; i < neighbors.length; i++) {
+			Coordinate query = neighbors[i];
+			System.out.println("query: " + query);
+			states[i] = content.get(query).getState();
+		}
+
+		// Return
+		return states;
+	}
+	
+	/**
+	 * Get the site or sites with the minimum L1 (Manhattan) distance,
+	 * up to the specified maximum distance. If maxDistance is -1, the
+	 * search is unbounded.
+	 * @param coord
+	 * @param maxDistance
+	 * @return
+	 */
+	// TODO: Create a second function that doesn't have the second
+	// argument for unbounded searching?
+	public Coordinate[] getNearestVacancies(Coordinate coord, int maxDistance) {
+
+		content.checkExists(coord);
+
+
+		// If there are no vacancies, just return now. This should prevent infinite
+		// loop even when searching without bound.
+		if (!geom.isInfinite() && (indices.getOccupiedSites().size() > content.getCanonicalSites().length)) {
+			throw new IllegalStateException("Consistency failure.");
+		} else if (!geom.isInfinite() && (indices.getOccupiedSites().size() == content.getCanonicalSites().length)) {
+	    	return new Coordinate[0];
+		}
+
+		// Initialize return object
+		ArrayList<Coordinate> res = new ArrayList<Coordinate>();
+		
+		// Loop through looking for vacancies (starting with target site)
+		int r = 0;
+
+		// I included this extra map so I could check for duplicates in best 
+		// case O(1) time, but if I have to do that, doesn't it seem like I should
+		// be returning a set instead of building two data structures?
+		HashSet<Coordinate> incl = new HashSet<Coordinate>();
+
+		while ((maxDistance == -1) || (r <= maxDistance)) {
+
+			// We want to check every site, so don't use circumnavigation restriction.
+			Coordinate[] annulus = geom.getAnnulus(coord, r, false);
+
+
+	        for (int i = 0; i < annulus.length; i++) {
+
+				Coordinate query = annulus[i];
+
+				// Sanity check
+				content.checkExists(query);
+
+				if (!indices.isOccupied(query) && !incl.contains(query)) {
+			
+					incl.add(query);
+					res.add(query);
+				}
+
+			}
+
+			// If we've managed to populate res, it means that we founds targets
+			// in the current annulus, so return.
+			if (res.size() > 0) {
+				return(res.toArray(new Coordinate[0]));
+			}
+
+			r++;
+		} 
+
+		return(res.toArray(new Coordinate[0]));
+	}
+}

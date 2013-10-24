@@ -15,8 +15,7 @@ import no.uib.cipr.matrix.Vector;
 
 import cells.Cell;
 import structural.GeneralParameters;
-import structural.Lattice;
-import structural.halt.HaltCondition;
+import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 import structural.identifiers.Extrema;
 import structural.identifiers.NonZeroExtrema;
@@ -95,12 +94,12 @@ public class BufferedStateWriter extends Writer {
 		super(p, geom);
 	}
 
-	public void init(Lattice l) {
+	public void init(CellLayer l) {
 		if (!closed) {
 			throw new IllegalStateException("Attempting to initialize active writer!");
 		}
 		
-		lattice = l;
+		layer = l;
 		
 		initStructures(p, geometry);
 		
@@ -192,8 +191,8 @@ public class BufferedStateWriter extends Writer {
 	 * @param gillespie Interval (in simulated time) between the last time step and the current one.
 	 */
 	public void step(Coordinate[] highlights, double gillespie, int frame) {
-		int[] s = lattice.getStateVector();
-		double[] f = lattice.getFitnessVector();
+		int[] s = layer.getViewer().getStateVector();
+		double[] f = layer.getViewer().getFitnessVector();
 		
 		if (p.isFrame(frame)) {
 			writeDoubleArray(f, ef, gillespie, frame, "fitness");

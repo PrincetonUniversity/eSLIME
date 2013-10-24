@@ -4,8 +4,7 @@ import geometries.Geometry;
 import io.project.ProcessLoader;
 import processes.StepState;
 import structural.GeneralParameters;
-import structural.Lattice;
-import structural.halt.HaltCondition;
+import layers.cell.CellLayer; import structural.halt.HaltCondition;
 
 /**
  * Advances the clock by a constant dt.
@@ -16,10 +15,10 @@ import structural.halt.HaltCondition;
 public class Tick extends TimeProcess {
 
 	private double dt;
-	public Tick(ProcessLoader loader, Lattice lattice, int id,
+	public Tick(ProcessLoader loader, CellLayer layer, int id,
 			Geometry geom, GeneralParameters p) {
 		
-		super(loader, lattice, id, geom, p);
+		super(loader, layer, id, geom, p);
 		
 		dt = Double.valueOf(get("dt"));
 	}
@@ -27,7 +26,6 @@ public class Tick extends TimeProcess {
 	@Override
 	public void fire(StepState state) throws HaltCondition {
 		state.advanceClock(dt);
-		lattice.advanceClock(dt);
 	}
 
 }

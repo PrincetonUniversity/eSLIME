@@ -8,7 +8,7 @@ import java.util.Set;
 import org.dom4j.Element;
 
 import structural.GeneralParameters;
-import structural.Lattice;
+import layers.cell.CellLayer;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 import structural.postprocess.ImageSequence;
@@ -59,7 +59,7 @@ public class SerializationManager {
 	/**
 	 * Initialize all writers.
 	 */
-	public void init(Lattice l) {
+	public void init(CellLayer l) {
 		for (Writer tw : writers) {
 			tw.init(l);
 		}
@@ -78,7 +78,7 @@ public class SerializationManager {
 	 * Opens handles / initializes data structures for a new instance.
 	 * Blows up if these were left open from the previous instance.
 	 */
-	public void nextSimulation(Lattice l) {
+	public void nextSimulation(CellLayer l) {
 		for (Writer tw : writers) {
 			tw.init(l);
 		}	
