@@ -1,6 +1,6 @@
 package processes.cellular;
 
-import geometries.Geometry;
+import geometry.Geometry;
 import io.project.CellFactory;
 import io.project.ProcessLoader;
 

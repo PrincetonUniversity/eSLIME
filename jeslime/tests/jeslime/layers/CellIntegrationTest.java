@@ -7,7 +7,13 @@ import cells.SimpleCell;
 import junit.framework.TestCase;
 import layers.cell.CellLayer; import layers.cell.StateMapViewer;
 import structural.identifiers.Coordinate;
-import geometries.HexRing;
+import geometry.Geometry;
+import geometry.boundaries.Boundary;
+import geometry.boundaries.PlaneRingHard;
+import geometry.lattice.Lattice;
+import geometry.lattice.TriangularLattice;
+import geometry.shape.Rectangle;
+import geometry.shape.Shape;
 
 /**
  * Integration tests for the CellLayer object and
@@ -21,7 +27,11 @@ import geometries.HexRing;
 public class CellIntegrationTest extends TestCase {
 
 	public void testConstructor() {
-		HexRing geom = new HexRing(6, 6);
+		//HexRing geom = new HexRing(6, 6);
+		Lattice lattice = new TriangularLattice();
+		Shape shape = new Rectangle(lattice, 6, 6);
+		Boundary boundary = new PlaneRingHard(shape, lattice);
+		Geometry geom = new Geometry(lattice, shape, boundary);
 		
 		try {
 			new CellLayer(geom, 0);
@@ -31,7 +41,12 @@ public class CellIntegrationTest extends TestCase {
 	}
 
 	public void testInterrogate() {
-		HexRing geom = new HexRing(6, 6);
+		//HexRing geom = new HexRing(6, 6);
+		Lattice lattice = new TriangularLattice();
+		Shape shape = new Rectangle(lattice, 6, 6);
+		Boundary boundary = new PlaneRingHard(shape, lattice);
+		Geometry geom = new Geometry(lattice, shape, boundary);
+		
 		CellLayer layer = new CellLayer(geom, 0);
 
 		// Set up a cell
@@ -48,7 +63,11 @@ public class CellIntegrationTest extends TestCase {
 	}
 
 	public void testFeed() {
-		HexRing geom = new HexRing(6, 6);
+		//HexRing geom = new HexRing(6, 6);
+		Lattice lattice = new TriangularLattice();
+		Shape shape = new Rectangle(lattice, 6, 6);
+		Boundary boundary = new PlaneRingHard(shape, lattice);
+		Geometry geom = new Geometry(lattice, shape, boundary);
 		CellLayer layer = new CellLayer(geom, 0);
 
 		Cell toPlace = new FissionCell(1, 0.5, 1.0);
@@ -71,7 +90,11 @@ public class CellIntegrationTest extends TestCase {
 	}
 	
 	public void testNeighborStates() {
-		HexRing geom = new HexRing(6, 6);
+		//HexRing geom = new HexRing(6, 6);
+		Lattice lattice = new TriangularLattice();
+		Shape shape = new Rectangle(lattice, 6, 6);
+		Boundary boundary = new PlaneRingHard(shape, lattice);
+		Geometry geom = new Geometry(lattice, shape, boundary);
 		CellLayer layer = new CellLayer(geom, 0);
 
 		// Set up one cell
@@ -110,7 +133,11 @@ public class CellIntegrationTest extends TestCase {
 	}
 
 	public void testVacancyModel() {
-		HexRing geom = new HexRing(6, 6);
+		//HexRing geom = new HexRing(6, 6);
+		Lattice lattice = new TriangularLattice();
+		Shape shape = new Rectangle(lattice, 6, 6);
+		Boundary boundary = new PlaneRingHard(shape, lattice);
+		Geometry geom = new Geometry(lattice, shape, boundary);
 		CellLayer layer = new CellLayer(geom, 0);
 
 		// Set up one cell
@@ -119,7 +146,7 @@ public class CellIntegrationTest extends TestCase {
 		layer.getUpdateManager().place(toPlace, coord);
 
 		// List of vacancies should be canonical neighbors
-		Coordinate[] cVec = geom.getCellNeighbors(coord);
+		Coordinate[] cVec = geom.getNeighbors(coord, Geometry.APPLY_BOUNDARIES);
 		Coordinate[] nVec = layer.getLookupManager().getNearestVacancies(coord, -1);
 		assertEquals(cVec.length, nVec.length);
 
@@ -155,7 +182,11 @@ public class CellIntegrationTest extends TestCase {
 	}
 
 	public void testNoOverwriteOnPlace() {
-		HexRing geom = new HexRing(6, 6);
+		//HexRing geom = new HexRing(6, 6);
+		Lattice lattice = new TriangularLattice();
+		Shape shape = new Rectangle(lattice, 6, 6);
+		Boundary boundary = new PlaneRingHard(shape, lattice);
+		Geometry geom = new Geometry(lattice, shape, boundary);
 		CellLayer layer = new CellLayer(geom, 0);
 
 		// Set up one cell
@@ -175,7 +206,11 @@ public class CellIntegrationTest extends TestCase {
 	}
 
 	public void testNoOverwriteOnMove() {
-		HexRing geom = new HexRing(6, 6);
+		//HexRing geom = new HexRing(6, 6);
+		Lattice lattice = new TriangularLattice();
+		Shape shape = new Rectangle(lattice, 6, 6);
+		Boundary boundary = new PlaneRingHard(shape, lattice);
+		Geometry geom = new Geometry(lattice, shape, boundary);
 		CellLayer layer = new CellLayer(geom, 0);
 
 		// Set up one cell
@@ -202,7 +237,11 @@ public class CellIntegrationTest extends TestCase {
 	/********************/
 	
 	public void testLatticeFunctionality() {
-		HexRing geom = new HexRing(6, 6);
+		//HexRing geom = new HexRing(6, 6);
+		Lattice lattice = new TriangularLattice();
+		Shape shape = new Rectangle(lattice, 6, 6);
+		Boundary boundary = new PlaneRingHard(shape, lattice);
+		Geometry geom = new Geometry(lattice, shape, boundary);
 		CellLayer layer = new CellLayer(geom, 0);
 
 		// There shouldn't be anything in the state map yet.

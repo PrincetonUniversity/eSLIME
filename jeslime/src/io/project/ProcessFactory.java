@@ -9,7 +9,7 @@ import processes.gillespie.GillespieProcess;
 import processes.temporal.*;
 import structural.GeneralParameters;
 import layers.cell.CellLayer;
-import geometries.Geometry;
+import geometry.Geometry;
 
 public class ProcessFactory {
 

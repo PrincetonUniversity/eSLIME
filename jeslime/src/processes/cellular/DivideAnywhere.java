@@ -14,7 +14,7 @@ import layers.cell.CellLayer; import structural.halt.FixationEvent;
 import structural.halt.HaltCondition;
 import structural.halt.LatticeFullEvent;
 import structural.identifiers.Coordinate;
-import geometries.Geometry;
+import geometry.Geometry;
 
 public class DivideAnywhere extends BulkDivisionProcess {
 
@@ -31,7 +31,9 @@ public class DivideAnywhere extends BulkDivisionProcess {
 		HashSet<Coordinate> candSet = layer.getViewer().getDivisibleSites();
 		candidates = candSet.toArray(new Coordinate[0]);
 		
-		gs.add(getID(), candidates.length, candidates.length * 1.0D);
+		if (gs != null) {
+			gs.add(getID(), candidates.length, candidates.length * 1.0D);
+		}
 	}
 	
 	public void fire(StepState state) throws HaltCondition {

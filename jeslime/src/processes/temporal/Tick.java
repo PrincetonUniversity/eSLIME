@@ -1,6 +1,6 @@
 package processes.temporal;
 
-import geometries.Geometry;
+import geometry.Geometry;
 import io.project.ProcessLoader;
 import processes.StepState;
 import structural.GeneralParameters;

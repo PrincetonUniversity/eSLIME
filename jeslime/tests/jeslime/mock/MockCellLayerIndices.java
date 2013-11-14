@@ -3,13 +3,14 @@ package jeslime.mock;
 import java.util.HashSet;
 
 import cells.Cell;
+import layers.cell.CellIndex;
 import layers.cell.CellLayerIndices;
 import structural.identifiers.Coordinate;
 
 public class MockCellLayerIndices extends CellLayerIndices {
 
-	private HashSet<Coordinate> occupied = new HashSet<Coordinate>();
-	private HashSet<Coordinate> divisible = new HashSet<Coordinate>();
+	private CellIndex occupied = new CellIndex();
+	private CellIndex divisible = new CellIndex();
 	
 	public void setOccupied(Coordinate k, Boolean v) {
 		if (v)
@@ -24,11 +25,11 @@ public class MockCellLayerIndices extends CellLayerIndices {
 		else
 			divisible.remove(k);	}
 	
-	public void setOccupiedSites(HashSet<Coordinate> occupied) {
+	public void setOccupiedSites(CellIndex occupied) {
 		this.occupied = occupied;
 	}
 	
-	public void setDivisibleSites(HashSet<Coordinate> divisible) {
+	public void setDivisibleSites(CellIndex divisible) {
 		this.divisible = divisible;
 	}
 	
@@ -40,11 +41,11 @@ public class MockCellLayerIndices extends CellLayerIndices {
 		return divisible.contains(k);
 	}
 	
-	public HashSet<Coordinate> getOccupiedSites() {
+	public CellIndex getOccupiedSites() {
 		return occupied;
 	}
 	
-	public HashSet<Coordinate> getDivisibleSites() {
+	public CellIndex getDivisibleSites() {
 		return divisible;
 	}
 	

@@ -4,7 +4,7 @@ import java.util.HashSet;
 
 import org.dom4j.Element;
 
-import geometries.Geometry;
+import geometry.Geometry;
 import io.project.ProcessLoader;
 import processes.StepState;
 import processes.gillespie.GillespieState;

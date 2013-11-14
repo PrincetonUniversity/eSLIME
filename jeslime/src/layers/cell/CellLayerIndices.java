@@ -24,22 +24,23 @@ public class CellLayerIndices {
 	// so we track them as sets.
 
 	// Occupied sites (non-vacant sites)
-	protected HashSet<Coordinate> occupiedSites;
+	protected CellIndex occupiedSites;
 
 	// Divisible sites
-	protected HashSet<Coordinate> divisibleSites;
+	protected CellIndex divisibleSites;
 	
 	// Map that tracks count of cells with each state
 	protected HashMap<Integer, Integer> stateMap;
 		
 	public CellLayerIndices() {
-		occupiedSites = new HashSet<Coordinate>();
-		divisibleSites = new HashSet<Coordinate>();
+		occupiedSites = new CellIndex();
+		divisibleSites = new CellIndex();
 		stateMap = new HashMap<Integer, Integer>();
 	}
 	
 	public boolean isOccupied(Coordinate cell) {
-		if (occupiedSites.contains(cell)) {
+		Coordinate c = cell.canonicalize();
+		if (occupiedSites.contains(c)) {
 			return true;
 		} else {
 			return false;
@@ -47,7 +48,8 @@ public class CellLayerIndices {
 	}
 	
 	public boolean isDivisible(Coordinate cell) {
-		if (divisibleSites.contains(cell)) {
+		Coordinate c = cell.canonicalize();
+		if (divisibleSites.contains(c)) {
 			return true;
 		} else {
 			return false;
@@ -59,7 +61,7 @@ public class CellLayerIndices {
 	 * active site on the lattice.
 	 * @return
 	 */
-	public HashSet<Coordinate> getOccupiedSites() {
+	public CellIndex getOccupiedSites() {
 		return occupiedSites;
 	}
 	
@@ -68,7 +70,7 @@ public class CellLayerIndices {
 	 * 
 	 * @return
 	 */
-	public HashSet<Coordinate> getDivisibleSites() {
+	public CellIndex getDivisibleSites() {
 		return divisibleSites;
 	}
 

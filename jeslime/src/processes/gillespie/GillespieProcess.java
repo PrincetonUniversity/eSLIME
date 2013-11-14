@@ -5,7 +5,7 @@ import java.util.Random;
 
 import org.dom4j.Element;
 
-import geometries.Geometry;
+import geometry.Geometry;
 import io.project.ProcessFactory;
 import io.project.ProcessLoader;
 import processes.StepState;

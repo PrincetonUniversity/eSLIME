@@ -15,7 +15,7 @@ import layers.cell.CellLayer; import structural.halt.FixationEvent;
 import structural.halt.HaltCondition;
 import structural.halt.LatticeFullEvent;
 import structural.identifiers.Coordinate;
-import geometries.Geometry;
+import geometry.Geometry;
 
 public class ActiveLayerDivide extends BulkDivisionProcess {
 

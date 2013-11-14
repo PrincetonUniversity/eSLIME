@@ -65,11 +65,11 @@ public class CoordinateTest extends TestCase {
 
 	public void testFlags() {
 		// Create a coordinate with a couple of flags.
-		Coordinate first = new Coordinate(2, 4, Flags.TRIANGULAR | Flags.BEYOND_BOUNDS);
+		Coordinate first = new Coordinate(2, 4, Flags.BOUNDARY_APPLIED | Flags.BEYOND_BOUNDS);
 
 		// Verify that hasFlag(...) works for each.
-		assertEquals(first.flags(), Flags.TRIANGULAR | Flags.BEYOND_BOUNDS | Flags.PLANAR);
-		assertTrue(first.hasFlag(Flags.TRIANGULAR));
+		assertEquals(first.flags(), Flags.BOUNDARY_APPLIED | Flags.BEYOND_BOUNDS | Flags.PLANAR);
+		assertTrue(first.hasFlag(Flags.BOUNDARY_APPLIED));
 		assertTrue(first.hasFlag(Flags.BEYOND_BOUNDS));
 		assertTrue(first.hasFlag(Flags.PLANAR));
 
@@ -91,16 +91,18 @@ public class CoordinateTest extends TestCase {
 		assertEquals("(2, 4 | 1)", first.stringForm());
 
 		// Verify expected vector form.
-		assertEquals("<2, 4>", first.vectorForm());
+		Coordinate firstVector = first.addFlags(Flags.VECTOR);
+		assertEquals("<2, 4>", firstVector.stringForm());
 
 		// Create a 3D coordinate.
 		Coordinate second = new Coordinate(2, 4, 6, 0);
 
 		// Verify expected string form.
 		assertEquals("(2, 4, 6 | 0)", second.stringForm());
-
+		
 		// Verify expected vector form.
-		assertEquals("<2, 4, 6>", second.vectorForm());
+		Coordinate secondVector = second.addFlags(Flags.VECTOR);
+		assertEquals("<2, 4, 6>", secondVector.stringForm());
 
 	}
 
@@ -135,4 +137,47 @@ public class CoordinateTest extends TestCase {
 		assertEquals(coords.size(), 2);
 	}
 
+	public void testAddFlags() {
+		Coordinate c = new Coordinate(1, 2, 3, Flags.END_OF_WORLD);
+		Coordinate d = c.addFlags(Flags.BOUNDARY_APPLIED);
+		
+		assertFalse(c.hasFlag(Flags.BOUNDARY_APPLIED));
+		assertEquals(c.flags() | Flags.BOUNDARY_APPLIED, d.flags());
+	}
+	
+	public void testNorm() {
+		Coordinate c = new Coordinate(0, 0, 0, 0);
+		assertEquals(0, c.norm());
+		
+		c = new Coordinate(1, 0, 0);
+		assertEquals(1, c.norm());
+		
+		c = new Coordinate(-2, 2, 5);
+		assertEquals(4, c.norm());
+	}
+	
+	public void testClone() {
+		Coordinate c = new Coordinate(1, 2, 3, 4);
+		Coordinate d = c.clone();
+		
+		// Memory addresses should be different
+		assertFalse(c == d);
+		
+		// Objects should be identical
+		assertEquals(c, d);
+	}
+	
+	public void testCanonicalize() {
+		int flags = Flags.BEYOND_BOUNDS | Flags.BOUNDARY_APPLIED | Flags.BOUNDARY_IGNORED | Flags.END_OF_WORLD;
+		
+		Coordinate a = new Coordinate(0, 0, flags);
+		Coordinate b = new Coordinate(0, 0, 0, flags);
+		
+		Coordinate a1 = a.canonicalize();
+		Coordinate b1 = b.canonicalize();
+		
+		assertEquals(Flags.PLANAR, a1.flags());
+		assertEquals(0, b1.flags());
+		
+	}
 }

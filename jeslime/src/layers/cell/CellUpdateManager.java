@@ -167,6 +167,11 @@ public class CellUpdateManager {
 	 * @param qCoord
 	 */
 	public void f_swap(Coordinate pCoord, Coordinate qCoord) {
+		System.out.println("       Swapping " + pCoord + " and " + qCoord +".");
+		
+		pCoord = pCoord.canonicalize();
+		qCoord = qCoord.canonicalize();
+		
 		// When swapping a cell with itself, just return
 		if (pCoord.equals(qCoord)) {
 			return;
@@ -277,7 +282,7 @@ public class CellUpdateManager {
 		content.checkExists(coord);
 		
 		boolean divisible = indices.isOccupied(coord) && content.get(coord).isDivisible();
-		HashSet<Coordinate> div = indices.getDivisibleSites();
+		CellIndex div = indices.getDivisibleSites();
 
 		if (div.contains(coord) && !divisible) {
 			div.remove(coord);

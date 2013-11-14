@@ -1,20 +1,31 @@
 package jeslime.mock;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import structural.identifiers.Coordinate;
-import geometries.Geometry;
+import geometry.Geometry;
+import geometry.boundaries.Boundary;
+import geometry.lattice.Lattice;
+import geometry.shape.Shape;
 
 public class MockGeometry extends Geometry {
 
 	/* infinite */
 	
+	public MockGeometry() {
+		this(null, null, null);
+	}
+	public MockGeometry(Lattice lattice, Shape shape, Boundary boundary) {
+		super(lattice, shape, boundary);
+	}
+
 	private boolean infinite;
 	
 	public void setInfinite(boolean infinite) {
 		this.infinite = infinite;
 	}
-
+	
 	@Override
 	public boolean isInfinite() {
 		return infinite;
@@ -22,7 +33,7 @@ public class MockGeometry extends Geometry {
 	
 	/* canonicalSites */
 	
-	private Coordinate[] canonicalSites;
+	protected Coordinate[] canonicalSites;
 	
 	public void setCanonicalSites(Coordinate[] canonicalSites) {
 		this.canonicalSites = canonicalSites;
@@ -39,51 +50,32 @@ public class MockGeometry extends Geometry {
 	public void setCellNeighbors(Coordinate coord, Coordinate[] neighbors) {
 		cellNeighbors.put(coord, neighbors);
 	}
-	
+
 	@Override
-	public Coordinate[] getCellNeighbors(Coordinate coord) {
+	public Coordinate[] getNeighbors(Coordinate coord, int mode) {
 		return cellNeighbors.get(coord);
 	}
 	
-	@Override
-	public Coordinate wrap(int x0, int y0, int z0) {
-		// TODO Auto-generated method stub
-		return null;
+	protected void consider(ArrayList<Coordinate> neighbors, int x, int y) {
+		Coordinate candidate = new Coordinate(x, y, 0);
+		
+		for (int i = 0; i < canonicalSites.length; i++) {
+			if (canonicalSites[i].equals(candidate)) {
+				neighbors.add(candidate);
+				return;
+			}
+		}
+
 	}
 
-
-
-	@Override
-	public Coordinate[] getSoluteNeighbors(Coordinate coord) {
-		// TODO Auto-generated method stub
-		return null;
+	protected void consider(ArrayList<Coordinate> neighbors, int x, int y, int z) {
+		Coordinate candidate = new Coordinate(x, y, z, 0);
+		
+		for (int i = 0; i < canonicalSites.length; i++) {
+			if (canonicalSites[i].equals(candidate)) {
+				neighbors.add(candidate);
+				return;
+			}
+		}
 	}
-
-	@Override
-	public Coordinate[] getAnnulus(Coordinate coord, int r, boolean circ) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
-	@Override
-	public int[] getDisplacement(Coordinate pCoord, Coordinate qCoord) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public Coordinate rel2abs(Coordinate coord, int[] displacement) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int getSiteCount() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-
 }

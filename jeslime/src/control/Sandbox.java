@@ -16,21 +16,12 @@ public class Sandbox {
 
 	public static void main(String[] args)
 	{
-	    try {
-	        Synthesizer synthesizer = MidiSystem.getSynthesizer();
-	        synthesizer.open();
-
-	        MidiChannel[] channels = synthesizer.getChannels();
-
-	        channels[0].noteOn(600, 10);
-	        Thread.sleep(20000);
-	        channels[0].noteOff(600);
-
-	        synthesizer.close();
-	    } catch (Exception e)
-	    {
-	        e.printStackTrace();
-	    }
+		int a = 1;
+		int b = 2;
+		
+		double c = 3.0 * ((double) a / b);
+		
+		System.out.println(c);
 	}
 
 }

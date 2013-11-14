@@ -6,7 +6,7 @@ import java.util.HashSet;
 import structural.GeneralParameters;
 import structural.VectorViewer;
 import structural.identifiers.Coordinate;
-import geometries.*;
+import geometry.*;
 
 public class ConditionViewer {
 

@@ -1,6 +1,6 @@
 package control;
 
-import geometries.Geometry;
+import geometry.Geometry;
 import io.project.GeometryFactory;
 import io.project.ProcessLoader;
 import io.project.ProjectLoader;
@@ -39,7 +39,7 @@ public class Runner implements Runnable {
 			Element processRoot = pp.getElement("processes");
 			loader = new ProcessLoader(processRoot);
 			p = new GeneralParameters(pp);
-			g = GeometryFactory.make(pp);
+			g = GeometryFactory.make(pp.getElement("geometry"));
 		} catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}

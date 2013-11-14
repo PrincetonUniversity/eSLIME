@@ -3,7 +3,7 @@ package structural.identifiers;
 import structural.Flags;
 
 
-public class Coordinate {
+public class Coordinate implements Comparable<Coordinate> {
 	protected int x, y, z;
 	protected int flags;
 	
@@ -36,6 +36,36 @@ public class Coordinate {
 		this.flags = c.flags;
 	}
 
+	public Coordinate(int[] vec, int flags) {
+		x = vec[0];
+		y = vec[1];
+		this.flags = flags;
+		if (!hasFlag(Flags.PLANAR)) {
+			z = vec[2];
+		} 
+	}
+
+	@Override
+	public Coordinate clone() {
+		if (hasFlag(Flags.PLANAR)) {
+			return new Coordinate(x, y, flags);
+		} else {
+			return new Coordinate(x, y, z, flags);
+		}
+	}
+	
+	public int norm() {
+		int total = 0;
+		total += Math.abs(x);
+		total += Math.abs(y);
+		
+		if (!hasFlag(Flags.PLANAR)) {
+			total += Math.abs(z);
+		}
+		
+		return total;
+	}
+	
 	public int x() {
 		return x;
 	}
@@ -89,13 +119,12 @@ public class Coordinate {
 	}
 	
 	public String stringForm() {
-		return canonical("(", ")", true);
+		if (hasFlag(Flags.VECTOR)) {
+			return canonical("<", ">", false);
+		} else {
+			return canonical("(", ")", true);
+		}
 	}
-	
-	public String vectorForm() {
-		return canonical("<", ">", false);
-	}
-	
 	protected String canonical(String open, String close, boolean useFlags) {
 		StringBuilder ss = new StringBuilder();
 		
@@ -124,6 +153,62 @@ public class Coordinate {
 	public boolean hasFlag(int flag) {
 		return ((flags & flag) != 0);
 	}
-	
+
+	/**
+	 * This (arbitrary) comparitor is used to make ordered
+	 * arrays, eg for tests.
+	 */
+	@Override
+	public int compareTo(Coordinate o) {
+		if (x > o.x) {
+			return 1;
+		} else if (x < o.x) {
+			return -1;
+		} else if (y > o.y) {
+			return 1;
+		} else if (y < o.y) {
+			return -1;
+		} else if (z > o.z) {
+			return 1;
+		} else if (z < o.z) {
+			return -1;
+		} else {
+			return 0;
+		}
+	}
+
+	/**
+	 * Clone the coordinate with additional flags.
+	 */
+	public Coordinate addFlags(int f) {
+		Coordinate ret;
+		int rf = flags() | f;
+
+		if (hasFlag(Flags.PLANAR)) {
+			ret = new Coordinate(x, y, rf);
+		} else {
+			ret = new Coordinate(x, y, z, rf);
+		}
+		
+		return ret;
+	}
+
+	/**
+	 * Return a coordinate with same location as this one, and all
+	 * flags cleared except for the PLANAR flag.
+	 * 
+	 * @return
+	 */
+	public Coordinate canonicalize() {
+		Coordinate ret;
+		
+		if (hasFlag(Flags.PLANAR)) {
+			ret = new Coordinate(x, y, 0);
+		} else {
+			ret = new Coordinate(x, y, z, 0);
+		}
+		
+		return ret;
+	}
 	
 }

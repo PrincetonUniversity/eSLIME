@@ -4,7 +4,7 @@ import java.util.Map;
 
 import cells.Cell;
 import structural.identifiers.Coordinate;
-import geometries.Geometry;
+import geometry.Geometry;
 import layers.cell.CellLayerContent;
 import layers.cell.CellLayerIndices;
 

@@ -6,8 +6,13 @@ import processes.cellular.CellProcess;
 import processes.cellular.UniformBiomassGrowth;
 import cells.Cell;
 import cells.FissionCell;
-import geometries.Geometry;
-import geometries.HexRing;
+import geometry.Geometry;
+import geometry.boundaries.Boundary;
+import geometry.boundaries.PlaneRingHard;
+import geometry.lattice.Lattice;
+import geometry.lattice.TriangularLattice;
+import geometry.shape.Rectangle;
+import geometry.shape.Shape;
 import structural.Flags;
 import layers.cell.CellLayer; import structural.identifiers.Coordinate;
 import junit.framework.TestCase;
@@ -18,7 +23,11 @@ public class UniformBiomassGrowthTest extends TestCase {
 
 	public void testUndeferred() {
 		// Set up a dummy simulation
-		Geometry geom = new HexRing(6, 6);
+		//Geometry geom = new HexRing(6, 6);
+		Lattice lattice = new TriangularLattice();
+		Shape shape = new Rectangle(lattice, 6, 6);
+		Boundary boundary = new PlaneRingHard(shape, lattice);
+		Geometry geom = new Geometry(lattice, shape, boundary);
 		CellLayer layer = new CellLayer(geom, 0);
 		
 		// Create two cells that can be fed
@@ -57,7 +66,11 @@ public class UniformBiomassGrowthTest extends TestCase {
 	
 	public void testDeferred() {
 		// Set up a dummy simulation
-		Geometry geom = new HexRing(6, 6);
+		//Geometry geom = new HexRing(6, 6);
+		Lattice lattice = new TriangularLattice();
+		Shape shape = new Rectangle(lattice, 6, 6);
+		Boundary boundary = new PlaneRingHard(shape, lattice);
+		Geometry geom = new Geometry(lattice, shape, boundary);
 		CellLayer layer = new CellLayer(geom, 0);
 		
 		// Create two cells that can be fed

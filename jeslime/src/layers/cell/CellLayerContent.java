@@ -1,6 +1,6 @@
 package layers.cell;
 
-import geometries.Geometry;
+import geometry.Geometry;
 
 import java.util.HashMap;
 
@@ -43,15 +43,16 @@ public class CellLayerContent {
 	}
 	
 	public Coordinate checkExists(Coordinate coord) {
-		
 		// First check to see if this cell is supposed to be retained even though
 		// it is not a "real" coordinate.
 		if (geom.isInfinite() && coord.hasFlag(Flags.END_OF_WORLD)) {
 			return coord;
 		}
+		
+		Coordinate canonical = coord.canonicalize();
 
 		// Otherwise, it had better be in the coordinate system.
-		if (!map.containsKey(coord)) {
+		if (!map.containsKey(canonical)) {
 			StringBuilder ss = new StringBuilder();
 			ss.append("Consistency failure: coordinate ");
 			ss.append(coord.stringForm());
@@ -59,7 +60,7 @@ public class CellLayerContent {
 			String str = ss.toString();
 			throw new IllegalStateException(str);
 		}
-		return coord;
+		return canonical;
 	}
 	
 	public Cell get(Coordinate coord) {
@@ -70,7 +71,7 @@ public class CellLayerContent {
 			throw new IllegalStateException("Attempted to access an empty cell.");
 
 	    // Get pointer to cell and return it
-		Cell res = map.get(coord);
+		Cell res = map.get(coord.canonicalize());
 
 	    return res;
 	}

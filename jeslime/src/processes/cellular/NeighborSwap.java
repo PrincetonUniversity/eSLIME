@@ -8,7 +8,7 @@ import java.util.Set;
 
 import processes.StepState;
 import processes.gillespie.GillespieState;
-import geometries.Geometry;
+import geometry.Geometry;
 import structural.GeneralParameters;
 import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
@@ -93,7 +93,7 @@ public class NeighborSwap extends CellProcess {
 		for(Coordinate coord : coords) {
 		
 			// See how many occupied neighbors it has
-			Coordinate[] neighbors = geom.getCellNeighbors(coord);
+			Coordinate[] neighbors = geom.getNeighbors(coord, Geometry.APPLY_BOUNDARIES);
 			
 			// Add each possible swap as a candidate
 			for (Coordinate neighbor : neighbors) {
@@ -108,6 +108,8 @@ public class NeighborSwap extends CellProcess {
 		// Weight is defined in terms of number of swappable cells,
 		// whereas event count is defined in terms of number of possible
 		// swaps.
-		gs.add(getID(), candidates.size(), coords.size() * 1.0D);
+		if (gs != null) {
+			gs.add(getID(), candidates.size(), coords.size() * 1.0D);
+		}
 	}
 }

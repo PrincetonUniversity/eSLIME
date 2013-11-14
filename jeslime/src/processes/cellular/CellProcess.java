@@ -1,7 +1,7 @@
 package processes.cellular;
 
 import processes.Process;
-import geometries.Geometry;
+import geometry.Geometry;
 import structural.identifiers.Coordinate;
 import io.project.ProcessLoader;
 import structural.GeneralParameters;

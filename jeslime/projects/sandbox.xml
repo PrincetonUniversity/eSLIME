@@ -1,52 +1,65 @@
 <simulation>
+
+	<!-- Since the project specification can change between versions, eSLIME
+	     checks the project description against the internal version number.
+	     The simulation will not run if they don't match.
+	-->
+	
+	<version>v0.3.0</version>
+	
+	<!-- Some general parameters about the output of the simulation. -->
+	
 	<general>
-		<version>v0.1.5</version>
 		<random-seed>*</random-seed>
 		<instances>1</instances>
-		<write-state-histogram>false</write-state-histogram>
 		<write-lineage-map>true</write-lineage-map>
-		<write-state>true</write-state>
-		<write-metadata>true</write-metadata>
-		<write-interval>false</write-interval>
-		<write-fix-time>false</write-fix-time>
 		<path>/Users/dbborens/state/jeSLIME/</path>
 		<date-stamp>true</date-stamp>
-		<max-step>10</max-step>
+		<max-step>1001</max-step>
 		<output-frames>
-			<auto mode="all" />
+			<auto mode="decilog" />
 		</output-frames>
 	</general>
+
+	
+	<!-- Use a rectangular arena geometry with a triangular lattice. -->
+	
 	<geometry>
-		<class>HexRing</class>
-		<width>32</width>
-		<height>32</height>
+		<shape>
+			<class>Rectangle</class>
+			<width>10</width>
+			<height>8</height>
+		</shape>
+		<lattice>
+			<class>Triangular</class>
+		</lattice>
+		<boundary>
+			<class>PlaneRingHard</class>
+		</boundary>
 	</geometry>
+	
+	<!-- 
+	     Describe how the simulation will proceed. "period=0" means it
+	     happens only once.
+	-->
+	
 	<processes>
-		<time-process>
-			<id>0</id>
-			<class>SimpleGillespie</class>
-			<period>1</period>
-		</time-process>
-		<cell-process>
+	
+		<scatter>
 			<id>50</id>
-			<class>Fill</class>
+			<class>Scatter</class>
 			<cell-descriptor>
 				<class>FissionCell</class>
 				<state>1</state>
 				<initial-fitness>0.5</initial-fitness>
 				<threshold>1.0</threshold>
 			</cell-descriptor>
-			<active-sites>
-				<mode>line</mode>
-				<origin x="0" y="0" />
-				<displacement u="0" v="0" w="1">
-				<length>32</length>
-			</active-sites>
 			<period>0</period>
 			<types>1</types>
 			<tokens>1</tokens>
-		</cell-process>
-		<cell-process>
+		</scatter>
+		
+		<scatter>
 			<id>51</id>
 			<class>Scatter</class>
 			<cell-descriptor>
@@ -55,52 +68,59 @@
 				<initial-fitness>0.5</initial-fitness>
 				<threshold>1.0</threshold>
 			</cell-descriptor>
-			<active-sites>
-				<mode>list</mode>
-				<coordinate x="20" y="25" />
-			</active-sites>
 			<period>0</period>
 			<types>1</types>
 			<tokens>1</tokens>
-		</cell-process>		
-		<cell-process>
+		</scatter>		
+		
+		<uniform-biomass-growth>
 			<id>150</id>
 			<class>UniformBiomassGrowth</class>
 			<delta>0.01</delta>
 			<defer>false</defer>
-		</cell-process>
-		<cell-process>
-			<id>175</id>
-			<class>TargetedBiomassGrowth</class>
-			<delta>1.0</delta>
-			<target>1</target>			
-			<defer>false</defer>
-			<active-sites>
-				<mode>list</mode>
-				<coordinate x="15" y="23" />
-				<coordinate x="15" y="24" />
-				<coordinate x="16" y="24" />
-				<coordinate x="16" y="23" />
-				<coordinate x="15" y="22" />
-				<coordinate x="14" y="22" />				
-				<coordinate x="14" y="23" />
-			</active-sites>
-		</cell-process>
-		<cell-process>
+		</uniform-biomass-growth>
+		
+		<divide-anywhere>
 			<id>200</id>
 			<class>DivideAnywhere</class>
-		</cell-process>
-		<cell-process>
+		</divide-anywhere>
+		
+		<neighbor-swap>
 			<id>300</id>
 			<class>NeighborSwap</class>
 			<period>10</period>
-		</cell-process>
+		</neighbor-swap>
+		
+		<tick>
+			<id>0</id>
+			<dt>1.0</dt>
+		</tick>		
 	</processes>
-	<visualizations>
-		<state-map>
-			<edge-length>10</edge-length>
-			<labels>false</labels>
-			<format>png</format>
-		</state-map>
-	</visualizations>
+	
+	<!-- 
+	     Writers are used to specify the kinds of output that should be
+	     created during the simulation. This is the raw output; visualizations
+	     are handled in their own section. Note that visualizations often
+	     have prerequisites.
+	     
+	     State is only captured in the frames specified by the "output-frames"
+	     tag. This will eventually be modified to specify frames by either
+	     simulation time (t) or cycle number (n). 
+	-->
+	<writers>
+	
+		<!-- 
+		    This writer creates a FASTA-like vector representation of the system
+		    state. This includes the phenotype of each cell, the fitness, and so
+		    on. It also writes an index file that specifies the mapping between
+		    vector index and coordinate value. Finally, it records information
+		    about global extrema, such as the minimum and
+		    maximum of each solute field, as well as minimum and maximum fitnesses.
+		    This is used for setting the scale of some visualizations.
+		-->
+		
+		<state-vector />
+		<parameter-writer />
+		<progress-reporter />
+	</writers>
 </simulation>

@@ -1,6 +1,6 @@
 package io.serialize;
 
-import geometries.Geometry;
+import geometry.Geometry;
 
 import java.io.BufferedWriter;
 import java.io.File;

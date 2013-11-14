@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 
-import geometries.Geometry;
+import geometry.Geometry;
 import structural.GeneralParameters;
 import layers.cell.CellLayer; import layers.cell.StateMapViewer;
 import structural.halt.HaltCondition;

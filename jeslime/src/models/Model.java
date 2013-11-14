@@ -7,7 +7,7 @@ import processes.StepState;
 import io.project.ProcessFactory;
 import io.project.ProcessLoader;
 import io.serialize.SerializationManager;
-import geometries.Geometry;
+import geometry.Geometry;
 import structural.GeneralParameters;
 import structural.halt.*;
 
@@ -136,7 +136,7 @@ public class Model {
 		StateMapViewer smv = layer.getViewer().getStateMapViewer();
 		
 		for (Integer state : smv.getStates()) {
-			if (smv.getCount(state) == g.getSiteCount()) {
+			if (smv.getCount(state) == g.getCanonicalSites().length) {
 				throw new FixationEvent(state, time);
 			}
 		}

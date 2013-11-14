@@ -2,9 +2,10 @@ package io.serialize;
 
 import java.io.BufferedWriter;
 
-import geometries.Geometry;
+import geometry.Geometry;
 import structural.GeneralParameters;
-import layers.cell.CellLayer; import structural.halt.FixationEvent;
+import layers.cell.CellLayer; 
+import structural.halt.FixationEvent;
 import structural.halt.HaltCondition;
 import structural.halt.StepMaxReachedEvent;
 import structural.identifiers.Coordinate;

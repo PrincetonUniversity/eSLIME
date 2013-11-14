@@ -1,6 +1,6 @@
 package io.serialize;
 
-import geometries.Geometry;
+import geometry.Geometry;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -11,8 +11,6 @@ import java.util.Date;
 import java.util.HashMap;
 
 import no.uib.cipr.matrix.Vector;
-
-
 import cells.Cell;
 import structural.GeneralParameters;
 import layers.cell.CellLayer; import structural.halt.HaltCondition;

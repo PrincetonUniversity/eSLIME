@@ -1,6 +1,6 @@
 package io.serialize;
 
-import geometries.Geometry;
+import geometry.Geometry;
 import structural.GeneralParameters;
 import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;

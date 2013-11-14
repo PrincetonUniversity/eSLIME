@@ -1,7 +1,6 @@
 package io.visual;
 
-import geometries.*;
-
+import geometry.*;
 import io.deserialize.ConditionViewer;
 
 import java.awt.Color;

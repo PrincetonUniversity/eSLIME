@@ -2,7 +2,7 @@ package processes.temporal;
 
 import processes.Process;
 import processes.gillespie.GillespieState;
-import geometries.Geometry;
+import geometry.Geometry;
 import io.project.ProcessLoader;
 import structural.GeneralParameters;
 import layers.cell.CellLayer;

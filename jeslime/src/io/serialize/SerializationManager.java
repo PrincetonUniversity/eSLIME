@@ -12,7 +12,7 @@ import layers.cell.CellLayer;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 import structural.postprocess.ImageSequence;
-import geometries.Geometry;
+import geometry.Geometry;
 
 public class SerializationManager {
 

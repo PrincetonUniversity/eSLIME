@@ -10,7 +10,7 @@ import java.io.File;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;
 import structural.postprocess.ImageSequence;
-import geometries.Geometry;
+import geometry.Geometry;
 import models.*;
 
 /**

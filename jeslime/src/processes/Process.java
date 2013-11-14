@@ -8,7 +8,7 @@ import org.dom4j.Element;
 import processes.gillespie.GillespieState;
 import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
-import geometries.Geometry;
+import geometry.Geometry;
 import io.project.CellFactory;
 import io.project.ProcessLoader;
 import io.project.ProjectLoader;
@@ -30,7 +30,7 @@ public abstract class Process {
 		this.geom = geom;
 
 		if (loader == null) {
-			System.err.println("WARNING: Mock behavior for process loader invoked. Use only for testing!");
+			//System.err.println("WARNING: Mock behavior for process loader invoked. Use only for testing!");
 			id = 0;
 			period = 1;
 			return;
@@ -293,7 +293,7 @@ public abstract class Process {
 		coordinates.add(c);
 
 		for (int i = 0; i < length; i++) {
-			Coordinate cNext = geom.rel2abs(c, d);
+			Coordinate cNext = geom.rel2abs(c, d, Geometry.APPLY_BOUNDARIES);
 			c = cNext;
 			coordinates.add(c);
 		}

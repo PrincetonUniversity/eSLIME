@@ -3,7 +3,8 @@ package layers.cell;
 import java.util.ArrayList;
 import java.util.HashSet;
 
-import geometries.Geometry;
+import geometry.Geometry;
+import structural.Flags;
 import structural.identifiers.Coordinate;
 
 /**
@@ -33,7 +34,7 @@ public class CellLookupManager {
 		content.checkExists(coord);
 
 	    // Get set of neighbors
-		Coordinate[] neighbors = geom.getCellNeighbors(coord);
+		Coordinate[] neighbors = geom.getNeighbors(coord, Geometry.APPLY_BOUNDARIES);
 
 		// Allocate return vector
 		int[] states = new int[neighbors.length];
@@ -41,7 +42,6 @@ public class CellLookupManager {
 		// Check state of each neighbor
 	    for (int i = 0; i < neighbors.length; i++) {
 			Coordinate query = neighbors[i];
-			System.out.println("query: " + query);
 			states[i] = content.get(query).getState();
 		}
 
@@ -86,13 +86,16 @@ public class CellLookupManager {
 		while ((maxDistance == -1) || (r <= maxDistance)) {
 
 			// We want to check every site, so don't use circumnavigation restriction.
-			Coordinate[] annulus = geom.getAnnulus(coord, r, false);
-
+			Coordinate[] annulus = geom.getAnnulus(coord, r, Geometry.APPLY_BOUNDARIES);
 
 	        for (int i = 0; i < annulus.length; i++) {
 
 				Coordinate query = annulus[i];
 
+				if (query.hasFlag(Flags.UNDEFINED)) {
+					System.err.println("WARNING: Cleaning undefined coordinate " + query + ". Undefined coordinates should not be returned in getAnnulus(...).");
+					continue;
+				}
 				// Sanity check
 				content.checkExists(query);
 

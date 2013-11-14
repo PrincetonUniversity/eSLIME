@@ -17,7 +17,7 @@ public class CellLayerContentTest extends TestCase {
 		Coordinate inside = new Coordinate(0, 0, 0);
 		Coordinate outside = new Coordinate(-1, -1, Flags.END_OF_WORLD);
 		
-		MockGeometry geom = new MockGeometry();
+		MockGeometry geom = new MockGeometry(null, null, null);
 		geom.setCanonicalSites(new Coordinate[] {inside});
 		CellLayerContent content = new CellLayerContent(geom, null);
 

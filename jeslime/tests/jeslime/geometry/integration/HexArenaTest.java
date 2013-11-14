@@ -1,34 +1,27 @@
-package jeslime.geometries;
+package jeslime.geometry.integration;
+import geometry.Geometry;
+import geometry.boundaries.Arena;
+import geometry.boundaries.Boundary;
+import geometry.lattice.Lattice;
+import geometry.lattice.TriangularLattice;
+import geometry.shape.Rectangle;
+import geometry.shape.Shape;
+
 import java.util.HashSet;
 
+import jeslime.EslimeTestCase;
 import structural.Flags;
 import structural.identifiers.Coordinate;
-import geometries.HexArena;
 import junit.framework.TestCase;
 
-
-public class HexArenaTest extends TestCase {
-
-	private void checkCtorException(int x, int y, boolean expected) {
-		boolean actual = false;
-		try {
-			new HexArena(x, y);
-		} catch (Exception e) {
-			actual = true;
-		}
-		
-		assertEquals(actual, expected);
-	}
-	
-	public void testConstructor() {
-		checkCtorException(3,  2,  true);
-		checkCtorException(2,  3,  true);
-		checkCtorException(0,  2,  true);
-		checkCtorException(2,  0,  true);
-		checkCtorException(-6, 2,  true);
-		checkCtorException(4,  4,  false);
-	}
-
+/**
+ * Regression/integration tests from earliest version of geometry
+ * model. These tests use an arena geometry. Originally ported 
+ * from C++.
+ * 
+ * @author dbborens
+ */
+public class HexArenaTest extends EslimeTestCase {
 
 	// Test indexing and de-indexing behavior in 2D and 3D.
 	//
@@ -39,8 +32,6 @@ public class HexArenaTest extends TestCase {
 	// Also note that calling the z coordinate of a 2D point will,
 	// by design, return 0.
 	public void testIndex() {
-		HexArena hr = new HexArena(4, 4);
-
 		Coordinate o2 = new Coordinate(0, 0, 0);
 		Coordinate o3 = new Coordinate(0, 0, 0, 0);
 
@@ -71,7 +62,10 @@ public class HexArenaTest extends TestCase {
 		// Produce 6x4 HexArena
 		int height = 6;
 		int width = 4;
-		HexArena hr = new HexArena(height, width);
+		Lattice lattice = new TriangularLattice();
+		Shape shape = new Rectangle(lattice, width, height);
+		Boundary boundary = new Arena(shape, lattice);
+		Geometry hr = new Geometry(lattice, shape, boundary);
 
 		// Create unordered set of all expected coordinates
 		HashSet<Coordinate> s = new HashSet<Coordinate>();
@@ -93,100 +87,93 @@ public class HexArenaTest extends TestCase {
 		}
 	}
 
-	// "DONE"
-	// getL2Distance(...)
-	public void testL2Distance() {
-		HexArena hr = new HexArena(4, 4);
-
-		Coordinate p = new Coordinate(3, 3, 0);
-		Coordinate q = new Coordinate(4, 4, 0);
-
-		// This functionality should throw an U.O.E.
-		boolean actual = false;
-		try {
-			hr.getL2Distance(p, q);
-		} catch (Exception ex) {
-			actual = true;
-		}
-		
-		assertTrue(actual);
-	}
-
 
 	// getL1Distance(...)
 	// getDisplacement(...)
 	public void testL1AndDisplacement() {
-		HexArena hr = new HexArena(4, 6);
-
+		Lattice lattice = new TriangularLattice();
+		Shape shape = new Rectangle(lattice, 4, 6);
+		Boundary boundary = new Arena(shape, lattice);
+		Geometry hr = new Geometry(lattice, shape, boundary);
+		
 		Coordinate p = new Coordinate(1, 1, 0);
 		Coordinate q = new Coordinate(2, 4, 0);
 
-		int[] disp = hr.getDisplacement(p, q);
-
-		assertEquals(1, disp[0]);
-		assertEquals(2, disp[1]);
-		assertEquals(0, disp[2]);
-		assertEquals(3, hr.getL1Distance(p, q));
+		Coordinate disp = hr.getDisplacement(p, q, Geometry.APPLY_BOUNDARIES);
+		Coordinate expected = new Coordinate(0, 1, 2, Flags.VECTOR);
+		assertEquals(expected, disp);
+		
+		assertEquals(3, hr.getL1Distance(p, q, Geometry.APPLY_BOUNDARIES));
 
 		p = new Coordinate(1, 2, 0);
 		q = new Coordinate(0, 0, 0);
+		disp = hr.getDisplacement(p, q, Geometry.APPLY_BOUNDARIES);
+		expected = new Coordinate(0, -1, -1, Flags.VECTOR);
+		assertEquals(expected, disp);
 
-		disp = hr.getDisplacement(p, q);
-
-		assertEquals(-1, disp[0]);
-		assertEquals(-1, disp[1]);
-		assertEquals(0, disp[2]);
-		assertEquals(2, hr.getL1Distance(p, q));
+		assertEquals(2, hr.getL1Distance(p, q, Geometry.APPLY_BOUNDARIES));
 
 		p = new Coordinate(0, 0, 0);
 		q = new Coordinate(0, 0, 0);
+		disp = hr.getDisplacement(p, q, Geometry.APPLY_BOUNDARIES);
+		expected = new Coordinate(0, 0, 0, Flags.VECTOR);
+		assertEquals(expected, disp);
 
-		disp = hr.getDisplacement(p, q);
-
-		assertEquals(0, disp[0]);
-		assertEquals(0, disp[1]);
-		assertEquals(0, disp[1]);
-		assertEquals(0, hr.getL1Distance(p, q));
+		assertEquals(0, hr.getL1Distance(p, q, Geometry.APPLY_BOUNDARIES));
 	}
 
 
 	// Test (non-)wrapping
 	public void testWrap() {
 
-		HexArena hr = new HexArena(4, 4);
-
+		Lattice lattice = new TriangularLattice();
+		Shape shape = new Rectangle(lattice, 4, 4);
+		Boundary boundary = new Arena(shape, lattice);
+		Geometry hr = new Geometry(lattice, shape, boundary);
+		
 		// Over right edge
-		Coordinate actual = hr.wrap(4, 2, 0);
-		Coordinate expected = new Coordinate(4, 2, Flags.END_OF_WORLD);
+		Coordinate actual, expected, initial;
+		initial = new Coordinate(4, 2, 0);
+		actual = hr.apply(initial, Geometry.APPLY_BOUNDARIES);
+		expected = new Coordinate(4, 2, Flags.END_OF_WORLD | Flags.BOUNDARY_APPLIED);
 		assertEquals(actual, expected);
 
 		// Over left edge
-		actual = hr.wrap(-1, 0, 0);
-		expected = new Coordinate(-1, 0, Flags.END_OF_WORLD);
+		initial = new Coordinate(-1, 0, 0);
+		actual = hr.apply(initial, Geometry.APPLY_BOUNDARIES);
+		expected = new Coordinate(-1, 0, Flags.END_OF_WORLD | Flags.BOUNDARY_APPLIED);
 		assertEquals(actual, expected);
 
 		// Above
-		actual = hr.wrap(4, 0, 0);
-		expected = new Coordinate(4, 0, Flags.END_OF_WORLD);
+		initial = new Coordinate(4, 0, 0);
+		actual = hr.apply(initial, Geometry.APPLY_BOUNDARIES);
+		expected = new Coordinate(4, 0, Flags.END_OF_WORLD | Flags.BOUNDARY_APPLIED);
+		assertEquals(actual, expected);
 
 		// No wrap (internal coordinate)
-		actual = hr.wrap(2, 3, 0);
-		expected = actual;
+		initial = new Coordinate(2, 3, 0);
+		actual = hr.apply(initial, Geometry.APPLY_BOUNDARIES);
+		expected = new Coordinate(2, 3, 0);
 		assertEquals(actual, expected);
 
 		// More than twice the system width
-		actual = hr.wrap(9, 6, 0);
-		expected = new Coordinate(9, 6, Flags.END_OF_WORLD);
+		initial = new Coordinate(9, 6, 0);
+		actual = hr.apply(initial, Geometry.APPLY_BOUNDARIES);
+		expected = new Coordinate(9, 6, Flags.END_OF_WORLD | Flags.BOUNDARY_APPLIED);
 		assertEquals(actual, expected);
-
 	}
 
 	public void testCellNeighbors() {
-		HexArena hr = new HexArena(6, 6);
 
+		Lattice lattice = new TriangularLattice();
+		Shape shape = new Rectangle(lattice, 6, 6);
+		Boundary boundary = new Arena(shape, lattice);
+		Geometry hr = new Geometry(lattice, shape, boundary);
+		
 		// Interior
-		Coordinate coord = hr.wrap(3, 4, 0);
-
+		Coordinate initial = new Coordinate(3, 4, 0);
+		Coordinate coord = hr.apply(initial, Geometry.APPLY_BOUNDARIES);
+		
 		HashSet<Coordinate> interior_exp = new HashSet<Coordinate>();
 		interior_exp.add(new Coordinate(3, 5, 0));
 		interior_exp.add(new Coordinate(4, 5, 0));
@@ -195,7 +182,7 @@ public class HexArenaTest extends TestCase {
 		interior_exp.add(new Coordinate(2, 3, 0));
 		interior_exp.add(new Coordinate(2, 4, 0));
 
-		Coordinate[] neighbors = hr.getCellNeighbors(coord);
+		Coordinate[] neighbors = hr.getNeighbors(coord, Geometry.APPLY_BOUNDARIES);
 
 		assertEquals(neighbors.length, 6);
 		for (int i = 0; i < neighbors.length; i++) {
@@ -204,17 +191,18 @@ public class HexArenaTest extends TestCase {
 		}
 
 		// Side -- check wrapped
-		coord = hr.wrap(5, 5, 0);
+		initial = new Coordinate(5, 5, 0);
+		coord = hr.apply(initial, Geometry.APPLY_BOUNDARIES);
 
 		HashSet<Coordinate> side_exp = new HashSet<Coordinate>();
 		side_exp.add(new Coordinate(5, 6, 0));
-		side_exp.add(new Coordinate(6, 6, Flags.END_OF_WORLD));
-		side_exp.add(new Coordinate(6, 5, Flags.END_OF_WORLD));
+		side_exp.add(new Coordinate(6, 6, Flags.END_OF_WORLD | Flags.BOUNDARY_APPLIED));
+		side_exp.add(new Coordinate(6, 5, Flags.END_OF_WORLD | Flags.BOUNDARY_APPLIED));
 		side_exp.add(new Coordinate(5, 4, 0));
 		side_exp.add(new Coordinate(4, 4, 0));
 		side_exp.add(new Coordinate(4, 5, 0));
 
-		neighbors = hr.getCellNeighbors(coord);
+		neighbors = hr.getNeighbors(coord, Geometry.APPLY_BOUNDARIES);
 		assertEquals(neighbors.length, 6);
 		for (int i = 0; i < neighbors.length; i++) {
 			Coordinate neighbor = neighbors[i];
@@ -222,17 +210,18 @@ public class HexArenaTest extends TestCase {
 		}
 
 		// Bottom
-		coord = hr.wrap(2, 1, 0);
+		initial = new Coordinate(2, 1, 0);
+		coord = hr.apply(initial, Geometry.APPLY_BOUNDARIES);
 
 		HashSet<Coordinate> bottom_exp = new HashSet<Coordinate>();
-		bottom_exp.add(new Coordinate(2, 0, Flags.END_OF_WORLD));
+		bottom_exp.add(new Coordinate(2, 0, Flags.END_OF_WORLD | Flags.BOUNDARY_APPLIED));
 		bottom_exp.add(new Coordinate(1, 0, 0));
 		bottom_exp.add(new Coordinate(1, 1, 0));
 		bottom_exp.add(new Coordinate(2, 2, 0));
 		bottom_exp.add(new Coordinate(3, 2, 0));
 		bottom_exp.add(new Coordinate(3, 1, 0));
 
-		neighbors = hr.getCellNeighbors(coord);
+		neighbors = hr.getNeighbors(coord, Geometry.APPLY_BOUNDARIES);
 
 		assertEquals(6, neighbors.length);
 		for (int i = 0; i < neighbors.length; i++) {
@@ -245,8 +234,10 @@ public class HexArenaTest extends TestCase {
 	// for the HexTorus geometry.
 	// getSoluteNeighbors(...)
 	public void testSoluteNeighbors() {
-		HexArena hr = new HexArena(6, 6);
-
+		Lattice lattice = new TriangularLattice();
+		Shape shape = new Rectangle(lattice, 6, 6);
+		Boundary boundary = new Arena(shape, lattice);
+		Geometry hr = new Geometry(lattice, shape, boundary);
 		Coordinate[] neighbors;
 
 		// Interior
@@ -260,7 +251,7 @@ public class HexArenaTest extends TestCase {
 		interior_exp.add(new Coordinate(2, 3, 0));
 		interior_exp.add(new Coordinate(2, 4, 0));
 
-		neighbors = hr.getSoluteNeighbors(coord);
+		neighbors = hr.getNeighbors(coord, Geometry.EXCLUDE_BOUNDARIES);
 
 		assertEquals(neighbors.length, 6);
 		for (int i = 0; i < neighbors.length; i++) {
@@ -273,14 +264,12 @@ public class HexArenaTest extends TestCase {
 
 		HashSet<Coordinate> side_exp = new HashSet<Coordinate>();
 		side_exp.add(new Coordinate(5, 6, 0));
-		side_exp.add(new Coordinate(6, 5, Flags.END_OF_WORLD));
-		side_exp.add(new Coordinate(6, 6, Flags.END_OF_WORLD));
 		side_exp.add(new Coordinate(5, 4, 0));
 		side_exp.add(new Coordinate(4, 4, 0));
 		side_exp.add(new Coordinate(4, 5, 0));
 
-		neighbors = hr.getSoluteNeighbors(coord);
-		assertEquals(neighbors.length, 6);
+		neighbors = hr.getNeighbors(coord, Geometry.EXCLUDE_BOUNDARIES);
+		assertEquals(side_exp.size(), neighbors.length);
 		for (int i = 0; i < neighbors.length; i++) {
 			Coordinate neighbor = neighbors[i];
 			assertTrue(side_exp.contains(neighbor));
@@ -296,12 +285,9 @@ public class HexArenaTest extends TestCase {
 		bottom_exp.add(new Coordinate(3, 2, 0));
 		bottom_exp.add(new Coordinate(3, 1, 0));
 
-		// The cell is counted as a "neighbor" because southerly-moving
-		// solute is reflected back.
-		bottom_exp.add(new Coordinate(2, 0, Flags.END_OF_WORLD));
 
-		neighbors = hr.getSoluteNeighbors(coord);
-		assertEquals(6, neighbors.length);
+		neighbors = hr.getNeighbors(coord, Geometry.EXCLUDE_BOUNDARIES);
+		assertEquals(bottom_exp.size(), neighbors.length);
 
 		for (int i = 0; i < neighbors.length; i++) {
 
@@ -313,29 +299,26 @@ public class HexArenaTest extends TestCase {
 
 	// getAnnulus(...)
 	public void testAnnulus() {
-		HexArena hr = new HexArena(4, 4);
-
+		Lattice lattice = new TriangularLattice();
+		Shape shape = new Rectangle(lattice, 6, 6);
+		Boundary boundary = new Arena(shape, lattice);
+		Geometry hr = new Geometry(lattice, shape, boundary);
+		
 		Coordinate coord = new Coordinate(0, 2, 0);
 
 		Coordinate[] result;
 
 		// Point
-		result = hr.getAnnulus(coord, 0, false);
-		assertEquals(1, result.length);
-		assertEquals(coord, result[0]);
-
-		result = hr.getAnnulus(coord, 0, true);
+		result = hr.getAnnulus(coord, 0, Geometry.APPLY_BOUNDARIES);
 		assertEquals(1, result.length);
 		assertEquals(coord, result[0]);
 
 		// r=1
-		result = hr.getAnnulus(coord, 1, true);
+		result = hr.getAnnulus(coord, 1, Geometry.APPLY_BOUNDARIES);
 		assertEquals(6, result.length);
 
 		// r=2 (big)--circumnavigation shouldn't matter.
-		result = hr.getAnnulus(coord, 2, true);
-		assertEquals(12, result.length);
-		result = hr.getAnnulus(coord, 2, false);
+		result = hr.getAnnulus(coord, 2, Geometry.APPLY_BOUNDARIES);
 		assertEquals(12, result.length);
 	}
 
@@ -343,25 +326,47 @@ public class HexArenaTest extends TestCase {
 	// are 6x6, as in the lattice tests.
 	public void originWrap() {
 		// Explicitly test wrapping behavior in vicinity of origin
-		HexArena hr = new HexArena(6, 6);
-
+		Lattice lattice = new TriangularLattice();
+		Shape shape = new Rectangle(lattice, 6, 6);
+		Boundary boundary = new Arena(shape, lattice);
+		Geometry hr = new Geometry(lattice, shape, boundary);
+		
 		// (1, 0) stays (1, 0)
-		assertTrue(hr.wrap(1, 0, 0) == new Coordinate(1, 0, 0));
+		Coordinate initial, actual, expected;
+		initial = new Coordinate(1, 0, 0);
+		expected = new Coordinate(1, 0, 0);
+		actual = hr.apply(initial, Geometry.APPLY_BOUNDARIES);
+		assertEquals(expected, actual);
 
 		// (1, 1) stays (1, 1)
-		assertTrue(hr.wrap(1, 1, 0) == new Coordinate(1, 1, 0));
+		initial = new Coordinate(1, 1, 0);
+		expected = new Coordinate(1, 1, 0);
+		actual = hr.apply(initial, Geometry.APPLY_BOUNDARIES);
+		assertEquals(expected, actual);
 
 		// (0, 1) stays (0, 1)
-		assertTrue(hr.wrap(0, 1, 0) == new Coordinate(0, 1, 0));
+		initial = new Coordinate(0, 1, 0);
+		expected = new Coordinate(0, 1, 0);
+		actual = hr.apply(initial, Geometry.APPLY_BOUNDARIES);
+		assertEquals(expected, actual);
 
+		
 		// (-1, -1) gets a flag
-		assertTrue(hr.wrap(-1, -1, 0) == new Coordinate(-1, -1, Flags.END_OF_WORLD));
+		initial = new Coordinate(-1, -1, 0);
+		expected = new Coordinate(-1, -1, Flags.END_OF_WORLD | Flags.BOUNDARY_APPLIED);
+		actual = hr.apply(initial, Geometry.APPLY_BOUNDARIES);
+		assertEquals(expected, actual);
 
 		// (-1, 0) gets a flag
-		assertTrue(hr.wrap(-1, 0, 0) == new Coordinate(-1, 0, Flags.END_OF_WORLD));
-
+		initial = new Coordinate(-1, 0, 0);
+		expected = new Coordinate(-1, 0, Flags.END_OF_WORLD | Flags.BOUNDARY_APPLIED);
+		actual = hr.apply(initial, Geometry.APPLY_BOUNDARIES);
+		assertEquals(expected, actual);
+		
 		// (0, -1) gets a flag
-		assertTrue(hr.wrap(0, -1, 0) == new Coordinate(0, -1, Flags.END_OF_WORLD));
+		initial = new Coordinate(0, -1, 0);
+		expected = new Coordinate(0, -1, Flags.END_OF_WORLD | Flags.BOUNDARY_APPLIED);
+		actual = hr.apply(initial, Geometry.APPLY_BOUNDARIES);
+		assertEquals(expected, actual);	
 	}
-
 }

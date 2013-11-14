@@ -1,6 +1,6 @@
 package processes.cellular;
 
-import geometries.Geometry;
+import geometry.Geometry;
 import io.project.CellFactory;
 import io.project.ProcessLoader;
 
@@ -49,7 +49,9 @@ public class Scatter extends CellProcess {
 			}
 		}
 		
-		gs.add(this.getID(), candidates.size(), candidates.size() * 1.0D);
+		if (gs != null) {
+			gs.add(this.getID(), candidates.size(), candidates.size() * 1.0D);
+		}
 	}
 	public void fire(StepState state) throws HaltCondition {
 		if (candidates == null) {

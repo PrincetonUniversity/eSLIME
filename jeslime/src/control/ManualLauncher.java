@@ -10,7 +10,7 @@ import java.io.File;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;
 import structural.postprocess.ImageSequence;
-import geometries.Geometry;
+import geometry.Geometry;
 import models.*;
 
 /**
@@ -25,7 +25,7 @@ import models.*;
 public class ManualLauncher {
 
 	public static void main(String[] args) {
-		String path = "/Users/dbborens/github/jeSLIME/jeslime/projects/GeneSurfing.xml";
+		String path = "/Users/dbborens/github/jeSLIME/jeslime/projects/sandbox.xml";
 		Runner runner = new Runner(path);
 		runner.run();
 	}

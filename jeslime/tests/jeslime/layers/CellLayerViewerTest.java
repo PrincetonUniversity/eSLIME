@@ -9,6 +9,7 @@ import jeslime.mock.MockCellLayerContent;
 import jeslime.mock.MockCellLayerIndices;
 import jeslime.mock.MockGeometry;
 import junit.framework.TestCase;
+import layers.cell.CellIndex;
 import layers.cell.CellLayerViewer;
 import structural.identifiers.Coordinate;
 
@@ -16,7 +17,7 @@ public class CellLayerViewerTest extends TestCase {
 
 	public void testGetOccupiedSites() {
 		MockCellLayerIndices indices = new MockCellLayerIndices();
-		HashSet<Coordinate> expected = new HashSet<Coordinate>();
+		CellIndex expected = new CellIndex();
 		
 		Coordinate c1 = new Coordinate(1, 0, 0);
 		Coordinate c2 = new Coordinate(5, 0, 0);
@@ -34,7 +35,7 @@ public class CellLayerViewerTest extends TestCase {
 	
 	public void testGetDivisibleSites() {
 		MockCellLayerIndices indices = new MockCellLayerIndices();
-		HashSet<Coordinate> expected = new HashSet<Coordinate>();
+		CellIndex expected = new CellIndex();
 		
 		Coordinate c1 = new Coordinate(1, 0, 0);
 		Coordinate c2 = new Coordinate(5, 0, 0);
@@ -93,7 +94,7 @@ public class CellLayerViewerTest extends TestCase {
 	
 	public void testIsOccupied() {
 		MockCellLayerIndices indices = new MockCellLayerIndices();
-		HashSet<Coordinate> expected = new HashSet<Coordinate>();
+		CellIndex expected = new CellIndex();
 		Coordinate c1 = new Coordinate(1, 0, 0);
 		Coordinate c2 = new Coordinate(5, 0, 0);
 		
@@ -107,7 +108,7 @@ public class CellLayerViewerTest extends TestCase {
 	
 	public void testIsDivisible() {
 		MockCellLayerIndices indices = new MockCellLayerIndices();
-		HashSet<Coordinate> expected = new HashSet<Coordinate>();
+		CellIndex expected = new CellIndex();
 		Coordinate c1 = new Coordinate(1, 0, 0);
 		Coordinate c2 = new Coordinate(5, 0, 0);
 		

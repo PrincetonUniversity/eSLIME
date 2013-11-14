@@ -14,14 +14,12 @@ import java.util.regex.Pattern;
 
 import no.uib.cipr.matrix.DenseVector;
 import no.uib.cipr.matrix.Vector;
-
 import structural.identifiers.Coordinate;
 import structural.identifiers.Extrema;
 import structural.identifiers.TemporalCoordinate;
 import structural.GeneralParameters;
 import structural.VectorViewer;
-
-import geometries.Geometry;
+import geometry.Geometry;
 
 public class StateReader {
 	
@@ -103,7 +101,7 @@ public class StateReader {
 		
 		VectorViewer f = null;		// Fitness
 		
-		int[] states = new int[g.getSiteCount()];
+		int[] states = new int[g.getCanonicalSites().length];
 		HashSet<Coordinate> highlights = new HashSet<Coordinate>();
 		while (prevLine != null) {
 			// We come into this loop with a header line in prevLine
@@ -278,7 +276,7 @@ public class StateReader {
 	}
 	
 	private VectorViewer readVector(Extrema ex) throws IOException {
-		Vector v = new DenseVector(g.getSiteCount());
+		Vector v = new DenseVector(g.getCanonicalSites().length);
 		prevLine = br.readLine();
 		
 		// Line counter. Should reach p.H(). 
@@ -304,7 +302,7 @@ public class StateReader {
 	 * Skip ahead to the next field or end of file
 	 */
 	private int[] readStates() throws IOException {
-		int[] states = new int[g.getSiteCount()];
+		int[] states = new int[g.getCanonicalSites().length];
 		
 		prevLine = br.readLine();
 		

@@ -3,8 +3,7 @@ package structural.postprocess;
 import java.util.HashSet;
 
 import structural.GeneralParameters;
-
-import geometries.Geometry;
+import geometry.Geometry;
 import io.deserialize.ConditionViewer;
 import io.deserialize.StateReader;
 import io.visual.HexMapWriter;
