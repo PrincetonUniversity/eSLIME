@@ -36,6 +36,8 @@ public class Geometry {
 	private Boundary boundary;
 	private Shape shape;
 	
+	private HashMap<Coordinate, Integer> coordinateIndex = new HashMap<Coordinate, Integer>();
+
 	public Geometry(Lattice lattice, Shape shape, Boundary boundary) {
 		this.boundary = boundary;
 		this.lattice = lattice;
@@ -105,7 +107,7 @@ public class Geometry {
 		}
 	}
 	
-	public Coordinate rel2abs(Coordinate coord, int[] displacement, int mode) {
+	public Coordinate rel2abs(Coordinate coord, Coordinate displacement, int mode) {
 		Coordinate naive = lattice.rel2abs(coord, displacement);
 		
 		if (mode == APPLY_BOUNDARIES) {
@@ -217,5 +219,28 @@ public class Geometry {
 	
 	public boolean isInfinite() {
 		return boundary.isInfinite();
+	}
+	
+	public Integer coordToIndex(Coordinate coord) {
+		Coordinate canonical = coord.canonicalize();
+		return coordinateIndex.get(canonical);
+	}
+	
+	public void rebuildIndex() {
+		//System.out.println("In rebuildIndex. Coordinate index: " + coordinateIndex.size());
+		coordinateIndex.clear();
+		//System.out.println("   Cleared. Coordinate index: " + coordinateIndex.size());
+		//System.out.println("   Rebuilding.");
+		Coordinate[] sites = getCanonicalSites();
+		for (Integer i = 0; i < sites.length; i++) {
+			Coordinate c = sites[i];
+			
+			// Coordinate index is for canonical coordinates only
+			Coordinate cc = c.canonicalize();
+			//System.out.println("      Adding " + c);
+			coordinateIndex.put(cc, i);
+		}
+		//System.out.println("   Rebuild complete. Coordinate index: " + coordinateIndex.size());
+		
 	}
 }

@@ -46,6 +46,7 @@ public abstract class Lattice {
 	 * @return -- a coordinate in the native coordinate system.
 	 */
 	public abstract Coordinate adjust(Coordinate toAdjust);
+	
 	/**
 	 * invAdjust -- inverse operation to Adjust.
 	 * 
@@ -111,7 +112,7 @@ public abstract class Lattice {
 	 * Traverses the specified displacement from a given coordinate, and
 	 * gives the resulting location back as a new coordinate.
 	 */
-	public abstract Coordinate rel2abs(Coordinate coord, int[] displacement);
+	public abstract Coordinate rel2abs(Coordinate coord, Coordinate displacement);
 	
 	// Get the L1 distance between the specified sites.
 	public int getL1Distance(Coordinate p, Coordinate q) {

@@ -85,8 +85,8 @@ public class CubicLattice extends Lattice {
 	}
 
 	@Override
-	public Coordinate rel2abs(Coordinate coord, int[] displacement) {
-		if (displacement.length != 3) {
+	public Coordinate rel2abs(Coordinate coord, Coordinate displacement) {
+		if (displacement.hasFlag(Flags.PLANAR)) {
 			throw new IllegalArgumentException("Expected three arguments to rectangular lattice rel2abs.");
 		}
 
@@ -95,13 +95,13 @@ public class CubicLattice extends Lattice {
 		int z = coord.z();
 		
 		// Apply x component
-		x += displacement[0];
+		x += displacement.x();
 
 		// Apply y component
-		y += displacement[1];
+		y += displacement.y();
 		
 		// Apply z component
-		z += displacement[2];
+		z += displacement.z();
 
 		Coordinate target = new Coordinate(x, y, z, 0);
 		

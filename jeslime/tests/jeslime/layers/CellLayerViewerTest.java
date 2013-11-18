@@ -5,6 +5,7 @@ import java.util.HashSet;
 
 import cells.Cell;
 import cells.SimpleCell;
+import jeslime.EslimeTestCase;
 import jeslime.mock.MockCellLayerContent;
 import jeslime.mock.MockCellLayerIndices;
 import jeslime.mock.MockGeometry;
@@ -13,7 +14,7 @@ import layers.cell.CellIndex;
 import layers.cell.CellLayerViewer;
 import structural.identifiers.Coordinate;
 
-public class CellLayerViewerTest extends TestCase {
+public class CellLayerViewerTest extends EslimeTestCase {
 
 	public void testGetOccupiedSites() {
 		MockCellLayerIndices indices = new MockCellLayerIndices();
@@ -72,7 +73,7 @@ public class CellLayerViewerTest extends TestCase {
 		content.setFitnessVector(new double[] {0.1, 0.2, 0.3});
 		CellLayerViewer viewer = new CellLayerViewer(null, content, null);
 		assertEquals(viewer.getFitnessVector().length, 3);
-		assertEquals(viewer.getFitnessVector()[0], 0.1, 1e-10);
+		assertEquals(viewer.getFitnessVector()[0], 0.1, epsilon);
 	}
 	
 	public void testGetStateVector() {

@@ -188,12 +188,13 @@ public class TriangularLatticeTest extends EslimeTestCase {
 	public void testGetRel2Abs() {
 		Coordinate actual, expected;
 
-		int[] op, oq, or, os, ot;
-		op = new int[] {3, 0, 0};
-		oq = new int[] {0, 3, 0};
-		or = new int[] {0, 0, 3};
-		os = new int[] {3, 3, 0};
-		ot = new int[] {3, 3, 3};
+		Coordinate op, oq, or, os, ot;
+		op = new Coordinate(3, 0, 0, Flags.VECTOR);
+		oq = new Coordinate(0, 3, 0, Flags.VECTOR);
+		or = new Coordinate(0, 0, 3, Flags.VECTOR);
+		os = new Coordinate(3, 3, 0, Flags.VECTOR);
+		ot = new Coordinate(3, 3, 3, Flags.VECTOR);
+
 
 		actual = lattice.rel2abs(o, op);
 		expected = p;

@@ -1,0 +1,79 @@
+\documentclass[12pt]{scrartcl}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{outline}
+\usepackage{tabularx}
+\usepackage{color}
+\usepackage{natbib}
+\usepackage[compact]{titlesec}
+\usepackage{amssymb}
+\usepackage{exscale,relsize}    
+\usepackage{hyperref}
+\setlength{\parindent}{0pt}
+\pdfpagewidth 8.5in
+\pdfpageheight 11in
+\newcommand{\subscript}[1]{\ensuremath{_{\textrm{#1}}}}
+
+\title{eSLIME: \underline{e}ncapsulated \underline{S}equential \underline{L}attice \underline{I}teration \underline{M}odeling \underline{E}ngine}
+\subtitle{User manual - v 0.2.0}
+\author{David Bruce Borenstein}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+\setcounter{tocdepth}{2}
+\tableofcontents
+
+\section{Introduction}
+
+\section{Project files}
+
+\section{Geometry}
+\subsection{How geometries work}
+\subsection{Available geometries}
+\subsubsection{HexArena}
+\subsubsection{HexRing}
+
+\section{Processes: Introduction}
+\subsection{How processes work}
+\subsection{The simulation cycle}
+\subsection{The start and period parameters}
+\subsection{Active site descriptors}
+\subsection{Cell descriptors}
+\subsection{Deferred and immediate processes}
+
+\section{Elemental processes}
+\subsection{Cellular processes}
+\subsubsection{ActiveLayerDivide}
+\subsubsection{DivideAnywhere}
+\subsubsection{Fill}
+\subsubsection{MutateAll}
+\subsubsection{NeighborSwap}
+\subsubsection{Scatter}	
+\subsubsection{TargetedBiomassGrowth}
+\subsubsection{UniformBiomassGrowth}
+\subsection{Temporal processes}
+\subsubsection{ExponentialInverse}
+
+\section{Gillespie processes}
+\subsection{The Gillespie model}
+\subsection{Defining a Gillespie process}
+\subsection{Event weights}
+
+\section{Output and visualization}
+\subsection{The serialization manager}
+\subsection{Available outputs}
+\subsubsection{State serialization}
+\subsubsection{Time to fixation report}
+\subsubsection{Relative frequency vs time}
+
+\section{Extending eSLIME}
+\subsection{Writing new geometries}
+\subsection{Writing new processes}
+
+\section{Appendix: eSLIME version log}
+
+\end{document}

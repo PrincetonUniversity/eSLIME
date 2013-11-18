@@ -8,6 +8,9 @@ import structural.Flags;
 import structural.identifiers.Coordinate;
 
 public abstract class EslimeTestCase extends TestCase {
+	
+	protected double epsilon = calcEpsilon();
+	
 	protected void assertArraysEqual(Coordinate[] expected, Coordinate[] actual, boolean sort) {
 		assertEquals(expected.length, actual.length);
 		
@@ -43,5 +46,15 @@ public abstract class EslimeTestCase extends TestCase {
 		}
 		
 		return retain.toArray(new Coordinate[0]);
+	}
+	
+	private double calcEpsilon() {
+		double eps = 1.0D;
+		
+		while ((1.0 + (eps / 2.0)) != 1.0) {
+			eps /= 2.0;
+		}
+		
+		return eps;
 	}
 }

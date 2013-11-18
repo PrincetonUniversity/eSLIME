@@ -125,6 +125,7 @@ public class Coordinate implements Comparable<Coordinate> {
 			return canonical("(", ")", true);
 		}
 	}
+	
 	protected String canonical(String open, String close, boolean useFlags) {
 		StringBuilder ss = new StringBuilder();
 		

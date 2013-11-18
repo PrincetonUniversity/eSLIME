@@ -139,9 +139,9 @@ public class RectangularLatticeTest extends EslimeTestCase {
 		p = new Coordinate(3, 0, 0);
 		q = new Coordinate(0, 3, 0);
 		
-		int[] op, oq;
-		op = new int[] {3, 0};
-		oq = new int[] {0, 3};
+		Coordinate op, oq;
+		op = new Coordinate(3, 0, Flags.VECTOR);
+		oq = new Coordinate(0, 3, Flags.VECTOR);
 		
 		// Horizontal
 		actual = lattice.rel2abs(o, op);

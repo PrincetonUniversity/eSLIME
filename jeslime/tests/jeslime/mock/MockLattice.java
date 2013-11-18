@@ -63,7 +63,7 @@ public class MockLattice extends Lattice {
 	}
 
 	@Override
-	public Coordinate rel2abs(Coordinate coord, int[] displacement) {
+	public Coordinate rel2abs(Coordinate coord, Coordinate displacement) {
 		// TODO Auto-generated method stub
 		return null;
 	}

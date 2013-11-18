@@ -1,10 +1,11 @@
 package jeslime.processes;
 
+import jeslime.EslimeTestCase;
 import processes.gillespie.GillespieChooser;
 import processes.gillespie.GillespieState;
 import junit.framework.TestCase;
 
-public class GillespieTest extends TestCase {
+public class GillespieTest extends EslimeTestCase {
 
 	/**
 	 * Test the GillespieState object.
@@ -20,12 +21,12 @@ public class GillespieTest extends TestCase {
 		// Close it so we can use getters
 		gs.close();
 
-		assertEquals(gs.getTotalWeight(), 1.1, 1e-10);
+		assertEquals(gs.getTotalWeight(), 1.1, epsilon);
 		assertEquals(2, gs.getKeys().length);
 		assertEquals(5, gs.getEventCount(100));
 		assertEquals(3, gs.getEventCount(200));
-		assertEquals(0.7, gs.getWeight(100), 1e-10);
-		assertEquals(0.4, gs.getWeight(200), 1e-10);
+		assertEquals(0.7, gs.getWeight(100), epsilon);
+		assertEquals(0.4, gs.getWeight(200), epsilon);
 	}
 	
 	/**

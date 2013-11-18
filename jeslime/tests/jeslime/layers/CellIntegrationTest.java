@@ -1,6 +1,7 @@
 package jeslime.layers;
 import java.util.HashSet;
 
+import jeslime.EslimeTestCase;
 import cells.Cell;
 import cells.FissionCell;
 import cells.SimpleCell;
@@ -24,7 +25,7 @@ import geometry.shape.Shape;
  * @author David Bruce Borenstein
  *
  */
-public class CellIntegrationTest extends TestCase {
+public class CellIntegrationTest extends EslimeTestCase {
 
 	public void testConstructor() {
 		//HexRing geom = new HexRing(6, 6);
@@ -58,7 +59,7 @@ public class CellIntegrationTest extends TestCase {
 
 		// Get its properties through the lattice.
 		// TODO This should be replaced with epsilon equality
-		assertEquals(toPlace.getFitness(), layer.getViewer().getCell(coord).getFitness(), 1E-10);
+		assertEquals(toPlace.getFitness(), layer.getViewer().getCell(coord).getFitness(), epsilon);
 		assertEquals(toPlace.getState(), layer.getViewer().getCell(coord).getState());
 	}
 

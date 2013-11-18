@@ -178,8 +178,8 @@ public class TriangularLattice extends Lattice {
 
 	
 	@Override
-	public Coordinate rel2abs(Coordinate coord, int[] displacement) {
-		if (displacement.length != 3) {
+	public Coordinate rel2abs(Coordinate coord, Coordinate displacement) {
+		if (displacement.hasFlag(Flags.PLANAR)) {
 			throw new IllegalArgumentException("Expected three arguments to HexArena::rel2abs(...)");
 		}
 
@@ -187,14 +187,14 @@ public class TriangularLattice extends Lattice {
 		int y = coord.y();
 
 		// Apply u component
-		x += displacement[0];
+		x += displacement.x();
 		
 		// Apply v component
-		x += displacement[1];
-		y += displacement[1];
+		x += displacement.y();
+		y += displacement.y();
 
 		// Apply w component
-		y += displacement[2];
+		y += displacement.z();
 		
 		Coordinate target = new Coordinate(x, y, 0);
 		

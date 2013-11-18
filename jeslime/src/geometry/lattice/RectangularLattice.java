@@ -90,8 +90,8 @@ public class RectangularLattice extends Lattice {
 	}
 
 	@Override
-	public Coordinate rel2abs(Coordinate coord, int[] displacement) {
-		if (displacement.length != 2) {
+	public Coordinate rel2abs(Coordinate coord, Coordinate displacement) {
+		if (!displacement.hasFlag(Flags.PLANAR)) {
 			throw new IllegalArgumentException("Expected two arguments to rectangular lattice rel2abs.");
 		}
 
@@ -99,11 +99,11 @@ public class RectangularLattice extends Lattice {
 		int y = coord.y();
 
 		// Apply x component
-		x += displacement[0];
+		x += displacement.x();
 
 
 		// Apply y component
-		y += displacement[1];
+		y += displacement.y();
 		
 		Coordinate target = new Coordinate(x, y, 0);
 		

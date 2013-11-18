@@ -3,13 +3,14 @@ package jeslime.layers;
 import cells.Cell;
 import cells.SimpleCell;
 import structural.identifiers.Coordinate;
+import jeslime.EslimeTestCase;
 import jeslime.mock.MockCellLayerContent;
 import jeslime.mock.MockCellLayerIndices;
 import jeslime.mock.MockGeometry;
 import junit.framework.TestCase;
 import layers.cell.CellUpdateManager;
 
-public class CellUpdateManagerTest extends TestCase {
+public class CellUpdateManagerTest extends EslimeTestCase {
 	public void testConsiderApply() {
 		// Set up mocks
 		MockGeometry geom = new MockGeometry();
@@ -75,7 +76,7 @@ public class CellUpdateManagerTest extends TestCase {
 		Cell daughter = manager.divide(o);
 		
 		assertEquals(daughter.getState(), cell.getState());
-		assertEquals(daughter.getFitness(), cell.getFitness(), 1e-10);
+		assertEquals(daughter.getFitness(), cell.getFitness(), epsilon);
 
 	}
 

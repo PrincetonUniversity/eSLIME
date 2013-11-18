@@ -6,7 +6,8 @@ import java.util.Set;
 import org.dom4j.Element;
 
 import processes.gillespie.GillespieState;
-import layers.cell.CellLayer; import structural.halt.HaltCondition;
+import layers.cell.CellLayer; import structural.Flags;
+import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 import geometry.Geometry;
 import io.project.CellFactory;
@@ -278,8 +279,7 @@ public abstract class Process {
 			dw = Integer.valueOf(displacementElem.attribute("w").getValue());
 		}
 		
-		int[] d = new int[] {du, dv, dw};
-				
+		
 		int length = Integer.valueOf(siteElement.element("length").getText());
 		
 		Coordinate c;
@@ -291,7 +291,10 @@ public abstract class Process {
 		}
 		
 		coordinates.add(c);
+		int[] dArr = new int[] {du, dv, dw};
 
+		Coordinate d = new Coordinate(dArr, c.flags() | Flags.VECTOR);
+		
 		for (int i = 0; i < length; i++) {
 			Coordinate cNext = geom.rel2abs(c, d, Geometry.APPLY_BOUNDARIES);
 			c = cNext;

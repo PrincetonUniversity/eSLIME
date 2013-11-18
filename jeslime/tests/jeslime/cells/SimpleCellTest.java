@@ -1,4 +1,5 @@
 package jeslime.cells;
+import jeslime.EslimeTestCase;
 import cells.Cell;
 import cells.SimpleCell;
 import junit.framework.TestCase;
@@ -6,7 +7,7 @@ import junit.framework.TestCase;
 /**
  * Tests the functionality of the SimpleCell class.
  */
-public class SimpleCellTest extends TestCase {
+public class SimpleCellTest extends EslimeTestCase {
 	private int state = 1;
 	
 	public void testConstruct() {
@@ -15,7 +16,7 @@ public class SimpleCellTest extends TestCase {
 		assertEquals(state, query.getState());
 		
 		// TODO This should become machine epsilon after adding parameters
-		assertEquals(0D, query.getFitness(), 1E-10);
+		assertEquals(0D, query.getFitness(), epsilon);
 	}
 	
 	public void testConsiderAndApply() {

@@ -104,6 +104,8 @@ public abstract class BulkDivisionProcess extends CellProcess{
 	 *    position after the parent is shoved.
 	 * @param d: displacement vector to target, in natural basis of lattice.
 	 * @param sites: list of affected sites (for highlighting)
+	 * 
+	 * TODO: This is so cloodgy and terrible.
 	 */
 	private void shove(Coordinate curLoc, Coordinate d, HashSet<Coordinate> sites) {
 		System.out.println("      Inside shove: curLoc=" + curLoc + "; d=" + d + ".");
@@ -145,7 +147,9 @@ public abstract class BulkDivisionProcess extends CellProcess{
 				rel[2] += (int) Math.signum(d.z());
 			}
 
-			nextLoc = geom.rel2abs(curLoc, rel, Geometry.APPLY_BOUNDARIES);
+			Coordinate disp = new Coordinate(rel, d.flags());
+			
+				nextLoc = geom.rel2abs(curLoc, disp, Geometry.APPLY_BOUNDARIES);
 
 			if (nextLoc == null) {
 				continue;

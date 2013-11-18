@@ -8,10 +8,9 @@ public class Diffusion extends ContinuumOperation {
 	// Diffusion constant
 	private double r;
 	
-	public Diffusion(Geometry geometry, double r) {
-		super(geometry);
+	public Diffusion(Geometry geometry, boolean useBoundaries, double r) {
+		super(geometry, useBoundaries);
 		this.r = r;
-		buildMatrix();
 	}
 
 	@Override
@@ -32,9 +31,9 @@ public class Diffusion extends ContinuumOperation {
 	 * in fact set to prevent r from exceeding some maximum value.)
 	 * 
 	 */
-	protected void buildMatrix() {
-		double n = (double) geometry.getDimensionality();
-		double m = (double) geometry.getConnectivity();
+	public void init() {
+		double n = (double) dimension();
+		double m = (double) connectivity();
 	
 		// Calculate r. See method javadoc above.
 		double a = r * (n / m);
@@ -50,9 +49,8 @@ public class Diffusion extends ContinuumOperation {
 			
 			// Set each neighbor. For reflecting boundary conditions, one or
 			// more neighbors may be the diagonal.
-			for (Coordinate neighbor : geometry.getSoluteNeighbors(coord)) {
+			for (int j : neighbors(coord)) {
 				// Each of the 2m neighbors get r units of solute.
-				int j = coordToIndex.get(neighbor);
 				adjust(i, j, r);
 			}
 		}

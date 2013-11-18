@@ -14,10 +14,7 @@ public class MockGeometry extends Geometry {
 	/* infinite */
 	
 	public MockGeometry() {
-		this(null, null, null);
-	}
-	public MockGeometry(Lattice lattice, Shape shape, Boundary boundary) {
-		super(lattice, shape, boundary);
+		super(null, null, null);
 	}
 
 	private boolean infinite;
@@ -37,6 +34,7 @@ public class MockGeometry extends Geometry {
 	
 	public void setCanonicalSites(Coordinate[] canonicalSites) {
 		this.canonicalSites = canonicalSites;
+		rebuildIndex();
 	}
 	
 	@Override
@@ -77,5 +75,25 @@ public class MockGeometry extends Geometry {
 				return;
 			}
 		}
+	}
+
+	private int connectivity;
+	
+	public int getConnectivity() {
+		return connectivity;
+	}
+
+	public void setConnectivity(int connectivity) {
+		this.connectivity = connectivity;
+	}
+	
+	private int dimensionality;
+
+	public int getDimensionality() {
+		return dimensionality;
+	}
+
+	public void setDimensionality(int dimensionality) {
+		this.dimensionality = dimensionality;
 	}
 }

@@ -200,11 +200,11 @@ public class CubicLatticeTest extends EslimeTestCase {
 		q = new Coordinate(0, 3, 0, 0);
 		r = new Coordinate(0, 0, 3, 0);
 		
-		int[] op, oq, or;
+		Coordinate op, oq, or;
 		
-		op = new int[] {3, 0, 0};
-		oq = new int[] {0, 3, 0};
-		or = new int[] {0, 0, 3};
+		op = new Coordinate(3, 0, 0, Flags.VECTOR);
+		oq = new Coordinate(0, 3, 0, Flags.VECTOR);
+		or = new Coordinate(0, 0, 3, Flags.VECTOR);
 		
 		// +i
 		actual = lattice.rel2abs(o, op);

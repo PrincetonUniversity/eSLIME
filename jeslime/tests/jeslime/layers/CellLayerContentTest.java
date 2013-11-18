@@ -3,6 +3,7 @@ package jeslime.layers;
 import cells.Cell;
 import cells.FissionCell;
 import cells.SimpleCell;
+import jeslime.EslimeTestCase;
 import jeslime.mock.MockCellLayerIndices;
 import jeslime.mock.MockGeometry;
 import structural.Flags;
@@ -10,14 +11,14 @@ import structural.identifiers.Coordinate;
 import junit.framework.TestCase;
 import layers.cell.CellLayerContent;
 
-public class CellLayerContentTest extends TestCase {
+public class CellLayerContentTest extends EslimeTestCase {
 
 	public void testCheckExists() {
 		// Initialize data structures
 		Coordinate inside = new Coordinate(0, 0, 0);
 		Coordinate outside = new Coordinate(-1, -1, Flags.END_OF_WORLD);
 		
-		MockGeometry geom = new MockGeometry(null, null, null);
+		MockGeometry geom = new MockGeometry();
 		geom.setCanonicalSites(new Coordinate[] {inside});
 		CellLayerContent content = new CellLayerContent(geom, null);
 
@@ -129,9 +130,9 @@ public class CellLayerContentTest extends TestCase {
 		content.put(c[2], f2);
 
 		// Fitness vector goes in order of canonical sites array
-		assertEquals(content.getFitnessVector()[0], 0.5, 1e-10);
-		assertEquals(content.getFitnessVector()[1], 0.5, 1e-10);
-		assertEquals(content.getFitnessVector()[2], 0.7, 1e-10);
+		assertEquals(content.getFitnessVector()[0], 0.5, epsilon);
+		assertEquals(content.getFitnessVector()[1], 0.5, epsilon);
+		assertEquals(content.getFitnessVector()[2], 0.7, epsilon);
 
 	}
 }

@@ -240,27 +240,27 @@ public class GeometryTest extends EslimeTestCase {
 	
 	public void testRel2absApply() {
 		Coordinate expected = new Coordinate(0, 2, Flags.BOUNDARY_APPLIED);
-		int[] disp = new int[] {3, 0};
+		Coordinate disp = new Coordinate(3, 0, Flags.VECTOR);
 		Coordinate actual = geom.rel2abs(p, disp, Geometry.APPLY_BOUNDARIES);
 		assertEquals(actual, expected);
 	}
 	
 	public void testRel2absFlag() {
 		Coordinate expected = new Coordinate(4, 2, Flags.BOUNDARY_IGNORED);
-		int[] disp = new int[] {3, 0};
+		Coordinate disp = new Coordinate(3, 0, Flags.VECTOR);
 		Coordinate actual = geom.rel2abs(p, disp, Geometry.FLAG_BOUNDARIES);
 		assertEquals(actual, expected);
 	}
 	
 	public void testRel2absExclude() {
-		int[] disp = new int[] {3, 0};
+		Coordinate disp = new Coordinate(3, 0, Flags.VECTOR);
 		Coordinate actual = geom.rel2abs(p, disp, Geometry.EXCLUDE_BOUNDARIES);
 		assertNull(actual);
 	}
 	
 	public void testRel2absIgnore() {
 		Coordinate expected = new Coordinate(4, 2, 0);
-		int[] disp = new int[] {3, 0};
+		Coordinate disp = new Coordinate(3, 0, Flags.VECTOR);
 		Coordinate actual = geom.rel2abs(p, disp, Geometry.IGNORE_BOUNDARIES);
 		assertEquals(expected, actual);
 	}
@@ -421,7 +421,7 @@ public class GeometryTest extends EslimeTestCase {
 	}
 	
 	public void testCanonicalSites() {
-		MockGeometry geom = new MockGeometry(null, null, null);
+		MockGeometry geom = new MockGeometry();
 		Coordinate[] canonicals = new Coordinate[] {
 				new Coordinate(1, 2, 3, 4),
 				new Coordinate(0, 0, 0, 0)
@@ -509,6 +509,30 @@ public class GeometryTest extends EslimeTestCase {
 		Geometry geom = new Geometry(lattice, null, null);
 		lattice.setDimensionality(5);
 		assertEquals(5, geom.getDimensionality());
+	}
+	
+	/**
+	 * Tests coordToIndex(...) and rebuildIndex()
+	 */
+	public void testCoordinateIndex() {
+		MockGeometry geom = new MockGeometry();
+		Coordinate o, p;
+		o = new Coordinate(0, 0, 0, 0);
+		
+		// Notice not canonical.
+		p = new Coordinate(1, 2, 3, 4);
+		
+		Coordinate[] canonicals = new Coordinate[] {o};
+		geom.setCanonicalSites(canonicals);
+		
+		assertNull(geom.coordToIndex(p));
+		assertNotNull(geom.coordToIndex(o));
+		
+		geom.setCanonicalSites(new Coordinate[] {o, p});
+		
+		assertNotNull(geom.coordToIndex(p));
+		assertNotNull(geom.coordToIndex(o));
+		assertFalse(geom.coordToIndex(o).equals(geom.coordToIndex(p)));
 	}
 	
 	private class MockBoundary extends Boundary {

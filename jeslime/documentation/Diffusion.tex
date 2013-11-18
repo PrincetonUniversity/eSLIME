@@ -1,0 +1,63 @@
+\documentclass[12pt]{article}
+\usepackage{amsmath}
+\usepackage{fullpage}
+\usepackage{parskip}
+\usepackage{graphicx}
+\usepackage{outline}
+\usepackage{tabularx}
+\usepackage{color}
+\usepackage{natbib}
+\usepackage[compact]{titlesec}
+\usepackage{amssymb}
+\usepackage{exscale,relsize}    
+\usepackage{hyperref}
+\setlength{\parindent}{0pt}
+\pdfpagewidth 8.5in
+\pdfpageheight 11in
+\title{The discrete diffusion operator}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+The heat equation is defined as
+
+\begin{equation}
+\frac{\partial c}{\partial t} = D \nabla^2 c.
+\end{equation}
+
+In one dimension, this is equivalent to
+
+\begin{equation}
+	\frac{c_{x, t + \Delta t} - c_{x, t}}{\Delta t} = D \frac{c_{x + \Delta x, t} + c_{x - \Delta x, t} - 2c_{x, t}}{(\Delta x)^2}.
+\end{equation}
+
+in the limit of small $\Delta x$ and $\Delta t$. We can also generalize this to a higher dimension. 
+
+Let $c^d_{x+1, t}$ represent the value of $c$ at position $x+1$ in the $d$ direction and in at position $x$ in each other direction. So, e.g., $c^2_{x+1, t} = c(x, y+1, ..., t)$. Moreover, let us assume an orthogonal $n$-basis with equal mesh spacing $\Delta x$ in all directions. The expression becomes
+
+\begin{equation}
+	\frac{c_{x, t + \Delta t} - c_{x, t}}{\Delta t} = D \sum_{\mathrm{dims}}\frac{c^i_{x + \Delta x, t} + c^i_{x - \Delta x, t} - 2c_{x, t}}{(\Delta x)^2}.
+\end{equation}
+
+\section{Explicit method}
+
+Let $\alpha = D \Delta t / (\Delta x)^2$, and let us scale $\alpha$ such that we may let $\Delta t=1$ and $\Delta x = 1$. Then we can rewrite this expression as
+
+\begin{equation}
+	c_{x, t + 1} - c_{x, t} = \alpha \sum_{\mathrm{dims}}\left(c^i_{x + 1, t} + c^i_{x - 1, t} - 2c_{x, t}\right).
+\end{equation}
+
+
+If we allow for non-orthogonal bases, we must sum over a number of directions greater than the number of dimensions, without overcounting the total amount of $c$. Let $m$ equal the connectivity of the lattice. Then with no loss of generality, we may define
+
+\begin{equation}
+	\alpha = D \frac{n}{m} \frac{\Delta t}{(\Delta x)^2}.
+\end{equation}
+
+We can write an explicit explicit expression for $c_{x, t+1}$ as follows:
+
+\begin{equation}
+	c_{x, t + 1} = \alpha \sum_{\mathrm{m}}\left(c^i_{x + 1, t} + c^i_{x - 1, t}\right) + (1-2 m \alpha) c_{x, t}.
+\end{equation}
+\end{document}
