@@ -42,6 +42,7 @@ public class Geometry {
 		this.boundary = boundary;
 		this.lattice = lattice;
 		this.shape = shape;
+		rebuildIndex();
 	}
 	
 	public Coordinate apply(Coordinate coord, int mode) {
@@ -231,7 +232,18 @@ public class Geometry {
 		coordinateIndex.clear();
 		//System.out.println("   Cleared. Coordinate index: " + coordinateIndex.size());
 		//System.out.println("   Rebuilding.");
+	
+		
+		// dependencies are sometimes left uninitialized for mock testing.
+		// In these cases, there is nothing to index, so return.
+		if (getCanonicalSites() == null) {
+			//System.out.println("      canonicalSites is null; returning.");
+			return;
+		}
+		
 		Coordinate[] sites = getCanonicalSites();
+	
+		
 		for (Integer i = 0; i < sites.length; i++) {
 			Coordinate c = sites[i];
 			

@@ -17,7 +17,7 @@ import org.dom4j.io.*;
  * elements into native data structures and close the ParameterLoader
  * early on.
  * 
- * Note that 
+ * @untested
  * @author dbborens
  *
  */

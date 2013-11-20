@@ -3,6 +3,7 @@ package jeslime.geometry.geometry;
 import jeslime.EslimeTestCase;
 import jeslime.mock.MockGeometry;
 import jeslime.mock.MockLattice;
+import jeslime.mock.MockShape;
 import structural.Flags;
 import structural.identifiers.Coordinate;
 import geometry.Geometry;
@@ -499,14 +500,16 @@ public class GeometryTest extends EslimeTestCase {
 	
 	public void testConnectivity() {
 		MockLattice lattice = new MockLattice();
-		Geometry geom = new Geometry(lattice, null, null);
+		MockShape shape = new MockShape();
+		Geometry geom = new Geometry(lattice, shape, null);
 		lattice.setConnectivity(5);
 		assertEquals(5, geom.getConnectivity());
 	}
 	
 	public void testDimensionality() {
 		MockLattice lattice = new MockLattice();
-		Geometry geom = new Geometry(lattice, null, null);
+		MockShape shape = new MockShape();
+		Geometry geom = new Geometry(lattice, shape, null);
 		lattice.setDimensionality(5);
 		assertEquals(5, geom.getDimensionality());
 	}

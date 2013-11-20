@@ -1,16 +1,33 @@
 package jeslime.continuum.operations;
+
+import io.project.OperatorFactory;
+
+import org.dom4j.Element;
+import org.dom4j.tree.BaseElement;
+
+import structural.MatrixUtils;
+import structural.identifiers.Coordinate;
+import continuum.operations.CompoundOperator;
+import continuum.operations.Operator;
+import continuum.operations.Scaling;
 import jeslime.EslimeTestCase;
 import jeslime.mock.CubicMockGeometry;
 import jeslime.mock.LinearMockGeometry;
 import jeslime.mock.MockGeometry;
 import jeslime.mock.SquareMockGeometry;
 import jeslime.mock.TriangularMockGeometry;
-import structural.identifiers.Coordinate;
-import continuum.operations.Operator;
-import continuum.operations.Scaling;
 
-public class ScalingTest extends EslimeTestCase {
-	
+/**
+ * Test to make sure that the compound operator class works
+ * correctly. It was easiest to implement this as a de facto
+ * integration test, rather than to add full mock capabilities
+ * to the compound operator test.
+ * 
+ * @author dbborens
+ *
+ */
+public class CompoundOperatorTest extends EslimeTestCase {
+
 	public void testLinear() {
 		MockGeometry geom = new LinearMockGeometry();
 		
@@ -56,14 +73,29 @@ public class ScalingTest extends EslimeTestCase {
 		doTest(geom, sites);
 	}
 	
-	// Since scaling doesn't deal with edges, there's no need
-	// for an integration test to verify that edge cases are
-	// handled correctly.
+	// Since the CompoundOperator is just the superposition
+	// of other operators, there's no need to test its edge
+	// handling. This will be right iff the child operators
+	// handle it right.
+	
 	private void doTest(MockGeometry geom, Coordinate[] sites) {
 		geom.setCanonicalSites(sites);
-		Operator mat = new Scaling(geom, false, 0.5);
+		
+		Element e1 = new BaseElement("scaling");
+		Element e2 = new BaseElement("scaling");
+		addElement(e1, "lambda", "0.1");
+		addElement(e2, "lambda", "0.4");
+		
+		Element compound = new BaseElement("children");
+		compound.add(e1);
+		compound.add(e2);
+		
+
+		Operator mat = new CompoundOperator(geom, true, compound);
 		mat.init();
-	
+		
+		//System.out.println(MatrixUtils.matrixForm(mat));
+		
 		for (int i = 0; i < sites.length; i++) {
 			for (int j = 0; j < sites.length; j++) {
 				if (i == j) {
@@ -111,5 +143,5 @@ public class ScalingTest extends EslimeTestCase {
 		
 		return sites;
 	}
-	
+
 }

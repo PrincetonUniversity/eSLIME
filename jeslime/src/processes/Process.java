@@ -11,6 +11,7 @@ import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 import geometry.Geometry;
 import io.project.CellFactory;
+import io.project.CoordinateFactory;
 import io.project.ProcessLoader;
 import io.project.ProjectLoader;
 
@@ -312,27 +313,7 @@ public abstract class Process {
 		
 		for (Object o : siteElement.elements("coordinate")) {
 			Element cElem = (Element) o;
-			
-			// All coordinates have x and y
-			int x = Integer.valueOf(cElem.attribute("x").getValue());
-			int y = Integer.valueOf(cElem.attribute("y").getValue());
-
-			// Load flags, if any
-			int flags = 0;
-			if (cElem.attribute("flags") != null) {
-				flags = Integer.valueOf(cElem.attribute("flags").getValue());
-			}
-			
-			// If it has a z element, load 3D coordinate)
-			if (cElem.attribute("z") != null) {
-				int z = Integer.valueOf(cElem.attribute("z").getValue());
-				Coordinate c = new Coordinate(x, y, z, flags);
-				coordinates.add(c);
-				
-			} else {
-				Coordinate c = new Coordinate(x, y, flags);
-				coordinates.add(c);
-			}
+			coordinates.add(CoordinateFactory.instantiate(cElem));
 		}
 		
 		return coordinates.toArray(new Coordinate[0]);

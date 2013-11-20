@@ -1,9 +1,11 @@
 package continuum.operations;
 
+import org.dom4j.Element;
+
 import structural.identifiers.Coordinate;
 import geometry.Geometry;
 
-public class Diffusion extends ContinuumOperation {
+public class Diffusion extends Operator {
 
 	// Diffusion constant
 	private double r;
@@ -12,6 +14,7 @@ public class Diffusion extends ContinuumOperation {
 		super(geometry, useBoundaries);
 		this.r = r;
 	}
+
 
 	@Override
 	/**
@@ -45,21 +48,19 @@ public class Diffusion extends ContinuumOperation {
 			Coordinate coord = sites[i];
 			
 			// Set the diagonal value
-			adjust(i, i, self);
+			augment(i, i, self);
 			
 			// Set each neighbor. For reflecting boundary conditions, one or
 			// more neighbors may be the diagonal.
 			for (int j : neighbors(coord)) {
 				// Each of the 2m neighbors get r units of solute.
-				adjust(i, j, r);
+				augment(i, j, r);
 			}
 		}
 	}
 	
-	private void adjust(int i, int j, double delta) {
-		Double current = get(i, j);
-	
-		set(i, j, current + delta);
+	public double getR() {
+		return r;
 	}
 
 }

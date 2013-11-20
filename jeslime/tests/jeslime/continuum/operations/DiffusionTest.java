@@ -1,7 +1,16 @@
 package jeslime.continuum.operations;
 
+import geometry.Geometry;
+import geometry.boundaries.Boundary;
+import geometry.boundaries.PlaneRingReflecting;
+import geometry.lattice.Lattice;
+import geometry.lattice.RectangularLattice;
+import geometry.shape.Rectangle;
+import geometry.shape.Shape;
+import structural.Flags;
 import structural.identifiers.Coordinate;
-import continuum.operations.ContinuumOperation;
+import continuum.operations.Advection;
+import continuum.operations.Operator;
 import continuum.operations.Diffusion;
 import jeslime.EslimeTestCase;
 import jeslime.mock.CubicMockGeometry;
@@ -22,7 +31,7 @@ public class DiffusionTest extends EslimeTestCase {
 		}
 		
 		geom.setCanonicalSites(sites);
-		ContinuumOperation mat = new Diffusion(geom, false, 0.1);
+		Operator mat = new Diffusion(geom, false, 0.1);
 		mat.init();
 		
 		double[] row0 = new double[] {0.8, 0.1, 0.0, 0.0};
@@ -51,7 +60,7 @@ public class DiffusionTest extends EslimeTestCase {
 		}
 	
 		geom.setCanonicalSites(sites);
-		ContinuumOperation mat = new Diffusion(geom, false, 0.1);
+		Operator mat = new Diffusion(geom, false, 0.1);
 		mat.init();
 		
 		/*
@@ -84,7 +93,7 @@ public class DiffusionTest extends EslimeTestCase {
 	public void testTriangular() {
 		MockGeometry geom = new TriangularMockGeometry();
 		makeTriangularLattice(geom);
-		ContinuumOperation mat = new Diffusion(geom, false, 0.1);
+		Operator mat = new Diffusion(geom, false, 0.1);
 		mat.init();
 
 		// Check diagonal entry for coordinate (1, 2), indexed as (2*4) + 2 = 9
@@ -106,11 +115,56 @@ public class DiffusionTest extends EslimeTestCase {
 	public void testCubic() {
 		MockGeometry geom = new CubicMockGeometry();
 		makeCubicLattice(geom);
-		ContinuumOperation mat = new Diffusion(geom, false, 0.1);
+		Operator mat = new Diffusion(geom, false, 0.1);
 		mat.init();
 
 		assertEquals(0.4, mat.get(i(2, 2, 2), i(2, 2, 2)), epsilon);
 
+	}
+	
+	/**
+	 * Integration test--make sure that the operator does
+	 * the right thing when it encounters nontrivial edges.
+	 */
+	public void testEdgeCase() {
+		// Initialize a "real" geometry with a reflecting dimension.
+		Lattice lattice = new RectangularLattice();
+		Shape shape = new Rectangle(lattice, 4, 4);
+		Boundary boundary = new PlaneRingReflecting(shape, lattice);
+		Geometry geom = new Geometry(lattice, shape, boundary);
+		
+		// With and without boundary conditions
+		Operator with = new Diffusion(geom, true, 0.1);
+		with.init();
+		
+		//Operator without = new Diffusion(geom, false, 0.1);
+		//without.init();
+		
+		Coordinate o, p, q;
+		int oi, pi, qi;
+
+		// Look north from an interior coordinate
+		o = new Coordinate(1, 1, 0);
+		p = new Coordinate(1, 2, 0);
+
+		oi = geom.coordToIndex(o);
+		pi = geom.coordToIndex(p);
+		
+		assertEquals(0.6, with.get(oi, oi), epsilon);
+		assertEquals(0.1, with.get(pi, oi), epsilon);
+		
+		//assertEquals(0.6, without.get(oi, oi), epsilon);
+		//assertEquals(0.1, without.get(pi, oi), epsilon);
+				
+		// Look north from an exterior coordinate
+		q = new Coordinate(1, 3, 0);
+		qi = geom.coordToIndex(q);
+		
+		// With reflecting boundary conditions, diffusion back
+		// to a boundary position will be negated. Without them,
+		// the diffused quantity will be absorbed at the boundary.
+		assertEquals(0.7, with.get(qi, qi), epsilon);
+		//assertEquals(0.6, without.get(qi, qi), epsilon);
 	}
 	
 	private void makeCubicLattice(MockGeometry geom) {

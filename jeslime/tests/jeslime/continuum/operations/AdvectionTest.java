@@ -1,7 +1,14 @@
 package jeslime.continuum.operations;
 
+import geometry.Geometry;
+import geometry.boundaries.Boundary;
+import geometry.boundaries.PlaneRingReflecting;
+import geometry.lattice.Lattice;
+import geometry.lattice.RectangularLattice;
+import geometry.shape.Rectangle;
+import geometry.shape.Shape;
 import continuum.operations.Advection;
-import continuum.operations.ContinuumOperation;
+import continuum.operations.Operator;
 import continuum.operations.Diffusion;
 import structural.Flags;
 import structural.MatrixUtils;
@@ -69,10 +76,58 @@ public class AdvectionTest extends EslimeTestCase {
 		doTest(geom, displacement, sites, w);
 	}
 	
+	/**
+	 * Integration test--make sure that the operator does
+	 * the right thing when it encounters nontrivial edges.
+	 */
+	public void testEdgeCase() {
+		// Initialize a "real" geometry with a reflecting dimension.
+		Lattice lattice = new RectangularLattice();
+		Shape shape = new Rectangle(lattice, 4, 4);
+		Boundary boundary = new PlaneRingReflecting(shape, lattice);
+		Geometry geom = new Geometry(lattice, shape, boundary);
+		
+		// Northward displacement
+		Coordinate displacement = new Coordinate(0, 1, Flags.VECTOR);
+		
+		// With and without boundary conditions
+		Operator with = new Advection(geom, true, displacement, 0.25);
+		with.init();
+		
+		//Operator without = new Advection(geom, false, displacement, 0.25);
+		//without.init();
+		
+		Coordinate o, p, q;
+		int oi, pi, qi;
+
+		// Look north from an interior coordinate
+		o = new Coordinate(1, 1, 0);
+		p = new Coordinate(1, 2, 0);
+
+		oi = geom.coordToIndex(o);
+		pi = geom.coordToIndex(p);
+		
+		assertEquals(0.75, with.get(oi, oi), epsilon);
+		assertEquals(0.25, with.get(pi, oi), epsilon);
+		
+		//assertEquals(0.75, without.get(oi, oi), epsilon);
+		//assertEquals(0.25, without.get(pi, oi), epsilon);
+				
+		// Look north from an exterior coordinate
+		q = new Coordinate(1, 3, 0);
+		qi = geom.coordToIndex(q);
+		
+		// With reflecting boundary conditions, advection back
+		// to a boundary position will be negated. Without them,
+		// the advected quantity will be absorbed at the boundary.
+		assertEquals(1.0, with.get(qi, qi), epsilon);
+		//assertEquals(0.75, without.get(qi, qi), epsilon);
+	}
+	
 	private void doTest(MockGeometry geom, Coordinate displacement, Coordinate[] sites, int width) {
 		int size = sites.length;
 		geom.setCanonicalSites(sites);
-		ContinuumOperation mat = new Advection(geom, false, displacement, 0.25);
+		Operator mat = new Advection(geom, false, displacement, 0.25);
 		mat.init();
 
 		for (int i = 0; i < size; i++) {

@@ -10,6 +10,7 @@ import org.dom4j.Element;
  * Reads the specifications of individual processes from the project
  * loader and provides them to the process factory for construction.
  * 
+ * @untested
  * @author dbborens
  *
  */
@@ -60,7 +61,7 @@ public class ProcessLoader {
 	}
 	
 	// Pull in a single-datum element
-	private String get(Element g, String key) {
+	protected String get(Element g, String key) {
 		Element vElem = g.element(key);
 		if (vElem == null) {
 			throw new IllegalArgumentException("Process " + 

@@ -2,12 +2,12 @@ package jeslime.continuum.operations;
 
 import structural.identifiers.Coordinate;
 import geometry.Geometry;
-import continuum.operations.ContinuumOperation;
+import continuum.operations.Operator;
 import jeslime.EslimeTestCase;
 import jeslime.mock.MockGeometry;
 import java.util.HashMap;
 
-public class ContinuumOperationTest extends EslimeTestCase {
+public class OperatorTest extends EslimeTestCase {
 
 	private MockGeometry geometry;
 	private ContinuumOperationStub bounded, unbounded;
@@ -52,7 +52,7 @@ public class ContinuumOperationTest extends EslimeTestCase {
 		assertArraysEqual(expected, actual, true);
 	}
 	
-	public class ContinuumOperationStub extends ContinuumOperation {
+	public class ContinuumOperationStub extends Operator {
 
 		public ContinuumOperationStub(Geometry geometry, boolean useBoundaries) {
 			super(geometry, useBoundaries);

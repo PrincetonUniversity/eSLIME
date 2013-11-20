@@ -4,8 +4,8 @@ import structural.Flags;
 
 
 public class Coordinate implements Comparable<Coordinate> {
-	protected int x, y, z;
-	protected int flags;
+	protected final int x, y, z;
+	protected final int flags;
 	
 	public Coordinate(int x, int y, int flags) {
 		this.x = x;
@@ -43,6 +43,8 @@ public class Coordinate implements Comparable<Coordinate> {
 		if (!hasFlag(Flags.PLANAR)) {
 			z = vec[2];
 		} 
+		
+		else z = Integer.MIN_VALUE;
 	}
 
 	@Override
@@ -156,7 +158,7 @@ public class Coordinate implements Comparable<Coordinate> {
 	}
 
 	/**
-	 * This (arbitrary) comparitor is used to make ordered
+	 * This (arbitrary) comparator is used to make ordered
 	 * arrays, eg for tests.
 	 */
 	@Override

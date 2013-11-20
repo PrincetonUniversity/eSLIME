@@ -8,7 +8,7 @@ import geometry.Geometry;
  * @author David Bruce Borenstein
  * @test ScalingTest
  */
-public class Scaling extends ContinuumOperation {
+public class Scaling extends Operator {
 
 	private double lambda;
 	
@@ -22,6 +22,10 @@ public class Scaling extends ContinuumOperation {
 		for (int i = 0; i < sites.length; i++) {
 			set(i, i, lambda);
 		}
+	}
+	
+	public double getLambda() {
+		return lambda;
 	}
 
 }

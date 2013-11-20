@@ -83,13 +83,12 @@ public class BufferedStateWriter extends Writer {
 
 	// Index --> Coordinate
 	private Coordinate[] coordArr;
-
-	// Coordinate --> Index
-	private HashMap<Coordinate, Integer> coordMap;
 	
+	private Geometry geom;
 	//public BufferedStateWriter(String stateDir, Parameters p, int n) {
 	public BufferedStateWriter(GeneralParameters p, Geometry geom) {
 		super(p, geom);
+		this.geom = geom;
 	}
 
 	public void init(CellLayer l) {
@@ -154,10 +153,7 @@ public class BufferedStateWriter extends Writer {
 		
 		// Initialize coordinate structures
 		coordArr = geom.getCanonicalSites();
-		coordMap = new HashMap<Coordinate, Integer>(coordArr.length);
 		
-		for (int i = 0; i < coordArr.length; i++)
-			coordMap.put(coordArr[i], i);
 	}
 
 	private void makeFiles(GeneralParameters p) {
@@ -206,7 +202,7 @@ public class BufferedStateWriter extends Writer {
 	protected int[] coordToInt(Coordinate[] highlights) {
 		int[] hl = new int[highlights.length];
 		for (int i = 0; i < highlights.length; i++) {
-			hl[i] = coordMap.get(highlights[i]);
+			hl[i] = geom.coordToIndex(highlights[i]);
 		}
 		
 		return hl;

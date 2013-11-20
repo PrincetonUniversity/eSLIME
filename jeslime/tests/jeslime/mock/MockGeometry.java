@@ -3,6 +3,7 @@ package jeslime.mock;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import structural.Flags;
 import structural.identifiers.Coordinate;
 import geometry.Geometry;
 import geometry.boundaries.Boundary;
@@ -95,5 +96,10 @@ public class MockGeometry extends Geometry {
 
 	public void setDimensionality(int dimensionality) {
 		this.dimensionality = dimensionality;
+	}
+	
+	/* rel2abs -- overriden as needed in subclass mocks */
+	public Coordinate rel2abs(Coordinate origin, Coordinate displacement, int mode) {
+		return origin.addFlags(Flags.UNDEFINED);
 	}
 }

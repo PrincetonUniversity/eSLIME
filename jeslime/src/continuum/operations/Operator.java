@@ -2,23 +2,30 @@ package continuum.operations;
 
 import java.util.Map;
 
+import org.dom4j.Element;
+
+import structural.EpsilonUtil;
 import structural.identifiers.Coordinate;
 import geometry.Geometry;
 import no.uib.cipr.matrix.sparse.CompDiagMatrix;
 
-public abstract class ContinuumOperation extends CompDiagMatrix {
+public abstract class Operator extends CompDiagMatrix {
 
 	protected Geometry geometry;
-	private boolean useBoundaries;
+
+	protected boolean useBoundaries;
 	
 	protected Coordinate[] sites;
 	/**
 	 * Construct an n x n matrix and populate it according to the connectivity
 	 * of the geometry.
 	 * 
-	 * @param geometry
+	 * @param geometry -- the geometry upon which to base the operator.
+	 * @param useBoundaries -- utilize boundary conditions in constructing
+	 *     the operator. WARNING: disabling boundary conditions can lead to
+	 *     illegal coordinate indices!
 	 */
-	public ContinuumOperation(Geometry geometry, boolean useBoundaries) {
+	public Operator(Geometry geometry, boolean useBoundaries) {
 		super(geometry.getCanonicalSites().length, geometry.getCanonicalSites().length);
 		this.geometry = geometry;
 		this.useBoundaries = useBoundaries;
@@ -36,9 +43,14 @@ public abstract class ContinuumOperation extends CompDiagMatrix {
 	}
 	
 	protected int[] neighbors(Coordinate coord) {
+		//System.out.println("In neighbors(" + coord + ")");
 		Coordinate[] neighborCoords = geometry.getNeighbors(coord,  mode());
 		int[] neighbors = new int[neighborCoords.length];
 		
+		//System.out.println("   Neighbor set: ");
+		//for (int i = 0; i < neighborCoords.length; i++) {
+		//	System.out.println("      " + neighborCoords[i]);
+		//}
 		for (int i = 0; i < neighborCoords.length; i++) {
 			neighbors[i] = geometry.coordToIndex(neighborCoords[i]);
 		}
@@ -54,5 +66,19 @@ public abstract class ContinuumOperation extends CompDiagMatrix {
 		return geometry.getDimensionality();
 	}
 	
-	
+	public boolean isUseBoundaries() {
+		return useBoundaries;
+	}
+
+	protected void augment(int i, int j, double delta) {
+		// Skip the operation to avoid initializing unnecessary
+		// data structures if the magnitude of the delta  is 
+		// below machine epsilon
+		if (Math.abs(delta) < EpsilonUtil.epsilon()) {
+			return;
+		}
+		
+		double current = get(i, j);
+		set(i, j, current + delta);
+	}
 }

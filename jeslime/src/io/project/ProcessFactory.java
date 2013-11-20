@@ -11,6 +11,11 @@ import structural.GeneralParameters;
 import layers.cell.CellLayer;
 import geometry.Geometry;
 
+/**
+ * @untested 
+ * @author dbborens
+ *
+ */
 public class ProcessFactory {
 
 	private ProcessLoader loader;

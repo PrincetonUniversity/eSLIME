@@ -14,6 +14,7 @@ import layers.cell.CellLayer;
  * multiple distinct cells of the same exact specification (include state
  * id) will be returned.
  * 
+ * @untested
  * @author dbborens
  *
  */

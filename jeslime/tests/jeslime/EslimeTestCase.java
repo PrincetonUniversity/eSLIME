@@ -3,6 +3,9 @@ package jeslime;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import org.dom4j.Element;
+import org.dom4j.tree.BaseElement;
+
 import junit.framework.TestCase;
 import structural.Flags;
 import structural.identifiers.Coordinate;
@@ -56,5 +59,11 @@ public abstract class EslimeTestCase extends TestCase {
 		}
 		
 		return eps;
+	}
+	
+	protected void addElement(Element e, String name, String text) {
+		Element rElem = new BaseElement(name);
+		rElem.setText(text);
+		e.add(rElem);		
 	}
 }
