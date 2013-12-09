@@ -1,17 +1,6 @@
 package control;
 
-import io.project.GeometryFactory;
-import io.project.ProcessLoader;
-import io.project.ProjectLoader;
-import io.serialize.SerializationManager;
-
 import java.io.File;
-
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
-import structural.postprocess.ImageSequence;
-import geometry.Geometry;
-import models.*;
 
 /**
  * The manual runner specifies a hard-coded parameters file to be loaded.

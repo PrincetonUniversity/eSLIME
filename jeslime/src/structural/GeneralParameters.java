@@ -1,6 +1,6 @@
 package structural;
 
-import io.project.ProjectLoader;
+import jeslime.io.project.ProjectLoader;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -32,7 +32,7 @@ public class GeneralParameters {
 	// Path variables
 	private String basePath;		// Path as specified
 	private String path;			// May contain a time stamp
-	private String instancePath;	// Includes instance numberÊ(if applies)
+	private String instancePath;	// Includes instance numberï¿½(if applies)
 	
 	// Output flags
 	

@@ -1,11 +1,10 @@
 package continuum.operations;
 
-import io.project.OperatorLoader;
+import jeslime.io.project.OperatorLoader;
 
 import org.dom4j.Element;
 
 import structural.EpsilonUtil;
-import structural.MatrixUtils;
 import geometry.Geometry;
 
 public class CompoundOperator extends Operator {

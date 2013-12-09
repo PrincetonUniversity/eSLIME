@@ -1,7 +1,7 @@
 package processes;
 
 import geometry.Geometry;
-import io.project.ProcessLoader;
+import jeslime.io.project.ProcessLoader;
 import processes.gillespie.GillespieState;
 import structural.halt.HaltCondition;
 

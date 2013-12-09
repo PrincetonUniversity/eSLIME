@@ -1,8 +1,8 @@
 package processes.cellular;
 
 import geometry.Geometry;
-import io.project.CellFactory;
-import io.project.ProcessLoader;
+import jeslime.io.project.CellFactory;
+import jeslime.io.project.ProcessLoader;
 
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -13,7 +13,6 @@ import org.dom4j.Element;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import cells.Cell;
-import cells.SimpleCell;
 import structural.GeneralParameters;
 import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.halt.LatticeFullEvent;

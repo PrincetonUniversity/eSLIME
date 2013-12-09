@@ -3,7 +3,7 @@ package processes.cellular;
 import processes.Process;
 import geometry.Geometry;
 import structural.identifiers.Coordinate;
-import io.project.ProcessLoader;
+import jeslime.io.project.ProcessLoader;
 import structural.GeneralParameters;
 import layers.cell.CellLayer; 
 public abstract class CellProcess extends Process {

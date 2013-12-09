@@ -4,9 +4,9 @@ import java.util.HashSet;
 
 import structural.GeneralParameters;
 import geometry.Geometry;
-import io.deserialize.ConditionViewer;
-import io.deserialize.StateReader;
-import io.visual.HexMapWriter;
+import jeslime.io.deserialize.ConditionViewer;
+import jeslime.io.deserialize.StateReader;
+import jeslime.io.visual.HexMapWriter;
 
 public class ImageSequence {
 	

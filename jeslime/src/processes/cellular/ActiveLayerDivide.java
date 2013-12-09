@@ -1,6 +1,6 @@
 package processes.cellular;
 
-import io.project.ProcessLoader;
+import jeslime.io.project.ProcessLoader;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -8,12 +8,8 @@ import java.util.Random;
 import layers.cell.CellLayer;
 import processes.StepState;
 import processes.gillespie.GillespieState;
-import cells.Cell;
-import structural.Flags;
 import structural.GeneralParameters;
-import layers.cell.CellLayer; import structural.halt.FixationEvent;
 import structural.halt.HaltCondition;
-import structural.halt.LatticeFullEvent;
 import structural.identifiers.Coordinate;
 import geometry.Geometry;
 

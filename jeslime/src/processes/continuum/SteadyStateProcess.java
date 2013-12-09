@@ -1,11 +1,8 @@
 package processes.continuum;
 
 import geometry.Geometry;
-import io.project.ProcessLoader;
-import processes.Process;
+import jeslime.io.project.ProcessLoader;
 import processes.StepState;
-import processes.gillespie.GillespieState;
-import structural.halt.HaltCondition;
 
 public abstract class SteadyStateProcess extends ContinuumProcess {
 	

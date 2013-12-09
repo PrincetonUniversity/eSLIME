@@ -10,10 +10,9 @@ import layers.cell.CellLayer; import structural.Flags;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 import geometry.Geometry;
-import io.project.CellFactory;
-import io.project.CoordinateFactory;
-import io.project.ProcessLoader;
-import io.project.ProjectLoader;
+import jeslime.io.project.CellFactory;
+import jeslime.io.project.CoordinateFactory;
+import jeslime.io.project.ProcessLoader;
 
 public abstract class Process {
 

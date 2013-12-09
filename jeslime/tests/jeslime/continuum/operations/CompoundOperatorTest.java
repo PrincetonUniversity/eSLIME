@@ -1,11 +1,8 @@
 package jeslime.continuum.operations;
 
-import io.project.OperatorFactory;
-
 import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;
 
-import structural.MatrixUtils;
 import structural.identifiers.Coordinate;
 import continuum.operations.CompoundOperator;
 import continuum.operations.Operator;

@@ -1,7 +1,5 @@
 package jeslime.processes;
 
-import io.project.ProcessLoader;
-import io.project.ProjectLoader;
 import processes.cellular.CellProcess;
 import processes.cellular.UniformBiomassGrowth;
 import cells.Cell;

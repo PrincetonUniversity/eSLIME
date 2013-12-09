@@ -55,9 +55,4 @@ public class SimpleCgsSolver extends EquilibriumSolver {
 		return solve(toSolve);
 	}
 
-	@Override
-	public void respecify(Matrix operator) {
-		this.operator = operator;
-	}
-
 }
