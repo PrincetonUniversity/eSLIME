@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<component jdk="1.7" jdk_type="JavaSDK">
+	<exclude-output/>
+	<contentEntry url="file://$MODULE_DIR$"/>
+	<lib name="arpack_combo-0.1.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/jeslime/lib/netlib-java/arpack_combo-0.1.jar!/"/>
+	</lib>
+	<lib name="netlib-java-0.9.3.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/jeslime/lib/netlib-java/netlib-java-0.9.3.jar!/"/>
+	</lib>
+	<lib name="junit-3.8.2.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/jeslime/lib/junit/junit-3.8.2.jar!/"/>
+	</lib>
+	<lib name="dom4j-1.6.1.jar" scope="COMPILE">
+		<relative-module-cls project-related="jar://$PROJECT_DIR$/jeslime/lib/dom4j/dom4j-1.6.1.jar!/"/>
+	</lib>
+</component>
