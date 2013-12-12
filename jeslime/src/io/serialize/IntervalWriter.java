@@ -1,4 +1,4 @@
-package jeslime.io.serialize;
+package io.serialize;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,7 +10,7 @@ import structural.GeneralParameters;
 import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
-public class IntervalWriter extends Writer {
+public class IntervalWriter extends AbstractCellWriter {
 
 	// I/O handle for the interval file (What changed at each time step, and how long it took)
 	private BufferedWriter intervalWriter;
@@ -68,8 +68,6 @@ public class IntervalWriter extends Writer {
 	/**
 	 * Wall clock time and simulation time for last time step.
 	 * 
-	 * @param simInterval
-	 * @param realInterval
 	 */
 	private void interval(int n, double gillespie, long interval) {
 		StringBuilder sb = new StringBuilder();
