@@ -1,7 +1,7 @@
 package processes.continuum;
 
 import geometry.Geometry;
-import jeslime.io.project.ProcessLoader;
+import io.project.ProcessLoader;
 import processes.StepState;
 
 public abstract class SteadyStateProcess extends ContinuumProcess {

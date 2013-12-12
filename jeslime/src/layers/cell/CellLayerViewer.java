@@ -56,7 +56,12 @@ public class CellLayerViewer {
 	public int[] getStateVector() {
 		return content.getStateVector();
 	}
-	
+
+    /**
+     * Returns a vector of fitness values, in canonical site order.
+     * 
+     * @return
+     */
 	public double[] getFitnessVector() {
 		return content.getFitnessVector();
 	}

@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 
 import cells.Cell;
+import layers.Layer;
 import structural.Flags;
 import structural.identifiers.Coordinate;
 import geometry.Geometry;
@@ -15,22 +16,30 @@ import geometry.Geometry;
  * @author David Bruce Borenstein
  *
  */
-public class CellLayer {
+public class CellLayer implements Layer {
 
 	private CellLayerIndices indices;
 	private CellLayerContent content;
-	
+
+    private String id;
+
 	// Geometry (passed to Lattice at construction time)
     private Geometry geom;
 
-	public CellLayer(Geometry geom, Integer id) {
+	public CellLayer(Geometry geom, int id) {
+        this.id = Integer.toString(id);
 		indices = new CellLayerIndices();
 		content = new CellLayerContent(geom, indices);
 		
 		this.geom = geom;
 	}
 
-	public CellLookupManager getLookupManager() {
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    public CellLookupManager getLookupManager() {
 		return new CellLookupManager(geom, content, indices);
 	}
 	

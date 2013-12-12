@@ -1,10 +1,10 @@
 package control;
 
 import geometry.Geometry;
-import jeslime.io.project.GeometryFactory;
-import jeslime.io.project.ProcessLoader;
-import jeslime.io.project.ProjectLoader;
-import jeslime.io.serialize.SerializationManager;
+import io.project.GeometryFactory;
+import io.project.ProcessLoader;
+import io.project.ProjectLoader;
+import io.serialize.SerializationManager;
 
 import java.io.File;
 

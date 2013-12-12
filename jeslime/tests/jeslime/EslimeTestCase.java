@@ -1,8 +1,11 @@
 package jeslime;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import jeslime.mock.MockGeometry;
+import junitx.framework.FileAssert;
 import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;
 
@@ -13,7 +16,11 @@ import structural.identifiers.Coordinate;
 public abstract class EslimeTestCase extends TestCase {
 	
 	protected double epsilon = calcEpsilon();
-	
+
+    protected final String eslimeRoot = "./jeslime/";
+    protected final String outputPath = eslimeRoot + "tests/output/";
+    protected final String fixturePath = eslimeRoot + "tests/fixtures/";
+
 	protected void assertArraysEqual(Coordinate[] expected, Coordinate[] actual, boolean sort) {
 		assertEquals(expected.length, actual.length);
 		
@@ -66,4 +73,43 @@ public abstract class EslimeTestCase extends TestCase {
 		rElem.setText(text);
 		e.add(rElem);		
 	}
+
+    /**
+     * Generate a basic mock geometry with a defined
+     * set of canonical coordinates.
+     */
+    protected MockGeometry buildMockGeometry() {
+        Coordinate[] canonicals = new Coordinate[] {
+            new Coordinate(0, 0, 0, 0),
+            new Coordinate(0, 0, 1, 0),
+            new Coordinate(0, 1, 0, 0),
+            new Coordinate(0, 1, 1, 0),
+            new Coordinate(1, 0, 0, 0)
+        };
+
+        MockGeometry ret = new MockGeometry();
+        ret.setCanonicalSites(canonicals);
+
+        return ret;
+    }
+
+    protected void assertFilesEqual(String filename) {
+        String fixture = fixturePath + filename;
+        String output  = outputPath + filename;
+
+        File fixtureFile = new File(fixture);
+        File outputFile = new File(output);
+
+        FileAssert.assertEquals(fixtureFile, outputFile);
+    }
+
+    protected void assertBinaryFilesEqual(String filename) {
+        String fixture = fixturePath + filename;
+        String output  = outputPath + filename;
+
+        File fixtureFile = new File(fixture);
+        File outputFile = new File(output);
+
+        FileAssert.assertBinaryEquals(fixtureFile, outputFile);
+    }
 }

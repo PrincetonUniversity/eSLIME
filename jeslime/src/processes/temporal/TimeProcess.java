@@ -3,7 +3,7 @@ package processes.temporal;
 import processes.Process;
 import processes.gillespie.GillespieState;
 import geometry.Geometry;
-import jeslime.io.project.ProcessLoader;
+import io.project.ProcessLoader;
 import structural.GeneralParameters;
 import layers.cell.CellLayer;
 

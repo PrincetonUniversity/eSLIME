@@ -96,11 +96,6 @@ public class Extrema {
 		}
 		
 		sb.append(argMax.toString());
-		sb.append(argMax.x());
-		sb.append(',');
-		sb.append(argMax.y());
-		sb.append(',');
-		sb.append(argMax.t());
 	}
 
 	
@@ -128,4 +123,31 @@ public class Extrema {
 	public TemporalCoordinate argMax() {
 		return argMax;
 	}
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Extrema)) {
+            return false;
+        }
+
+        Extrema other = (Extrema) obj;
+
+        if (other.min != this.min) {
+            return false;
+        }
+
+        if (other.max != this.max) {
+            return false;
+        }
+
+        if (!(other.argMax.equals(this.argMax))) {
+            return false;
+        }
+
+        if (!(other.argMin.equals(this.argMin))) {
+            return false;
+        }
+
+        return true;
+    }
 }

@@ -1,12 +1,10 @@
 package structural.postprocess;
 
-import java.util.HashSet;
-
+import io.deserialize.CellStateReader;
 import structural.GeneralParameters;
 import geometry.Geometry;
-import jeslime.io.deserialize.ConditionViewer;
-import jeslime.io.deserialize.StateReader;
-import jeslime.io.visual.HexMapWriter;
+import io.deserialize.ConditionViewer;
+import io.visual.HexMapWriter;
 
 public class ImageSequence {
 	
@@ -34,7 +32,7 @@ public class ImageSequence {
 	
 	public void generate() {
 		System.out.println("Generating image sequence.");
-		StateReader reader = new StateReader(path, p, geom);
+		CellStateReader reader = new CellStateReader(path, p, geom);
 		
 		ConditionViewer condition = reader.next();
 

@@ -1,6 +1,6 @@
 package continuum.operations;
 
-import jeslime.io.project.OperatorLoader;
+import io.project.OperatorLoader;
 
 import org.dom4j.Element;
 

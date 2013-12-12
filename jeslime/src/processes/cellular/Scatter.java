@@ -1,14 +1,11 @@
 package processes.cellular;
 
 import geometry.Geometry;
-import jeslime.io.project.CellFactory;
-import jeslime.io.project.ProcessLoader;
+import io.project.CellFactory;
+import io.project.ProcessLoader;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Random;
-
-import org.dom4j.Element;
 
 import processes.StepState;
 import processes.gillespie.GillespieState;

@@ -1,13 +1,8 @@
 package processes.cellular;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-
-import org.dom4j.Element;
-
 import cells.Cell;
 import geometry.Geometry;
-import jeslime.io.project.ProcessLoader;
+import io.project.ProcessLoader;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import structural.GeneralParameters;

@@ -1,6 +1,6 @@
 package processes.cellular;
 
-import jeslime.io.project.ProcessLoader;
+import io.project.ProcessLoader;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,9 +1,8 @@
 package structural;
 
-import jeslime.io.project.ProjectLoader;
+import io.project.ProjectLoader;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
@@ -58,9 +57,11 @@ public class GeneralParameters {
 		instance = 0;
 		updateInstancePath();
 		
-		
 	}
-	
+
+    // Do-nothing constructor for mock testing.
+    public GeneralParameters() {}
+
 	private void updateInstancePath() {		
 		if (instances == 1) {
 			instancePath = path;

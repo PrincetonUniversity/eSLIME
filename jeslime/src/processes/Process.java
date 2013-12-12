@@ -1,7 +1,6 @@
 package processes;
 
 import java.util.ArrayList;
-import java.util.Set;
 
 import org.dom4j.Element;
 
@@ -10,9 +9,9 @@ import layers.cell.CellLayer; import structural.Flags;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 import geometry.Geometry;
-import jeslime.io.project.CellFactory;
-import jeslime.io.project.CoordinateFactory;
-import jeslime.io.project.ProcessLoader;
+import io.project.CellFactory;
+import io.project.CoordinateFactory;
+import io.project.ProcessLoader;
 
 public abstract class Process {
 
@@ -57,7 +56,6 @@ public abstract class Process {
 	 * Identifies possible update targets in the event of an iteration. Should
 	 * accept a null GillespieState for non-Gillespie events.
 	 * 
-	 * @param state
 	 * @throws HaltCondition
 	 */
 	public abstract void target(GillespieState gs) throws HaltCondition;

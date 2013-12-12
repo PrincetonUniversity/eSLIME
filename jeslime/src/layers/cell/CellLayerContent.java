@@ -110,8 +110,11 @@ public class CellLayerContent {
 		
 		return sArr;
 	}
-	
-	public double[] getFitnessVector() {
+
+    /**
+     * Returns the fitness vector, in canonical site order.
+     */
+    public double[] getFitnessVector() {
 		Coordinate[] cArr = getCanonicalSites();
 		
 		double[] fArr = new double[cArr.length];

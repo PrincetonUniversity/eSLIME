@@ -1,6 +1,7 @@
 package layers.solute;
 
 import geometry.Geometry;
+import layers.Layer;
 import no.uib.cipr.matrix.DenseVector;
 
 import java.util.HashMap;
@@ -8,7 +9,7 @@ import java.util.HashMap;
 import structural.Flags;
 import structural.identifiers.Coordinate;
 
-public class SoluteLayer {
+public class SoluteLayer implements Layer {
 
 	// Model geometry
 	private Geometry geom;
@@ -22,13 +23,25 @@ public class SoluteLayer {
 	private Extremum localMax;
 	private Extremum globalMin;
 	private Extremum globalMax;
-	
+
+    private String id;
+
 	private HashMap<Coordinate, Integer> coordToIndex;
 	
 	private Coordinate dummy = new Coordinate(-1, -1, Flags.UNDEFINED);
-	public SoluteLayer(Geometry geom) {
+
+    @Override
+    public String getId() {
+        return id;
+    }
+
+    /**
+     * Constructor for normal use.
+     */
+	public SoluteLayer(Geometry geom, int id) {
 		this.geom = geom;
-		
+		this.id = Integer.toString(id);
+
 		localMin = new Extremum(dummy, -1D, Double.POSITIVE_INFINITY);
 		globalMin = new Extremum(dummy, -1D, Double.POSITIVE_INFINITY);
 		

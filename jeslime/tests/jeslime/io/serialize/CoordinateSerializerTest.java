@@ -1,5 +1,6 @@
 package jeslime.io.serialize;
 
+import io.serialize.CoordinateSerializer;
 import org.dom4j.Element;
 
 import structural.Flags;

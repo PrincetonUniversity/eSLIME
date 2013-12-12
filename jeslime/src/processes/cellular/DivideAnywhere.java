@@ -1,9 +1,8 @@
 package processes.cellular;
 
-import jeslime.io.project.ProcessLoader;
+import io.project.ProcessLoader;
 
 import java.util.HashSet;
-import java.util.Random;
 
 import processes.StepState;
 import processes.gillespie.GillespieState;

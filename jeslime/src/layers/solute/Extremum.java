@@ -2,6 +2,9 @@ package layers.solute;
 
 import structural.identifiers.Coordinate;
 
+/**
+ * TODO this is redundant with Extrema
+ */
 public class Extremum implements Comparable {
 
 	private double value;
