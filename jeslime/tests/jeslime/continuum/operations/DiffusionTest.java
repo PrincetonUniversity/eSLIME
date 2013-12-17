@@ -137,8 +137,8 @@ public class DiffusionTest extends EslimeTestCase {
 		Operator with = new Diffusion(geom, true, 0.1);
 		with.init();
 		
-		//Operator without = new Diffusion(geom, false, 0.1);
-		//without.init();
+		Operator without = new Diffusion(geom, false, 0.1);
+		without.init();
 		
 		Coordinate o, p, q;
 		int oi, pi, qi;
@@ -153,8 +153,8 @@ public class DiffusionTest extends EslimeTestCase {
 		assertEquals(0.6, with.get(oi, oi), epsilon);
 		assertEquals(0.1, with.get(pi, oi), epsilon);
 		
-		//assertEquals(0.6, without.get(oi, oi), epsilon);
-		//assertEquals(0.1, without.get(pi, oi), epsilon);
+		assertEquals(0.6, without.get(oi, oi), epsilon);
+		assertEquals(0.1, without.get(pi, oi), epsilon);
 				
 		// Look north from an exterior coordinate
 		q = new Coordinate(1, 3, 0);
@@ -164,7 +164,7 @@ public class DiffusionTest extends EslimeTestCase {
 		// to a boundary position will be negated. Without them,
 		// the diffused quantity will be absorbed at the boundary.
 		assertEquals(0.7, with.get(qi, qi), epsilon);
-		//assertEquals(0.6, without.get(qi, qi), epsilon);
+		assertEquals(0.6, without.get(qi, qi), epsilon);
 	}
 	
 	private void makeCubicLattice(MockGeometry geom) {

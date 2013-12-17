@@ -69,7 +69,15 @@ public class CompoundOperatorTest extends EslimeTestCase {
 
 		doTest(geom, sites);
 	}
-	
+
+    /**
+     * Makes sure that negative value entries in child operators
+     * still get included. Regression test from prior bug.
+     */
+    public void testNegativeValueRegression() {
+        fail("Not yet implemented.");
+    }
+
 	// Since the CompoundOperator is just the superposition
 	// of other operators, there's no need to test its edge
 	// handling. This will be right iff the child operators

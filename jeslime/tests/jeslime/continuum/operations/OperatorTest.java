@@ -32,7 +32,7 @@ public class OperatorTest extends EslimeTestCase {
 
 	public void testMode() {
 		assertEquals(Geometry.APPLY_BOUNDARIES, bounded.mode());
-		assertEquals(Geometry.IGNORE_BOUNDARIES, unbounded.mode());
+		assertEquals(Geometry.EXCLUDE_BOUNDARIES, unbounded.mode());
 	}
 
 	public void testNeighbors() {

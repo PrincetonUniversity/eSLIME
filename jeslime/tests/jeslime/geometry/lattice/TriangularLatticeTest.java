@@ -178,7 +178,7 @@ public class TriangularLatticeTest extends EslimeTestCase {
 		expected = new Coordinate(3, 3, 0, Flags.VECTOR);
 		assertEquals(actual, expected);
 
-		// +u +v +wÊ= +2v (tricky!)
+		// +u +v +wï¿½= +2v (tricky!)
 		actual = lattice.getDisplacement(o, t);
 		expected = new Coordinate(0, 6, 0, Flags.VECTOR);
 		assertEquals(actual, expected);

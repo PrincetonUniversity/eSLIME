@@ -224,7 +224,12 @@ public class Geometry {
 	
 	public Integer coordToIndex(Coordinate coord) {
 		Coordinate canonical = coord.canonicalize();
-		return coordinateIndex.get(canonical);
+
+        if (!coordinateIndex.containsKey(canonical)) {
+            return null;
+        } else {
+		    return coordinateIndex.get(canonical);
+        }
 	}
 	
 	public void rebuildIndex() {
@@ -255,4 +260,8 @@ public class Geometry {
 		//System.out.println("   Rebuild complete. Coordinate index: " + coordinateIndex.size());
 		
 	}
+
+    public Coordinate getCenter() {
+        return shape.getCenter();
+    }
 }

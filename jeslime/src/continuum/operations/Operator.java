@@ -5,6 +5,7 @@ import java.util.Map;
 import org.dom4j.Element;
 
 import structural.EpsilonUtil;
+import structural.MatrixUtils;
 import structural.identifiers.Coordinate;
 import geometry.Geometry;
 import no.uib.cipr.matrix.sparse.CompDiagMatrix;
@@ -38,7 +39,7 @@ public abstract class Operator extends CompDiagMatrix {
 		if (useBoundaries) {
 			return Geometry.APPLY_BOUNDARIES;
 		} else {
-			return Geometry.IGNORE_BOUNDARIES;
+			return Geometry.EXCLUDE_BOUNDARIES;
 		}
 	}
 	
@@ -81,4 +82,10 @@ public abstract class Operator extends CompDiagMatrix {
 		double current = get(i, j);
 		set(i, j, current + delta);
 	}
+
+
+    @Override
+    public String toString() {
+        return MatrixUtils.matrixForm(this);
+    }
 }

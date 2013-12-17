@@ -1,10 +1,11 @@
 package jeslime.continuum.solvers;
 
+import continuum.solvers.SimpleCgsSolver;
 import jeslime.EslimeTestCase;
 
-public class SimpleCgsSolverTest extends EslimeTestCase {
+public class SimpleCgsSolverTest extends EquilibriumSolverTest {
 
-    public void testNothing() {
-        fail("No tests implemented");
+    public void constructSolver() {
+        solver = new SimpleCgsSolver(null, geometry);
     }
 }

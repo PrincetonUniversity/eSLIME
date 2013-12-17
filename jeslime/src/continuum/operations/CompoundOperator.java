@@ -18,7 +18,12 @@ public class CompoundOperator extends Operator {
 		OperatorLoader childLoader = new OperatorLoader(geom, useBoundaries);
 		children = childLoader.getOperators(root);
 	}
-	
+
+    public CompoundOperator(Geometry geom, boolean useBoundaries, Operator[] children) {
+        super(geom, useBoundaries);
+        this.children = children;
+    }
+
 	@Override
 	public void init() {
 		// Iterate over child operators.
@@ -42,7 +47,7 @@ public class CompoundOperator extends Operator {
 				// storage that we don't need by calling set(...) on the matrix
 				// entry.
 				
-				if (du <= EpsilonUtil.epsilon()) {
+				if (Math.abs(du) <= EpsilonUtil.epsilon()) {
 					continue;
 				}
 				

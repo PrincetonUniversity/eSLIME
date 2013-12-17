@@ -1,5 +1,6 @@
 package continuum.solvers;
 
+import geometry.Geometry;
 import no.uib.cipr.matrix.DenseVector;
 import no.uib.cipr.matrix.Matrix;
 import no.uib.cipr.matrix.Vector;
@@ -8,6 +9,8 @@ import no.uib.cipr.matrix.sparse.DiagonalPreconditioner;
 import no.uib.cipr.matrix.sparse.IterativeSolver;
 import no.uib.cipr.matrix.sparse.IterativeSolverNotConvergedException;
 import no.uib.cipr.matrix.sparse.Preconditioner;
+import structural.MatrixUtils;
+import structural.postprocess.SolutionViewer;
 
 /**
  * Single-grid, conjugate gradient stabilized solver.
@@ -16,21 +19,23 @@ import no.uib.cipr.matrix.sparse.Preconditioner;
  */
 public class SimpleCgsSolver extends EquilibriumSolver {
 
-	public SimpleCgsSolver(Matrix operator) {
-		super(operator);
+	public SimpleCgsSolver(Matrix operator, Geometry geometry) {
+		super(operator, geometry);
 	}
 
 	@Override
-	public Vector solve(Vector source) {
+	public SolutionViewer solve(Vector source) {
 		int n = operator.numRows();
 
 		Vector template = source.copy();
 		
 		IterativeSolver solver = new CGS(template);
 		Preconditioner preconditioner = new DiagonalPreconditioner(n);
+        //System.out.println(MatrixUtils.matrixForm(operator));
+        //System.exit(0);
 		preconditioner.setMatrix(operator);
 
-		Vector sol = new DenseVector(n);
+		DenseVector sol = new DenseVector(n);
 
 		try {
 			solver.solve(operator, source, sol);
@@ -38,12 +43,12 @@ public class SimpleCgsSolver extends EquilibriumSolver {
 			ex.printStackTrace();
 		}
 
-		return sol;
+		return new SolutionViewer(sol, geometry);
 		
 	}
 
 	@Override
-	public Vector solve(Boolean[] input) {
+	public SolutionViewer solve(Boolean[] input) {
 		int n = operator.numRows();
 		
 		Vector toSolve = new DenseVector(n);
