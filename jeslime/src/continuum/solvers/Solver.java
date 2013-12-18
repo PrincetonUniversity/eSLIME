@@ -16,4 +16,8 @@ public abstract class Solver {
     public void respecify(Matrix operator) {
         this.operator = operator;
     }
+
+    public Matrix getOperator() {
+        return operator.copy();
+    }
 }

@@ -40,13 +40,13 @@ public class Diffusion extends Operator {
 	
 		// Calculate r. See method javadoc above.
 		double a = r * (n / m);
-		
+
 		// Calculate matrix diagonal entries.
 		double self = 1.0 - 2 * m * a;
-				
+
 		for (int i = 0; i < sites.length; i++) {
 			Coordinate coord = sites[i];
-			
+
 			// Set the diagonal value
 			augment(i, i, self);
 			

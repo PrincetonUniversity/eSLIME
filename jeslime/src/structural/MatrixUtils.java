@@ -49,4 +49,31 @@ public abstract class MatrixUtils {
 		
 		return m;
 	}
+
+    /**
+     * Compares two matrices for numerical equality.
+     */
+    public static boolean equal(Matrix p, Matrix q) {
+       double epsilon = EpsilonUtil.epsilon();
+       if (p.numColumns() != q.numColumns()) {
+           return false;
+       }
+
+       if (p.numRows() != q.numRows()) {
+           return false;
+       }
+
+       for (int i = 0; i < p.numRows(); i++) {
+           for (int j = 0; j < p.numColumns(); j++) {
+               double delta = p.get(i, j) - q.get(i, j);
+               double magnitude = Math.abs(delta);
+
+               if (magnitude > epsilon) {
+                   return false;
+               }
+           }
+       }
+
+       return true;
+    }
 }
