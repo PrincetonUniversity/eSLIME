@@ -102,4 +102,14 @@ public class MockGeometry extends Geometry {
 	public Coordinate rel2abs(Coordinate origin, Coordinate displacement, int mode) {
 		return origin.addFlags(Flags.UNDEFINED);
 	}
+
+    private Coordinate center;
+
+    public void setCenter(Coordinate center) {
+        this.center = center;
+    }
+
+    public Coordinate getCenter() {
+        return center;
+    }
 }

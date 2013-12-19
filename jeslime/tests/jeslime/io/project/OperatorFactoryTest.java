@@ -84,8 +84,8 @@ public class OperatorFactoryTest extends EslimeTestCase {
 		assertTrue(d2d.isUseBoundaries());
 		assertFalse(d3d.isUseBoundaries());
 		
-		assertEquals(0.1, d2d.getR(), epsilon);
-		assertEquals(0.1, d3d.getR(), epsilon);
+		assertEquals(0.1, d2d.getD(), epsilon);
+		assertEquals(0.1, d3d.getD(), epsilon);
 		
 	}
 	

@@ -106,9 +106,9 @@ public class DiffusionTest extends EslimeTestCase {
 		// elsewhere.)
 		int[] neighbors = new int[] {i(1, 3), i(2, 3), i(2, 2), i(1, 1), i(0, 1), i(0, 2)};
 
-				
+		double expected = 0.1 * (2.0 / 3.0);
 		for (int neighbor : neighbors) {
-			assertEquals(0.1, mat.get(i(1, 2), neighbor));
+			assertEquals(expected, mat.get(i(1, 2), neighbor));
 		}
 	}
 	

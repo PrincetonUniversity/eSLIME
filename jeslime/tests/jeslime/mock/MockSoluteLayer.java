@@ -25,6 +25,6 @@ public class MockSoluteLayer extends SoluteLayer {
 
     @Override
     public DenseVector getState() {
-        return super.getState();
+        return state;
     }
 }

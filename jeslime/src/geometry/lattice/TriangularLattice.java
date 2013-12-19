@@ -148,7 +148,7 @@ public class TriangularLattice extends Lattice {
 			dv = Math.min(dx, dy);
 		}
 
-		// Step 2: subtracting du from dx and dy, we get dw and dv respectively.
+		// Step 2: subtracting du from dx and dy, we get dw and du respectively.
 		int du = dx - dv;
 		int dw = dy - dv;
 

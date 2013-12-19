@@ -60,6 +60,7 @@ public class Geometry {
 	}
 	
 	public Coordinate[] getNeighbors(Coordinate coord, int mode) {
+
 		Coordinate[] neighbors = lattice.getNeighbors(coord);
 		if (mode == APPLY_BOUNDARIES) {
 			return applyBoundaries(neighbors);
@@ -226,6 +227,7 @@ public class Geometry {
 		Coordinate canonical = coord.canonicalize();
 
         if (!coordinateIndex.containsKey(canonical)) {
+            System.out.println("I don't think I contain the coordinate " + canonical);
             return null;
         } else {
 		    return coordinateIndex.get(canonical);

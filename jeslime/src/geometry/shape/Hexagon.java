@@ -1,8 +1,6 @@
 package geometry.shape;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 import org.dom4j.Element;
 
@@ -49,10 +47,10 @@ public class Hexagon extends Shape {
 
 	@Override
 	public Coordinate getCenter() {
-		Coordinate raw = new Coordinate(radius, radius, 0);
-		Coordinate adjusted = lattice.adjust(raw);
-		
-		return adjusted;
+        // This geometry is defined around a center coordinate of (r, r).
+        // It is built up as a ring around this coordinate.
+		Coordinate center = new Coordinate(radius, radius, 0);
+		return center;
 	}
 
 	@Override
@@ -109,7 +107,18 @@ public class Hexagon extends Shape {
 		list.add(coordinate);		
 	}
 
+
 	@Override
+    /**
+     * Get extent overbound of the specified coordinate, if any.
+     *
+     * The getOverbounds method for Hexagon is degenerate in that there are
+     * ambiguous cases. For example, consider the case of (0, 4) with an r=2
+     * hexagon. This could be considered +2w from the corner coordinate (0, 2)
+     * or -2u from the corner coordinate (2, 4). In this case, we favor the use
+     * of the "true" basis vector <u, w> and therefore prefer the latter.
+     *
+     */
 	public Coordinate getOverbounds(Coordinate coord) {
 		// Get natural-basis displacement from center
 		Coordinate origin = getCenter();
@@ -117,46 +126,113 @@ public class Hexagon extends Shape {
 		
 		// Remember that diameter of Hexagon geometry is 2r + 1,
 		// so out of bounds is r > R (strictly greater)
+
+        int[] overages = new int[] {0, 0, 0};
+        // Turn original displacement vector into an array.
+        int[] dArr = new int[] {d.x(), d.y(), d.z()};
+
+        // Step 1: Look for simple overages.
+        for (int i = 0; i < 3; i++) {
+            int overage = getOverage(dArr[i]);
+            overages[i] = overage;
+            dArr[i] -= overage;
+        }
+
+        // Step 2: While |d| exceeds the radius, eliminate the shortest
+        // vector components.
+        while(norm(dArr) > radius) {
+
+            // Find minimum non-zero magnitude (mnz) of the remaining offsets.
+            int mnz = mnz(dArr);
+
+            // If there's a tie, it has to be between an true basis
+            // direction (u or w) and the degenerate "basis" v. Therefore,
+            // in case of tie, consider only u or w, with u preferred.
+
+            // If u == w, then something went wrong, because this is the
+            // definition of v.
+            if (dArr[0] == dArr[2]) {
+                throw new IllegalStateException("Geometry expectation violated in Hexagon::getOverbounds.");
+            }
+
+            // Case 1. |du| > 0 and mnz(d) = |du|.
+            if (dArr[0] != 0 && a(dArr[0]) == mnz) {
+                overages[0] += dArr[0];
+                dArr[0] = 0;
+                continue;
+
+            // Case 2. |dw| > 0 and min(d) = dw.
+            } else if (dArr[2] != 0 && a(dArr[2]) == mnz) {
+                overages[2] += dArr[2];
+                dArr[2] = 0;
+                continue;
+
+            // Case 3. |dv| > 0 and min(d) = dv.
+            } else if (dArr[1] != 0 && a(dArr[1]) == mnz) {
+                overages[1] += dArr[1];
+                dArr[1] = 0;
+                continue;
+            }
+
+            // Else, something went wrong.
+            throw new IllegalStateException("Undefined state in Hexagon::getOverbounds.");
+        }
 		
-		int du, dv, dw;
+		return new Coordinate(overages, Flags.VECTOR);
 		
-		int u = d.x();
-		int v = d.y();
-		int w = d.z();
-		
-		//System.out.println("A: " + u + "\t" + v + "\t" + w + " | " + radius);
-		// Handle "u" component (southeast)
-		if (u > radius) {
+	}
+
+    private int mnz(int[] dArr) {
+        int mnz = Integer.MAX_VALUE;
+
+        for (int x : dArr) {
+            if (x == 0) {
+                continue;
+            } else if (Math.abs(x) < mnz) {
+                mnz = Math.abs(x);
+            }
+        }
+
+        return mnz;
+    }
+
+    /**
+     * We call Math.abs(int) so many times here in algorithms
+     * that it is easier to give a shorthand. Cloodgy but easy
+     * to read (= Laziness.)
+     */
+    private int a(int i) {
+        return Math.abs(i);
+    }
+
+    /**
+     * Returns L1 norm.
+     *
+     */
+    private int norm(int[] arr) {
+        int sum = 0;
+
+        for (int elem : arr) {
+            sum += Math.abs(elem);
+        }
+
+        return sum;
+    }
+
+    private int getOverage(int u) {
+        int du;
+        if (u > radius) {
 			du = u - radius;
 		} else if (u < radius * -1) {
 			du = u + radius;
 		} else {
 			du = 0;
 		}
-		
-		// Handle "v" component (northeast)
-		if (v > radius) {
-			dv = v - radius;
-		} else if (v < radius * -1) {
-			dv = v + radius;
-		} else {
-			dv = 0;
-		}
-		
-		// Handle "w" component (north)
-		if (w > radius) {
-			dw = w - radius;
-		} else if (w < radius * -1) {
-			dw = w + radius;
-		} else {
-			dw = 0;
-		}
-		
-		return new Coordinate(du, dv, dw, Flags.VECTOR);
-		
-	}
 
-	@Override
+        return du;
+    }
+
+    @Override
 	public int[] getDimensions() {
 		int d = (2 * radius) + 1;
 		

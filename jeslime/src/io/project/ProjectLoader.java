@@ -23,7 +23,7 @@ public class ProjectLoader {
 	
 	// Version -- checked against parameters file to make sure they're
 	// compatible
-	private final static String VERSION = "v0.3.2";
+	private final static String VERSION = "v0.3.3";
 	
 	private Element root;
 	private String stringForm;

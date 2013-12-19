@@ -46,13 +46,15 @@ public abstract class Operator extends CompDiagMatrix {
 	protected int[] neighbors(Coordinate coord) {
 		//System.out.println("In neighbors(" + coord + ")");
 		Coordinate[] neighborCoords = geometry.getNeighbors(coord,  mode());
+        //System.out.print("Getting neighbors for coordinate " + coord);
 		int[] neighbors = new int[neighborCoords.length];
-		
+		//System.out.println("  --> found " + neighbors.length);
 		//System.out.println("   Neighbor set: ");
 		//for (int i = 0; i < neighborCoords.length; i++) {
 		//	System.out.println("      " + neighborCoords[i]);
 		//}
 		for (int i = 0; i < neighborCoords.length; i++) {
+            //System.out.println("   " + neighborCoords[i]);
 			neighbors[i] = geometry.coordToIndex(neighborCoords[i]);
 		}
 		

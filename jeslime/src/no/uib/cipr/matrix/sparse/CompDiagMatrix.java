@@ -186,6 +186,7 @@ public class CompDiagMatrix extends AbstractMatrix {
         }
     }
 
+
     /**
      * Creates a new sparse matrix copied from the given matrix. Takes a deep
      * copy, with possibility to specify preallocation

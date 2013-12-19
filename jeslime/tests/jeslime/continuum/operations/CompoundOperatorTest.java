@@ -1,18 +1,15 @@
 package jeslime.continuum.operations;
 
+import jeslime.mock.*;
 import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;
 
+import structural.EpsilonUtil;
 import structural.identifiers.Coordinate;
 import continuum.operations.CompoundOperator;
 import continuum.operations.Operator;
 import continuum.operations.Scaling;
 import jeslime.EslimeTestCase;
-import jeslime.mock.CubicMockGeometry;
-import jeslime.mock.LinearMockGeometry;
-import jeslime.mock.MockGeometry;
-import jeslime.mock.SquareMockGeometry;
-import jeslime.mock.TriangularMockGeometry;
 
 /**
  * Test to make sure that the compound operator class works
@@ -75,7 +72,16 @@ public class CompoundOperatorTest extends EslimeTestCase {
      * still get included. Regression test from prior bug.
      */
     public void testNegativeValueRegression() {
-        fail("Not yet implemented.");
+        MockGeometry geom = new MockGeometry();
+        Coordinate origin = new Coordinate(0, 0, 0);
+        geom.setCanonicalSites(new Coordinate[] {origin});
+        MockOperator child = new MockOperator(geom, false);
+        child.set(0, 0, -1.0);
+
+        Operator parent = new CompoundOperator(geom, false, new Operator[] {child});
+        parent.init();
+
+        assertEquals(-1.0, parent.get(0, 0), EpsilonUtil.epsilon());
     }
 
 	// Since the CompoundOperator is just the superposition

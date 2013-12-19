@@ -13,6 +13,7 @@ import io.serialize.ContinuumStateWriter;
 import jeslime.EslimeTestCase;
 import jeslime.mock.MockGeneralParameters;
 import jeslime.mock.MockSoluteLayer;
+import junitx.framework.FileAssert;
 import no.uib.cipr.matrix.DenseMatrix;
 import no.uib.cipr.matrix.DenseVector;
 import no.uib.cipr.matrix.Matrix;
@@ -22,6 +23,7 @@ import structural.MatrixUtils;
 import structural.identifiers.Coordinate;
 import structural.postprocess.SolutionViewer;
 
+import java.io.File;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -32,8 +34,8 @@ import java.util.Set;
  */
 public abstract class EquilibriumSolverTest extends EslimeTestCase {
 
-    protected static final int RECTANGULAR_DIM = 64;
-    protected static final int TRIANGULAR_DIM = 48;
+    protected static final int RECTANGULAR_DIM = 41;
+    protected static final int TRIANGULAR_DIM = 50;
     protected static final int CUBIC_DIM = 32;
 
     // The solver to use in the tests.
@@ -159,11 +161,11 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
     public void testCorrectMatrix() {
         double epsilon = EpsilonUtil.epsilon();
 
-        double diffusion = 1e-5;
-        double decay = 6.25e-7;
+        double diffusion = 1e-4;
+        double decay = 6.25e-6;
 
         // We don't actually use this here, but...
-        double production = 6.25e-7;
+        double production = 6.25e-6;
 
         //double diagonal = 1.0 - (4 * diffusion) - decay;
 
@@ -260,29 +262,47 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
      */
     public void testLegacyRect() {
         // Build test infrastructure.
-        buildRectangularExample(1e-5, 6.25e-7, 6.25e-7);
+        buildRectangularExample(1e-4, 6.25e-6, 6.25e-6);
 
         SolutionViewer result = solver.solve(source);
 
         // Test that solver agrees with test expectations from prior projects.
 
-        // This is mysterious. The legacy tests had reflective boundary conditions,
-        // so you would expect this to fail because the old tests would have lower
-        // concentrations. Instead, the old tests have higher concentrations. Why?
-        double p_3_2 =  0.004764009307677;
-        double p_1_0 =  0.015681143111794;
-        double p_0_0 =  0.030824425246585;
-        double p_15_0 = 1.423997343559253E-4;
-        double p_50_0 = 0D;
-
         DenseVector solution = result.getSolution();
 
-        // Legacy tests used fixed 10^-14 maximum tolerance.
-        testCoordinate(3, 2, p_3_2, result, 1e-14);
-        testCoordinate(1, 0, p_1_0, result, 1e-14);
-        testCoordinate(0, 0, p_0_0, result, 1e-14);
-        testCoordinate(15, 0, p_15_0, result, 1e-14);
-        testCoordinate(50, 0, p_50_0, result, 1e-14);
+        // It so happens that these agree exactly, because the matrix structure
+        // is the same. As it is, the solver is approximate, so 10^(-12) is
+        // a reasonable standard.
+        double l_0_0       = 0.0308244252465857;
+        double l_0_1       = 0.015681143111794024;
+        double l_0_2       = 0.009396096077584433;
+        double l_1_2       = 0.008169971789498123;
+        double l_0_15      = 1.4239973435592538E-4;
+        double l_0_100     = 0.0;
+
+        double p_0_0       = 0.0308244252465857;
+        double p_0_1       = 0.015681143111794024;
+        double p_0_2       = 0.009396096077584433;
+        double p_1_2       = 0.008169971789498123;
+        double p_0_15      = 1.4239973435592538E-4;
+        double p_0_100     = 0.0;
+
+        // Test that solver agrees with test expectations from prior projects
+        // to at least 10^(-12) tolerance.
+        testCoordinate(0, 0, l_0_0, result, 1e-12);
+        testCoordinate(0, 1, l_0_1, result, 1e-12);
+        testCoordinate(0, 2, l_0_2, result, 1e-12);
+        testCoordinate(1, 2, l_1_2, result, 1e-12);
+        testCoordinate(0, 15, l_0_15, result, 1e-12);
+        testCoordinate(0, 100, l_0_100, result, 1e-12);
+
+        // Test that solver agrees with current expectations to machine epsilon.
+        testCoordinate(0, 0, p_0_0, result, epsilon);
+        testCoordinate(0, 1, p_0_1, result, epsilon);
+        testCoordinate(0, 2, p_0_2, result, epsilon);
+        testCoordinate(1, 2, p_1_2, result, epsilon);
+        testCoordinate(0, 15, p_0_15, result, epsilon);
+        testCoordinate(0, 100, p_0_100, result, epsilon);
     }
 
     /**
@@ -291,23 +311,54 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
      *
      */
     public void testLegacyTri() {
-        double p_0_1 =  0.0096534397370393;
-        double p_0_2 =  0.0061330674939363;
-        double p_1_2 =  0.0068005591091883;
-        double p_0_15 = 0.00019134725582351;
-        double p_0_100 = 0D;
+        // l_x_x is legacy value. p_x_x is current value.
+
+        // These differ slightly. The matrices are different, in that neighbors
+        // are indexed differently. Other than that, they should be identical.
+        // As the error is < 10^(-12), and the solver is approximate, I am letting
+        // this stand. However, I would like to revisit this point in the future.
+        // It would be desirable to verify that the two matrices may be generated
+        // from one another by permuting columns and rows.
+
+        double l_0_0 =      0.019458732712560396;
+        double p_0_0 =      0.019458732712482003;
+
+        double l_0_1 =      0.009653359743639577;
+        double p_0_1 =      0.00965335974356578;
+
+        double l_0_2 =      0.006132997071546091;
+        double p_0_2 =      0.006132997071478953;
+
+        double l_1_2 =      0.006800485237957668;
+        double p_1_2 =      0.006800485237888667;
+
+
+        double l_0_15 =     1.913252233828328E-4;
+        double p_0_15 =     1.9132522337364754E-4;
+
+        double p_0_100 =    0D;
+        double l_0_100 =    0D;
 
         // See testTriangularLattice below.
-        buildRectangularExample(1e-5, 4e-7, 4e-7);
+        buildTriangularExample(1e-4, 4e-6, 4e-6);
         SolutionViewer result = solver.solve(source);
 
-        // Test that solver agrees with test expectations from prior projects.
-        // Legacy tests used fixed 10^-14 maximum tolerance.
-        testCoordinate(0, 1, p_0_1, result, 1e-14);
-        testCoordinate(0, 2, p_0_2, result, 1e-14);
-        testCoordinate(1, 2, p_1_2, result, 1e-14);
-        testCoordinate(0, 15, p_0_15, result, 1e-14);
-        testCoordinate(0, 100, p_0_100, result, 1e-14);
+        // Test that solver agrees with test expectations from prior projects
+        // to at least 10^(-12) tolerance.
+        testCoordinate(0, 0, l_0_0, result, 1e-12);
+        testCoordinate(0, 1, l_0_1, result, 1e-12);
+        testCoordinate(0, 2, l_0_2, result, 1e-12);
+        testCoordinate(1, 2, l_1_2, result, 1e-12);
+        testCoordinate(0, 15, l_0_15, result, 1e-12);
+        testCoordinate(0, 100, l_0_100, result, 1e-12);
+
+        // Test that solver agrees with current expectations to machine epsilon.
+        testCoordinate(0, 0, p_0_0, result, epsilon);
+        testCoordinate(0, 1, p_0_1, result, epsilon);
+        testCoordinate(0, 2, p_0_2, result, epsilon);
+        testCoordinate(1, 2, p_1_2, result, epsilon);
+        testCoordinate(0, 15, p_0_15, result, epsilon);
+        testCoordinate(0, 100, p_0_100, result, epsilon);
     }
 
     /* Step 4: Verify fixture operation correctness. */
@@ -318,7 +369,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
     public void testRectangularLattice() {
         /*
           Parameters based on TestBaseSoluteManager from project growth_sq:
-          r = 1e-5
+          r = 1e-4
           production = 1 (time^-1)
           decay = 1 (time^-1)
           diffusion = 16 (area / time)
@@ -326,9 +377,16 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
           Parameters are then scaled to dt = diffusion / r.
          */
 
-        buildRectangularExample(1e-5, 6.25e-7, 6.25e-7);
+        buildRectangularExample(1e-4, 6.25e-6, 6.25e-6);
         generateTestOutput(100);
-        fail("Compare me to a fixture.");
+
+        String outputFile = outputPath + "solute100.state.txt";
+        String fixtureFile = fixturePath + "solute.rect.state.txt";
+
+        File expected = new File(fixtureFile);
+        File actual = new File(outputFile);
+
+        FileAssert.assertBinaryEquals(expected, actual);
     }
 
     /**
@@ -337,7 +395,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
     public void testTriangularLattice() {
         /*
           Parameters based on TestBaseSoluteManager from project growth_hex:
-          r = 1e-5
+          r = 1e-4
           production = 1 (time^-1)
           decay = 1 (time^-1)
           diffusion = 25 (area / time)
@@ -345,9 +403,16 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
           Parameters are then scaled to dt = diffusion / r.
          */
 
-        buildTriangularExample(1e-5, 4e-7, 4e-7);
+        buildTriangularExample(1e-4, 4e-6, 4e-6);
         generateTestOutput(200);
-        fail("Compare me to a fixture.");
+
+        String outputFile = outputPath + "solute200.state.txt";
+        String fixtureFile = fixturePath + "solute.tri.state.txt";
+
+        File expected = new File(fixtureFile);
+        File actual = new File(outputFile);
+
+        FileAssert.assertBinaryEquals(expected, actual);
     }
 
     /**
@@ -356,10 +421,16 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
     public void testCubicLattice() {
         // Using same parameters as those from testTriangularLattice (why not?)
 
-        buildCubicExample(1e-5, 4e-7, 4e-7);
+        buildCubicExample(1e-4, 4e-6, 4e-6);
         generateTestOutput(300);
-        fail("Compare me to a fixture.");
 
+        String outputFile = outputPath + "solute300.state.txt";
+        String fixtureFile = fixturePath + "solute.cubic.state.txt";
+
+        File expected = new File(fixtureFile);
+        File actual = new File(outputFile);
+
+        FileAssert.assertBinaryEquals(expected, actual);
     }
 
     /* Helper methods. */
@@ -367,6 +438,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
     private void testCoordinate(int dx, int dy, double expected, SolutionViewer result, double tolerance) {
         Coordinate c = new Coordinate(dx, dy, Flags.VECTOR);
         double actual = result.get(c);
+        //System.out.println(c + " --> " + actual);
         assertEquals(expected, actual, tolerance);
     }
 
@@ -387,12 +459,15 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
         // Get test result
         SolutionViewer result = solver.solve(source);
 
+        DenseVector solution = result.getSolution();
         // Construct mocks for writer
         MockSoluteLayer layer = new MockSoluteLayer(id);
-        layer.setState(result.getSolution());
-
+        layer.setState(solution);
+        //System.out.println(solution == null);
+        //System.out.println(layer.getState() == null);
         MockGeneralParameters p = new MockGeneralParameters();
-        p.setInstancePath(fixturePath);
+        p.setInstancePath(outputPath);
+        p.setPath(outputPath);
 
         // Construct writer
         ContinuumStateWriter writer = new ContinuumStateWriter(geometry, p);
@@ -468,8 +543,8 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
         System.exit(0);*/
         CompoundOperator operator = new CompoundOperator(geometry, true, children);
         operator.init();
-//        System.out.println("\n\n******\nPARENT\n******\n");
-//        System.out.println(operator);
+        //System.out.println("\n\n******\nPARENT\n******\n");
+        //System.out.println(operator);
         return operator;
     }
 
