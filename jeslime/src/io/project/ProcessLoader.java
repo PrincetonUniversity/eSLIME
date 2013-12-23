@@ -1,5 +1,6 @@
 package io.project;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 import java.util.TreeSet;
@@ -9,55 +10,50 @@ import org.dom4j.Element;
 /**
  * Reads the specifications of individual processes from the project
  * loader and provides them to the process factory for construction.
- * 
- * @untested
+ *
+ * As of eSLIME 0.4.0, the user is no longer required to provide
+ * process IDs in the project file. This is because dom4j returns
+ * elements in the order that they are loaded, which is verified
+ * in jeslime.io.project.XmlTest.
+ *
+ * As a result, this class may look a little unnecessary! In fact, it is:
+ * it was retained to preserve the API.
+ *
  * @author dbborens
  *
  */
 public class ProcessLoader {
 
-	HashMap<Integer, Element> elemsByID;
-	
+    private ArrayList<Element> elems;
+
 	public ProcessLoader(Element root) {
-		elemsByID = new HashMap<Integer, Element>();
-		
+        elems = new ArrayList<Element>();
+
 		for (Object o : root.elements()) {
 			Element e = (Element) o;
-			
-			Integer id = Integer.valueOf(get(e, "id"));
-			
-			if (elemsByID.containsKey(id)) {
-				String msg = "Duplicate process ID " + id + ".";
-				throw new IllegalArgumentException(msg);
-			}
-			
-			elemsByID.put(id, e);
+            elems.add(e);
 		}
 	}
-	
-	/**
+
+
+    /**
 	 * Retrieves a process element from the processes sub-tree, or throws
 	 * an exception if the element is not found.
-	 * @param elementName
 	 * @param id
 	 * @return
 	 */
 	public Element getProcess(int id) {
-		return elemsByID.get(id);
+		return elems.get(id);
 	}
 
 	public Integer[] getProcesses() {
-		// Get set of process IDs. These are assumed to be unsorted.
-		Set<Integer> processes = elemsByID.keySet();
-		
-		// Sort them.
-		TreeSet<Integer> sortedProcesses = new TreeSet<Integer>(processes);
-		
-		// Make an array from the sorted set.
-		Integer[] processArr = sortedProcesses.toArray(new Integer[0]);
-		
+        Integer[] processes = new Integer[elems.size()];
+        for (int i = 0; i < elems.size(); i++) {
+            processes[i] = i;
+        }
+
 		// Return the array.
-		return processArr;
+		return processes;
 	}
 	
 	// Pull in a single-datum element

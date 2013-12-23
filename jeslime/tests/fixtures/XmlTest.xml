@@ -1,0 +1,41 @@
+<!-- This XML file corresponds to io.project.XmlTest. It verifies
+     that the XML reader exhibits the behaviors on which the model
+     depends. In particular we want to make sure  that it returns
+     objects in the order they are specified in the file. -->
+
+<outer>
+
+    <middle>
+        <inner>
+            <data>a</data>
+        </inner>
+
+        <inner>
+            <data>b</data>
+        </inner>
+
+        <inner>
+            <data>c</data>
+        </inner>
+
+        <inner>
+            <data>d</data>
+        </inner>
+    </middle>
+
+    <middle>
+        <inner>
+            <data>e</data>
+        </inner>
+
+        <inner>
+            <data>f</data>
+        </inner>
+    </middle>
+
+    <middle>
+        <alpha id="1"/>
+        <beta id="3"/>
+        <alpha id="2"/>
+    </middle>
+</outer>
