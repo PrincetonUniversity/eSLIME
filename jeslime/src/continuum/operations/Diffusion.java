@@ -36,7 +36,7 @@ public class Diffusion extends Operator {
 		double n = (double) dimension();
 		double m = (double) connectivity();
 
-        System.out.println("mode = " + mode());
+        //System.out.println("mode = " + mode());
 		// Calculate d. See method javadoc above.
 		double a = d * (n / m);
         /*System.out.println("d = " + d);

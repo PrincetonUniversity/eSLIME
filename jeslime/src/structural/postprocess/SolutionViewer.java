@@ -27,7 +27,7 @@ public class SolutionViewer {
 
         Coordinate converted = applyOffset(offset);
 
-        System.out.println("Looking up index of " + converted);
+        //System.out.println("Looking up index of " + converted);
         Integer index = geometry.coordToIndex(converted);
         if (index == null) {
             return 0D;
