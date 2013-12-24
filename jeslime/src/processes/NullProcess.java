@@ -7,22 +7,30 @@ import structural.halt.HaltCondition;
 
 /**
  * Dummy process that does nothing except report that it
- * was invoked.
- * 
+ * was invoked. Used for testing.
+ *
  * @untested
  * @author David Bruce Borenstein
  *
  */
 public class NullProcess extends Process {
 
-	private double weight;
-	private int count;
-	
+    private final Integer count;
+    private final Double weight;
+
+    // Some identifier to let the user distinguish between null processes
+	private final String identifier;
+
+    // Tells the user how many times the process was invoked. Useful for
+    // testing.
+    private int timesFired = 0;
+
 	public NullProcess(ProcessLoader loader, int id, Geometry geom) {
 		super(loader, id, geom);
-		
-		weight = Double.valueOf(get("weight"));
-		count = Integer.valueOf(get("count"));
+
+        identifier = get("identifier");
+		weight = Double.valueOf(get("weight", "1.0"));
+		count = Integer.valueOf(get("count", "1"));
 	}
 
 	@Override
@@ -39,7 +47,15 @@ public class NullProcess extends Process {
 
 	@Override
 	public void fire(StepState state) throws HaltCondition {
+        timesFired++;
 		System.out.println("   Fired null event " + getID() + ".");
 	}
 
+    public int getTimesFired() {
+        return timesFired;
+    }
+
+    public String getIdentifier() {
+        return identifier;
+    }
 }
