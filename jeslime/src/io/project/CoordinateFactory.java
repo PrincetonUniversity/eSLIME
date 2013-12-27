@@ -1,5 +1,6 @@
 package io.project;
 
+import geometry.Geometry;
 import org.dom4j.Element;
 
 import structural.Flags;
@@ -51,7 +52,12 @@ public abstract class CoordinateFactory {
 		// "vector" flag, but I don't know how else to do it.
 		} else if (e.getName().equalsIgnoreCase("displacement")) {
 			flags = Flags.VECTOR;
-			
+
+        // "offset" tags are used to specify distances from the center
+        // coordinate.
+        } else if (e.getName().equalsIgnoreCase("offset")) {
+            flags = Flags.VECTOR;
+
 		} else {
 			throw new IllegalArgumentException("Unrecognized coordinate tag '" + 
 					e.getName() + "'.");
@@ -69,4 +75,10 @@ public abstract class CoordinateFactory {
 					+ o.getClass().getSimpleName());
 		}
 	}
+
+    public static Coordinate offset(Object o, Geometry geom) {
+        Coordinate displacement = instantiate(o);
+        Coordinate origin = geom.getCenter();
+        return geom.rel2abs(origin, displacement, Geometry.APPLY_BOUNDARIES);
+    }
 }

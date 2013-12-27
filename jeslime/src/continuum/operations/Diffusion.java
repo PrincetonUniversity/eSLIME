@@ -33,6 +33,7 @@ public class Diffusion extends Operator {
 	 * 
 	 */
 	public void init() {
+//        System.out.println("Diffusion --> geometry is null? " + (geometry == null));
 		double n = (double) dimension();
 		double m = (double) connectivity();
 

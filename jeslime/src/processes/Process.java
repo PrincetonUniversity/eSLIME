@@ -142,7 +142,8 @@ public abstract class Process {
 	protected CellFactory getCellFactory(CellLayer layer) {
 		return new CellFactory(layer, e.element("cell-descriptor"));
 	}
-	
+
+    // TODO The following methods should be refactored into a helper object
 	/**
 	 * Reads a site list descriptor of name elemName, which is a
 	 * sub-element of the process element. Default is all canonical
@@ -189,7 +190,7 @@ public abstract class Process {
 		}
 	}
 
-	private Coordinate[] coordinateRectangle(Element siteElement) {
+	protected Coordinate[] coordinateRectangle(Element siteElement) {
 		ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
 
 		// Specifies one corner of the rectangle/prism. 
@@ -258,7 +259,8 @@ public abstract class Process {
 		return coordinates.toArray(new Coordinate[0]);
 		
 	}
-	private Coordinate[] coordinateLine(Element siteElement) {
+
+	protected Coordinate[] coordinateLine(Element siteElement) {
 		ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
 		
 		Element originElem = siteElement.element("origin");
@@ -302,17 +304,25 @@ public abstract class Process {
 		return coordinates.toArray(new Coordinate[0]);
 	}
 
-	private Coordinate[] coordinateList(Element siteElement) {
+	protected Coordinate[] coordinateList(Element siteElement) {
 		
 		System.out.println("Checking coordinate list for process " + id + ".");
 		
 		ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
-		
+
+        // Handle coordinate descriptors (<coordinate> tags).
+        // These have their origin at (0, 0).
 		for (Object o : siteElement.elements("coordinate")) {
 			Element cElem = (Element) o;
 			coordinates.add(CoordinateFactory.instantiate(cElem));
 		}
-		
+
+        // Handle offset descriptors (<offset> tags).
+        // These have their origin at the center of the geometry.
+        for (Object o : siteElement.elements("offset")) {
+           Element cElem = (Element) o;
+           coordinates.add(CoordinateFactory.offset(cElem, geom));
+        }
 		return coordinates.toArray(new Coordinate[0]);
 	}
 }

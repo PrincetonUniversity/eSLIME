@@ -14,7 +14,7 @@ import org.dom4j.Element;
  * As of eSLIME 0.4.0, the user is no longer required to provide
  * process IDs in the project file. This is because dom4j returns
  * elements in the order that they are loaded, which is verified
- * in jeslime.io.project.XmlTest.
+ * in io.project.XmlTest.
  *
  * As a result, this class may look a little unnecessary! In fact, it is:
  * it was retained to preserve the API.

@@ -30,4 +30,8 @@ public abstract class CellProcess extends Process {
 	protected String getProcessClass() {
 		return this.getClass().getSimpleName();
 	}
+
+    public void setActiveSites(Coordinate[] activeSites) {
+        this.activeSites = activeSites;
+    }
 }

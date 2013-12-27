@@ -5,6 +5,13 @@ import no.uib.cipr.matrix.DenseVector;
 import structural.Flags;
 import structural.identifiers.Coordinate;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.Comparator;
+
 /**
  * Read-only wrapper for solutions to continuum processes.
  * If the requested coordinate is out of bounds, it returns 0D.
@@ -22,7 +29,7 @@ public class SolutionViewer {
 
     public double get(Coordinate offset) {
         if (!offset.hasFlag(Flags.VECTOR)) {
-            throw new IllegalStateException("SolutionViewer expects an offset, not an absolute coordinate.");
+            throw new IllegalStateException("SolutionViewer::get expects an offset, not an absolute coordinate.");
         }
 
         Coordinate converted = applyOffset(offset);
@@ -34,6 +41,15 @@ public class SolutionViewer {
         } else {
             return solution.get(index);
         }
+    }
+
+    public double getAbsolute(Coordinate coordinate) {
+        if (coordinate.hasFlag(Flags.VECTOR)) {
+            throw new IllegalStateException("getAbsolute expects an absolute coordinate, not an offset.");
+        }
+
+        Integer index = geometry.coordToIndex(coordinate);
+        return solution.get(index);
     }
 
     private Coordinate applyOffset(Coordinate offset) {

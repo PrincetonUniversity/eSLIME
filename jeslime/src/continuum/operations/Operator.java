@@ -44,6 +44,7 @@ public abstract class Operator extends CompDiagMatrix {
 	}
 	
 	protected int[] neighbors(Coordinate coord) {
+        //System.out.println("Operator::neighbors --> geometry is null? " + (geometry == null));
 		//System.out.println("In neighbors(" + coord + ")");
 		Coordinate[] neighborCoords = geometry.getNeighbors(coord,  mode());
         //System.out.print("Getting neighbors for coordinate " + coord);
