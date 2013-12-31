@@ -2,6 +2,7 @@ package io.serialize;
 
 import geometry.Geometry;
 import io.project.GeometryManager;
+import layers.LayerManager;
 import structural.GeneralParameters;
 import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
@@ -16,8 +17,8 @@ import structural.identifiers.Coordinate;
  */
 public class ProgressReporter extends AbstractCellWriter {
 
-	public ProgressReporter(GeneralParameters p, GeometryManager gm) {
-		super(p, geometry);
+	public ProgressReporter(GeneralParameters p, LayerManager lm) {
+		super(p, lm);
 	}
 
 	@Override

@@ -1,5 +1,8 @@
 package io.serialize;
 
+import layers.MockLayerManager;
+import layers.solute.MockSoluteLayer;
+import sun.jvm.hotspot.ci.ciArrayKlassKlass;
 import test.EslimeTestCase;
 import structural.MockGeneralParameters;
 import geometry.MockGeometry;
@@ -15,7 +18,7 @@ public class ContinuumStateWriterTest extends EslimeTestCase {
     private MockGeometry geom;
     private MockGeneralParameters p;
     private SoluteLayer layer;
-
+    private MockLayerManager lm;
     public void setUp() throws Exception {
         // Construct mock objects
         geom = buildMockGeometry();
@@ -25,7 +28,9 @@ public class ContinuumStateWriterTest extends EslimeTestCase {
         p.setPath(outputPath);
 
         layer = new SoluteLayer(geom, "42");
-        csw = new ContinuumStateWriter(geom ,p);
+        lm = new MockLayerManager();
+        lm.addSoluteLayer("42", layer);
+        csw = new ContinuumStateWriter(p, lm);
     }
 
     /**

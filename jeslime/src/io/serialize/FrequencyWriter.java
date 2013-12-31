@@ -8,6 +8,7 @@ import java.util.TreeSet;
 
 import geometry.Geometry;
 import io.project.GeometryManager;
+import layers.LayerManager;
 import structural.GeneralParameters;
 import layers.cell.CellLayer; import layers.cell.StateMapViewer;
 import structural.halt.HaltCondition;
@@ -37,8 +38,8 @@ public class FrequencyWriter extends AbstractCellWriter {
 	
 	HashSet<Integer> observedStates = new HashSet<Integer>();
 	
-	public FrequencyWriter(GeneralParameters p, GeometryManager gm) {
-		super(p, geometry);
+	public FrequencyWriter(GeneralParameters p, LayerManager lm) {
+		super(p, lm);
 		
 		histo = new HashMap<Integer, HashMap<Integer, Integer>>();
 	}

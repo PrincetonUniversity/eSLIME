@@ -7,6 +7,7 @@ import java.io.IOException;
 
 import geometry.Geometry;
 import io.project.GeometryManager;
+import layers.LayerManager;
 import structural.GeneralParameters;
 import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
@@ -19,8 +20,8 @@ public class IntervalWriter extends AbstractCellWriter {
 
 	private long prevTime;
 	
-	public IntervalWriter(GeneralParameters p, GeometryManager gm) {
-		super(p, g);
+	public IntervalWriter(GeneralParameters p, LayerManager lm) {
+		super(p, lm);
 		
 
 	}

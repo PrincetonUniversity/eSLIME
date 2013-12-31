@@ -10,6 +10,7 @@ import geometry.shape.*;
 import geometry.lattice.*;
 
 import io.serialize.ContinuumStateWriter;
+import layers.MockLayerManager;
 import test.EslimeTestCase;
 import structural.MockGeneralParameters;
 import layers.solute.MockSoluteLayer;
@@ -514,7 +515,9 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
         DenseVector solution = result.getSolution();
         // Construct mocks for writer
         MockSoluteLayer layer = new MockSoluteLayer(id);
+        layer.setGeometry(geometry);
         layer.setState(solution);
+        MockLayerManager lm = new MockLayerManager();
         //System.out.println(solution == null);
         //System.out.println(layer.getState() == null);
         MockGeneralParameters p = new MockGeneralParameters();
@@ -522,7 +525,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
         p.setPath(outputPath);
 
         // Construct writer
-        ContinuumStateWriter writer = new ContinuumStateWriter(geometry, p);
+        ContinuumStateWriter writer = new ContinuumStateWriter(p, lm);
         writer.init(layer);
         writer.step(0, 0);
         writer.dispatchHalt(null);

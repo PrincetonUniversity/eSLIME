@@ -4,6 +4,7 @@ import java.io.BufferedWriter;
 
 import geometry.Geometry;
 import io.project.GeometryManager;
+import layers.LayerManager;
 import structural.GeneralParameters;
 import layers.cell.CellLayer; 
 import structural.halt.FixationEvent;
@@ -17,8 +18,8 @@ public class FixationTimeWriter extends AbstractCellWriter {
 	private static final String FILENAME = "ttf.txt";
 	private BufferedWriter bw;
 
-	public FixationTimeWriter(GeneralParameters p, GeometryManager gm) {
-		super(p, geometry);
+	public FixationTimeWriter(GeneralParameters p, LayerManager lm) {
+		super(p, lm);
 
 		// We use the non-instance path because this metric aggregates over
 		// all instances.
@@ -37,8 +38,6 @@ public class FixationTimeWriter extends AbstractCellWriter {
 		}
 		closed = false;
 		layer = l;
-
-
 	}
 
 	@Override

@@ -2,10 +2,12 @@ package io.serialize;
 
 import geometry.Geometry;
 import io.project.GeometryManager;
+import layers.LayerManager;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
+import java.awt.*;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -15,12 +17,12 @@ import java.io.IOException;
  * Created by dbborens on 12/11/13.
  */
 public abstract class Writer {
-    protected GeometryManager gm;
+    protected LayerManager lm;
     protected GeneralParameters p;
     protected boolean closed = true;
 
-    public Writer(GeometryManager gm, GeneralParameters p) {
-        this.gm = gm;
+    public Writer(LayerManager lm, GeneralParameters p) {
+        this.lm = lm;
         this.p = p;
     }
 

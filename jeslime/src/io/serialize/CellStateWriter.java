@@ -10,6 +10,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import io.project.GeometryManager;
+import layers.LayerManager;
 import structural.GeneralParameters;
 import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
@@ -72,8 +73,8 @@ public class CellStateWriter extends AbstractCellWriter {
 
 	//public CellStateWriter(String stateDir, Parameters p, int n) {
 
-    public CellStateWriter(GeneralParameters p, GeometryManager gm) {
-        super(p, gm);
+    public CellStateWriter(GeneralParameters p, LayerManager lm) {
+        super(p, lm);
     }
 	public void init(CellLayer l) {
 		if (!closed) {
@@ -136,7 +137,7 @@ public class CellStateWriter extends AbstractCellWriter {
 	protected int[] coordToInt(Coordinate[] highlights) {
 		int[] hl = new int[highlights.length];
 		for (int i = 0; i < highlights.length; i++) {
-			hl[i] = geometry.coordToIndex(highlights[i]);
+			hl[i] = lm.getCellLayer().getGeometry().coordToIndex(highlights[i]);
 		}
 		
 		return hl;
@@ -207,7 +208,7 @@ public class CellStateWriter extends AbstractCellWriter {
 	 */
 	private void writeDoubleArray(double[] v, Extrema extrema, double gillespie, int frame, String title) {
 
-        Coordinate[] coords = geometry.getCanonicalSites();
+        Coordinate[] coords = layer.getGeometry().getCanonicalSites();
 
 		StringBuilder sb = new StringBuilder();;
 		sb.append('>');

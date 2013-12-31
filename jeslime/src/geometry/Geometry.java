@@ -227,7 +227,7 @@ public class Geometry {
 		Coordinate canonical = coord.canonicalize();
 
         if (!coordinateIndex.containsKey(canonical)) {
-            System.out.println("I don't think I contain the coordinate " + canonical);
+//            System.out.println("I don't think I contain the coordinate " + canonical);
             return null;
         } else {
 		    return coordinateIndex.get(canonical);

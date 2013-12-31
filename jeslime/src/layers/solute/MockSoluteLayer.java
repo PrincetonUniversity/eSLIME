@@ -1,5 +1,6 @@
 package layers.solute;
 
+import geometry.Geometry;
 import layers.solute.SoluteLayer;
 import no.uib.cipr.matrix.DenseVector;
 
@@ -21,5 +22,9 @@ public class MockSoluteLayer extends SoluteLayer {
     @Override
     public DenseVector getState() {
         return state;
+    }
+
+    public void setGeometry(Geometry geometry) {
+        this.geometry = geometry;
     }
 }

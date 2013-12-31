@@ -2,6 +2,7 @@ package io.serialize;
 
 import geometry.Geometry;
 import io.project.GeometryManager;
+import layers.LayerManager;
 import layers.solute.SoluteLayer;
 import no.uib.cipr.matrix.DenseVector;
 import structural.GeneralParameters;
@@ -33,8 +34,8 @@ public class ContinuumStateWriter extends AbstractContinuumWriter {
     private Coordinate[] sites;
 
 
-    public ContinuumStateWriter(GeneralParameters p, GeometryManager gm) {
-        super(gm, p);
+    public ContinuumStateWriter(GeneralParameters p, LayerManager lm) {
+        super(lm, p);
     }
 
     @Override
@@ -77,7 +78,7 @@ public class ContinuumStateWriter extends AbstractContinuumWriter {
     }
 
     public void initStructures() {
-        sites = geometry.getCanonicalSites();
+        sites = layer.getGeometry().getCanonicalSites();
 
         // Initialize extrema
         extrema = new Extrema();

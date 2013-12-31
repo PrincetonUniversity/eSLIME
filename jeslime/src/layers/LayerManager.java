@@ -18,6 +18,9 @@ public class LayerManager {
     private CellLayer cellLayer;
     private HashMap<String, SoluteLayer> soluteLayers;
 
+    public LayerManager() {
+       // Null default constructor, used in mock testing
+    }
     public LayerManager(Element layerRoot, GeometryManager factory) {
         // Build the Cell layer, if present
         if (hasCellElement(layerRoot)) {

@@ -6,6 +6,7 @@ import io.project.ProjectLoader;
 import java.util.HashSet;
 import java.util.Set;
 
+import layers.LayerManager;
 import org.dom4j.Element;
 
 import structural.GeneralParameters;
@@ -13,7 +14,6 @@ import layers.cell.CellLayer;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 import structural.postprocess.ImageSequence;
-import geometry.Geometry;
 
 /**
  *
@@ -23,11 +23,11 @@ public class SerializationManager {
 
 	private Set<AbstractCellWriter> cellLayerWriters;
 	private GeneralParameters p;
-	private GeometryManager gm;
+	private LayerManager lm;
 	
-	public SerializationManager(ProjectLoader l, GeneralParameters p, GeometryManager gm) {
+	public SerializationManager(ProjectLoader l, GeneralParameters p, LayerManager lm) {
 		this.p = p;
-		this.gm = gm;
+		this.lm = lm;
 		
 
 		cellLayerWriters = new HashSet<AbstractCellWriter>();
@@ -40,25 +40,25 @@ public class SerializationManager {
 			String writerClass = e.getName();
 			
 			if (writerClass.equalsIgnoreCase("cell-state-writer")) {
-				CellStateWriter bsw = new CellStateWriter(p, gm);
+				CellStateWriter bsw = new CellStateWriter(p, lm);
 				cellLayerWriters.add(bsw);
 			} else if (writerClass.equalsIgnoreCase("fixation-time")) {
-				FixationTimeWriter ftw = new FixationTimeWriter(p, gm);
+				FixationTimeWriter ftw = new FixationTimeWriter(p, lm);
 				cellLayerWriters.add(ftw);
 			} else if (writerClass.equalsIgnoreCase("parameter-writer")) {
-				ParameterWriter pw = new ParameterWriter(p, gm);
+				ParameterWriter pw = new ParameterWriter(p, lm);
 				cellLayerWriters.add(pw);
 			} else if (writerClass.equalsIgnoreCase("progress-reporter")) {
-				ProgressReporter pr = new ProgressReporter(p, gm);
+				ProgressReporter pr = new ProgressReporter(p, lm);
 				cellLayerWriters.add(pr);
 			} else if (writerClass.equalsIgnoreCase("frequency-writer")) {
-				FrequencyWriter freq = new FrequencyWriter(p, gm);
+				FrequencyWriter freq = new FrequencyWriter(p, lm);
 				cellLayerWriters.add(freq);
 			} else if (writerClass.equalsIgnoreCase("interval-writer")) {
-				IntervalWriter iw = new IntervalWriter(p, gm);
+				IntervalWriter iw = new IntervalWriter(p, lm);
 				cellLayerWriters.add(iw);
 			} else if (writerClass.equalsIgnoreCase("coordinate-indexer")) {
-                CoordinateIndexer ce = new CoordinateIndexer(p, gm);
+                CoordinateIndexer ce = new CoordinateIndexer(p, lm);
                 cellLayerWriters.add(ce);
             }
 		}
@@ -109,7 +109,7 @@ public class SerializationManager {
 		}
 		
 		if (p.isLineageMap()) {
-			ImageSequence imgSequence = new ImageSequence(p.getInstancePath(), g, p);
+			ImageSequence imgSequence = new ImageSequence(p.getInstancePath(), lm.getCellLayer().getGeometry(), p);
 			imgSequence.generate();
 		}		
 	}

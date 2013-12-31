@@ -2,6 +2,7 @@ package io.serialize;
 
 import geometry.Geometry;
 import io.project.GeometryManager;
+import layers.LayerManager;
 import layers.cell.CellLayer;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;
@@ -17,8 +18,8 @@ public class CoordinateIndexer extends AbstractCellWriter {
     // This file specifies the relationship between vector index and coordinate.
     private final String COORDMAP_FILENAME = "coordmap.txt";
 
-    public CoordinateIndexer(GeneralParameters p, GeometryManager gm) {
-        super(p, geometry);
+    public CoordinateIndexer(GeneralParameters p, LayerManager lm) {
+        super(p, lm);
     }
 
     protected void makeCoordinateMap() {
@@ -29,9 +30,9 @@ public class CoordinateIndexer extends AbstractCellWriter {
             FileWriter fw = new FileWriter(coordMapFile);
             BufferedWriter bwp = new BufferedWriter(fw);
 
-            for (Coordinate c : geometry.getCanonicalSites()) {
+            for (Coordinate c : layer.getGeometry().getCanonicalSites()) {
                 StringBuilder sb = new StringBuilder();
-                sb.append(geometry.coordToIndex(c));
+                sb.append(layer.getGeometry().coordToIndex(c));
                 sb.append("\t");
                 sb.append(c.toString());
                 sb.append("\n");

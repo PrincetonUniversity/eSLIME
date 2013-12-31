@@ -1,8 +1,6 @@
 package io.serialize;
 
-import geometry.Geometry;
-
-import io.project.GeometryManager;
+import layers.LayerManager;
 import layers.cell.CellLayer;
 import structural.GeneralParameters;
 import structural.identifiers.Coordinate;
@@ -15,8 +13,8 @@ import structural.identifiers.Coordinate;
 public abstract class AbstractCellWriter extends Writer {
 	protected CellLayer layer;
 
-    public AbstractCellWriter(GeneralParameters, GeometryManager gm) {
-        super(gm, p);
+    public AbstractCellWriter(GeneralParameters p, LayerManager lm) {
+        super(lm, p);
     }
 	
 	/**

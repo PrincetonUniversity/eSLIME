@@ -2,6 +2,7 @@ package io.serialize;
 
 import geometry.Geometry;
 import io.project.GeometryManager;
+import layers.LayerManager;
 import layers.solute.SoluteLayer;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;
@@ -11,8 +12,8 @@ import structural.halt.HaltCondition;
  */
 public abstract class AbstractContinuumWriter extends Writer {
 
-    public AbstractContinuumWriter(GeometryManager gm, GeneralParameters p) {
-        super(gm, p);
+    public AbstractContinuumWriter(LayerManager lm, GeneralParameters p) {
+        super(lm, p);
     }
 
     /**
@@ -24,9 +25,6 @@ public abstract class AbstractContinuumWriter extends Writer {
     /**
      * Indicates to the writer that the simulation has advanced and
      * provides model state for this step.
-     *
-     * @param values The concentration of the solute at every coordinate, in
-     *               canonical site order.
      *
      * @param gillespie Simulation time.
      *

@@ -16,7 +16,7 @@ import geometry.Geometry;
  * @author David Bruce Borenstein
  *
  */
-public class CellLayer implements Layer {
+public class CellLayer extends Layer {
 
 	private CellLayerIndices indices;
 	private CellLayerContent content;

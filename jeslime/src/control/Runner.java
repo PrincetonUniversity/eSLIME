@@ -46,7 +46,7 @@ public class Runner implements Runnable {
 			throw new RuntimeException(ex);
 		}
 		
-		SerializationManager mgr = new SerializationManager(pp, p, gm);
+		SerializationManager mgr = new SerializationManager(pp, p, lm);
 		
 		for (int i = 0; i < p.getNumInstances(); i++) {
 		

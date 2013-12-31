@@ -1,5 +1,7 @@
 package io.serialize;
 
+import layers.MockLayerManager;
+import layers.cell.CellLayer;
 import test.EslimeTestCase;
 import structural.MockGeneralParameters;
 import geometry.MockGeometry;
@@ -29,8 +31,10 @@ public class CoordinateIndexerTest extends EslimeTestCase {
         geom.setCanonicalSites(canonicals);
         params = new MockGeneralParameters();
         params.setInstancePath(outputPath);
-
-        indexer = new CoordinateIndexer(params, geom);
+        MockLayerManager lm = new MockLayerManager();
+        CellLayer layer = new CellLayer(geom, 0);
+        lm.setCellLayer(layer);
+        indexer = new CoordinateIndexer(params, lm);
     }
 
     public void testCoordinateIndexer() throws Exception {
