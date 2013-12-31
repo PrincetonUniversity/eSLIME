@@ -8,7 +8,7 @@ import no.uib.cipr.matrix.DenseVector;
  */
 public class MockSoluteLayer extends SoluteLayer {
 
-    public MockSoluteLayer(Integer id) {
+    public MockSoluteLayer(String id) {
         super(null, id);
     }
 

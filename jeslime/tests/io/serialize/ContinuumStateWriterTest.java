@@ -24,7 +24,7 @@ public class ContinuumStateWriterTest extends EslimeTestCase {
         p.setInstancePath(outputPath);
         p.setPath(outputPath);
 
-        layer = new SoluteLayer(geom, 42);
+        layer = new SoluteLayer(geom, "42");
         csw = new ContinuumStateWriter(geom ,p);
     }
 

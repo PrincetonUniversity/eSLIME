@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import io.project.GeometryManager;
 import structural.GeneralParameters;
 import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
@@ -70,10 +71,10 @@ public class CellStateWriter extends AbstractCellWriter {
 	private Extrema ef;				// Fitness
 
 	//public CellStateWriter(String stateDir, Parameters p, int n) {
-	public CellStateWriter(GeneralParameters p, Geometry geom) {
-		super(p, geom);
-	}
 
+    public CellStateWriter(GeneralParameters p, GeometryManager gm) {
+        super(p, gm);
+    }
 	public void init(CellLayer l) {
 		if (!closed) {
 			throw new IllegalStateException("Attempting to initialize active writer!");

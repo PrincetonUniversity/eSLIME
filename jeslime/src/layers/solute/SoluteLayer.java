@@ -9,7 +9,7 @@ import java.util.HashMap;
 import structural.Flags;
 import structural.identifiers.Coordinate;
 
-public class SoluteLayer implements Layer {
+public class SoluteLayer extends Layer {
 
 	// Model geometry
 	private Geometry geom;
@@ -38,9 +38,9 @@ public class SoluteLayer implements Layer {
     /**
      * Constructor for normal use.
      */
-	public SoluteLayer(Geometry geom, int id) {
+	public SoluteLayer(Geometry geom, String id) {
 		this.geom = geom;
-		this.id = Integer.toString(id);
+		this.id = id;
 
 		localMin = new Extremum(dummy, -1D, Double.POSITIVE_INFINITY);
 		globalMin = new Extremum(dummy, -1D, Double.POSITIVE_INFINITY);

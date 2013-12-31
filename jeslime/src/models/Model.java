@@ -1,5 +1,7 @@
 package models;
 
+import io.project.GeometryManager;
+import layers.LayerManager;
 import layers.cell.CellLayer;
 import layers.cell.StateMapViewer;
 import processes.Process;
@@ -14,7 +16,7 @@ import structural.halt.*;
 public class Model {
 	
 	private GeneralParameters p;
-	private Geometry g;
+	private GeometryManager gm;
 	private SerializationManager mgr;
 	private CellLayer layer;
 	
@@ -22,17 +24,17 @@ public class Model {
 	
 	private double time = 0.0D;
 	
-	public Model(GeneralParameters p, ProcessLoader loader, Geometry g,
-			SerializationManager mgr) {
+	public Model(GeneralParameters p, ProcessLoader loader, GeometryManager gm,
+			SerializationManager mgr, LayerManager lm) {
 		
 		// Assign member variables.
 		this.p = p;
-		this.g = g;
+		this.gm = gm;
 		this.mgr = mgr;
-		
+
 		// Build lattice.
-		layer = new CellLayer(g, 0);
-		
+		layer = lm.getCellLayer();
+	    Geometry g = layer.getGeometry();
 		// Build process factory.
 		ProcessFactory factory = new ProcessFactory(loader, layer, p, g);
 		
@@ -136,7 +138,7 @@ public class Model {
 		StateMapViewer smv = layer.getViewer().getStateMapViewer();
 		
 		for (Integer state : smv.getStates()) {
-			if (smv.getCount(state) == g.getCanonicalSites().length) {
+			if (smv.getCount(state) == layer.getGeometry().getCanonicalSites().length) {
 				throw new FixationEvent(state, time);
 			}
 		}

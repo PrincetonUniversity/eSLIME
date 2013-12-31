@@ -13,18 +13,26 @@ import org.dom4j.Element;
  * @untested
  * 
  */
-public abstract class GeometryFactory {
-	
-	public static Geometry make(Element root) {
-		Lattice lattice = makeLattice(root);
-		Shape shape = makeShape(root, lattice);
-		Boundary boundary = makeBoundary(root, lattice, shape);
+public class GeometryManager {
+
+    private Lattice lattice;
+    private Shape shape;
+
+    /**
+     * @param root "geometry" tag, specifying project-level geometry information.
+     */
+    public GeometryManager(Element root) {
+        lattice = makeLattice(root);
+        shape = makeShape(root, lattice);
+    }
+	public Geometry make(Element layerRoot) {
+		Boundary boundary = makeBoundary(layerRoot, lattice, shape);
 		Geometry geom = new Geometry(lattice, shape, boundary);
 		
 		return geom;
 	}
 
-	private static Boundary makeBoundary(Element root, Lattice lattice,
+	private Boundary makeBoundary(Element root, Lattice lattice,
 			Shape shape) {
 
 		Element boundaryElem = root.element("boundary");
@@ -43,7 +51,7 @@ public abstract class GeometryFactory {
 		}
 	}
 
-	private static Lattice makeLattice(Element root) {
+	private Lattice makeLattice(Element root) {
 		Element latticeElem = root.element("lattice");
 		String className = latticeElem.element("class").getTextTrim();
 
@@ -60,7 +68,7 @@ public abstract class GeometryFactory {
 		}
 	}
 
-	private static Shape makeShape(Element root, Lattice lattice) {
+	private Shape makeShape(Element root, Lattice lattice) {
 		Element shapeElem = root.element("shape");
 		String className = shapeElem.element("class").getTextTrim();
 		

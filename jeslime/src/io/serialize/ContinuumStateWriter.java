@@ -1,6 +1,7 @@
 package io.serialize;
 
 import geometry.Geometry;
+import io.project.GeometryManager;
 import layers.solute.SoluteLayer;
 import no.uib.cipr.matrix.DenseVector;
 import structural.GeneralParameters;
@@ -32,8 +33,8 @@ public class ContinuumStateWriter extends AbstractContinuumWriter {
     private Coordinate[] sites;
 
 
-    public ContinuumStateWriter(Geometry geometry, GeneralParameters p) {
-        super(geometry, p);
+    public ContinuumStateWriter(GeneralParameters p, GeometryManager gm) {
+        super(gm, p);
     }
 
     @Override

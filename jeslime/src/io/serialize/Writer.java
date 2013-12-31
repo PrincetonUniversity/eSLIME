@@ -1,6 +1,7 @@
 package io.serialize;
 
 import geometry.Geometry;
+import io.project.GeometryManager;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
@@ -14,12 +15,12 @@ import java.io.IOException;
  * Created by dbborens on 12/11/13.
  */
 public abstract class Writer {
-    protected Geometry geometry;
+    protected GeometryManager gm;
     protected GeneralParameters p;
     protected boolean closed = true;
 
-    public Writer(Geometry geometry, GeneralParameters p) {
-        this.geometry = geometry;
+    public Writer(GeometryManager gm, GeneralParameters p) {
+        this.gm = gm;
         this.p = p;
     }
 

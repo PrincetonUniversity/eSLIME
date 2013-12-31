@@ -1,6 +1,7 @@
 package io.serialize;
 
 import geometry.Geometry;
+import io.project.GeometryManager;
 import layers.solute.SoluteLayer;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;
@@ -10,8 +11,8 @@ import structural.halt.HaltCondition;
  */
 public abstract class AbstractContinuumWriter extends Writer {
 
-    public AbstractContinuumWriter(Geometry geometry, GeneralParameters p) {
-        super(geometry, p);
+    public AbstractContinuumWriter(GeometryManager gm, GeneralParameters p) {
+        super(gm, p);
     }
 
     /**

@@ -6,6 +6,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import geometry.Geometry;
+import io.project.GeometryManager;
 import structural.GeneralParameters;
 import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
@@ -13,7 +14,7 @@ import structural.identifiers.Coordinate;
 public class ParameterWriter extends AbstractCellWriter {
 	private final String PROJECT_FILENAME = "project.xml";
 
-	public ParameterWriter(GeneralParameters p, Geometry geometry) {
+	public ParameterWriter(GeneralParameters p, GeometryManager gm) {
 		super(p, geometry);
 		mkDir(p.getPath(), true);
 		

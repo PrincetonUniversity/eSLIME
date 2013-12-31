@@ -1,6 +1,7 @@
 package io.serialize;
 
 import geometry.Geometry;
+import io.project.GeometryManager;
 import layers.cell.CellLayer;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;
@@ -16,7 +17,7 @@ public class CoordinateIndexer extends AbstractCellWriter {
     // This file specifies the relationship between vector index and coordinate.
     private final String COORDMAP_FILENAME = "coordmap.txt";
 
-    public CoordinateIndexer(GeneralParameters p, Geometry geometry) {
+    public CoordinateIndexer(GeneralParameters p, GeometryManager gm) {
         super(p, geometry);
     }
 

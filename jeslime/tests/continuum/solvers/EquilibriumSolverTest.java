@@ -419,7 +419,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
          */
 
         buildRectangularExample(mode, 1e-4, 6.25e-6, 6.25e-6);
-        generateTestOutput(100);
+        generateTestOutput("100");
 
         String outputFile = outputPath + "solute100.state.txt";
         String fixtureFile = fixturePath + "solute.rect." + mode.toLowerCase() + ".state.txt";
@@ -449,7 +449,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
          */
 
         buildTriangularExample(mode, 1e-4, 4e-6, 4e-6);
-        generateTestOutput(200);
+        generateTestOutput("200");
 
         String outputFile = outputPath + "solute200.state.txt";
 
@@ -475,7 +475,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
         // Using same parameters as those from testTriangularLattice (why not?)
 
         buildCubicExample(mode, 1e-4, 4e-6, 4e-6);
-        generateTestOutput(300);
+        generateTestOutput("300");
 
         String outputFile = outputPath + "solute300.state.txt";
         String fixtureFile = fixturePath + "solute.cubic.state.txt";
@@ -507,7 +507,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
      * @param id The layer ID for the test. Should be distinct
      *           for each test condition.
      */
-    private void generateTestOutput(Integer id) {
+    private void generateTestOutput(String id) {
         // Get test result
         SolutionViewer result = solver.solve(source);
 

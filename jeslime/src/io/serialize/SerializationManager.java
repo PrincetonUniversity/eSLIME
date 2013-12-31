@@ -1,5 +1,6 @@
 package io.serialize;
 
+import io.project.GeometryManager;
 import io.project.ProjectLoader;
 
 import java.util.HashSet;
@@ -22,11 +23,11 @@ public class SerializationManager {
 
 	private Set<AbstractCellWriter> cellLayerWriters;
 	private GeneralParameters p;
-	private Geometry g;
+	private GeometryManager gm;
 	
-	public SerializationManager(ProjectLoader l, GeneralParameters p, Geometry g) {
+	public SerializationManager(ProjectLoader l, GeneralParameters p, GeometryManager gm) {
 		this.p = p;
-		this.g = g;
+		this.gm = gm;
 		
 
 		cellLayerWriters = new HashSet<AbstractCellWriter>();
@@ -38,26 +39,26 @@ public class SerializationManager {
 			
 			String writerClass = e.getName();
 			
-			if (writerClass.equalsIgnoreCase("state-vector")) {
-				CellStateWriter bsw = new CellStateWriter(p, g);
+			if (writerClass.equalsIgnoreCase("cell-state-writer")) {
+				CellStateWriter bsw = new CellStateWriter(p, gm);
 				cellLayerWriters.add(bsw);
 			} else if (writerClass.equalsIgnoreCase("fixation-time")) {
-				FixationTimeWriter ftw = new FixationTimeWriter(p, g);
+				FixationTimeWriter ftw = new FixationTimeWriter(p, gm);
 				cellLayerWriters.add(ftw);
 			} else if (writerClass.equalsIgnoreCase("parameter-writer")) {
-				ParameterWriter pw = new ParameterWriter(p, g);
+				ParameterWriter pw = new ParameterWriter(p, gm);
 				cellLayerWriters.add(pw);
 			} else if (writerClass.equalsIgnoreCase("progress-reporter")) {
-				ProgressReporter pr = new ProgressReporter(p, g);
+				ProgressReporter pr = new ProgressReporter(p, gm);
 				cellLayerWriters.add(pr);
 			} else if (writerClass.equalsIgnoreCase("frequency-writer")) {
-				FrequencyWriter freq = new FrequencyWriter(p, g);
+				FrequencyWriter freq = new FrequencyWriter(p, gm);
 				cellLayerWriters.add(freq);
 			} else if (writerClass.equalsIgnoreCase("interval-writer")) {
-				IntervalWriter iw = new IntervalWriter(p, g);
+				IntervalWriter iw = new IntervalWriter(p, gm);
 				cellLayerWriters.add(iw);
 			} else if (writerClass.equalsIgnoreCase("coordinate-indexer")) {
-                CoordinateIndexer ce = new CoordinateIndexer(p, g);
+                CoordinateIndexer ce = new CoordinateIndexer(p, gm);
                 cellLayerWriters.add(ce);
             }
 		}
