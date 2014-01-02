@@ -1,12 +1,16 @@
 package test;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import geometry.MockGeometry;
 import junitx.framework.FileAssert;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
 import org.dom4j.Element;
+import org.dom4j.io.SAXReader;
 import org.dom4j.tree.BaseElement;
 
 import junit.framework.TestCase;
@@ -20,7 +24,7 @@ public abstract class EslimeTestCase extends TestCase {
     protected final String outputPath = eslimeRoot + "/output/";
     protected final String fixturePath = eslimeRoot + "/fixtures/";
 
-    // TODO: Do I actually need these, or can I replace them with the Comparable[] instance?
+    // Superceded by Comparable[] implementation
 	protected void assertArraysEqual(Coordinate[] expected, Coordinate[] actual, boolean sort) {
 		assertEquals(expected.length, actual.length);
 		
@@ -34,6 +38,7 @@ public abstract class EslimeTestCase extends TestCase {
 		}
 	}
 
+    // Superceded by Comparable[] implementation
 	protected void assertArraysEqual(int[] actual, int[] expected, boolean sort) {
 		assertEquals(expected.length, actual.length);
 		
@@ -59,6 +64,28 @@ public abstract class EslimeTestCase extends TestCase {
             assertEquals(expected[i], actual[i]);
         }
 
+    }
+
+    protected void assertArraysNotEqual(Comparable[] expected, Comparable[] actual, boolean sort) {
+        // If the arrays are of unequal length, we have satisfied the assertion.
+        if (expected.length != actual.length)
+            return;
+
+        if (sort) {
+            Arrays.sort(actual);
+            Arrays.sort(expected);
+        }
+
+        // If any element of the array is unequal, we have satisfied the assertion.
+        for (int i = 0; i < expected.length; i++) {
+            if (!expected[i].equals(actual[i])) {
+                return;
+            }
+            assertEquals(expected[i], actual[i]);
+        }
+
+        // In all other cases, the assertion has failed.
+        fail("Arrays are equal when they were expected to be unequal.");
     }
 	protected Coordinate[] clean(Coordinate[] check) {
 		ArrayList<Coordinate> retain = new ArrayList<Coordinate>(check.length);
@@ -98,9 +125,7 @@ public abstract class EslimeTestCase extends TestCase {
             new Coordinate(0, 1, 0, 0),
             new Coordinate(0, 1, 1, 0),
             new Coordinate(1, 0, 0, 0)
-        };
-
-        MockGeometry ret = new MockGeometry();
+        };  MockGeometry ret = new MockGeometry();
         ret.setCanonicalSites(canonicals);
 
         return ret;
@@ -124,5 +149,15 @@ public abstract class EslimeTestCase extends TestCase {
         File outputFile = new File(output);
 
         FileAssert.assertBinaryEquals(fixtureFile, outputFile);
+    }
+
+    protected Element readXmlFile(String fileName) throws IOException, DocumentException {
+
+        String path = fixturePath + fileName;
+        File file = new File(path);
+        SAXReader reader = new SAXReader();
+        Document document = reader.read(file);
+        Element root = document.getRootElement();
+        return root;
     }
 }

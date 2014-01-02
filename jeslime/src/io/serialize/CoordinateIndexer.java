@@ -20,6 +20,7 @@ public class CoordinateIndexer extends AbstractCellWriter {
 
     public CoordinateIndexer(GeneralParameters p, LayerManager lm) {
         super(p, lm);
+        layer = lm.getCellLayer();
     }
 
     protected void makeCoordinateMap() {
@@ -30,7 +31,8 @@ public class CoordinateIndexer extends AbstractCellWriter {
             FileWriter fw = new FileWriter(coordMapFile);
             BufferedWriter bwp = new BufferedWriter(fw);
 
-            for (Coordinate c : layer.getGeometry().getCanonicalSites()) {
+            Geometry geom = layer.getGeometry();
+            for (Coordinate c : geom.getCanonicalSites()) {
                 StringBuilder sb = new StringBuilder();
                 sb.append(layer.getGeometry().coordToIndex(c));
                 sb.append("\t");

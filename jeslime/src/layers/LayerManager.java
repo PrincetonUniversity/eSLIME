@@ -21,6 +21,7 @@ public class LayerManager {
     public LayerManager() {
        // Null default constructor, used in mock testing
     }
+
     public LayerManager(Element layerRoot, GeometryManager factory) {
         // Build the Cell layer, if present
         if (hasCellElement(layerRoot)) {
@@ -30,7 +31,7 @@ public class LayerManager {
         }
 
         // Build solute layers, if present
-        List<Object> slElemObjs = layerRoot.elements("solute-layers");
+        List<Object> slElemObjs = layerRoot.elements("solute-layer");
         soluteLayers = new HashMap<>();
         for (Object o : slElemObjs) {
             Element e = (Element) o;
@@ -53,7 +54,6 @@ public class LayerManager {
     private CellLayer buildCellLayer(Element layerRoot, GeometryManager factory) {
         Element e = layerRoot.element("cell-layer");
         Geometry geometry = factory.make(e);
-        String id = e.element("id").getTextTrim();
         CellLayer layer = new CellLayer(geometry, GEOMETRY_ID);
         return layer;
     }

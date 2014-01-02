@@ -1,0 +1,45 @@
+<fixture>
+
+    <!-- Define a geometry case. -->
+    <geometry>
+        <shape>
+            <class>Rectangle</class>
+            <height>10</height>
+            <width>10</width>
+        </shape>
+        <lattice>
+            <class>Rectangular</class>
+        </lattice>
+    </geometry>
+
+    <!-- Define two LayerManager cases. -->
+    <!-- Note: LayerManager doesn't care about tag name of layer root -->
+    <first-case>
+        <cell-layer>
+            <boundary>
+                <class>Arena</class>
+            </boundary>
+        </cell-layer>
+        <solute-layer>
+            <id>prr</id>
+            <boundary>
+                <class>PlaneRingReflecting</class>
+            </boundary>
+        </solute-layer>
+        <solute-layer>
+            <id>prh</id>
+            <boundary>
+                <class>PlaneRingHard</class>
+            </boundary>
+        </solute-layer>
+    </first-case>
+
+    <second-case>
+        <solute-layer>
+            <id>abs</id>
+            <boundary>
+                <class>Absorbing</class>
+            </boundary>
+        </solute-layer>
+    </second-case>
+</fixture>

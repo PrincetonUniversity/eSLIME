@@ -11,9 +11,6 @@ import structural.identifiers.Coordinate;
 
 public class SoluteLayer extends Layer {
 
-	// Model geometry
-	private Geometry geom;
-	
 	// Current model state
 	private DenseVector state;
 	
@@ -39,7 +36,7 @@ public class SoluteLayer extends Layer {
      * Constructor for normal use.
      */
 	public SoluteLayer(Geometry geom, String id) {
-		this.geom = geom;
+		geometry = geom;
 		this.id = id;
 
 		localMin = new Extremum(dummy, -1D, Double.POSITIVE_INFINITY);
@@ -60,7 +57,7 @@ public class SoluteLayer extends Layer {
 		localMin = new Extremum(dummy, -1D, Double.POSITIVE_INFINITY);
 		globalMin = new Extremum(dummy, -1D, Double.POSITIVE_INFINITY);
 		
-		Coordinate[] sites = geom.getCanonicalSites();
+		Coordinate[] sites = geometry.getCanonicalSites();
 		
 		for (int i = 0; i < sites.length; i++) {
 			 double value = state.get(i);
@@ -89,7 +86,7 @@ public class SoluteLayer extends Layer {
 	}
 	
 	public Geometry getGeom() {
-		return geom;
+		return geometry;
 	}
 
 	public Extremum getLocalMin() {

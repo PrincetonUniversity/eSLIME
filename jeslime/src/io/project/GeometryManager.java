@@ -25,6 +25,7 @@ public class GeometryManager {
         lattice = makeLattice(root);
         shape = makeShape(root, lattice);
     }
+
 	public Geometry make(Element layerRoot) {
 		Boundary boundary = makeBoundary(layerRoot, lattice, shape);
 		Geometry geom = new Geometry(lattice, shape, boundary);
@@ -44,6 +45,8 @@ public class GeometryManager {
 			return new PlaneRingHard(shape, lattice);
 		} else if (className.equalsIgnoreCase("PlaneRingReflecting")) {
 			return new PlaneRingReflecting(shape, lattice);
+        } else if (className.equalsIgnoreCase("Absorbing")) {
+            return new Absorbing(shape, lattice);
 		} else {
 			String msg = "Unrecognized boundary class '" +
 					className + "'.";

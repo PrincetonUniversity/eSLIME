@@ -23,15 +23,11 @@ public class CellLayer extends Layer {
 
     private String id;
 
-	// Geometry (passed to Lattice at construction time)
-    private Geometry geom;
-
 	public CellLayer(Geometry geom, int id) {
+        geometry = geom;
         this.id = Integer.toString(id);
 		indices = new CellLayerIndices();
-		content = new CellLayerContent(geom, indices);
-		
-		this.geom = geom;
+		content = new CellLayerContent(geometry, indices);
 	}
 
     @Override
@@ -40,7 +36,7 @@ public class CellLayer extends Layer {
     }
 
     public CellLookupManager getLookupManager() {
-		return new CellLookupManager(geom, content, indices);
+		return new CellLookupManager(geometry, content, indices);
 	}
 	
 	public CellUpdateManager getUpdateManager() {

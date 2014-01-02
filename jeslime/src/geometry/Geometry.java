@@ -32,9 +32,9 @@ public class Geometry {
 	// applied.
 	public static final int FLAG_BOUNDARIES = 3;
 	
-	private Lattice lattice;
-	private Boundary boundary;
-	private Shape shape;
+	protected Lattice lattice;
+	protected Boundary boundary;
+	protected Shape shape;
 	
 	private HashMap<Coordinate, Integer> coordinateIndex = new HashMap<Coordinate, Integer>();
 
