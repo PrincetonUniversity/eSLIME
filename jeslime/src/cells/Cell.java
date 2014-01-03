@@ -29,10 +29,6 @@ public abstract class Cell {
 	/**
 	 * Applies changes to the cell. DO NOT CALL THIS METHOD DIRECTLY
 	 * FROM A PROCESS. Instead, use lattice.apply().
-	 * 
-	 * TODO: Make it so that this method just calls back on the lattice,
-	 * telling it to update its indices, so that this is no longer an
-	 * issue.
 	 */
 	public abstract void apply();
 	
@@ -42,10 +38,6 @@ public abstract class Cell {
 	 * 
 	 * DO NOT CALL THIS METHOD DIRECTLY
 	 * FROM A PROCESS. Instead, use lattice.divide().
-	 * 
-	 * TODO: Make it so that this method just calls back on the lattice,
-	 * telling it to update its indices, so that this is no longer an
-	 * issue.
 	 * @return
 	 */
 	public abstract Cell divide();
@@ -60,7 +52,16 @@ public abstract class Cell {
 	 */
 	public abstract Cell clone(int state);
 
-	@Override
+    /**
+     * Returns the current production of the specified solute.
+     *
+     * @param solute the ID of the solute layer associated with
+     *               the solute whose production is to be checked.
+     * @return
+     */
+    public abstract double getProduction(String solute);
+
+    @Override
 	public Cell clone() {
 		return clone(state);
 	}
@@ -86,4 +87,5 @@ public abstract class Cell {
 	protected void setDivisible(boolean divisible) {
 		this.divisible = divisible;
 	}
+
 }
