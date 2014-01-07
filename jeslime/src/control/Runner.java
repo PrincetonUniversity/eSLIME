@@ -10,7 +10,6 @@ import java.io.File;
 import layers.LayerManager;
 import org.dom4j.Element;
 
-import models.Model;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;
 
@@ -50,19 +49,19 @@ public class Runner implements Runnable {
 		
 		for (int i = 0; i < p.getNumInstances(); i++) {
 		
-			Model model = new Model(p, loader, gm, mgr, lm);
+			Integrator integrator = new Integrator(p, loader, gm, mgr, lm);
 			
 			// This step includes the execution of the simulation until some
 			// end condition(s) defined in the parameters. It includes setting up
 			// the initial conditions.
-			HaltCondition ex = model.go();
+			HaltCondition ex = integrator.go();
 
-			// Instructs the model to perform any final cleanup actions on behalf
+			// Instructs the integrator to perform any final cleanup actions on behalf
 			// of its various processes.
-			model.postprocess(ex);
+			integrator.postprocess(ex);
 
 			// This step includes any analysis or visualizations that take place
-			// after the model is done running. It also closes any open handles
+			// after the integrator is done running. It also closes any open handles
 			// or managers instantiated by the serialization manager on behalf
 			// of the instance.
 			mgr.dispatchHalt(ex);

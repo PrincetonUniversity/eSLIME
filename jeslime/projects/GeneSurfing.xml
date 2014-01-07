@@ -112,7 +112,7 @@
 		    one particular cell type each time that it is invoked. This
 		    is one of a couple of ways to set differential growth rates
 		    between the cell types. FissionCells, which are the kind used
-		    in this model (see the "fill" processes), divide when their
+		    in this integrator (see the "fill" processes), divide when their
 		    "biomass" exceeds some defined threshold, which is specified
 		    on creation. Here, we set the wild-type cells to grow at 
 		    a rate of .25 units per dt.

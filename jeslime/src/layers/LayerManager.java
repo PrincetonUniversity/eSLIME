@@ -1,5 +1,6 @@
 package layers;
 
+import continuum.solvers.Solver;
 import geometry.Geometry;
 import io.project.GeometryManager;
 import layers.cell.CellLayer;
@@ -42,7 +43,7 @@ public class LayerManager {
     private void initSoluteLayer(Element e, GeometryManager factory) {
         Geometry geometry = factory.make(e);
         String id = e.element("id").getTextTrim();
-        SoluteLayer layer = new SoluteLayer(geometry, id);
+        SoluteLayer layer = new SoluteLayer(geometry, id, Solver);
         soluteLayers.put(id, layer);
     }
 

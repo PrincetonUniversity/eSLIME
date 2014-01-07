@@ -2,11 +2,11 @@ package io.project;
 
 import org.dom4j.Element;
 
-import processes.NullProcess;
-import processes.Process;
-import processes.cellular.*;
-import processes.gillespie.GillespieProcess;
-import processes.temporal.*;
+import discrete.NullProcess;
+import discrete.Process;
+import discrete.cellular.*;
+import discrete.gillespie.GillespieProcess;
+import discrete.temporal.*;
 import structural.GeneralParameters;
 import layers.cell.CellLayer;
 import geometry.Geometry;
