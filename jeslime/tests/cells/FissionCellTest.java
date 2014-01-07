@@ -3,7 +3,7 @@ package cells;
 import junit.framework.TestCase;
 import test.EslimeTestCase;
 
-public class FissionCellTest extends CellTest {
+public class FissionCellTest extends EslimeTestCase {
 
 	private double epsilon = calcEpsilon();
 	

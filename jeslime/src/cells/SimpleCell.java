@@ -52,4 +52,9 @@ public class SimpleCell extends Cell {
 		child.considerCount = considerCount;
 		return child;
 	}
+
+    @Override
+    public double getProduction(String solute) {
+        return 0;
+    }
 }

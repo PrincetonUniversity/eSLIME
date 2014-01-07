@@ -40,8 +40,13 @@ public class FissionCell extends Cell {
 		
 		return child;
 	}
-	
-	private void checkDivisibility() {
+
+    @Override
+    public double getProduction(String solute) {
+        return 0;
+    }
+
+    private void checkDivisibility() {
 		//System.out.println("   " + getFitness() + " -- " + threshold);
 		if (getFitness() > threshold) {
 			setDivisible(true);
