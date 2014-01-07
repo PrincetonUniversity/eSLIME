@@ -6,8 +6,8 @@ import no.uib.cipr.matrix.Vector;
 
 public abstract class IntegrationSolver extends Solver {
 
-    public IntegrationSolver(Matrix operator, Geometry geometry) {
-        super(operator, geometry);
+    public IntegrationSolver(Geometry geometry) {
+        super(geometry);
     }
 	public abstract Vector solve(Vector input, double dt);
 }

@@ -1,7 +1,9 @@
 package layers.solute;
 
+import continuum.solvers.Solver;
 import geometry.Geometry;
 import layers.Layer;
+import layers.LayerManager;
 import no.uib.cipr.matrix.DenseVector;
 
 import java.util.HashMap;
@@ -9,24 +11,25 @@ import java.util.HashMap;
 import structural.Flags;
 import structural.identifiers.Coordinate;
 
-public class SoluteLayer extends Layer {
+public abstract class SoluteLayer extends Layer {
 
 	// Current model state
-	private DenseVector state;
+	protected DenseVector state;
 	
 	// Extrema
-	private Extremum localMin;
+	protected Extremum localMin;
 
-	private Extremum localMax;
-	private Extremum globalMin;
-	private Extremum globalMax;
+	protected Extremum localMax;
+	protected Extremum globalMin;
+	protected Extremum globalMax;
 
-    private String id;
+    protected String id;
 
-	private HashMap<Coordinate, Integer> coordToIndex;
+	protected HashMap<Coordinate, Integer> coordToIndex;
 	
-	private Coordinate dummy = new Coordinate(-1, -1, Flags.UNDEFINED);
+	protected Coordinate dummy = new Coordinate(-1, -1, Flags.UNDEFINED);
 
+    protected LayerManager manager;
     @Override
     public String getId() {
         return id;
@@ -35,9 +38,11 @@ public class SoluteLayer extends Layer {
     /**
      * Constructor for normal use.
      */
-	public SoluteLayer(Geometry geom, String id) {
+	public SoluteLayer(Geometry geom, LayerManager manager, String id) {
 		geometry = geom;
 		this.id = id;
+
+        this.manager = manager;
 
 		localMin = new Extremum(dummy, -1D, Double.POSITIVE_INFINITY);
 		globalMin = new Extremum(dummy, -1D, Double.POSITIVE_INFINITY);
@@ -53,7 +58,7 @@ public class SoluteLayer extends Layer {
 		updateExtrema(t);
 	}
 	
-	private void updateExtrema(double t) {
+	protected void updateExtrema(double t) {
 		localMin = new Extremum(dummy, -1D, Double.POSITIVE_INFINITY);
 		globalMin = new Extremum(dummy, -1D, Double.POSITIVE_INFINITY);
 		
@@ -109,4 +114,5 @@ public class SoluteLayer extends Layer {
 		return coordToIndex;
 	}
 
+    public abstract Solver getSolver();
 }

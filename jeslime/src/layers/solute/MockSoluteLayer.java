@@ -1,5 +1,6 @@
 package layers.solute;
 
+import continuum.solvers.Solver;
 import geometry.Geometry;
 import layers.solute.SoluteLayer;
 import no.uib.cipr.matrix.DenseVector;
@@ -9,8 +10,13 @@ import no.uib.cipr.matrix.DenseVector;
  */
 public class MockSoluteLayer extends SoluteLayer {
 
+    @Override
+    public Solver getSolver() {
+        return null;
+    }
+
     public MockSoluteLayer(String id) {
-        super(null, id);
+        super(null, null, id);
     }
 
     private DenseVector state;

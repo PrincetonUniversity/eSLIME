@@ -7,10 +7,10 @@ import no.uib.cipr.matrix.Vector;
 import structural.MatrixUtils;
 import structural.postprocess.SolutionViewer;
 
-public abstract class EquilibriumSolver extends ConstantCoefficientSolver {
+public abstract class EquilibriumSolver extends Solver {
 
-    public EquilibriumSolver(Matrix operator, Geometry geometry) {
-        super(operator, geometry);
+    public EquilibriumSolver(Geometry geometry) {
+        super(geometry);
     }
 
     public abstract SolutionViewer solve(Vector input);

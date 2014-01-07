@@ -17,10 +17,10 @@ import structural.postprocess.SolutionViewer;
  * 
  * @author dbborens
  */
-public class SimpleCgsSolver extends EquilibriumSolver {
+public class SimpleCgsSolver extends ConstantCoefficientSolver {
 
-	public SimpleCgsSolver(Matrix operator, Geometry geometry) {
-		super(operator, geometry);
+	public SimpleCgsSolver(Geometry geometry) {
+		super(geometry);
 	}
 
 	@Override
@@ -31,8 +31,6 @@ public class SimpleCgsSolver extends EquilibriumSolver {
 		
 		IterativeSolver solver = new CGS(template);
 		Preconditioner preconditioner = new DiagonalPreconditioner(n);
-        //System.out.println(MatrixUtils.matrixForm(operator));
-        //System.exit(0);
 		preconditioner.setMatrix(operator);
 
 		DenseVector sol = new DenseVector(n);
@@ -47,7 +45,6 @@ public class SimpleCgsSolver extends EquilibriumSolver {
 		
 	}
 
-	@Override
 	public SolutionViewer solve(Boolean[] input) {
 		int n = operator.numRows();
 		

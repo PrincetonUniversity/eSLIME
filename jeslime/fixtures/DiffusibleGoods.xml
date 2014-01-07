@@ -63,6 +63,12 @@
                 <class>Absorbing</class>
             </boundary>
 
+            <!-- The solute layer class has to do with the way in which it is
+                 expected to be integrated forward (and therefore what solvers
+                 may be used with it. -->
+
+            <class>equilibrium</class>
+
             <!-- Specify the solver to be used for this layer. -->
             <solver>
                 <!-- Solve the matrix using a Complex Gradient algorithm. This
@@ -90,7 +96,7 @@
 
     <cell-processes>
 
-        <!-- Each time step should advance the model clock by 1 unit of time. -->
+        <!-- Each time step should advance the integrator clock by 1 unit of time. -->
         <tick>
             <dt>1.0</dt>
         </tick>
@@ -116,7 +122,7 @@
 
             </cell-descriptor>
 
-            <!-- Place the source at the center of the model -->
+            <!-- Place the source at the center of the integrator -->
             <active-sites>
                 <mode>list</mode>
                 <offset x="0" y="0" />
@@ -147,7 +153,7 @@
                 <target>solute layer 0</target>
             </cell-descriptor>
 
-            <!-- Place the source at the center of the model -->
+            <!-- Place the source at the center of the integrator -->
             <active-sites>
                 <mode>list</mode>
                 <offset x="1" y="0" />
@@ -160,7 +166,7 @@
 
         <!-- @t=2.0: Remove the new producer; distribution should be same as original. -->
         <smite>
-            <!-- Place the source at the center of the model -->
+            <!-- Place the source at the center of the integrator -->
             <active-sites>
                 <mode>list</mode>
                 <offset x="1" y="0" />
@@ -175,7 +181,7 @@
     </cell-processes>
 
     <!-- Define the continuum processes to which solute fields are subject. -->
-    <solute-processes>
+    <continuum-processes>
 
         <!-- The test field will be subject to diffusion and decay, which
              we will solve as a single operation. We declare that here. -->
@@ -188,7 +194,8 @@
                 <coefficient>1.0</coefficient>
             </scaling>
         </compound-process>
-    </solute-processes>
+
+    </continuum-processes>
 
 
     <!-- Specify the output we want (for comparison to output fixtures) -->
