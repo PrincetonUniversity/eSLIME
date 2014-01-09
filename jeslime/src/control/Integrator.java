@@ -1,27 +1,24 @@
 package control;
 
-import discrete.*;
-import discrete.Process;
 import io.project.GeometryManager;
 import layers.LayerManager;
 import layers.cell.CellLayer;
 import layers.cell.StateMapViewer;
-import io.project.ProcessFactory;
 import io.project.ProcessLoader;
 import io.serialize.SerializationManager;
-import geometry.Geometry;
+import processes.StepState;
 import structural.GeneralParameters;
 import structural.halt.*;
+import processes.Process;
 
 public class Integrator {
-	
-	private GeneralParameters p;
+
+    private final ProcessManager processManager;
+    private GeneralParameters p;
 	private GeometryManager gm;
 	private SerializationManager mgr;
 	private CellLayer layer;
-	
-	private discrete.Process[] processes;
-	
+
 	private double time = 0.0D;
 	
 	public Integrator(GeneralParameters p, ProcessLoader loader, GeometryManager gm,
@@ -32,21 +29,11 @@ public class Integrator {
 		this.gm = gm;
 		this.mgr = mgr;
 
+        this.processManager = new ProcessManager(loader, lm, p);
 		// Build lattice.
 		layer = lm.getCellLayer();
-	    Geometry g = layer.getGeometry();
-		// Build process factory.
-		ProcessFactory factory = new ProcessFactory(loader, layer, p, g);
-		
-		Integer[] ids = loader.getProcesses();
-		processes = new Process[ids.length];
-		
-		// Build processes.
-		for (int i = 0; i < ids.length; i++) {
-			int id = ids[i];
-			processes[i] = factory.instantiate(id);
-		}
-			
+
+
 		// Call back to serialization manager.
 		mgr.nextSimulation(layer);
 	}
@@ -59,37 +46,28 @@ public class Integrator {
 	 */
 	public HaltCondition go() {
 
-		for (int t = 0; t < p.T(); t++) {
-			StepState state = new StepState();
+		for (int n = 0; n < p.T(); n++) {
+            StepState state = new StepState();
 
-			for (Process process : processes) {
-				try {
-					
-	
-					// A period of 0 means that the process should occur
-					// at initialization and no other time. Only processes
-					// with a period of 0 are called at initialize.
-					if (triggered(t, process)) {
-						process.iterate(state);
-					}
-				} catch (HaltCondition hc) {
-					return hc;
-				}
+            // Get triggered events.
+            Process[] triggeredProcesses = processManager.getTriggeredProcesses(n, time);
 
-			}
-			
-			// Check to see if the system has entered a fixation state.
-			try {
-				checkForFixation();
-			} catch (FixationEvent ex) {
-				return ex;
-			}
-			
+            // Fire each triggered cell event.
+            try {
+                for (Process process : triggeredProcesses) {
+                    process.iterate(state);
+                }
+
+                checkForFixation();
+            } catch (HaltCondition hc) {
+                return hc;
+            }
+
 			// Signal to state object that we are done modifying it.
 			state.close();
 
 			// Send the results to the serialization manager.
-			mgr.step(state.getHighlights(), state.getDt(), t);
+			mgr.step(state.getHighlights(), state.getDt(), n);
 			time += state.getDt();
 		}
 		
@@ -97,7 +75,7 @@ public class Integrator {
 		// loop, which proceeds for a specified number of iterations
 		// before terminating. (This prevents infinite loops.)
 		return new StepMaxReachedEvent(time);
-		
+
 	}
 
 

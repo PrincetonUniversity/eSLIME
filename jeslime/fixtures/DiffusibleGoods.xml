@@ -90,11 +90,27 @@
                 <range-scale>2</range-scale>
             </solver>
 
+            <!-- The operator tag specifies the base operator associated with
+                 this solute field. The base operator can be modified, eg, by
+                 transient decay and growth processes (such as feedback) during
+                 the simulation. The resulting operator A will be solved with
+                 a source vector b as Ax = b. -->
+            <operator>
+                <compound-operator>
+                    <laplacian>
+                        <coefficient>25.0</coefficient>
+                    </laplacian>
+                    <scaling>
+                        <coefficient>1.0</coefficient>
+                    </scaling>
+                </compound-operator>
+            </operator>
+
         </solute-layer>
     </layers>
     <!-- Define the "steps" (actually fixture states) of the test -->
 
-    <cell-processes>
+    <processes>
 
         <!-- Each time step should advance the integrator clock by 1 unit of time. -->
         <tick>
@@ -178,25 +194,10 @@
         </smite>
 
         <!-- Resource should be subject to diffusion and decay. -->
-    </cell-processes>
-
-    <!-- Define the continuum processes to which solute fields are subject. -->
-    <continuum-processes>
-
-        <!-- The test field will be subject to diffusion and decay, which
-             we will solve as a single operation. We declare that here. -->
-        <compound-process>
+        <field-update>
             <target>solute layer 0</target>
-            <laplacian>
-                <coefficient>25.0</coefficient>
-            </laplacian>
-            <scaling>
-                <coefficient>1.0</coefficient>
-            </scaling>
-        </compound-process>
-
-    </continuum-processes>
-
+        </field-update>
+    </processes>
 
     <!-- Specify the output we want (for comparison to output fixtures) -->
     <writers>

@@ -19,4 +19,5 @@ public abstract class Solver {
     public Matrix getOperator() {
         return operator.copy();
     }
+
 }

@@ -1,8 +1,8 @@
 package io.serialize;
 
 import layers.MockLayerManager;
-import layers.solute.MockSoluteLayer;
-import sun.jvm.hotspot.ci.ciArrayKlassKlass;
+import layers.MockSoluteLayer;
+import structural.postprocess.SolutionViewer;
 import test.EslimeTestCase;
 import structural.MockGeneralParameters;
 import geometry.MockGeometry;
@@ -27,7 +27,7 @@ public class ContinuumStateWriterTest extends EslimeTestCase {
         p.setInstancePath(outputPath);
         p.setPath(outputPath);
 
-        layer = new SoluteLayer(geom, "42");
+        layer = new MockSoluteLayer();
         lm = new MockLayerManager();
         lm.addSoluteLayer("42", layer);
         csw = new ContinuumStateWriter(p, lm);
@@ -56,22 +56,22 @@ public class ContinuumStateWriterTest extends EslimeTestCase {
         csw.init(layer);
 
         // Fabricate states
-        DenseVector first = makeFirstVector();
-        DenseVector second = makeSecondVector();
+        SolutionViewer first = makeFirstVector();
+        SolutionViewer second = makeSecondVector();
 
         // Push first state
-        layer.push(first, 1.0);
+        layer.push(first);
         csw.step(1.0, 1);
 
         // Push second state
-        layer.push(second, 2.0);
+        layer.push(second);
         csw.step(2, 2);
 
         // Close file handles
         csw.dispatchHalt(null);
     }
 
-    private DenseVector makeFirstVector() {
+    private SolutionViewer makeFirstVector() {
         double[] values = new double[] {1.0, 2.0, 3.0, 4.0, 5.0};
 
         DenseVector vec = new DenseVector(5);
@@ -79,10 +79,11 @@ public class ContinuumStateWriterTest extends EslimeTestCase {
             vec.set(i, values[i]);
         }
 
-        return vec;
+        SolutionViewer ret = new SolutionViewer(vec, geom);
+        return ret;
     }
 
-    private DenseVector makeSecondVector() {
+    private SolutionViewer makeSecondVector() {
         double[] values = new double[] {0.0, 0.1, 0.2, 0.3, 0.4};
 
         DenseVector vec = new DenseVector(5);
@@ -90,6 +91,7 @@ public class ContinuumStateWriterTest extends EslimeTestCase {
                vec.set(i, values[i]);
         }
 
-        return vec;
+        SolutionViewer ret = new SolutionViewer(vec, geom);
+        return ret;
     }
 }

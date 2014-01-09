@@ -1,6 +1,7 @@
 package layers.solute;
 
 import no.uib.cipr.matrix.DenseVector;
+import structural.postprocess.SolutionViewer;
 
 public class SoluteUpdater {
 
@@ -10,7 +11,7 @@ public class SoluteUpdater {
 		this.layer = layer;
 	}
 	
-	public void push(DenseVector state, double t) {
-		layer.push(state, t);
+	public void push(SolutionViewer state) {
+		layer.push(state);
 	}
 }

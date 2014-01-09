@@ -27,9 +27,9 @@ public class SolutionViewer {
         this.geometry = geometry;
     }
 
-    public double get(Coordinate offset) {
+    public double getRelative(Coordinate offset) {
         if (!offset.hasFlag(Flags.VECTOR)) {
-            throw new IllegalStateException("SolutionViewer::get expects an offset, not an absolute coordinate.");
+            throw new IllegalStateException("SolutionViewer::getRelative expects an offset, not an absolute coordinate.");
         }
 
         Coordinate converted = applyOffset(offset);

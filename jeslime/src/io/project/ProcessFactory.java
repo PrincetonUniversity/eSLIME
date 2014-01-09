@@ -1,12 +1,14 @@
 package io.project;
 
+import layers.LayerManager;
 import org.dom4j.Element;
 
-import discrete.NullProcess;
-import discrete.Process;
-import discrete.cellular.*;
-import discrete.gillespie.GillespieProcess;
-import discrete.temporal.*;
+import processes.NullProcess;
+import processes.Process;
+import processes.continuum.FieldUpdateProcess;
+import processes.discrete.*;
+import processes.gillespie.GillespieProcess;
+import processes.temporal.*;
 import structural.GeneralParameters;
 import layers.cell.CellLayer;
 import geometry.Geometry;
@@ -18,21 +20,39 @@ import geometry.Geometry;
  */
 public class ProcessFactory {
 
-	private ProcessLoader loader;
+    private final LayerManager layerManager;
+    private ProcessLoader loader;
 	private CellLayer layer;
 	private GeneralParameters p;
-	private Geometry geom;
-	
-	public ProcessFactory(ProcessLoader loader, CellLayer layer, GeneralParameters p, Geometry geom) {
+
+	public ProcessFactory(ProcessLoader loader, LayerManager lm, GeneralParameters p) {
 		this.loader = loader;
-		this.layer = layer;
+		this.layerManager = lm;
 		this.p = p;
-		this.geom = geom;
+
 	}
+
+    public Process[] getProcesses() {
+        Integer[] ids = loader.getProcesses();
+        Process[] processes = new Process[ids.length];
+
+        // Build processes.
+        for (int i = 0; i < ids.length; i++) {
+            int id = ids[i];
+            processes[i] = instantiate(id);
+        }
+
+        return processes;
+    }
 
 	public Process instantiate(Integer id) {
 		Element e = loader.getProcess(id);
-		
+
+        // TODO Change interface on old cell layers so that they can find
+        // their own layer and geometry from the layermanager
+        CellLayer layer = layerManager.getCellLayer();
+        Geometry geom = layerManager.getCellLayer().getGeometry();
+
 		String processClass = e.getName();
 		
 		if (processClass.equalsIgnoreCase("exponential-inverse")) {
@@ -69,8 +89,11 @@ public class ProcessFactory {
 			return new NullProcess(loader, id, geom);
 			
 		} else if (processClass.equalsIgnoreCase("gillespie-process")) {
-			return new GillespieProcess(loader, layer, id, geom, p);
-			
+			return new GillespieProcess(loader, layer, id, geom, p, layerManager);
+
+        } else if (processClass.equalsIgnoreCase("Field-update-process")) {
+            return new FieldUpdateProcess(loader, id, layerManager, e.element("target").getTextTrim());
+
 		} else {
 			String msg = "Unrecognized process '" +
 					processClass + "' (id=" + id + ").";

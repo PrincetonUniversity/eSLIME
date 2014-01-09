@@ -5,6 +5,7 @@ import geometry.Geometry;
 import io.project.GeometryManager;
 import layers.cell.CellLayer;
 import layers.solute.SoluteLayer;
+import layers.solute.SoluteLayerFactory;
 import org.dom4j.Element;
 
 import java.util.HashMap;
@@ -43,7 +44,7 @@ public class LayerManager {
     private void initSoluteLayer(Element e, GeometryManager factory) {
         Geometry geometry = factory.make(e);
         String id = e.element("id").getTextTrim();
-        SoluteLayer layer = new SoluteLayer(geometry, id, Solver);
+        SoluteLayer layer = SoluteLayerFactory.instantiate(e, factory, this);
         soluteLayers.put(id, layer);
     }
 

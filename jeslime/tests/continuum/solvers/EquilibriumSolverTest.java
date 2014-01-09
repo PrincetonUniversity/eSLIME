@@ -11,9 +11,9 @@ import geometry.lattice.*;
 
 import io.serialize.ContinuumStateWriter;
 import layers.MockLayerManager;
+import layers.MockSoluteLayer;
 import test.EslimeTestCase;
 import structural.MockGeneralParameters;
-import layers.solute.MockSoluteLayer;
 import junitx.framework.FileAssert;
 import no.uib.cipr.matrix.DenseMatrix;
 import no.uib.cipr.matrix.DenseVector;
@@ -24,10 +24,7 @@ import structural.MatrixUtils;
 import structural.identifiers.Coordinate;
 import structural.postprocess.SolutionViewer;
 
-import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -395,7 +392,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
     private double getConcentration(int x, int y, SolutionViewer result, Geometry geometry) {
         Coordinate query = new Coordinate(x, y, 0);
         Coordinate offset = geometry.getDisplacement(geometry.getCenter(), query, Geometry.APPLY_BOUNDARIES);
-        double ret = result.get(offset);
+        double ret = result.getRelative(offset);
         return ret;
     }
 
@@ -405,9 +402,11 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
      * Test solving on rectangular lattice from a fixture.
      */
     public void testRectangularLattice() {
+
         doTestRectangularLattice("Absorbing");
         doTestRectangularLattice("PlaneRingReflecting");
     }
+
     private void doTestRectangularLattice(String mode) {
         /*
           Parameters based on TestBaseSoluteManager from project growth_sq:
@@ -490,7 +489,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
 
     private void testCoordinate(int dx, int dy, double expected, SolutionViewer result, double tolerance) {
         Coordinate c = new Coordinate(dx, dy, Flags.VECTOR);
-        double actual = result.get(c);
+        double actual = result.getRelative(c);
         //System.out.println(c + " --> " + actual);
         assertEquals(expected, actual, tolerance);
     }
@@ -498,7 +497,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
     @SuppressWarnings("UnusedDeclaration")
     private void testCoordinate(int dx, int dy, int dz, double expected, SolutionViewer result) {
         Coordinate c = new Coordinate(dx, dy, dz, Flags.VECTOR);
-        double actual = result.get(c);
+        double actual = result.getRelative(c);
         assertEquals(expected, actual, EpsilonUtil.epsilon());
     }
 
@@ -512,11 +511,11 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
         // Get test result
         SolutionViewer result = solver.solve(source);
 
-        DenseVector solution = result.getSolution();
         // Construct mocks for writer
-        MockSoluteLayer layer = new MockSoluteLayer(id);
+        MockSoluteLayer layer = new MockSoluteLayer();
+        layer.setId(id);
         layer.setGeometry(geometry);
-        layer.setState(solution);
+        layer.push(result);
         MockLayerManager lm = new MockLayerManager();
         //System.out.println(solution == null);
         //System.out.println(layer.getState() == null);

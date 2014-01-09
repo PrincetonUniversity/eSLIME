@@ -1,8 +1,8 @@
 package layers.solute;
 
-import no.uib.cipr.matrix.DenseVector;
 import geometry.Geometry;
 import structural.identifiers.Coordinate;
+import structural.postprocess.SolutionViewer;
 
 public class SoluteViewer {
 
@@ -14,29 +14,15 @@ public class SoluteViewer {
 		this.geom = geom;
 	}
 	
-	public double get(Coordinate coord) {
-		Integer index = geom.coordToIndex(coord);
-		
-		return layer.getState().get(index);
+	public double get(Coordinate coord, boolean relative) {
+	    if (relative) {
+            return layer.getState().getRelative(coord);
+        } else {
+		    return layer.getState().getAbsolute(coord);
+        }
 	}
-	
-	public Extremum getLocalMinimum() {
-		return layer.getLocalMin();
-	}
-	
-	public Extremum getLocalMaximum() {
-		return layer.getLocalMax();
-	}
-	
-	public Extremum getGlobalMinimum() {
-		return layer.getGlobalMin();
-	}
-	
-	public Extremum getGlobalMaximum() {
-		return layer.getGlobalMax();
-	}
-	
-	public void push(DenseVector state, double t) {
-		layer.push(state, t);
+
+	public void push(SolutionViewer state) {
+		layer.push(state);
 	}
 }

@@ -47,8 +47,8 @@ public class SolutionViewerTest extends TestCase {
         Coordinate originOffset = new Coordinate(0, 0, Flags.VECTOR);
         Coordinate otherOffset = new Coordinate(0, 1, Flags.VECTOR);
 
-        assertEquals(1.0, viewer.get(originOffset), EpsilonUtil.epsilon());
-        assertEquals(5.0, viewer.get(otherOffset), EpsilonUtil.epsilon());
+        assertEquals(1.0, viewer.getRelative(originOffset), EpsilonUtil.epsilon());
+        assertEquals(5.0, viewer.getRelative(otherOffset), EpsilonUtil.epsilon());
     }
 
     public void testGetSolution() throws Exception {

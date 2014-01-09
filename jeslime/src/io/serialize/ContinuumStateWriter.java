@@ -110,7 +110,7 @@ public class ContinuumStateWriter extends AbstractContinuumWriter {
      * @throws IOException
      */
     private void processData(int frame) throws IOException {
-        DenseVector data = layer.getState();
+        DenseVector data = layer.getState().getSolution();
 
         // Encode length (as a reality check)
         int length = data.size();
