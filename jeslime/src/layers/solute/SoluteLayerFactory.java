@@ -54,8 +54,8 @@ public abstract class SoluteLayerFactory {
 
     private static void validateSolver(Element solverRoot, String[] allowedSolversArr) {
         HashSet<String> allowedSolvers = new HashSet<String>(Arrays.asList(allowedSolversArr));
-
-        String solverClass = solverRoot.element("class").getTextTrim().toLowerCase();
+        Element classElement = solverRoot.element("class");
+        String solverClass = classElement.getTextTrim().toLowerCase();
         if (!allowedSolvers.contains(solverClass)) {
             throw new IllegalArgumentException("Solver class '" + "' unrecognized or not permitted in equilibrium solute layers.");
         }

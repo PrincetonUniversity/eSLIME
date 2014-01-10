@@ -78,7 +78,8 @@ public class ContinuumStateWriter extends AbstractContinuumWriter {
     }
 
     public void initStructures() {
-        sites = layer.getGeometry().getCanonicalSites();
+        Geometry geometry = layer.getGeometry();
+        sites = geometry.getCanonicalSites();
 
         // Initialize extrema
         extrema = new Extrema();

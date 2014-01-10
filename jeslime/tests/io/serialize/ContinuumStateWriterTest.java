@@ -17,7 +17,7 @@ public class ContinuumStateWriterTest extends EslimeTestCase {
 
     private MockGeometry geom;
     private MockGeneralParameters p;
-    private SoluteLayer layer;
+    private MockSoluteLayer layer;
     private MockLayerManager lm;
     public void setUp() throws Exception {
         // Construct mock objects
@@ -28,6 +28,10 @@ public class ContinuumStateWriterTest extends EslimeTestCase {
         p.setPath(outputPath);
 
         layer = new MockSoluteLayer();
+
+        // ID assignment is handled by the layer manager in the non-mock solute layer
+        layer.setId("42");
+        layer.setGeometry(geom);
         lm = new MockLayerManager();
         lm.addSoluteLayer("42", layer);
         csw = new ContinuumStateWriter(p, lm);

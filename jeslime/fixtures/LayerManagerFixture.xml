@@ -21,25 +21,37 @@
             </boundary>
         </cell-layer>
         <solute-layer>
+            <class>equilibrium</class>
             <id>prr</id>
             <boundary>
                 <class>PlaneRingReflecting</class>
             </boundary>
+            <solver>
+                <class>SimpleCGSSolver</class>
+            </solver>
         </solute-layer>
         <solute-layer>
+            <class>equilibrium</class>
             <id>prh</id>
             <boundary>
                 <class>PlaneRingHard</class>
             </boundary>
+            <solver>
+                <class>SimpleCGSSolver</class>
+            </solver>
         </solute-layer>
     </first-case>
 
     <second-case>
         <solute-layer>
+            <class>equilibrium</class>
             <id>abs</id>
             <boundary>
                 <class>Absorbing</class>
             </boundary>
+            <solver>
+                <class>SimpleCGSSolver</class>
+            </solver>
         </solute-layer>
     </second-case>
 </fixture>
