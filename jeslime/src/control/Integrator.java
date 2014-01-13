@@ -21,8 +21,9 @@ public class Integrator {
 
 	private double time = 0.0D;
 	
-	public Integrator(GeneralParameters p, ProcessLoader loader, GeometryManager gm,
-                      SerializationManager mgr, LayerManager lm) {
+	public Integrator(GeneralParameters p, ProcessLoader loader,
+                      GeometryManager gm, SerializationManager mgr,
+                      LayerManager lm) {
 		
 		// Assign member variables.
 		this.p = p;
@@ -80,13 +81,14 @@ public class Integrator {
 
 
 	protected void checkForFixation() throws FixationEvent {
-		StateMapViewer smv = layer.getViewer().getStateMapViewer();
+        throw new IllegalStateException("Move checkForFixation to its own process");
+		/*StateMapViewer smv = layer.getViewer().getStateMapViewer();
 		
 		for (Integer state : smv.getStates()) {
 			if (smv.getCount(state) == layer.getGeometry().getCanonicalSites().length) {
 				throw new FixationEvent(state, time);
 			}
-		}
+		}*/
 	}
 	
 	private void conclude(HaltCondition ex) {

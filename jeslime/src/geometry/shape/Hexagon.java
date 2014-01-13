@@ -238,6 +238,24 @@ public class Hexagon extends Shape {
 		
 		return new int[] {d, d, d};
 	}
+
+    @Override
+    public boolean equals(Object obj) {
+        // Is it a Hexagon?
+        if (!(obj instanceof Hexagon)) {
+            return false;
+        }
+
+        // Does it have the same dimensions?
+        Hexagon other = (Hexagon) obj;
+        if (other.radius != this.radius) {
+            return false;
+        }
+
+        // If these things are true, then the objects
+        // are equal.
+        return true;
+    }
 	
 	/*@Override
 	public Coordinate[] getLimits() {

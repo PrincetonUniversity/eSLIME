@@ -151,27 +151,25 @@ public class Rectangle extends Shape {
 		return new int[] {width, height};
 	}
 
-	// TODO: I hate ad-hoc methods. See if I can get rid of this.
+    @Override
+    public boolean equals(Object obj) {
+        // Is it a Rectangle?
+        if (!(obj instanceof Rectangle)) {
+            return false;
+        }
 
-	/*@Override
-	public Coordinate[] getLimits() {
-		// Lower left
-		Coordinate ll = new Coordinate(0, 0, 0);
-		
-		// Upper right
-		Coordinate ur = new Coordinate(width-1, height-1, 0);
-		
-		// Adjust
-		Coordinate lla = lattice.adjust(ll);
-		Coordinate ura = lattice.adjust(ur);
-		
-		// Get displacements
-		Coordinate center = getCenter();
-		Coordinate d0 = lattice.getDisplacement(center, lla);
-		Coordinate d1 = lattice.getDisplacement(center, ura);
+        Rectangle other = (Rectangle) obj;
 
-		// Build return array
-		Coordinate[] limits = new Coordinate[] {d0, d1};
-		return limits;
-	}*/
+        // Does it have the same dimensions?
+        if (other.width != this.width) {
+            return false;
+        }
+
+        if (other.height != this.height) {
+            return false;
+        }
+
+        // If these things are OK, return true
+        return true;
+    }
 }

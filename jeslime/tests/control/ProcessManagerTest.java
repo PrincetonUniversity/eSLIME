@@ -12,11 +12,13 @@ import structural.GeneralParameters;
  */
 public class ProcessManagerTest extends TestCase {
     public void testGetTriggeredProcesses() throws Exception {
-
+        fail("Not yet implemented");
     }
 
     public void testTriggered() throws Exception {
-
+        // This needs to go through all the different
+        // trigger conditions...
+        fail("Not yet implemented");
     }
 
     private class ProcessManagerExposed extends ProcessManager {

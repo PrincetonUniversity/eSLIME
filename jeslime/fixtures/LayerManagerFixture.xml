@@ -27,7 +27,7 @@
                 <class>PlaneRingReflecting</class>
             </boundary>
             <solver>
-                <class>SimpleCGSSolver</class>
+                <class>SimpleCGS</class>
             </solver>
         </solute-layer>
         <solute-layer>
@@ -37,7 +37,7 @@
                 <class>PlaneRingHard</class>
             </boundary>
             <solver>
-                <class>SimpleCGSSolver</class>
+                <class>SimpleCGS</class>
             </solver>
         </solute-layer>
     </first-case>
@@ -50,7 +50,7 @@
                 <class>Absorbing</class>
             </boundary>
             <solver>
-                <class>SimpleCGSSolver</class>
+                <class>SimpleCGS</class>
             </solver>
         </solute-layer>
     </second-case>

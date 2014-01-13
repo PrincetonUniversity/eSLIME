@@ -32,4 +32,8 @@ public class MockLayerManager extends LayerManager {
     public void addSoluteLayer(String s, SoluteLayer layer) {
         soluteLayers.put(s, layer);
     }
+
+    public SoluteLayer getSoluteLayer(String s) {
+        return soluteLayers.get(s);
+    }
 }

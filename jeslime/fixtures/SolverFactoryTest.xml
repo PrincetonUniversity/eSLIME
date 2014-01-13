@@ -1,0 +1,8 @@
+<fixture>
+    <simple-cgs-test>
+        <class>SimpleCGS</class>
+    </simple-cgs-test>
+    <null-test>
+        <class>Null</class>
+    </null-test>
+</fixture>

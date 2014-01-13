@@ -266,4 +266,31 @@ public class Geometry {
     public Coordinate getCenter() {
         return shape.getCenter();
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        // Not an object?
+        if (!(obj instanceof  Geometry)) {
+            return false;
+        }
+
+        Geometry other = (Geometry) obj;
+
+        // Shape different?
+        if (!other.shape.equals(this.shape)) {
+            return false;
+        }
+
+        // Lattice different?
+        if (!other.lattice.equals(this.lattice)) {
+            return false;
+        }
+
+        // Boundaries different?
+        if (!other.boundary.equals(this.boundary)) {
+            return false;
+        }
+        // If all these things are equal, the geometries are equal
+        return true;
+    }
 }

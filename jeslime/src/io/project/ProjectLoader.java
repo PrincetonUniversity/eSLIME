@@ -23,7 +23,7 @@ public class ProjectLoader {
 	
 	// Version -- checked against parameters file to make sure they're
 	// compatible
-	private final static String VERSION = "v0.3.5";
+	private final static String VERSION = "v0.4.0";
 	
 	private Element root;
 	private String stringForm;
@@ -54,15 +54,15 @@ public class ProjectLoader {
 		}
 	}
 
-	public ProjectLoader(String toLoad) throws DocumentException {
+	/*public ProjectLoader(String toLoad) throws DocumentException {
 		SAXReader reader = new SAXReader();
 		Document document = reader.read(toLoad);
 		validate(document);
 		root = document.getRootElement();
-		
+
 		stringForm = document.asXML();
-	}
-	
+	}*/
+
 	public Element getElement(String element) {
 		return root.element(element);
 	}

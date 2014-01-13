@@ -31,4 +31,23 @@ public abstract class Boundary {
 	 * @return
 	 */
 	public abstract boolean isInfinite();
+
+    /**
+     * Boundaries are considered equal if and only if they are the
+     * same class. Equality does NOT require that boundaries are being
+     * applied to the same shape or lattice!
+     *
+     * If a boundary requires additional arguments (such as a constant
+     * flux rate or some other parameter), then the child class should
+     * override the equality operator, first invoking this equality
+     * operator.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!obj.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        return true;
+    }
 }

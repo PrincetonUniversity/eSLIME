@@ -108,4 +108,19 @@ public class MockGeometry extends Geometry {
     public Coordinate getCenter() {
         return center;
     }
+
+    private boolean reportEquals;
+
+    /**
+     * Causes the equality operator of this mock object to return
+     * the specified value in all cases.
+     */
+    public void setEquals(boolean reportEquals) {
+        this.reportEquals = reportEquals;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return reportEquals;
+    }
 }

@@ -30,8 +30,6 @@ public abstract class Process {
 		this.geom = geom;
 
 		if (loader == null) {
-			//System.err.println("WARNING: Mock behavior for process loader invoked. Use only for testing!");
-			id = 0;
 			period = 1;
 			return;
 		}

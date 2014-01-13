@@ -25,15 +25,13 @@ public class SerializationManager {
 	private GeneralParameters p;
 	private LayerManager lm;
 	
-	public SerializationManager(ProjectLoader l, GeneralParameters p, LayerManager lm) {
+	public SerializationManager(Element we, GeneralParameters p, LayerManager lm) {
 		this.p = p;
 		this.lm = lm;
 		
 
-		cellLayerWriters = new HashSet<AbstractCellWriter>();
-		
-		Element we = l.getElement("cellLayerWriters");
-		
+		cellLayerWriters = new HashSet<>();
+
 		for (Object o : we.elements()) {
 			Element e = (Element) o;
 			

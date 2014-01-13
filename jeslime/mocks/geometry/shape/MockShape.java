@@ -44,4 +44,16 @@ public class MockShape extends Shape {
 	public Coordinate[] getCanonicalSites() {
 		return null;
 	}
+
+    // We want to be able to declare mock objects "equal"
+    private boolean equal;
+
+    public void setEqual(boolean equal) {
+        this.equal = equal;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return equal;
+    }
 }

@@ -44,8 +44,10 @@ public class Runner implements Runnable {
         } catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
-		
-		SerializationManager mgr = new SerializationManager(pp, p, lm);
+
+
+        Element writers = pp.getElement("writers");
+		SerializationManager mgr = new SerializationManager(writers, p, lm);
 		
 		for (int i = 0; i < p.getNumInstances(); i++) {
 		

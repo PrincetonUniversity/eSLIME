@@ -20,7 +20,8 @@ public abstract class SoluteLayerFactory {
    // allowed for equilibrium solute layers here. Note that these
    // must be in lower case.
    private static final String[] EQUILIBRIUM_SOLVERS = new String[] {
-        "simplecgs"
+        "simplecgs",
+        "null"
    };
 
    private static final String[] FINITE_TIME_SOLVERS = new String[] {
@@ -57,7 +58,7 @@ public abstract class SoluteLayerFactory {
         Element classElement = solverRoot.element("class");
         String solverClass = classElement.getTextTrim().toLowerCase();
         if (!allowedSolvers.contains(solverClass)) {
-            throw new IllegalArgumentException("Solver class '" + "' unrecognized or not permitted in equilibrium solute layers.");
+            throw new IllegalArgumentException("Solver class '" + solverClass + "' unrecognized or not permitted in equilibrium solute layers.");
         }
     }
 }

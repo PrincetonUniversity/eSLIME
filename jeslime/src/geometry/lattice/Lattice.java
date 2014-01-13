@@ -129,4 +129,20 @@ public abstract class Lattice {
 		
 		return(res);
 	}
+
+    /**
+     * Lattice objects are equal if and only if they are of the same
+     * class. Since the lattice object describes only the graph
+     * connectivity, lattice objects need not be associated with
+     * identical space shapes or boundaries in order to be considered
+     * equal.
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!obj.getClass().equals(this.getClass())) {
+            return false;
+        }
+
+        return true;
+    }
 }

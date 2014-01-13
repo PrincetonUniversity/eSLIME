@@ -93,4 +93,17 @@ public abstract class Shape {
 	}
 
 	public abstract int[] getDimensions();
+
+    /**
+     * In order for shapes to be equal, they must be of the
+     * same class and have the same dimensions. They do not
+     * need to be associated with the same lattice geometry
+     * or have the same boundary conditions in order to be
+     * considered equal.
+     *
+     * @param obj
+     * @return
+     */
+    @Override
+    public abstract boolean equals(Object obj);
 }

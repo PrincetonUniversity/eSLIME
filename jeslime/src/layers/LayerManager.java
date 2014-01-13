@@ -42,7 +42,6 @@ public class LayerManager {
     }
 
     private void initSoluteLayer(Element e, GeometryManager factory) {
-        Geometry geometry = factory.make(e);
         String id = e.element("id").getTextTrim();
         SoluteLayer layer = SoluteLayerFactory.instantiate(e, factory, this);
         soluteLayers.put(id, layer);

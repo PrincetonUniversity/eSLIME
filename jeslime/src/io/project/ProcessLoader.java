@@ -35,6 +35,10 @@ public class ProcessLoader {
 		}
 	}
 
+    /**
+     * Default constructor is included for testing purposes.
+     */
+    public ProcessLoader() {}
 
     /**
 	 * Retrieves a process element from the processes sub-tree, or throws

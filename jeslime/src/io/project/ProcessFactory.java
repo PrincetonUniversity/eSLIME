@@ -22,7 +22,6 @@ public class ProcessFactory {
 
     private final LayerManager layerManager;
     private ProcessLoader loader;
-	private CellLayer layer;
 	private GeneralParameters p;
 
 	public ProcessFactory(ProcessLoader loader, LayerManager lm, GeneralParameters p) {
@@ -91,8 +90,9 @@ public class ProcessFactory {
 		} else if (processClass.equalsIgnoreCase("gillespie-process")) {
 			return new GillespieProcess(loader, layer, id, geom, p, layerManager);
 
-        } else if (processClass.equalsIgnoreCase("Field-update-process")) {
-            return new FieldUpdateProcess(loader, id, layerManager, e.element("target").getTextTrim());
+        } else if (processClass.equalsIgnoreCase("field-update-process")) {
+            String target = e.element("target").getTextTrim();
+            return new FieldUpdateProcess(loader, id, layerManager, target);
 
 		} else {
 			String msg = "Unrecognized process '" +

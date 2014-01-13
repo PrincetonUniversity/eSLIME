@@ -12,6 +12,9 @@ public abstract class SolverFactory {
 
         if (solverClass.equalsIgnoreCase("SimpleCGS")) {
             return simpleCGS(solverRoot, geometry);
+        // Null case for testing
+        } else if (solverClass.equalsIgnoreCase("null")) {
+            return null;
         } else {
             throw new IllegalArgumentException("Unrecognized solver class '" + solverClass + "'");
         }

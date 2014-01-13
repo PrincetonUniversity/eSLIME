@@ -10,8 +10,7 @@ import org.dom4j.Element;
 /**
  * 
  * @author dbborens
- * @untested
- * 
+ *
  */
 public class GeometryManager {
 
@@ -25,6 +24,11 @@ public class GeometryManager {
         lattice = makeLattice(root);
         shape = makeShape(root, lattice);
     }
+
+    /**
+     * Default constructor included for testing
+     */
+    public GeometryManager() {}
 
 	public Geometry make(Element layerRoot) {
 		Boundary boundary = makeBoundary(layerRoot, lattice, shape);

@@ -148,28 +148,29 @@ public class Cuboid extends Shape {
 		return new int[] {width, height, depth};
 	}
 
-	/*@Override
-	public Coordinate[] getLimits() {
-		// Lower left
-		Coordinate near = new Coordinate(0, 0, 0, 0);
-		
-		// Upper right
-		Coordinate far = new Coordinate(width-1, height-1, depth-1, 0);
-		
-		// Adjust
-		Coordinate na = lattice.adjust(near);
-		Coordinate fa = lattice.adjust(far);
-		
-		// Get displacements
-		Coordinate center = getCenter();
-		Coordinate d0 = lattice.getDisplacement(center, na);
-		Coordinate d1 = lattice.getDisplacement(center, fa);
+    @Override
+    public boolean equals(Object obj) {
+        // Is it a Cuboid?
+        if (!(obj instanceof  Cuboid)) {
+            return false;
+        }
 
-		// Build return array
-		Coordinate[] limits = new Coordinate[] {d0, d1};
-		return limits;
-	}*/
-	
+        Cuboid other = (Cuboid) obj;
 
-	
+        // Does it have the same dimensions?
+        if (other.width != this.width) {
+            return false;
+        }
+
+        if (other.height != this.height) {
+            return false;
+        }
+
+        if (other.depth != this.depth) {
+            return false;
+        }
+
+        // If these things are OK, return true
+        return true;
+    }
 }
