@@ -84,7 +84,8 @@ public class SerializationManager {
 	 * Opens handles / initializes data structures for a new instance.
 	 * Blows up if these were left open from the previous instance.
 	 */
-	public void nextSimulation(CellLayer l) {
+	public void nextSimulation() {
+        CellLayer l = lm.getCellLayer();
 		for (AbstractCellWriter tw : cellLayerWriters) {
 			tw.init(l);
 		}	

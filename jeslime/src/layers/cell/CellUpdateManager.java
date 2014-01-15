@@ -120,7 +120,6 @@ public class CellUpdateManager {
 	 */
 	public void place(Cell cell, Coordinate coord) {
 
-		// TODO Verify that there is no outstanding lock.
 		content.checkExists(coord);
 
 		if (indices.isOccupied(coord)) {
@@ -143,7 +142,6 @@ public class CellUpdateManager {
 	 * @param coord
 	 */
 	public void banish(Coordinate coord) {
-		// TODO Verify that there is no outstanding lock.
 		content.checkExists(coord);
 
 		if ((!coord.hasFlag(Flags.END_OF_WORLD)) && (!indices.isOccupied(coord))) {

@@ -3,7 +3,7 @@ package io.project;
 import layers.LayerManager;
 import org.dom4j.Element;
 
-import processes.NullProcess;
+import processes.MockProcess;
 import processes.Process;
 import processes.continuum.FieldUpdateProcess;
 import processes.discrete.*;
@@ -85,7 +85,7 @@ public class ProcessFactory {
 			return new MutateAll(loader, layer, id, geom, p);
 			
 		} else if (processClass.equalsIgnoreCase("null-process")) {
-			return new NullProcess(loader, id, geom);
+			return new MockProcess(loader, id, geom);
 			
 		} else if (processClass.equalsIgnoreCase("gillespie-process")) {
 			return new GillespieProcess(loader, layer, id, geom, p, layerManager);

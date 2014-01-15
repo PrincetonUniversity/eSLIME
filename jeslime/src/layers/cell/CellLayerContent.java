@@ -33,7 +33,7 @@ public class CellLayerContent {
 		canonicalSites = geom.getCanonicalSites();
 		
 		// Initialize map.
-		map = new HashMap<Coordinate, Cell>();
+		map = new HashMap<>();
 	    for (int i = 0; i < canonicalSites.length; i++) {
 			Coordinate coord = canonicalSites[i];
 
@@ -41,7 +41,7 @@ public class CellLayerContent {
 			map.put(coord, null);	
 		}
 	}
-	
+
 	public Coordinate checkExists(Coordinate coord) {
 		// First check to see if this cell is supposed to be retained even though
 		// it is not a "real" coordinate.

@@ -30,6 +30,9 @@ public class MockGeometry extends Geometry {
 	protected Coordinate[] canonicalSites;
 	
 	public void setCanonicalSites(Coordinate[] canonicalSites) {
+        // Note that the MockGeometry override of setCanonicalSites
+        // does not canonicalize coordinates -- in particular, 2D
+        // coordinates will not receive the PLANAR flag.
 		this.canonicalSites = canonicalSites;
 		rebuildIndex();
 	}

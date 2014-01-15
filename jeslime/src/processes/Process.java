@@ -28,12 +28,14 @@ public abstract class Process {
 	
 	public Process(ProcessLoader loader, int id, Geometry geom) {
 		this.geom = geom;
+        this.id = id;
 
 		if (loader == null) {
 			period = 1;
+            start = 0;
 			return;
 		}
-		this.id = id;
+
 		e = loader.getProcess(id);
 		period = Integer.valueOf(get("period", "1"));
 		start = Integer.valueOf(get("start", "0"));

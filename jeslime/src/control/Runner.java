@@ -1,6 +1,7 @@
 package control;
 
 import io.project.GeometryManager;
+import io.project.ProcessFactory;
 import io.project.ProcessLoader;
 import io.project.ProjectLoader;
 import io.serialize.SerializationManager;
@@ -25,14 +26,19 @@ public class Runner implements Runnable {
 	public Runner(String fn) {
 		this.fn = fn;
 	}
-	
+
 	public void run() {
-		
-		GeneralParameters p = null;
+
+        // The runner is building too many objects. These are
+        // mostly invoked once in a hierarchical build process.
+        // Is there a good pattern for this?
+		GeneralParameters p;
 		GeometryManager gm;
 		ProjectLoader pp;
 		ProcessLoader loader;
         LayerManager lm;
+        ProcessManager pm;
+        ProcessFactory factory;
 		try {
 			File f = new File(fn);
 			pp = new ProjectLoader(f);
@@ -41,6 +47,8 @@ public class Runner implements Runnable {
 			p = new GeneralParameters(pp);
 			gm = new GeometryManager(pp.getElement("geometry"));
             lm = new LayerManager(pp.getElement("layers"), gm);
+            factory = new ProcessFactory(loader, lm, p);
+            pm = new ProcessManager(factory, p);
         } catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
@@ -48,19 +56,15 @@ public class Runner implements Runnable {
 
         Element writers = pp.getElement("writers");
 		SerializationManager mgr = new SerializationManager(writers, p, lm);
-		
+
 		for (int i = 0; i < p.getNumInstances(); i++) {
 		
-			Integrator integrator = new Integrator(p, loader, gm, mgr, lm);
+			Integrator integrator = new Integrator(p, pm, mgr);
 			
 			// This step includes the execution of the simulation until some
 			// end condition(s) defined in the parameters. It includes setting up
 			// the initial conditions.
 			HaltCondition ex = integrator.go();
-
-			// Instructs the integrator to perform any final cleanup actions on behalf
-			// of its various processes.
-			integrator.postprocess(ex);
 
 			// This step includes any analysis or visualizations that take place
 			// after the integrator is done running. It also closes any open handles

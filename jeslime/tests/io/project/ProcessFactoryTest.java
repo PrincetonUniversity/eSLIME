@@ -18,12 +18,6 @@ import processes.temporal.*;
 import processes.continuum.*;
 import processes.discrete.*;
 
-import java.io.IOException;
-import java.io.Writer;
-import java.util.Iterator;
-import java.util.List;
-import java.util.Map;
-
 /**
  * Created by David B Borenstein on 1/7/14.
  */
@@ -173,7 +167,7 @@ public class ProcessFactoryTest extends TestCase {
         // Null process
         child = new BaseElement("identifier");
         child.setText("1");
-        doTest("null-process", NullProcess.class, child);
+        doTest("null-process", MockProcess.class, child);
 
         // Gillespie process
         child = new BaseElement("children");
@@ -192,8 +186,8 @@ public class ProcessFactoryTest extends TestCase {
 
         Process[] actual = processFactory.getProcesses();
         assertEquals(2, actual.length);
-        assertEquals(NullProcess.class, actual[0].getClass());
-        assertEquals(NullProcess.class, actual[1].getClass());
+        assertEquals(MockProcess.class, actual[0].getClass());
+        assertEquals(MockProcess.class, actual[1].getClass());
     }
 
     private Element nullProcessElement(String idStr) {

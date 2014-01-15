@@ -4,6 +4,7 @@ import continuum.solvers.Solver;
 import geometry.Geometry;
 import geometry.Geometry;
 import layers.solute.SoluteLayer;
+import no.uib.cipr.matrix.DenseVector;
 import structural.postprocess.SolutionViewer;
 
 /**
@@ -33,9 +34,26 @@ public class MockSoluteLayer extends SoluteLayer {
 
     }
 
+    public boolean integrateWasFired() {
+        return integrateWasFired;
+    }
+
+    boolean integrateWasFired = false;
+
     @Override
     public void integrate() {
+        integrateWasFired = true;
+    }
 
+    public DenseVector getSource() {
+        return source;
+    }
+
+    DenseVector source;
+
+    @Override
+    public void setSource(DenseVector source) {
+        this.source = source;
     }
 
     public Geometry getGeometry() {

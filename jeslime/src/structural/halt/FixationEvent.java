@@ -5,8 +5,8 @@ public class FixationEvent extends HaltCondition {
 
 	private int fixationState;
 	
-	public FixationEvent(int fixationState, double gillespie) {
-		super(gillespie);
+	public FixationEvent(double time, int fixationState) {
+		super(time);
 		this.fixationState = fixationState;
 	}
 	

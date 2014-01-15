@@ -34,4 +34,17 @@ public class MockGeneralParameters extends GeneralParameters{
     public String getPath() {
         return path;
     }
+
+    @Override
+    public int T() {
+        return T;
+    }
+
+    public void setT(int t) {
+        T = t;
+    }
+
+    private int T;
+
+
 }

@@ -54,7 +54,6 @@ public class FieldUpdateProcess extends ContinuumProcess {
 
         String layerId = continuumLayer.getId();
         for (Coordinate c : sites) {
-            // CHECK API AND REMEMBER HOW TO GET THIS INFORMATION -- is it just getCell?
             double production = discreteLayer.getViewer().getCell(c).getProduction(layerId);
             int i = geom.coordToIndex(c);
 

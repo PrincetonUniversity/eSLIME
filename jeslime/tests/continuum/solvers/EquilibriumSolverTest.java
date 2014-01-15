@@ -517,8 +517,6 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
         layer.setGeometry(geometry);
         layer.push(result);
         MockLayerManager lm = new MockLayerManager();
-        //System.out.println(solution == null);
-        //System.out.println(layer.getState() == null);
         MockGeneralParameters p = new MockGeneralParameters();
         p.setInstancePath(outputPath);
         p.setPath(outputPath);

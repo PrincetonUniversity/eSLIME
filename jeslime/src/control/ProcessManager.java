@@ -1,12 +1,10 @@
 package control;
 
 import io.project.ProcessFactory;
-import layers.LayerManager;
 import processes.Process;
-import geometry.Geometry;
-import io.project.ProcessLoader;
-import layers.cell.CellLayer;
+import processes.StepState;
 import structural.GeneralParameters;
+import structural.halt.HaltCondition;
 
 import java.util.ArrayList;
 
@@ -15,25 +13,25 @@ import java.util.ArrayList;
  */
 public class ProcessManager {
 
-    private final ProcessFactory factory;
-    private final GeneralParameters p;
-    private final LayerManager layerManager;
+    private ProcessFactory factory;
+    private GeneralParameters p;
 
-    private final Process[] processes;
+    private Process[] processes;
 
-    public ProcessManager(ProcessLoader processLoader, LayerManager layerManager, GeneralParameters p) {
+    /**
+     * Default constructor included for testing
+     */
+    public ProcessManager() {}
 
-        this.layerManager = layerManager;
+    public ProcessManager(ProcessFactory factory, GeneralParameters p) {
+
         this.p = p;
-
-        // Build process factory.
-        factory = new ProcessFactory(processLoader, layerManager, p);
 
         processes = factory.getProcesses();
     }
 
-    public Process[] getTriggeredProcesses(int n, double t) {
-
+    //protected Process[] getTriggeredProcesses(int n, double t) {
+    protected Process[] getTriggeredProcesses(int n) {
         // Currently, no handling for time-triggered processes
 
         ArrayList<Process> triggeredProcesses = new ArrayList<>(processes.length);
@@ -55,15 +53,15 @@ public class ProcessManager {
         if (period == 0 && start == n) {
             return true;
 
-            // Case 2: this is a 1-time event, and it isn't that time.
+        // Case 2: this is a 1-time event, and it isn't that time.
         } else if (period == 0 && start != n) {
             return false;
 
-            // Case 3: We haven't reached the start time.
+        // Case 3: We haven't reached the start time.
         } else if (n < start) {
             return false;
 
-            // Case 4: We have reached the start time.
+        // Case 4: We have reached the start time.
         } else if (n >= start) {
             // Adjust phase.
             int tt = n - start;
@@ -80,5 +78,19 @@ public class ProcessManager {
         } else {
             throw new IllegalStateException("Unconsidered trigger state reached.");
         }
+    }
+
+    public StepState doTriggeredProcesses(int n) throws HaltCondition {
+        StepState state = new StepState();
+
+        // Get triggered events.
+        Process[] triggeredProcesses = getTriggeredProcesses(n);
+
+        // Fire each triggered cell event.
+        for (Process process : triggeredProcesses) {
+            process.iterate(state);
+        }
+
+        return state;
     }
 }

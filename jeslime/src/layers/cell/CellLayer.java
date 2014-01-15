@@ -46,4 +46,5 @@ public class CellLayer extends Layer {
 	public CellLayerViewer getViewer() {
 		return new CellLayerViewer(this, content, indices);
 	}
+
 }
