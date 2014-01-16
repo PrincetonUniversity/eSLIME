@@ -43,7 +43,7 @@ public class ProcessFactoryTest extends TestCase {
         "targeted-biomass-growth",
         "mutate-all",
         "gillespie-process",
-        "null-process"
+        "mock-process"
     };
 
     @Override
@@ -167,7 +167,7 @@ public class ProcessFactoryTest extends TestCase {
         // Null process
         child = new BaseElement("identifier");
         child.setText("1");
-        doTest("null-process", MockProcess.class, child);
+        doTest("mock-process", MockProcess.class, child);
 
         // Gillespie process
         child = new BaseElement("children");
@@ -191,7 +191,7 @@ public class ProcessFactoryTest extends TestCase {
     }
 
     private Element nullProcessElement(String idStr) {
-        Element root = new BaseElement("null-process");
+        Element root = new BaseElement("mock-process");
         Element identifier = new BaseElement("identifier");
         identifier.setText(idStr);
         root.add(identifier);

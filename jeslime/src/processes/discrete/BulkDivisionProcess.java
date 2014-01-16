@@ -4,6 +4,7 @@ import java.util.HashSet;
 import java.util.Random;
 
 import cells.Cell;
+import layers.LayerManager;
 import processes.StepState;
 import geometry.Geometry;
 import io.project.ProcessLoader;
@@ -18,11 +19,11 @@ public abstract class BulkDivisionProcess extends CellProcess{
 
 	protected Random random;
 
-	public BulkDivisionProcess(ProcessLoader loader, CellLayer layer, int id,
-			Geometry geom, GeneralParameters p) {
-		super(loader, layer, id, geom, p);
-		random = p.getRandom();
 
+	public BulkDivisionProcess(ProcessLoader loader, LayerManager layerManager, int id,
+			GeneralParameters p) {
+		super(loader, layerManager, id, p);
+		random = p.getRandom();
 	}
 
 	protected void execute(StepState state, Coordinate[] candidates) throws HaltCondition {

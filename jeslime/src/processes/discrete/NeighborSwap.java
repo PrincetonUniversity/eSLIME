@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import layers.LayerManager;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import geometry.Geometry;
@@ -23,10 +24,10 @@ import structural.identifiers.Coordinate;
 public class NeighborSwap extends CellProcess {
 
 	private List<SwapTuple> candidates = null;
-	public NeighborSwap(ProcessLoader loader, CellLayer layer, int id,
-			Geometry geom, GeneralParameters p) {
+	public NeighborSwap(ProcessLoader loader, LayerManager layerManager, int id,
+			GeneralParameters p) {
 		
-		super(loader, layer, id, geom, p);
+		super(loader, layerManager, id, p);
 		
 	}
 

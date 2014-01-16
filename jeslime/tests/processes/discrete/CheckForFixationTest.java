@@ -3,6 +3,7 @@ package processes.discrete;
 import cells.Cell;
 import cells.MockCell;
 import geometry.MockGeometry;
+import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import processes.StepState;
 import processes.gillespie.GillespieState;
@@ -17,6 +18,7 @@ import test.EslimeTestCase;
 public class CheckForFixationTest extends EslimeTestCase {
     private MockGeometry geometry;
     private CellLayer layer;
+    private MockLayerManager layerManager;
     private CheckForFixation query;
 
     public void testTargetSimple() throws Exception {
@@ -120,8 +122,9 @@ public class CheckForFixationTest extends EslimeTestCase {
         geometry.setCanonicalSites(cc);
 
         layer = new CellLayer(geometry, 0);
-
-        query = new CheckForFixation(null, layer, 0, geometry, null);
+        layerManager = new MockLayerManager();
+        layerManager.setCellLayer(layer);
+        query = new CheckForFixation(null, layerManager, 0, null);
     }
 
     private void makeOneCanonicalSite() {

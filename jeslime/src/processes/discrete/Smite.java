@@ -2,6 +2,7 @@ package processes.discrete;
 
 import geometry.Geometry;
 import io.project.ProcessLoader;
+import layers.LayerManager;
 import layers.cell.CellLayer;
 import processes.StepState;
 import processes.gillespie.GillespieState;
@@ -17,15 +18,15 @@ import structural.identifiers.Coordinate;
 public class Smite extends CellProcess {
 
     private boolean skipDead;
-    public Smite(ProcessLoader loader, CellLayer layer, int id, Geometry geom, GeneralParameters p) {
-        super(loader, layer, id, geom, p);
+    public Smite(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
+        super(loader, layerManager, id, p);
 
         skipDead = Boolean.valueOf(get("skip-dead-sites"));
     }
 
     // Minimal constructor for mock tests
-    public Smite(CellLayer layer, Geometry geom, boolean skipDead) {
-        super(null, layer, 0, geom, null);
+    public Smite(LayerManager layerManager, boolean skipDead) {
+        super(null, layerManager, 0, null);
         this.skipDead = skipDead;
     }
 

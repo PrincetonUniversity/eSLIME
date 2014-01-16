@@ -4,6 +4,7 @@ import io.project.ProcessLoader;
 
 import java.util.HashSet;
 
+import layers.LayerManager;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
@@ -16,9 +17,9 @@ public class DivideAnywhere extends BulkDivisionProcess {
 
 	private Coordinate[] candidates = null;
 	
-	public DivideAnywhere(ProcessLoader loader, CellLayer layer, int id,
-			Geometry geom, GeneralParameters p) {
-		super(loader, layer, id, geom, p);
+	public DivideAnywhere(ProcessLoader loader, LayerManager layerManager, int id,
+			 GeneralParameters p) {
+		super(loader, layerManager, id, p);
 	}
 
 	

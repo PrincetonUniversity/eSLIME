@@ -4,6 +4,7 @@ import io.project.ProcessLoader;
 
 import java.util.HashSet;
 
+import layers.LayerManager;
 import layers.cell.CellLayer;
 import processes.StepState;
 import processes.gillespie.GillespieState;
@@ -17,9 +18,9 @@ public class ActiveLayerDivide extends BulkDivisionProcess {
 	int depth;
 	private Coordinate[] candidates = null;
 	
-	public ActiveLayerDivide(ProcessLoader loader, CellLayer layer, int id,
-			Geometry geom, GeneralParameters p) {
-		super(loader, layer, id, geom, p);
+	public ActiveLayerDivide(ProcessLoader loader, LayerManager layerManager, int id,
+			GeneralParameters p) {
+		super(loader, layerManager, id, p);
 		
 		depth = Integer.valueOf(get("depth"));
 	}

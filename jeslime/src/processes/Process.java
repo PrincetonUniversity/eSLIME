@@ -2,6 +2,7 @@ package processes;
 
 import java.util.ArrayList;
 
+import layers.LayerManager;
 import org.dom4j.Element;
 
 import processes.gillespie.GillespieState;
@@ -22,20 +23,20 @@ public abstract class Process {
 	// XML element associated with this process
 	protected Element e;
 	
-	protected Geometry geom;
+	protected LayerManager layerManager;
 	
 	/* Constructors */
 	
-	public Process(ProcessLoader loader, int id, Geometry geom) {
-		this.geom = geom;
-        this.id = id;
+	public Process(ProcessLoader loader, LayerManager layerManager, int id) {
+		this.layerManager = layerManager;
 
 		if (loader == null) {
+			//System.err.println("WARNING: Mock behavior for process loader invoked. Use only for testing!");
+			id = 0;
 			period = 1;
-            start = 0;
 			return;
 		}
-
+		this.id = id;
 		e = loader.getProcess(id);
 		period = Integer.valueOf(get("period", "1"));
 		start = Integer.valueOf(get("start", "0"));
@@ -178,7 +179,7 @@ public abstract class Process {
 		
 		// Now, consider the mode.
 		if (modeString.equalsIgnoreCase("all")) {
-			return geom.getCanonicalSites();
+			return layerManager.getCellLayer().getGeometry().getCanonicalSites();
 		} else if (modeString.equalsIgnoreCase("list")) {
 			return coordinateList(siteElement);
 		} else if (modeString.equalsIgnoreCase("line")) {
@@ -205,7 +206,7 @@ public abstract class Process {
 		boolean xyCorrection = siteElement.element("xy-correction") != null;
 		
 		// Use floating point so that w can build in offset corrections for
-		// a particular geometry.
+		// a particular layerManager.getCellLayer().getGeometry().try.
 		double x0 = Double.valueOf(originElem.attribute("x").getValue());
 		double y0 = Double.valueOf(originElem.attribute("y").getValue());
 		
@@ -272,7 +273,7 @@ public abstract class Process {
 		int du = Integer.valueOf(displacementElem.attribute("u").getValue());
 		int dv = Integer.valueOf(displacementElem.attribute("v").getValue());
 		
-		// Remember that 2D triangular geometries have a third, non-orthogonal
+		// Remember that 2D triangular layerManager.getCellLayer().getGeometry().tries have a third, non-orthogonal
 		// basis vector.
 		int dw = 0;
 		if (displacementElem.attribute("w") != null) {
@@ -296,7 +297,7 @@ public abstract class Process {
 		Coordinate d = new Coordinate(dArr, c.flags() | Flags.VECTOR);
 		
 		for (int i = 0; i < length; i++) {
-			Coordinate cNext = geom.rel2abs(c, d, Geometry.APPLY_BOUNDARIES);
+			Coordinate cNext = layerManager.getCellLayer().getGeometry().rel2abs(c, d, Geometry.APPLY_BOUNDARIES);
 			c = cNext;
 			coordinates.add(c);
 		}
@@ -318,10 +319,10 @@ public abstract class Process {
 		}
 
         // Handle offset descriptors (<offset> tags).
-        // These have their origin at the center of the geometry.
+        // These have their origin at the center of the layerManager.getCellLayer().getGeometry().try.
         for (Object o : siteElement.elements("offset")) {
            Element cElem = (Element) o;
-           coordinates.add(CoordinateFactory.offset(cElem, geom));
+           coordinates.add(CoordinateFactory.offset(cElem, layerManager.getCellLayer().getGeometry()));
         }
 		return coordinates.toArray(new Coordinate[0]);
 	}

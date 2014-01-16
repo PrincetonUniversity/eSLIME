@@ -1,5 +1,6 @@
 package processes.discrete;
 
+import layers.LayerManager;
 import processes.Process;
 import geometry.Geometry;
 import structural.identifiers.Coordinate;
@@ -7,23 +8,26 @@ import io.project.ProcessLoader;
 import structural.GeneralParameters;
 import layers.cell.CellLayer; 
 public abstract class CellProcess extends Process {
-	protected CellLayer layer;
 	protected GeneralParameters p;
 	
 	// This set represents the sites where the process
 	// is allowed to take place. By default, it is set
 	// to all canonical sites.
 	protected Coordinate[] activeSites;
-	
-	public CellProcess(ProcessLoader loader, CellLayer layer, int id, 
-			Geometry geom, GeneralParameters p) {
+
+    // These are easily accessed from the layer manager, but there
+    // are very many calls to them thanks to some legacy code.
+    protected CellLayer layer;
+    protected Geometry geom;
+
+	public CellProcess(ProcessLoader loader, LayerManager layerManager, int id,
+			GeneralParameters p) {
 		
 		
-		super(loader, id, geom);
+		super(loader, layerManager, id);
 		
 		this.p = p;
-		this.layer = layer;
-		
+        layer = layerManager.getCellLayer();
 		activeSites = this.loadSiteList("active-sites");
 	}
 

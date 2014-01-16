@@ -3,6 +3,7 @@ package processes.discrete;
 import cells.Cell;
 import geometry.Geometry;
 import io.project.ProcessLoader;
+import layers.LayerManager;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
@@ -21,19 +22,19 @@ public class MutateAll extends CellProcess {
 	// How much biomass to accumulate per time step
 	private int ancestral;
 	private int mutant;
-	
-	public MutateAll(ProcessLoader loader, CellLayer layer, int id,
-			Geometry geom, GeneralParameters p) {
-		super(loader, layer, id, geom, p);
-		
+
+    public MutateAll(ProcessLoader loader, LayerManager layerManager, int id,
+                GeneralParameters p) {
+        super(loader, layerManager, id, p);
+
 		ancestral = Integer.valueOf(e.element("mutation").attribute("ancestral").getText());
 		mutant = Integer.valueOf(e.element("mutation").attribute("mutant").getText());
 		
 	}
 
-	public MutateAll(CellLayer layer, Geometry geom, 
+	public MutateAll(CellLayer layer, LayerManager layerManager,
 			int ancestral, int mutant) {
-		super(null, layer, 0, geom, null);
+		super(null, layerManager, 0, null);
 		
 		this.ancestral = ancestral;
 		this.mutant = mutant;

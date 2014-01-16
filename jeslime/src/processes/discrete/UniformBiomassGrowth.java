@@ -2,6 +2,7 @@ package processes.discrete;
 
 import geometry.Geometry;
 import io.project.ProcessLoader;
+import layers.LayerManager;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
@@ -24,18 +25,18 @@ public class UniformBiomassGrowth extends CellProcess {
 	// a cell before the new biomass accumulates.
 	private boolean defer;
 	
-	public UniformBiomassGrowth(ProcessLoader loader, CellLayer layer, int id,
-			Geometry geom, GeneralParameters p) {
-		super(loader, layer, id, geom, p);
+	public UniformBiomassGrowth(ProcessLoader loader, LayerManager layerManager, int id,
+			GeneralParameters p) {
+		super(loader, layerManager, id, p);
 		
 		delta = Double.valueOf(get("delta"));
 		
 		defer = Boolean.valueOf(get("defer"));
 	}
 
-	public UniformBiomassGrowth(CellLayer layer, Geometry geom, 
+	public UniformBiomassGrowth(LayerManager layerManager,
 			double delta, boolean defer) {
-		super(null, layer, 0, geom, null);
+		super(null, layerManager, 0, null);
 		
 		this.delta = delta;
 		this.defer = defer;

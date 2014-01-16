@@ -1,15 +1,15 @@
 <!-- Test fixture for CellProcessLoader. -->
 
 <cell-processes>
-    <null-process>
+    <mock-process>
         <identifier>alpha</identifier>
-    </null-process>
+    </mock-process>
 
-    <null-process>
+    <mock-process>
         <identifier>beta</identifier>
-    </null-process>
+    </mock-process>
 
-    <null-process>
+    <mock-process>
         <identifier>gamma</identifier>
-    </null-process>
+    </mock-process>
 </cell-processes>

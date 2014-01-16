@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import geometry.Geometry;
 import io.project.ProcessLoader;
+import layers.LayerManager;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
@@ -30,9 +31,9 @@ public class TargetedBiomassGrowth extends CellProcess {
 	// Only feed cells if they are of the target type.
 	private int targetCellType;
 	
-	public TargetedBiomassGrowth(ProcessLoader loader, CellLayer layer, int id,
-			Geometry geom, GeneralParameters p) {
-		super(loader, layer, id, geom, p);
+	public TargetedBiomassGrowth(ProcessLoader loader, LayerManager layerManager, int id,
+			GeneralParameters p) {
+		super(loader, layerManager, id, p);
 		
 		delta = Double.valueOf(get("delta"));
 		
@@ -42,9 +43,9 @@ public class TargetedBiomassGrowth extends CellProcess {
 		
 	}
 
-	public TargetedBiomassGrowth(CellLayer layer, Geometry geom, 
+	public TargetedBiomassGrowth(LayerManager layerManager,
 			double delta, boolean defer, int target) {
-		super(null, layer, 0, geom, null);
+		super(null, layerManager, 0, null);
 		
 		this.delta = delta;
 		this.defer = defer;

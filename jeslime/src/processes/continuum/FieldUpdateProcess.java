@@ -21,12 +21,14 @@ public class FieldUpdateProcess extends ContinuumProcess {
 
     private final CellLayer discreteLayer;
     private final SoluteLayer continuumLayer;
-    
+    private final Geometry geom;
+
     public FieldUpdateProcess(ProcessLoader loader, int processId, LayerManager layerManager, String layerId) {
-       super(loader, processId, layerManager.getSoluteLayer(layerId).getGeometry());
+       super(loader, layerManager, processId);
 
        discreteLayer = layerManager.getCellLayer();
        continuumLayer = layerManager.getSoluteLayer(layerId);
+       geom = layerManager.getCellLayer().getGeometry();
     }
 
     @Override

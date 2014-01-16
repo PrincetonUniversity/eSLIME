@@ -1,5 +1,6 @@
 package processes;
 
+import layers.MockLayerManager;
 import processes.discrete.CellProcess;
 import processes.discrete.UniformBiomassGrowth;
 import cells.Cell;
@@ -27,7 +28,8 @@ public class UniformBiomassGrowthTest extends TestCase {
 		Boundary boundary = new PlaneRingHard(shape, lattice);
 		Geometry geom = new Geometry(lattice, shape, boundary);
 		CellLayer layer = new CellLayer(geom, 0);
-		
+	    MockLayerManager layerManager = new MockLayerManager();
+
 		// Create two cells that can be fed
 		Cell one = new FissionCell(1, 0.7, 2.0);
 		Cell two = new FissionCell(2, 0.3, 2.0);
@@ -37,9 +39,11 @@ public class UniformBiomassGrowthTest extends TestCase {
 		
 		layer.getUpdateManager().place(one, coord1);
 		layer.getUpdateManager().place(two, coord2);
-		
+
+        layerManager.setCellLayer(layer);
+
 		// Create a UniformBiomassGrowth
-		CellProcess process = new UniformBiomassGrowth(layer, geom, 1.5, false);
+		CellProcess process = new UniformBiomassGrowth(layerManager, 1.5, false);
 
 		// Verify that they get fed when the process is invoked
 		assertEquals(layer.getViewer().getCell(coord1).getFitness(), 0.7, epsilon);
@@ -70,7 +74,8 @@ public class UniformBiomassGrowthTest extends TestCase {
 		Boundary boundary = new PlaneRingHard(shape, lattice);
 		Geometry geom = new Geometry(lattice, shape, boundary);
 		CellLayer layer = new CellLayer(geom, 0);
-		
+	    MockLayerManager layerManager = new MockLayerManager();
+
 		// Create two cells that can be fed
 		Cell one = new FissionCell(1, 0.7, 2.0);
 		Cell two = new FissionCell(2, 0.3, 2.0);
@@ -80,9 +85,11 @@ public class UniformBiomassGrowthTest extends TestCase {
 		
 		layer.getUpdateManager().place(one, coord1);
 		layer.getUpdateManager().place(two, coord2);
-		
+
+        layerManager.setCellLayer(layer);
+
 		// Create a UniformBiomassGrowth
-		CellProcess process = new UniformBiomassGrowth(layer, geom, 1.5, true);
+		CellProcess process = new UniformBiomassGrowth(layerManager, 1.5, true);
 
 		// Verify that they get fed when the process is invoked
 		assertEquals(layer.getViewer().getCell(coord1).getFitness(), 0.7, epsilon);

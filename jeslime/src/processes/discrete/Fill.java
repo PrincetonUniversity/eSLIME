@@ -4,6 +4,7 @@ import geometry.Geometry;
 import io.project.CellFactory;
 import io.project.ProcessLoader;
 
+import layers.LayerManager;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import cells.Cell;
@@ -26,12 +27,11 @@ public class Fill extends CellProcess {
 	// false, it will blow up if it encounters an already-filled site 
 	// that it expected to fill.
 	boolean skipFilled;
-	
-	public Fill(ProcessLoader loader, CellLayer layer, int id,
-			Geometry geom, GeneralParameters p) {
-		
-		super(loader, layer, id, geom, p);
-		
+
+    public Fill(ProcessLoader loader, LayerManager layerManager, int id,
+                          GeneralParameters p) {
+        super(loader, layerManager, id, p);
+
 		skipFilled = Boolean.valueOf(get("skip-filled-sites"));
 		
 		

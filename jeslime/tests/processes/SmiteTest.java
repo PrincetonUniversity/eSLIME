@@ -2,6 +2,8 @@ package processes;
 
 import cells.SimpleCell;
 import geometry.MockGeometry;
+import layers.LayerManager;
+import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import processes.discrete.Smite;
 import processes.gillespie.GillespieState;
@@ -20,6 +22,7 @@ public class SmiteTest extends EslimeTestCase {
     // their own child objects (update manager, viewer, indices)
     // and therefore are compatible with mock infrastructure.
     private CellLayer layer;
+    private MockLayerManager layerManager;
 
     @Override
     protected void setUp() throws Exception {
@@ -31,15 +34,15 @@ public class SmiteTest extends EslimeTestCase {
         MockGeometry geom = new MockGeometry();
         geom.setCanonicalSites(cc);
 
-        // Construct process
-        smite = new Smite(layer, geom, false);
-        smite.setActiveSites(cc);
+        layerManager = new MockLayerManager();
 
         // Construct layer
         layer = new CellLayer(geom, 0);
+        layerManager.setCellLayer(layer);
 
         // Construct process
-        smite = new Smite(layer, geom, false);
+        smite = new Smite(layerManager, false);
+        smite.setActiveSites(cc);
     }
 
     /**

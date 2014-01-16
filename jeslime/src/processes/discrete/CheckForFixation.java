@@ -2,6 +2,7 @@ package processes.discrete;
 
 import geometry.Geometry;
 import io.project.ProcessLoader;
+import layers.LayerManager;
 import layers.cell.CellLayer;
 import layers.cell.StateMapViewer;
 import processes.StepState;
@@ -14,8 +15,8 @@ import structural.halt.HaltCondition;
  * Created by dbborens on 1/13/14.
  */
 public class CheckForFixation extends CellProcess {
-    public CheckForFixation(ProcessLoader loader, CellLayer layer, int id, Geometry geom, GeneralParameters p) {
-        super(loader, layer, id, geom, p);
+    public CheckForFixation(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
+        super(loader, layerManager, id, p);
     }
 
     @Override

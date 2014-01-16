@@ -2,6 +2,7 @@ package processes.temporal;
 
 import geometry.Geometry;
 import io.project.ProcessLoader;
+import layers.LayerManager;
 import processes.StepState;
 import structural.GeneralParameters;
 import layers.cell.CellLayer; import structural.halt.HaltCondition;
@@ -20,15 +21,15 @@ import layers.cell.CellLayer; import structural.halt.HaltCondition;
  */
 public class ExponentialInverse extends TimeProcess {
 
-	public ExponentialInverse(ProcessLoader loader, CellLayer layer, int id,
-			Geometry geom, GeneralParameters p) {
+	public ExponentialInverse(ProcessLoader loader, LayerManager layerManager,
+			Integer id, GeneralParameters p) {
 		
-		super(loader, layer, id, geom, p);
+		super(loader, layerManager, id, p);
 	}
 
 	@Override
 	public void fire(StepState state) throws HaltCondition {
-		double lambda = 1.0D / layer.getViewer().getOccupiedSites().size();
+		double lambda = 1.0D / layerManager.getCellLayer().getViewer().getOccupiedSites().size();
 		double dt = expRandom(lambda);
 		state.advanceClock(dt);
 	}

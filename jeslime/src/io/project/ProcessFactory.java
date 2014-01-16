@@ -47,48 +47,43 @@ public class ProcessFactory {
 	public Process instantiate(Integer id) {
 		Element e = loader.getProcess(id);
 
-        // TODO Change interface on old cell layers so that they can find
-        // their own layer and geometry from the layermanager
-        CellLayer layer = layerManager.getCellLayer();
-        Geometry geom = layerManager.getCellLayer().getGeometry();
-
 		String processClass = e.getName();
 		
 		if (processClass.equalsIgnoreCase("exponential-inverse")) {
-			return new ExponentialInverse(loader, layer, id, geom, p);
+			return new ExponentialInverse(loader, layerManager, id, p);
 			
 		} else if (processClass.equalsIgnoreCase("tick")) {
-			return new Tick(loader, layer, id, geom, p);
+			return new Tick(loader, layerManager, id, p);
 			
 		} else if (processClass.equalsIgnoreCase("divide-anywhere")) {
-			return new DivideAnywhere(loader, layer, id, geom, p);
+			return new DivideAnywhere(loader, layerManager, id, p);
 			
 		} else if (processClass.equalsIgnoreCase("active-layer-divide")) {
-				return new ActiveLayerDivide(loader, layer, id, geom, p);		
+				return new ActiveLayerDivide(loader, layerManager, id, p);
 				
 		} else if (processClass.equalsIgnoreCase("neighbor-swap")) {
-			return new NeighborSwap(loader, layer, id, geom, p);
+			return new NeighborSwap(loader, layerManager, id, p);
 			
 		} else if (processClass.equalsIgnoreCase("scatter")) {
-			return new Scatter(loader, layer, id, geom, p);
+			return new Scatter(loader, layerManager, id, p);
 
 		} else if (processClass.equalsIgnoreCase("fill")) {
-			return new Fill(loader, layer, id, geom, p);
+			return new Fill(loader, layerManager, id, p);
 			
 		} else if (processClass.equalsIgnoreCase("uniform-biomass-growth")) {
-			return new UniformBiomassGrowth(loader, layer, id, geom, p);
+			return new UniformBiomassGrowth(loader, layerManager, id, p);
 
 		} else if (processClass.equalsIgnoreCase("targeted-biomass-growth")) {
-			return new TargetedBiomassGrowth(loader, layer, id, geom, p);
+			return new TargetedBiomassGrowth(loader, layerManager, id, p);
 			
 		} else if (processClass.equalsIgnoreCase("mutate-all")) {
-			return new MutateAll(loader, layer, id, geom, p);
+			return new MutateAll(loader, layerManager, id, p);
 			
-		} else if (processClass.equalsIgnoreCase("null-process")) {
-			return new MockProcess(loader, id, geom);
+		} else if (processClass.equalsIgnoreCase("mock-process")) {
+			return new MockProcess(loader, layerManager, id);
 			
 		} else if (processClass.equalsIgnoreCase("gillespie-process")) {
-			return new GillespieProcess(loader, layer, id, geom, p, layerManager);
+			return new GillespieProcess(loader, layerManager, id, p);
 
         } else if (processClass.equalsIgnoreCase("field-update-process")) {
             String target = e.element("target").getTextTrim();

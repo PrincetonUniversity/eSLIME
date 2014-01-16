@@ -7,6 +7,7 @@ import io.project.ProcessLoader;
 import java.util.HashSet;
 import java.util.Random;
 
+import layers.LayerManager;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import cells.Cell;
@@ -24,10 +25,10 @@ public class Scatter extends CellProcess {
 	
 	private HashSet<Coordinate> candidates = null;
 	
-	public Scatter(ProcessLoader loader, CellLayer layer, int id,
-			Geometry geom, GeneralParameters p) {
+	public Scatter(ProcessLoader loader, LayerManager layerManager, int id,
+			GeneralParameters p) {
 		
-		super(loader, layer, id, geom, p);
+		super(loader, layerManager, id, p);
 
 		random = p.getRandom();
 		

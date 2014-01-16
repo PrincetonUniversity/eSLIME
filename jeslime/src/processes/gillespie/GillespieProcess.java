@@ -32,22 +32,20 @@ public class GillespieProcess extends CellProcess {
 	private Process[] children;
 	private HashMap<Integer, Process> childrenById;
 	private GillespieState substate;
-    private LayerManager lm;
 
-	public GillespieProcess(ProcessLoader loader, CellLayer layer, int id,
-			Geometry geom, GeneralParameters p, LayerManager lm) {
-		super(loader, layer, id, geom, p);
+	public GillespieProcess(ProcessLoader loader, LayerManager layerManager, int id,
+			GeneralParameters p) {
+		super(loader, layerManager, id, p);
 
-        this.lm = lm;
-		loadChildren(loader);
+		loadChildren();
 	}
 
-	private void loadChildren(ProcessLoader loader) {
+	private void loadChildren() {
 		Element root = e.element("children");
 		
 		ProcessLoader subloader = new ProcessLoader(root);
 
-		ProcessFactory factory = new ProcessFactory(subloader, lm, p);
+		ProcessFactory factory = new ProcessFactory(subloader, layerManager, p);
 		
 		Integer[] ids = subloader.getProcesses();
 		

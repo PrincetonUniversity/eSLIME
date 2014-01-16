@@ -43,7 +43,7 @@ public class ProcessLoaderTest extends EslimeTestCase {
     }
     private String getIdentifier(Element e) {
         // First, make sure this is the right kind of element
-        assertEquals("null-process", e.getName());
+        assertEquals("mock-process", e.getName());
 
         // Now, get the identifier
         Element idElem = e.element("identifier");

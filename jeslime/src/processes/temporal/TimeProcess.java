@@ -1,5 +1,6 @@
 package processes.temporal;
 
+import layers.LayerManager;
 import processes.Process;
 import processes.gillespie.GillespieState;
 import geometry.Geometry;
@@ -21,16 +22,14 @@ import layers.cell.CellLayer;
  *
  */
 public abstract class TimeProcess extends Process {
-	protected CellLayer layer;
 	protected GeneralParameters p;
 	
-	public TimeProcess(ProcessLoader loader, CellLayer layer, int id, 
-			Geometry geom, GeneralParameters p) {
+	public TimeProcess(ProcessLoader loader, LayerManager layerManager, int id,
+			GeneralParameters p) {
 		
-		super(loader, id, geom);
+		super(loader, layerManager, id);
 		
 		this.p = p;
-		this.layer = layer;
 	}
 	
 	protected String getProcessClass() {

@@ -2,6 +2,7 @@ package processes.temporal;
 
 import geometry.Geometry;
 import io.project.ProcessLoader;
+import layers.LayerManager;
 import processes.StepState;
 import structural.GeneralParameters;
 import layers.cell.CellLayer; import structural.halt.HaltCondition;
@@ -15,10 +16,10 @@ import layers.cell.CellLayer; import structural.halt.HaltCondition;
 public class Tick extends TimeProcess {
 
 	private double dt;
-	public Tick(ProcessLoader loader, CellLayer layer, int id,
-			Geometry geom, GeneralParameters p) {
+	public Tick(ProcessLoader loader, LayerManager layerManager, int id,
+			GeneralParameters p) {
 		
-		super(loader, layer, id, geom, p);
+		super(loader, layerManager, id, p);
 		
 		dt = Double.valueOf(get("dt"));
 	}

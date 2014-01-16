@@ -1,6 +1,7 @@
 package processes.continuum;
 import geometry.Geometry;
 import io.project.ProcessLoader;
+import layers.LayerManager;
 import processes.Process;
 import processes.gillespie.GillespieState;
 import structural.halt.HaltCondition;
@@ -10,8 +11,8 @@ import structural.halt.HaltCondition;
  */
 public abstract class ContinuumProcess extends Process {
 
-    public ContinuumProcess(ProcessLoader loader, int id, Geometry geom) {
-        super(loader, id, geom);
+    public ContinuumProcess(ProcessLoader loader, LayerManager layerManager, int id) {
+        super(loader, layerManager, id);
     }
 
     protected String getProcessClass() {
