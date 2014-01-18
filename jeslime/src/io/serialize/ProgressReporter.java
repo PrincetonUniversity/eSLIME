@@ -15,14 +15,13 @@ import structural.identifiers.Coordinate;
  * @author David Bruce Borenstein
  *
  */
-public class ProgressReporter extends AbstractCellWriter {
+public class ProgressReporter extends Serializer {
 
-	public ProgressReporter(GeneralParameters p, LayerManager lm) {
-		super(p, lm);
+	public ProgressReporter(GeneralParameters p) {
+		super(p);
 	}
 
-	@Override
-	public void init(CellLayer l) {
+	public void init(LayerManager lm) {
 		System.out.println("Instance " + p.getInstance() + ": " + p.getInstancePath());
 	}
 

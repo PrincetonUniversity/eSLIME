@@ -17,7 +17,7 @@ public class CoordinateIndexerTest extends EslimeTestCase {
     private MockGeometry geom;
     private MockGeneralParameters params;
     private CoordinateIndexer indexer;
-
+    private MockLayerManager lm;
     public void setUp() {
         geom = new MockGeometry();
 
@@ -31,10 +31,11 @@ public class CoordinateIndexerTest extends EslimeTestCase {
         geom.setCanonicalSites(canonicals);
         params = new MockGeneralParameters();
         params.setInstancePath(outputPath);
-        MockLayerManager lm = new MockLayerManager();
+        lm = new MockLayerManager();
         CellLayer layer = new CellLayer(geom, 0);
         lm.setCellLayer(layer);
-        indexer = new CoordinateIndexer(params, lm);
+        indexer = new CoordinateIndexer(params);
+        indexer.init(lm);
     }
 
     public void testCoordinateIndexer() throws Exception {

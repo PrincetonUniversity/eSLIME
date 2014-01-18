@@ -10,9 +10,6 @@ import structural.GeneralParameters;
  * Created by David B Borenstein on 1/12/14.
  */
 public class MockSerializationManager extends SerializationManager {
-    @Override
-    public void nextSimulation() {
-    }
 
     public MockSerializationManager() {
         super(new BaseElement("dummy"), null, null);

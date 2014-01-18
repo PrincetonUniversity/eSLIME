@@ -12,11 +12,11 @@ import structural.GeneralParameters;
 import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
-public class ParameterWriter extends AbstractCellWriter {
+public class ParameterWriter extends Serializer {
 	private final String PROJECT_FILENAME = "project.xml";
 
-	public ParameterWriter(GeneralParameters p, LayerManager lm) {
-		super(p, lm);
+	public ParameterWriter(GeneralParameters p) {
+		super(p);
 		mkDir(p.getPath(), true);
 		
 		try {
@@ -35,7 +35,7 @@ public class ParameterWriter extends AbstractCellWriter {
 	}
 
 	@Override
-	public void init(CellLayer l) {
+	public void init(LayerManager lm) {
 		// Write out an instance-specific XML file.
 		if (p.getNumInstances() == 1) {
 			return;

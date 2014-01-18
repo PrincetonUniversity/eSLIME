@@ -12,32 +12,22 @@ import structural.halt.HaltCondition;
 import structural.halt.StepMaxReachedEvent;
 import structural.identifiers.Coordinate;
 
-public class FixationTimeWriter extends AbstractCellWriter {
+public class FixationTimeWriter extends Serializer {
 
 	private boolean closed = true;
 	private static final String FILENAME = "ttf.txt";
 	private BufferedWriter bw;
 
-	public FixationTimeWriter(GeneralParameters p, LayerManager lm) {
-		super(p, lm);
+	public FixationTimeWriter(GeneralParameters p) {
+		super(p);
 
 		// We use the non-instance path because this metric aggregates over
 		// all instances.
 		String filename = p.getPath() + '/' + FILENAME;
 		mkDir(p.getInstancePath(), true);
 		bw = makeBufferedWriter(filename);
-		
-	
-		hAppend(bw, new StringBuilder("gillespie\tfix_state\n"));
-	}
 
-	@Override
-	public void init(CellLayer l) {
-		if (!closed) {
-			throw new IllegalStateException("Attempted to initialize active writer.");
-		}
-		closed = false;
-		layer = l;
+		hAppend(bw, new StringBuilder("gillespie\tfix_state\n"));
 	}
 
 	@Override

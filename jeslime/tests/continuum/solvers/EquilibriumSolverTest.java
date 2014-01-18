@@ -517,14 +517,15 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
         layer.setGeometry(geometry);
         layer.push(result);
         MockLayerManager lm = new MockLayerManager();
+        lm.addSoluteLayer(id, layer);
         MockGeneralParameters p = new MockGeneralParameters();
         p.setInstancePath(outputPath);
         p.setPath(outputPath);
 
         // Construct writer
-        ContinuumStateWriter writer = new ContinuumStateWriter(p, lm);
-        writer.init(layer);
-        writer.step(0, 0);
+        ContinuumStateWriter writer = new ContinuumStateWriter(p);
+        writer.init(lm);
+        writer.step(null, 0, 0);
         writer.dispatchHalt(null);
     }
 

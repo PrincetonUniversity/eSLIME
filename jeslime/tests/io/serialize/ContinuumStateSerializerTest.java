@@ -12,7 +12,7 @@ import no.uib.cipr.matrix.DenseVector;
 /**
  * Created by dbborens on 12/11/13.
  */
-public class ContinuumStateWriterTest extends EslimeTestCase {
+public class ContinuumStateSerializerTest extends EslimeTestCase {
     private ContinuumStateWriter csw;
 
     private MockGeometry geom;
@@ -34,7 +34,7 @@ public class ContinuumStateWriterTest extends EslimeTestCase {
         layer.setGeometry(geom);
         lm = new MockLayerManager();
         lm.addSoluteLayer("42", layer);
-        csw = new ContinuumStateWriter(p, lm);
+        csw = new ContinuumStateWriter(p);
     }
 
     /**
@@ -57,7 +57,7 @@ public class ContinuumStateWriterTest extends EslimeTestCase {
 
     private void generateOutput() {
         // Initialize csw files
-        csw.init(layer);
+        csw.init(lm);
 
         // Fabricate states
         SolutionViewer first = makeFirstVector();
@@ -65,11 +65,11 @@ public class ContinuumStateWriterTest extends EslimeTestCase {
 
         // Push first state
         layer.push(first);
-        csw.step(1.0, 1);
+        csw.step(null, 1.0, 1);
 
         // Push second state
         layer.push(second);
-        csw.step(2, 2);
+        csw.step(null, 2, 2);
 
         // Close file handles
         csw.dispatchHalt(null);

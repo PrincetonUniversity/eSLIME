@@ -46,5 +46,8 @@ public class MockGeneralParameters extends GeneralParameters{
 
     private int T;
 
-
+    @Override
+    public String getProjectXML() {
+        return "";
+    }
 }

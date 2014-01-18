@@ -19,7 +19,7 @@ import java.io.*;
  * state of the model at specified time points.
  *
  */
-public class ContinuumStateWriter extends AbstractContinuumWriter {
+public class ContinuumStateWriter extends Serializer {
 
     private SoluteLayer layer;
     private Extrema extrema;
@@ -34,17 +34,21 @@ public class ContinuumStateWriter extends AbstractContinuumWriter {
     private Coordinate[] sites;
 
 
-    public ContinuumStateWriter(GeneralParameters p, LayerManager lm) {
-        super(lm, p);
+    public ContinuumStateWriter(GeneralParameters p) {
+        super(p);
     }
 
     @Override
-    public void init(SoluteLayer l) {
-        if (!closed) {
-            throw new IllegalStateException("Attempting to initialize active writer!");
+    public void init(LayerManager layerManager) {
+        super.init(layerManager);
+
+        if (layerManager.getSoluteLayers().length != 1) {
+            throw new UnsupportedOperationException("Support not yet implemented for multiple solute layer serialization. To do this, all you need to do is turn all of the state variables into maps of ID --> whatever.");
         }
 
-        layer = l;
+        // We currently get an array of solute layers, but that array had better only have
+        // one thing in it until multi-layer support is introduced.
+        layer = layerManager.getSoluteLayers()[0];
 
         initStructures();
 
@@ -78,15 +82,14 @@ public class ContinuumStateWriter extends AbstractContinuumWriter {
     }
 
     public void initStructures() {
-        Geometry geometry = layer.getGeometry();
-        sites = geometry.getCanonicalSites();
+        sites = layer.getGeometry().getCanonicalSites();
 
         // Initialize extrema
         extrema = new Extrema();
     }
 
     @Override
-    public void step(double gillespie, int frame) {
+    public void step(Coordinate[] highlights, double gillespie, int frame) {
         try {
             // Write opening parity sequence
             writeStartParitySequence();

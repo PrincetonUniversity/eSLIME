@@ -36,4 +36,8 @@ public class MockLayerManager extends LayerManager {
     public SoluteLayer getSoluteLayer(String s) {
         return soluteLayers.get(s);
     }
+
+    public SoluteLayer[] getSoluteLayers() {
+        return soluteLayers.values().toArray(new SoluteLayer[0]);
+    }
 }

@@ -12,7 +12,7 @@ import structural.GeneralParameters;
 import layers.cell.CellLayer; import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
-public class IntervalWriter extends AbstractCellWriter {
+public class IntervalWriter extends Serializer {
 
 	// I/O handle for the interval file (What changed at each time step, and how long it took)
 	private BufferedWriter intervalWriter;
@@ -20,14 +20,13 @@ public class IntervalWriter extends AbstractCellWriter {
 
 	private long prevTime;
 	
-	public IntervalWriter(GeneralParameters p, LayerManager lm) {
-		super(p, lm);
+	public IntervalWriter(GeneralParameters p) {
+		super(p);
 		
 
 	}
 
-	@Override
-	public void init(CellLayer l) {
+	public void init(LayerManager lm) {
 		String intervalFileStr = p.getInstancePath() + '/' + INTERVAL_FILENAME;
 		
 		try {

@@ -67,6 +67,10 @@ public class LayerManager {
         return soluteLayers.keySet().toArray(new String[0]);
     }
 
+    public SoluteLayer[] getSoluteLayers() {
+        return soluteLayers.values().toArray(new SoluteLayer[0]);
+    }
+
     public SoluteLayer getSoluteLayer(String id) {
         return soluteLayers.get(id);
     }

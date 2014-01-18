@@ -39,6 +39,7 @@ public class Runner implements Runnable {
         LayerManager lm;
         ProcessManager pm;
         ProcessFactory factory;
+        SerializationManager mgr;
 		try {
 			File f = new File(fn);
 			pp = new ProjectLoader(f);
@@ -49,13 +50,12 @@ public class Runner implements Runnable {
             lm = new LayerManager(pp.getElement("layers"), gm);
             factory = new ProcessFactory(loader, lm, p);
             pm = new ProcessManager(factory, p);
+            Element writers = pp.getElement("writers");
+            mgr  = new SerializationManager(writers, p, lm);
+            mgr.init(lm);
         } catch (Exception ex) {
 			throw new RuntimeException(ex);
 		}
-
-
-        Element writers = pp.getElement("writers");
-		SerializationManager mgr = new SerializationManager(writers, p, lm);
 
 		for (int i = 0; i < p.getNumInstances(); i++) {
 		

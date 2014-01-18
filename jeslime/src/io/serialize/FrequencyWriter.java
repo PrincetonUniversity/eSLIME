@@ -8,6 +8,7 @@ import java.util.TreeSet;
 
 import geometry.Geometry;
 import io.project.GeometryManager;
+import layers.Layer;
 import layers.LayerManager;
 import structural.GeneralParameters;
 import layers.cell.CellLayer; import layers.cell.StateMapViewer;
@@ -22,7 +23,7 @@ import structural.identifiers.Coordinate;
  * @author dbborens
  *
  */
-public class FrequencyWriter extends AbstractCellWriter {
+public class FrequencyWriter extends Serializer {
 
 	private boolean closed = true;
 	
@@ -38,20 +39,15 @@ public class FrequencyWriter extends AbstractCellWriter {
 	
 	HashSet<Integer> observedStates = new HashSet<Integer>();
 	
-	public FrequencyWriter(GeneralParameters p, LayerManager lm) {
-		super(p, lm);
+	public FrequencyWriter(GeneralParameters p) {
+		super(p);
 		
 		histo = new HashMap<Integer, HashMap<Integer, Integer>>();
 	}
 
 	@Override
-	public void init(CellLayer l) {
-		if (!closed) {
-			throw new IllegalStateException("Attempted to initialize active writer.");
-		}
-		closed = false;
-		layer = l;
-
+	public void init(LayerManager lm) {
+        super.init(lm);
 		String filename = p.getInstancePath() + '/' + FILENAME;
 		mkDir(p.getInstancePath(), true);
 		bw = makeBufferedWriter(filename);
@@ -59,7 +55,7 @@ public class FrequencyWriter extends AbstractCellWriter {
 
 	@Override
 	public void step(Coordinate[] highlights, double gillespie, int frame) {
-		
+	    CellLayer layer = layerManager.getCellLayer();
 		if (p.isFrame(frame)) {
 			frames.add(frame);
 			

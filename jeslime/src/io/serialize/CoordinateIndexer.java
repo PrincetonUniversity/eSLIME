@@ -13,17 +13,17 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
-public class CoordinateIndexer extends AbstractCellWriter {
+public class CoordinateIndexer extends Serializer {
 
     // This file specifies the relationship between vector index and coordinate.
     private final String COORDMAP_FILENAME = "coordmap.txt";
 
-    public CoordinateIndexer(GeneralParameters p, LayerManager lm) {
-        super(p, lm);
-        layer = lm.getCellLayer();
+    public CoordinateIndexer(GeneralParameters p) {
+        super(p);
     }
 
     protected void makeCoordinateMap() {
+        CellLayer layer = layerManager.getCellLayer();
         try {
 
             String coordMapFileStr = p.getInstancePath() + '/' + COORDMAP_FILENAME;
@@ -50,8 +50,8 @@ public class CoordinateIndexer extends AbstractCellWriter {
 
 
     @Override
-    public void init(CellLayer l) {
-        // Doesn't do anything
+    public void init(LayerManager lm) {
+        super.init(lm);
     }
 
     @Override

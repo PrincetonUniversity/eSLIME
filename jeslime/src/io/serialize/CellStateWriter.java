@@ -46,7 +46,7 @@ import structural.identifiers.Extrema;
  * @author dbborens@princeton.edu
  *
  */
-public class CellStateWriter extends AbstractCellWriter {
+public class CellStateWriter extends Serializer {
 
 	private static final double log10 = Math.log(10D);
 
@@ -73,24 +73,20 @@ public class CellStateWriter extends AbstractCellWriter {
 
 	//public CellStateWriter(String stateDir, Parameters p, int n) {
 
-    public CellStateWriter(GeneralParameters p, LayerManager lm) {
-        super(p, lm);
+    public CellStateWriter(GeneralParameters p) {
+        super(p);
     }
-	public void init(CellLayer l) {
-		if (!closed) {
-			throw new IllegalStateException("Attempting to initialize active writer!");
-		}
-		
-		layer = l;
-		
-		initStructures();
-		
-		makeFiles();
 
-		initFiles();
-	}
-	
-	private void initFiles() {
+
+    public void init(LayerManager layerManager) {
+        super.init(layerManager);
+        initStructures();
+        makeFiles();
+        initFiles();
+    }
+
+
+	protected void initFiles() {
 		// Create the state & interval files
 		String stateFileStr = p.getInstancePath() + '/' + STATE_FILENAME;
 		
@@ -122,6 +118,7 @@ public class CellStateWriter extends AbstractCellWriter {
 	 * @param gillespie Interval (in simulated time) between the last time step and the current one.
 	 */
 	public void step(Coordinate[] highlights, double gillespie, int frame) {
+        CellLayer layer = layerManager.getCellLayer();
 		int[] s = layer.getViewer().getStateVector();
 		double[] f = layer.getViewer().getFitnessVector();
 		
@@ -135,9 +132,10 @@ public class CellStateWriter extends AbstractCellWriter {
 	}
 
 	protected int[] coordToInt(Coordinate[] highlights) {
+        Geometry geom = layerManager.getCellLayer().getGeometry();
 		int[] hl = new int[highlights.length];
 		for (int i = 0; i < highlights.length; i++) {
-			hl[i] = lm.getCellLayer().getGeometry().coordToIndex(highlights[i]);
+			hl[i] = geom.coordToIndex(highlights[i]);
 		}
 		
 		return hl;
@@ -208,6 +206,7 @@ public class CellStateWriter extends AbstractCellWriter {
 	 */
 	private void writeDoubleArray(double[] v, Extrema extrema, double gillespie, int frame, String title) {
 
+        CellLayer layer = layerManager.getCellLayer();
         Coordinate[] coords = layer.getGeometry().getCanonicalSites();
 
 		StringBuilder sb = new StringBuilder();;
