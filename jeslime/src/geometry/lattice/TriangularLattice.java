@@ -201,4 +201,8 @@ public class TriangularLattice extends Lattice {
 		return target;
 	}
 
+    @Override
+    public Lattice clone() {
+        return new TriangularLattice();
+    }
 }

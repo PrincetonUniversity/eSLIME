@@ -51,4 +51,8 @@ public class PlaneRingReflecting extends Boundary {
 		}
 	}
 
+    @Override
+    public Boundary clone(Shape scaledShape, Lattice clonedLattice) {
+        return new PlaneRingReflecting(scaledShape, clonedLattice);
+    }
 }

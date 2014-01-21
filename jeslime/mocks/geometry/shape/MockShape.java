@@ -56,4 +56,9 @@ public class MockShape extends Shape {
     public boolean equals(Object obj) {
         return equal;
     }
+
+    @Override
+    public Shape cloneAtScale(Lattice clonedLattice, double rangeScale) {
+        return new MockShape();
+    }
 }

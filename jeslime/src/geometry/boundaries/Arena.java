@@ -48,4 +48,8 @@ public class Arena extends Boundary {
 		// shapes, so no verification is needed.
 	}
 
+    @Override
+    public Boundary clone(Shape scaledShape, Lattice clonedLattice) {
+        return new Arena(scaledShape, clonedLattice);
+    }
 }

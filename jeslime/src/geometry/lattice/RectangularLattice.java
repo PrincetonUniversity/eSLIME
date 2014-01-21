@@ -111,11 +111,6 @@ public class RectangularLattice extends Lattice {
 	}
 
     @Override
-    public boolean equals(Object obj) {
-        return false;
-    }
-
-    @Override
 	public Coordinate getOrthoDisplacement(Coordinate pCoord, Coordinate qCoord) {
 		return getDisplacement(pCoord, qCoord);
 	}
@@ -124,4 +119,9 @@ public class RectangularLattice extends Lattice {
 	public Coordinate invAdjust(Coordinate toAdjust) {
 		return toAdjust;
 	}
+
+    @Override
+    public Lattice clone() {
+        return new RectangularLattice();
+    }
 }

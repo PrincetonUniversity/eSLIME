@@ -33,14 +33,24 @@ public class GeometryTest extends EslimeTestCase {
 	public void setUp() {
 		lattice = new RectangularLattice();
 		shape = new Rectangle(lattice, 4, 4);
-		boundary = new MockBoundary(lattice, shape);
+		boundary = new MockBoundary(shape, lattice);
 		geom = new Geometry(lattice, shape, boundary);
 		
 		p = new Coordinate(1, 2, 0);
 		q = new Coordinate(3, 2, 0);
 		r = new Coordinate(4, 2, 0); 	// Wraps around
 	}
-	
+
+    public void testCloneAtScale() {
+        assertEquals(16, geom.getCanonicalSites().length);
+        Geometry scaled = geom.cloneAtScale(2.0);
+
+        // They should be the same in all but dimension.
+        assertTrue(geom.similar(scaled));
+
+        // Scales by 2 in both x and y directions --> 4 times as many sites
+        assertEquals(64, scaled.getCanonicalSites().length);
+    }
 	public void testNeighborsApply() {
 		Coordinate[] actual, expected;
 		
@@ -537,10 +547,11 @@ public class GeometryTest extends EslimeTestCase {
 		assertNotNull(geom.coordToIndex(o));
 		assertFalse(geom.coordToIndex(o).equals(geom.coordToIndex(p)));
 	}
-	
+
+
 	private class MockBoundary extends Boundary {
 
-		public MockBoundary(Lattice lattice, Shape shape) {
+		public MockBoundary(Shape shape, Lattice lattice ) {
 			super(shape, lattice);
 		}
 
@@ -563,6 +574,10 @@ public class GeometryTest extends EslimeTestCase {
 
 		@Override
 		protected void verify(Shape shape, Lattice lattice) {}
-		
-	}
+
+        @Override
+        public Boundary clone(Shape scaledShape, Lattice clonedLattice) {
+            return new MockBoundary(scaledShape, clonedLattice);
+        }
+    }
 }

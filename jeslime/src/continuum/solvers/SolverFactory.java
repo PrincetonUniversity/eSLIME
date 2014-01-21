@@ -21,9 +21,25 @@ public abstract class SolverFactory {
     }
 
     private static Solver simpleCGS(Element solverRoot, Geometry geometry) {
-        System.err.println("WARNING! Range scale not yet implemented.");
+        // Range scale allows the solver to work on a number of sites
+        // that goes beyond the boundaries of the lattice by some multiple.
+        // This is useful for emulating infinite boundary conditions--the
+        // longer the range, the weaker the boundary effects.
+        Geometry finalGeometry = getFinalGeometry(solverRoot, geometry);
         System.err.println("WARNING! Coefficient scaling not yet implemented.");
-        SimpleCgsSolver solver = new SimpleCgsSolver(geometry);
+        SimpleCgsSolver solver = new SimpleCgsSolver(finalGeometry);
         return solver;
+    }
+
+    protected static Geometry getFinalGeometry(Element solverRoot, Geometry geometry) {
+        Geometry finalGeometry;
+        if (solverRoot.element("range-scale") == null) {
+            finalGeometry = geometry;
+        } else {
+            double rangeScale = Double.valueOf(solverRoot.element("range-scale").getTextTrim());
+            Geometry scaledGeometry = geometry.cloneAtScale(rangeScale);
+            finalGeometry = scaledGeometry;
+        }
+        return finalGeometry;
     }
 }

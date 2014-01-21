@@ -276,5 +276,12 @@ public class CubicLatticeTest extends EslimeTestCase {
 		initial = new Coordinate(0, 0, 8, 0);
 		actual = lattice.invAdjust(initial);
 		expected = new Coordinate(0, 0, 8, 0);
-		assertEquals(actual, expected);	}
+		assertEquals(actual, expected);
+    }
+
+    public void testClone() {
+        Object cloned = lattice.clone();
+        assertEquals(lattice.getClass(), cloned.getClass());
+        assertFalse(lattice == cloned);
+    }
 }

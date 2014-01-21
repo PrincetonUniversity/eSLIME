@@ -47,4 +47,9 @@ public class Absorbing extends Boundary {
         // Absorbing is compatible with all lattice geometries and
         // shapes, so no verification is needed.
     }
+
+    @Override
+    public Boundary clone(Shape scaledShape, Lattice clonedLattice) {
+        return new Absorbing(scaledShape, clonedLattice);
+    }
 }

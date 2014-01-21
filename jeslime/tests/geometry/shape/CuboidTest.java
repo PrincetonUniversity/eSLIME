@@ -9,11 +9,12 @@ import test.EslimeTestCase;
 public class CuboidTest extends EslimeTestCase {
 	private Shape odd;
 	private Shape even;
-	
+
+    Lattice evenLattice;
 	@Override
 	public void setUp() {
 		Lattice oddLattice = new CubicLattice();
-		Lattice evenLattice = new CubicLattice();
+		evenLattice = new CubicLattice();
 		
 		even = new Cuboid(evenLattice, 2, 2, 2);
 		odd = new Cuboid(oddLattice, 3, 3, 3);
@@ -182,7 +183,16 @@ public class CuboidTest extends EslimeTestCase {
 		actual = even.getDimensions();
 		assertArraysEqual(actual, expected, false);
 	}
-	
+
+    public void testCloneAtScale() {
+        Lattice clonedLattice = evenLattice.clone();
+        Shape cloned = even.cloneAtScale(clonedLattice, 2.0);
+
+        assertEquals(even.getClass(), cloned.getClass());
+        assertEquals(8, even.getCanonicalSites().length);
+        assertEquals(64, cloned.getCanonicalSites().length);
+    }
+
 	/*public void testGetLimits() {
 		Coordinate[] actual, expected;
 

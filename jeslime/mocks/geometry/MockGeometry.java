@@ -126,4 +126,18 @@ public class MockGeometry extends Geometry {
     public boolean equals(Object obj) {
         return reportEquals;
     }
+
+    public double getLastRequestedScale() {
+        return lastRequestedScale;
+    }
+
+    private double lastRequestedScale = 0;
+
+    @Override
+    public Geometry cloneAtScale(double rangeScale) {
+        lastRequestedScale = rangeScale;
+        return null;
+    }
+
+
 }

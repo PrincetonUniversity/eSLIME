@@ -223,4 +223,9 @@ public class RectangularLatticeTest extends EslimeTestCase {
 		assertEquals(actual, expected);	
 	}
 
+    public void testClone() {
+        Object cloned = lattice.clone();
+        assertEquals(lattice.getClass(), cloned.getClass());
+        assertFalse(lattice == cloned);
+    }
 }

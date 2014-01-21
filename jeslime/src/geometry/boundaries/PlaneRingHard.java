@@ -55,4 +55,9 @@ public class PlaneRingHard extends Boundary {
 			throw new IllegalArgumentException("PlaneRingHard boundary requires a Rectangle shape.");
 		}
 	}
+
+    @Override
+    public Boundary clone(Shape scaledShape, Lattice clonedLattice) {
+        return new PlaneRingHard(scaledShape, clonedLattice);
+    }
 }

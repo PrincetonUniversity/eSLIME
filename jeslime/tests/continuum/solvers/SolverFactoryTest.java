@@ -35,4 +35,15 @@ public class SolverFactoryTest extends EslimeTestCase {
         Solver query = SolverFactory.instantiate(solverRoot, geom);
         assertNull(query);
     }
+
+    public void testScaling() {
+        Element unscaledRoot = fixtureRoot.element("null-test");
+        Element scaledRoot = fixtureRoot.element("scaled-test");
+
+        SolverFactory.instantiate(unscaledRoot, geom);
+        assertEquals(0, geom.getLastRequestedScale(), epsilon);
+
+        SolverFactory.instantiate(scaledRoot, geom);
+        assertEquals(2.0, geom.getLastRequestedScale(), epsilon);
+    }
 }

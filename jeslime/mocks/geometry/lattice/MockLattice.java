@@ -68,4 +68,8 @@ public class MockLattice extends Lattice {
 		return null;
 	}
 
+    @Override
+    public Lattice clone() {
+        return new MockLattice();
+    }
 }

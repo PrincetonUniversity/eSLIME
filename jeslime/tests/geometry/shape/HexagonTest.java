@@ -12,10 +12,11 @@ import test.EslimeTestCase;
 public class HexagonTest extends EslimeTestCase {
 	
 	private Hexagon hex;
-	
+    private Lattice lattice;
+
 	@Override
 	public void setUp() {
-		Lattice lattice = new TriangularLattice();
+		lattice = new TriangularLattice();
 		
 		hex = new Hexagon(lattice, 2);
 	}
@@ -251,6 +252,15 @@ public class HexagonTest extends EslimeTestCase {
         // Check side
         query = new Coordinate(1, 0, 0);
         assertNeighborCount(4, query, geometry);
+    }
+
+    public void testCloneAtScale() {
+        Lattice clonedLattice = lattice.clone();
+        Shape cloned = hex.cloneAtScale(clonedLattice, 2.0);
+
+        assertEquals(hex.getClass(), cloned.getClass());
+        assertEquals(19, hex.getCanonicalSites().length);
+        assertEquals(61, cloned.getCanonicalSites().length);
     }
 
     private void assertNeighborCount(int expected, Coordinate query, Geometry geometry) {

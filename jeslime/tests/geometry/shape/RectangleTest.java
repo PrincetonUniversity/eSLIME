@@ -10,11 +10,12 @@ public class RectangleTest extends EslimeTestCase {
 
 	private Shape odd;
 	private Shape even;
-	
+
+    private Lattice evenLattice;
 	@Override
 	public void setUp() {
 		Lattice oddLattice = new RectangularLattice();
-		Lattice evenLattice = new RectangularLattice();
+		evenLattice = new RectangularLattice();
 		
 		even = new Rectangle(evenLattice, 2, 4);
 		odd = new Rectangle(oddLattice, 3, 5);
@@ -176,7 +177,16 @@ public class RectangleTest extends EslimeTestCase {
 		actual = even.getDimensions();
 		assertArraysEqual(actual, expected, false);	
 	}
-	
+
+    public void testCloneAtScale() {
+            Lattice clonedLattice = evenLattice.clone();
+            Shape cloned = even.cloneAtScale(clonedLattice, 2.0);
+
+            assertEquals(even.getClass(), cloned.getClass());
+            assertEquals(8, even.getCanonicalSites().length);
+            assertEquals(32, cloned.getCanonicalSites().length);
+    }
+
 	/*public void testGetLimits() {
 		Coordinate[] actual, expected;
 

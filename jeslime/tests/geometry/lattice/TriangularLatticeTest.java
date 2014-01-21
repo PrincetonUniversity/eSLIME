@@ -312,6 +312,9 @@ public class TriangularLatticeTest extends EslimeTestCase {
 		assertEquals(expected, actual);	
 	}
 
-
-		
+    public void testClone() {
+        Object cloned = lattice.clone();
+        assertEquals(lattice.getClass(), cloned.getClass());
+        assertFalse(lattice == cloned);
+    }
 }

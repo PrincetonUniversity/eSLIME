@@ -293,4 +293,43 @@ public class Geometry {
         // If all these things are equal, the geometries are equal
         return true;
     }
+
+    public Geometry cloneAtScale(double rangeScale) {
+        Lattice clonedLattice = lattice.clone();
+        Shape scaledShape = shape.cloneAtScale(clonedLattice, rangeScale);
+        Boundary scaledBoundary = boundary.clone(scaledShape, clonedLattice);
+        Geometry scaledClone = new Geometry(clonedLattice, scaledShape, scaledBoundary);
+        return scaledClone;
+    }
+
+    /**
+     * Returns true if the other geometry is exactly the same as this one
+     * except for the dimensions of its Shape object. Used for testing.
+     *
+     * @param other
+     * @return
+     */
+    public boolean similar(Geometry other) {
+        Class selfClass, otherClass;
+        selfClass = getClass();
+        otherClass = other.getClass();
+
+        // Same type of shape?
+        if (!selfClass.equals(otherClass)) {
+            return false;
+        }
+
+        // Lattice different?
+        if (!other.lattice.equals(this.lattice)) {
+            return false;
+        }
+
+        // Boundaries different?
+        if (!other.boundary.equals(this.boundary)) {
+            return false;
+        }
+
+        // They are similar if all of these things were true.
+        return true;
+    }
 }

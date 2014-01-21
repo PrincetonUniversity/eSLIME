@@ -117,5 +117,9 @@ public class CubicLattice extends Lattice {
 	public Coordinate invAdjust(Coordinate toAdjust) {
 		return toAdjust;
 	}
-	
+
+    @Override
+    public Lattice clone() {
+        return new CubicLattice();
+    }
 }

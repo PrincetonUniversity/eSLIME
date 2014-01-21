@@ -151,4 +151,15 @@ public class ArenaTest extends EslimeTestCase {
 		assertEquals(expected, actual);
 	}
 
+    public void testCloneWithArguments() {
+        Lattice lattice = new RectangularLattice();
+        Shape singleton = new Rectangle(lattice, 1, 1);
+
+        Boundary query  = rect.clone(singleton, lattice);
+
+        // Boundaries are equal based on their class, not their dependencies
+        assertEquals(rect, query);
+        assertFalse(rect == query);
+    }
+
 }

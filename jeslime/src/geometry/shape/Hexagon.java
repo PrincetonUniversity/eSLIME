@@ -256,14 +256,12 @@ public class Hexagon extends Shape {
         // are equal.
         return true;
     }
-	
-	/*@Override
-	public Coordinate[] getLimits() {
-		// Since we only use a triangular lattice for hexagon, we can
-		// hard code the limits.
-		Coordinate d0 = new Coordinate(-1 * radius, -1 * radius, -1 * radius, Flags.VECTOR);
-		Coordinate d1 = new Coordinate(radius, radius, radius, Flags.VECTOR);
 
-		return new Coordinate[] {d0, d1};
-	}*/
+    @Override
+    public Shape cloneAtScale(Lattice clonedLattice, double rangeScale) {
+        int scaledRadius;
+        scaledRadius = (int) Math.round(radius * rangeScale);
+        return new Hexagon(clonedLattice, scaledRadius);
+    }
+
 }

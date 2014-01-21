@@ -173,4 +173,13 @@ public class Cuboid extends Shape {
         // If these things are OK, return true
         return true;
     }
+
+    @Override
+    public Shape cloneAtScale(Lattice clonedLattice, double rangeScale) {
+        int scaledWidth, scaledHeight, scaledDepth;
+        scaledWidth = (int) Math.round(width * rangeScale);
+        scaledHeight = (int) Math.round(height * rangeScale);
+        scaledDepth = (int) Math.round(depth * rangeScale);
+        return new Cuboid(clonedLattice, scaledHeight, scaledWidth, scaledDepth);
+    }
 }

@@ -106,4 +106,6 @@ public abstract class Shape {
      */
     @Override
     public abstract boolean equals(Object obj);
+
+    public abstract Shape cloneAtScale(Lattice clonedLattice, double rangeScale);
 }

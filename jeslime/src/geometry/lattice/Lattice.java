@@ -145,4 +145,7 @@ public abstract class Lattice {
 
         return true;
     }
+
+    @Override
+    public abstract Lattice clone();
 }

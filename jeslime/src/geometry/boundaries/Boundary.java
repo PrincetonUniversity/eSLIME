@@ -50,4 +50,6 @@ public abstract class Boundary {
 
         return true;
     }
+
+    public abstract Boundary clone(Shape scaledShape, Lattice clonedLattice);
 }

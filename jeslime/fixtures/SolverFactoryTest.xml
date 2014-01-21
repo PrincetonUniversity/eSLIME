@@ -5,4 +5,8 @@
     <null-test>
         <class>Null</class>
     </null-test>
+    <scaled-test>
+        <class>SimpleCGS</class>
+        <range-scale>2.0</range-scale>
+    </scaled-test>
 </fixture>

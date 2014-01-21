@@ -172,4 +172,12 @@ public class Rectangle extends Shape {
         // If these things are OK, return true
         return true;
     }
+
+    @Override
+    public Shape cloneAtScale(Lattice clonedLattice, double rangeScale) {
+        int scaledWidth, scaledHeight;
+        scaledWidth = (int) Math.round(width * rangeScale);
+        scaledHeight = (int) Math.round(height * rangeScale);
+        return new Rectangle(clonedLattice, scaledHeight, scaledWidth);
+    }
 }
