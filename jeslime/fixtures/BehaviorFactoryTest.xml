@@ -1,0 +1,19 @@
+<!-- Behavior elements consist of an outer tag with several children.
+     The outer tag represents the behavior itself, and the name of the
+     tag is the name of the behavior as it will be invoked. The inner
+     tags are the behavior events, in sequence. These may require
+     arguments of their own. -->
+
+<fixture>
+
+   <!-- The first fixture, "empty", contains no events. -->
+   <empty>
+   </empty>
+
+    <!-- The second fixture contains a null event, which means that
+         it does nothing (just like the "empty" fixture. -->
+   <trivial>
+       <null />
+   </trivial>
+
+</fixture>
