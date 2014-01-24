@@ -421,8 +421,8 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
         buildRectangularExample(mode, 1e-4, 6.25e-6, 6.25e-6);
         generateTestOutput("100");
 
-        String outputFile = outputPath + "solute100.state.txt";
-        String fixtureFile = fixturePath + "solute.rect." + mode.toLowerCase() + ".state.txt";
+        String outputFile = outputPath + "solute100.state.bin";
+        String fixtureFile = fixturePath + "solute.rect." + mode.toLowerCase() + ".state.bin";
 
         File expected = new File(fixtureFile);
         File actual = new File(outputFile);
@@ -451,10 +451,10 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
         buildTriangularExample(mode, 1e-4, 4e-6, 4e-6);
         generateTestOutput("200");
 
-        String outputFile = outputPath + "solute200.state.txt";
+        String outputFile = outputPath + "solute200.state.bin";
 
         // Both tested modes should have the same output
-        String fixtureFile = fixturePath + "solute.tri.state.txt";
+        String fixtureFile = fixturePath + "solute.tri.state.bin";
 
         File expected = new File(fixtureFile);
         File actual = new File(outputFile);
@@ -477,8 +477,8 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
         buildCubicExample(mode, 1e-4, 4e-6, 4e-6);
         generateTestOutput("300");
 
-        String outputFile = outputPath + "solute300.state.txt";
-        String fixtureFile = fixturePath + "solute.cubic.state.txt";
+        String outputFile = outputPath + "solute300.state.bin";
+        String fixtureFile = fixturePath + "solute.cubic.state.bin";
 
         File expected = new File(fixtureFile);
         File actual = new File(outputFile);

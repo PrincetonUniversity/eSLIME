@@ -1,7 +1,5 @@
 package io.serialize;
 
-import geometry.Geometry;
-import io.project.GeometryManager;
 import layers.LayerManager;
 import layers.solute.SoluteLayer;
 import no.uib.cipr.matrix.DenseVector;
@@ -25,7 +23,7 @@ public class ContinuumStateWriter extends Serializer {
     private Extrema extrema;
 
     private static String prefix = "solute";
-    private static String stateSuffix = ".state.txt";
+    private static String stateSuffix = ".state.bin";
     private static String mdSuffix = ".metadata.txt";
 
     private DataOutputStream dataStream;

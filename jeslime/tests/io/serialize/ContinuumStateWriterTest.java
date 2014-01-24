@@ -12,7 +12,7 @@ import no.uib.cipr.matrix.DenseVector;
 /**
  * Created by dbborens on 12/11/13.
  */
-public class ContinuumStateSerializerTest extends EslimeTestCase {
+public class ContinuumStateWriterTest extends EslimeTestCase {
     private ContinuumStateWriter csw;
 
     private MockGeometry geom;
@@ -47,7 +47,7 @@ public class ContinuumStateSerializerTest extends EslimeTestCase {
         generateOutput();
 
         // Compare data file
-        String dataFilename = "solute" + layer.getId() + ".state.txt";
+        String dataFilename = "solute" + layer.getId() + ".state.bin";
         assertBinaryFilesEqual(dataFilename);
 
         // Compare metadata file

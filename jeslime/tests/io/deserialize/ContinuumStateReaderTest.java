@@ -14,7 +14,7 @@ public class ContinuumStateReaderTest extends EslimeTestCase {
 
     @Override
     public void setUp() {
-        String fixture = fixturePath + "solute42.state.txt";
+        String fixture = fixturePath + "solute42.state.bin";
         File fixtureFile = new File(fixture);
         csr = new ContinuumStateReader(fixtureFile);
     }
