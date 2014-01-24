@@ -1,5 +1,7 @@
 package cells;
 
+import structural.identifiers.Coordinate;
+
 import java.util.HashMap;
 
 /**
@@ -74,4 +76,17 @@ public class SourceCellTest extends CellTest {
         assertEquals(2.0, a.getProduction("beta"));
         assertEquals(0.5, b.getProduction("beta"));
     }
+
+    public void testTriggerThrowsException() {
+        boolean thrown = false;
+
+        try {
+            a.trigger("a", new Coordinate(0, 0, 0));
+        } catch (UnsupportedOperationException ex) {
+            thrown = true;
+        }
+
+        assertTrue(thrown);
+    }
+
 }

@@ -1,4 +1,5 @@
 package cells;
+import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 /**
@@ -49,4 +50,18 @@ public class SimpleCellTest extends EslimeTestCase {
 		
 		fail();
 	}
+
+    public void testTriggerThrowsException() {
+        boolean thrown = false;
+
+        try {
+            Cell query = new SimpleCell(state);
+            query.trigger("a", new Coordinate(0, 0, 0));
+        } catch (UnsupportedOperationException ex) {
+            thrown = true;
+        }
+
+        assertTrue(thrown);
+    }
+
 }

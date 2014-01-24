@@ -1,6 +1,7 @@
 package cells;
 
 import structural.EpsilonUtil;
+import structural.identifiers.Coordinate;
 
 import java.util.HashMap;
 
@@ -19,6 +20,11 @@ public class SourceCell extends Cell {
         setState(state);
         this.production = production;
         this.epsilon = EpsilonUtil.epsilon();
+    }
+
+    @Override
+    public void trigger(String behaviorName, Coordinate caller) {
+        throw new UnsupportedOperationException("Behaviors are not supported in the SourceCell class.");
     }
 
     @Override

@@ -1,6 +1,7 @@
 package cells;
 
 import junit.framework.TestCase;
+import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 public class FissionCellTest extends EslimeTestCase {
@@ -97,6 +98,18 @@ public class FissionCellTest extends EslimeTestCase {
 		assertTrue(parent.isDivisible());
 		assertTrue(!daughter.isDivisible());
 		assertTrue(!granddaughter.isDivisible());
-		
 	}
+
+    public void testTriggerThrowsException() {
+        boolean thrown = false;
+
+        try {
+            Cell query = new FissionCell(1, 3.0, 1.0);
+            query.trigger("a", new Coordinate(0, 0, 0));
+        } catch (UnsupportedOperationException ex) {
+            thrown = true;
+        }
+
+        assertTrue(thrown);
+    }
 }

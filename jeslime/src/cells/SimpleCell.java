@@ -1,5 +1,7 @@
 package cells;
 
+import structural.identifiers.Coordinate;
+
 /**
  * class SimpleCell
  *
@@ -13,7 +15,13 @@ package cells;
 public class SimpleCell extends Cell {
 
 	private int considerCount;
-	
+
+    @Override
+    public void trigger(String behaviorName, Coordinate caller) {
+        throw new UnsupportedOperationException("Behaviors are not supported in the SimpleCell class.");
+    }
+
+    @Deprecated
 	public SimpleCell(int state) {
 
 		setState(state);

@@ -1,5 +1,7 @@
 package cells;
 
+import structural.identifiers.Coordinate;
+
 /**
  * FissionCell changes its fitness by delta whenever feed is
  * called. It reports that it is divisible if and only if its
@@ -20,7 +22,8 @@ public class FissionCell extends Cell {
 	private double nextFitness;
 	
 	private double threshold;
-	
+
+    @Deprecated
 	public FissionCell(int state, double initialFitness, double threshold) {
 		this.threshold = threshold;
 		
@@ -82,7 +85,12 @@ public class FissionCell extends Cell {
 		
 	}
 
-	@Override
+    @Override
+    public void trigger(String behaviorName, Coordinate caller) {
+        throw new UnsupportedOperationException("Behaviors are not supported in the FissionCell class.");
+    }
+
+    @Override
 	public void feed(double delta) {
 		nextFitness += delta;
 	}

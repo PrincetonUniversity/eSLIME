@@ -1,5 +1,7 @@
 package cells;
 
+import structural.identifiers.Coordinate;
+
 /**
  * Created by dbborens on 1/13/14.
  */
@@ -10,6 +12,8 @@ public class MockCell extends Cell {
     private int state;
     private double fitness;
     private double production;
+    private String lastTriggeredBehaviorName;
+    private Coordinate lastTriggeredCaller;
 
     @Override
     public int consider() {
@@ -64,6 +68,20 @@ public class MockCell extends Cell {
     @Override
     public double getProduction(String solute) {
         return production;
+    }
+
+    public Coordinate getLastTriggeredCaller() {
+        return lastTriggeredCaller;
+    }
+
+    public String getLastTriggeredBehaviorName() {
+        return lastTriggeredBehaviorName;
+    }
+
+    @Override
+    public void trigger(String behaviorName, Coordinate caller) {
+        lastTriggeredBehaviorName = behaviorName;
+        lastTriggeredCaller = caller;
     }
 
     @Override
