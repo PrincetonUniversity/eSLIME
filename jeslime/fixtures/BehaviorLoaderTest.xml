@@ -1,0 +1,9 @@
+<!-- The BehaviorLoader only needs to see each of the
+     behaviors and associate them with their names
+     correctly, so empty behavior stubs may be used
+     in a fixture. -->
+
+<fixture>
+    <first-behavior />
+    <second-behavior />
+</fixture>

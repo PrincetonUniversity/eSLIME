@@ -1,6 +1,7 @@
 package agent;
 
 import agent.Behavior;
+import agent.action.Action;
 import structural.identifiers.Coordinate;
 
 import java.util.HashMap;
@@ -13,15 +14,23 @@ public class MockBehavior extends Behavior {
     private int timesRun;
     private HashMap<Coordinate, Integer> callerCounts;
 
+    private Coordinate lastCaller = null;
+
     public MockBehavior() {
         super(null, null, null);
         timesRun = 0;
         callerCounts = new HashMap<>();
     }
 
+    public Coordinate getLastCaller() {
+        return lastCaller;
+    }
+
     @Override
-    public void trigger(Coordinate caller) {
+    public void run(Coordinate caller) {
         timesRun++;
+
+        lastCaller = caller;
 
         if (caller != null) {
             increment(caller);
@@ -46,5 +55,10 @@ public class MockBehavior extends Behavior {
             return 0;
 
         return callerCounts.get(caller);
+    }
+
+    @Override
+    protected Action[] getActionSequence() {
+        return new Action[0];
     }
 }

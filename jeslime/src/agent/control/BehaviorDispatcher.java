@@ -3,6 +3,7 @@ package agent.control;
 import agent.Behavior;
 import cells.Cell;
 import io.project.BehaviorLoader;
+import layers.LayerManager;
 import org.dom4j.Element;
 import structural.identifiers.Coordinate;
 
@@ -22,8 +23,9 @@ public class BehaviorDispatcher {
         behaviors = new HashMap<>();
     }
 
-    public BehaviorDispatcher(Element behaviorRoot, Cell callback) {
-        behaviors = BehaviorLoader.instantiateAll(behaviorRoot, callback);
+    public BehaviorDispatcher(Element behaviorRoot, Cell callback, LayerManager layerManager) {
+        BehaviorLoader loader = new BehaviorLoader(this, callback, layerManager);
+        loader.loadAllBehaviors(behaviorRoot);
     }
 
     public void map(String name, Behavior behavior) {
@@ -44,6 +46,6 @@ public class BehaviorDispatcher {
         }
 
         Behavior behavior = behaviors.get(behaviorName);
-        behavior.trigger(caller);
+        behavior.run(caller);
     }
 }

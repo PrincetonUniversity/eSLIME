@@ -14,13 +14,23 @@ import structural.identifiers.Coordinate;
  */
 public abstract class Action {
 
-    protected final Cell callback;
-    protected final LayerManager layerManager;
+    private final Cell callback;
+    private final LayerManager layerManager;
 
     public Action(Cell callback, LayerManager layerManager) {
         this.callback = callback;
         this.layerManager = layerManager;
     }
 
+    protected LayerManager getLayerManager() {
+        return layerManager;
+    }
+
+    protected Cell getCallback() {
+        return callback;
+    }
+
     public abstract void run(Coordinate caller);
+
+    public abstract boolean equals(Object obj);
 }

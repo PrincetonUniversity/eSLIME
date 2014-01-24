@@ -13,6 +13,12 @@ public class MockAction extends Action {
     private int timesRun;
     private HashMap<Coordinate, Integer> callerCounts;
 
+    public Coordinate getLastCaller() {
+        return lastCaller;
+    }
+
+    private Coordinate lastCaller;
+
     public MockAction() {
         super(null, null);
         timesRun = 0;
@@ -22,7 +28,7 @@ public class MockAction extends Action {
     @Override
     public void run(Coordinate caller) {
         timesRun++;
-
+        lastCaller = caller;
         if (caller != null) {
             increment(caller);
         }
@@ -41,10 +47,16 @@ public class MockAction extends Action {
         return timesRun;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof MockAction);
+    }
+
     public int timesCaller(Coordinate caller) {
         if (!callerCounts.containsKey(caller))
             return 0;
 
         return callerCounts.get(caller);
     }
+
 }

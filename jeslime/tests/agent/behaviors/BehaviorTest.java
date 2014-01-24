@@ -7,6 +7,7 @@ import cells.Cell;
 import cells.MockCell;
 import layers.LayerManager;
 import layers.MockLayerManager;
+import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 /**
@@ -18,13 +19,15 @@ public class BehaviorTest extends EslimeTestCase {
     MockLayerManager layerManager;
     MockCell callBack;
     MockAction a, b;
+    Coordinate caller;
+
     Action[] actionSequence;
 
     @Override
     protected void setUp() throws Exception {
         layerManager = new MockLayerManager();
         callBack = new MockCell();
-
+        caller = new Coordinate(0, 0, 0);
         initActionSequence();
         query = new ExposedBehavior(callBack, layerManager, actionSequence);
     }
@@ -32,6 +35,7 @@ public class BehaviorTest extends EslimeTestCase {
     private void initActionSequence() {
         a = new MockAction();
         b = new MockAction();
+
         actionSequence = new Action[] {a, b};
     }
 
@@ -48,14 +52,30 @@ public class BehaviorTest extends EslimeTestCase {
     }
 
     public void testGetActionSequence() throws Exception {
-        fail("Implement me");
+        Action[] expected = actionSequence;
+        Action[] actual = query.getActionSequence();
+
+        assertEquals(2, actual.length);
+        for (int i = 0; i < 2; i++) {
+            // These should just be assigned
+            assertEquals(expected[i], actual[i]);
+        }
     }
+
     public void testRunNullCaller() throws Exception {
-        fail("Implement me");
+        query.run(null);
+        assertEquals(1, a.getTimesRun());
+        assertEquals(1, b.getTimesRun());
+        assertNull(a.getLastCaller());
+        assertNull(b.getLastCaller());
     }
 
     public void testRunWithCaller() throws Exception {
-        fail("Implement me");
+        query.run(caller);
+        assertEquals(1, a.getTimesRun());
+        assertEquals(1, b.getTimesRun());
+        assertEquals(caller, a.getLastCaller());
+        assertEquals(caller, b.getLastCaller());
     }
 
     private class ExposedBehavior extends Behavior {
@@ -67,6 +87,11 @@ public class BehaviorTest extends EslimeTestCase {
         @Override
         public Cell getCallback() {
             return super.getCallback();
+        }
+
+        @Override
+        public void run(Coordinate caller) {
+            super.run(caller);
         }
 
         public ExposedBehavior(Cell callback, LayerManager layerManager, Action[] actionSequence) {

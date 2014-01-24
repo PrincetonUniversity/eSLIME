@@ -46,10 +46,43 @@ public class Behavior {
         this.actionSequence = actionSequence;
     }
 
-    public void trigger(Coordinate caller) {
+    public void run(Coordinate caller) {
         for (Action action : actionSequence) {
             action.run(caller);
         }
+    }
+
+    /**
+     * Behaviors are equal if and only if their action sequences
+     * consist of an equivalent list of actions.
+     * @param obj
+     * @return
+     */
+    @Override
+    public boolean equals(Object obj) {
+        // The object should be a behavior.
+        if (!(obj instanceof Behavior)) {
+            return false;
+        }
+
+        Behavior other = (Behavior) obj;
+
+        // The object should have the same number of actions.
+        if (other.getActionSequence().length != this.getActionSequence().length) {
+            return false;
+        }
+
+        // Each action should be equivalent, and in the correct order.
+        for (int i = 0; i < getActionSequence().length; i++) {
+            Action p = this.getActionSequence()[i];
+            Action q = other.getActionSequence()[i];
+            if (!p.equals(q)) {
+                return false;
+            }
+        }
+
+        // The behaviors are equivalent.
+        return true;
     }
 
     protected Action[] getActionSequence() {
