@@ -78,15 +78,17 @@ public class BehaviorTest extends EslimeTestCase {
         assertEquals(caller, b.getLastCaller());
     }
 
+    public void testClone() throws Exception {
+        MockCell cloneCell = new MockCell();
+        Behavior clone = query.clone(cloneCell);
+        assertEquals(cloneCell, clone.getCallback());
+        assertEquals(clone, query);
+    }
+
     private class ExposedBehavior extends Behavior {
         @Override
         public LayerManager getLayerManager() {
             return super.getLayerManager();
-        }
-
-        @Override
-        public Cell getCallback() {
-            return super.getCallback();
         }
 
         @Override

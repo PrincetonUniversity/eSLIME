@@ -1,6 +1,7 @@
 package agent.control;
 
 import agent.Behavior;
+import cells.BehaviorCell;
 import cells.Cell;
 import io.project.BehaviorLoader;
 import layers.LayerManager;
@@ -17,7 +18,7 @@ import java.util.HashMap;
  * Created by David B Borenstein on 1/21/14.
  */
 public class BehaviorDispatcher {
-    protected HashMap<String, Behavior> behaviors;
+    private HashMap<String, Behavior> behaviors;
 
     public BehaviorDispatcher() {
         behaviors = new HashMap<>();
@@ -47,5 +48,59 @@ public class BehaviorDispatcher {
 
         Behavior behavior = behaviors.get(behaviorName);
         behavior.run(caller);
+    }
+
+    public BehaviorDispatcher clone(Cell child) {
+        BehaviorDispatcher clone = new BehaviorDispatcher();
+
+        // Clone the behavior catalog item for item.
+        for (String behaviorName : behaviors.keySet()) {
+            Behavior b = behaviors.get(behaviorName);
+            Behavior bc = b.clone(child);
+            clone.map(behaviorName, bc);
+        }
+
+        return clone;
+    }
+
+    /**
+     * A BehaviorDispatcher is equal to another object only if:
+     *    (1) The other Object is a BehaviorDispatcher.
+     *    (2) Each Behavior in the other BehaviorDispatcher
+     *        has an equivalent Behavior mapped to the same name
+     *        as this BehaviorDispatcher.
+     * @param obj
+     * @return
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof BehaviorDispatcher)) {
+            return false;
+        }
+
+        BehaviorDispatcher other = (BehaviorDispatcher) obj;
+
+        if (other.behaviors.size() != this.behaviors.size()) {
+            return false;
+        }
+
+        for (String behaviorName : behaviors.keySet()) {
+            if (!other.behaviors.containsKey(behaviorName)) {
+                return false;
+            }
+
+            Behavior otherBehavior = other.behaviors.get(behaviorName);
+            Behavior thisBehavior = this.behaviors.get(behaviorName);
+
+            if (!thisBehavior.equals(otherBehavior)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    public Behavior getMappedBehavior(String behaviorName) {
+        return behaviors.get(behaviorName);
     }
 }

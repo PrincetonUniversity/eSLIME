@@ -37,7 +37,7 @@ public class FissionCell extends Cell {
 		double fitness = getFitness();
 		
 		FissionCell child = new FissionCell(childState, fitness, threshold);
-		child.considerCount = considerCount;
+    	child.considerCount = considerCount;
 		child.nextFitness = nextFitness;
 		child.setDivisible(isDivisible());
 		

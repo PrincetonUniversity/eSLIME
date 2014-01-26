@@ -81,5 +81,10 @@ public class ActionTest extends TestCase {
         public boolean equals(Object obj) {
             return (obj instanceof ExposedAction);
         }
+
+        @Override
+        public Action clone(Cell child) {
+            return new ExposedAction(child, layerManager);
+        }
     }
 }

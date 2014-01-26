@@ -2,6 +2,7 @@ package agent;
 
 import agent.Behavior;
 import agent.action.Action;
+import cells.Cell;
 import structural.identifiers.Coordinate;
 
 import java.util.HashMap;
@@ -16,12 +17,18 @@ public class MockBehavior extends Behavior {
 
     private Coordinate lastCaller = null;
 
+
     public MockBehavior() {
         super(null, null, null);
         timesRun = 0;
         callerCounts = new HashMap<>();
     }
 
+    public MockBehavior(Cell callback) {
+        super(callback, null, null);
+        timesRun = 0;
+        callerCounts = new HashMap<>();
+    }
     public Coordinate getLastCaller() {
         return lastCaller;
     }
@@ -61,4 +68,10 @@ public class MockBehavior extends Behavior {
     protected Action[] getActionSequence() {
         return new Action[0];
     }
+
+    @Override
+    public Behavior clone(Cell child) {
+        return new MockBehavior(child);
+    }
+
 }

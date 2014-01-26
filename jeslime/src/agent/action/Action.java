@@ -32,5 +32,15 @@ public abstract class Action {
 
     public abstract void run(Coordinate caller);
 
+    /**
+     * Actions should be considered equal if they perform
+     * the same function, but should NOT be concerned with
+     * the identity of the callback.
+     *
+     * @param obj
+     * @return
+     */
     public abstract boolean equals(Object obj);
+
+    public abstract Action clone(Cell child);
 }

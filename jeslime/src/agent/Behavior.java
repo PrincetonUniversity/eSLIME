@@ -1,6 +1,7 @@
 package agent;
 
 import agent.action.Action;
+import cells.BehaviorCell;
 import cells.Cell;
 import layers.LayerManager;
 import org.dom4j.Element;
@@ -36,7 +37,7 @@ public class Behavior {
         return layerManager;
     }
 
-    protected Cell getCallback() {
+    public Cell getCallback() {
         return callback;
     }
 
@@ -87,5 +88,18 @@ public class Behavior {
 
     protected Action[] getActionSequence() {
         return actionSequence;
+    }
+
+    public Behavior clone(Cell child) {
+        int n = actionSequence.length;
+        Action[] clonedActionSequence = new Action[n];
+        for (int i = 0; i < n; i++) {
+            Action action = actionSequence[i];
+            Action clonedAction = action.clone(child);
+            clonedActionSequence[i] = clonedAction;
+        }
+
+        Behavior clone = new Behavior(child, layerManager, clonedActionSequence);
+        return clone;
     }
 }

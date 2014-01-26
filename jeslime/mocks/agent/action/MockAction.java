@@ -19,6 +19,11 @@ public class MockAction extends Action {
 
     private Coordinate lastCaller;
 
+    @Override
+    public Action clone(Cell child) {
+        return new MockAction();
+    }
+
     public MockAction() {
         super(null, null);
         timesRun = 0;

@@ -6,18 +6,6 @@ import test.EslimeTestCase;
 
 public class FissionCellTest extends EslimeTestCase {
 
-	private double epsilon = calcEpsilon();
-	
-	private double calcEpsilon() {
-        double machEps = 1.0d;
-        
-        do {
-           machEps /= 2d;
-        } while (1d + (machEps/2d) != 1d);
-        
-        return machEps;
-	}
-	
 	public void testConstruct() {
 		// Cell with biomass > threshold --> should be immediately divisible
 		Cell query = new FissionCell(1, 1.0, 0.5);

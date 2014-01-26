@@ -37,7 +37,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
 
     protected static final int RECTANGULAR_DIM = 41;
     protected static final int TRIANGULAR_DIM = 50;
-    protected static final int CUBIC_DIM = 32;
+    protected static final int CUBIC_DIM = 16;
 
     // The solver to use in the tests.
     protected EquilibriumSolver solver;

@@ -1,8 +1,15 @@
 package agent.control;
 
+import agent.Behavior;
 import agent.MockBehavior;
+import cells.Cell;
+import cells.MockCell;
 import junit.framework.TestCase;
+import layers.LayerManager;
+import org.dom4j.Element;
 import structural.identifiers.Coordinate;
+
+import java.util.HashMap;
 
 /**
  * Created by David B Borenstein on 1/21/14.
@@ -73,4 +80,23 @@ public class BehaviorDispatcherTest extends TestCase {
         assertEquals(1, behavior1.timesCaller(caller1));
         assertEquals(1, behavior1.timesCaller(caller2));
     }
+
+    public void testClone() throws Exception {
+        String name = "testBehavior";
+        query.map(name, behavior1);
+
+        MockCell alternate = new MockCell();
+        BehaviorDispatcher clone = query.clone(alternate);
+
+        // The objects should be equal in that their behavior lists are equal.
+        assertEquals(query, clone);
+
+        // The objects should not be the same object.
+        assertFalse(query == clone);
+
+        // The new object should have the alternate as a callback.
+        Behavior clonedBehavior = clone.getMappedBehavior(name);
+        assertEquals(alternate, clonedBehavior.getCallback());
+    }
+
 }

@@ -62,4 +62,5 @@ public class MockBehaviorDispatcher extends BehaviorDispatcher {
         lastTriggeredName = behaviorName;
         lastTriggeredCaller = caller;
     }
+
 }
