@@ -1,5 +1,6 @@
 package agent.action;
 
+import cells.BehaviorCell;
 import cells.Cell;
 import layers.LayerManager;
 import structural.identifiers.Coordinate;
@@ -20,7 +21,7 @@ public class MockAction extends Action {
     private Coordinate lastCaller;
 
     @Override
-    public Action clone(Cell child) {
+    public Action clone(BehaviorCell child) {
         return new MockAction();
     }
 

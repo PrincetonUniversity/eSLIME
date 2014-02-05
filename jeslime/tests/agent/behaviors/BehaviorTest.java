@@ -3,6 +3,7 @@ package agent.behaviors;
 import agent.Behavior;
 import agent.action.Action;
 import agent.action.MockAction;
+import cells.BehaviorCell;
 import cells.Cell;
 import cells.MockCell;
 import layers.LayerManager;
@@ -79,7 +80,7 @@ public class BehaviorTest extends EslimeTestCase {
     }
 
     public void testClone() throws Exception {
-        MockCell cloneCell = new MockCell();
+        BehaviorCell cloneCell = new BehaviorCell();
         Behavior clone = query.clone(cloneCell);
         assertEquals(cloneCell, clone.getCallback());
         assertEquals(clone, query);

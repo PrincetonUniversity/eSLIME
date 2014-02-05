@@ -2,6 +2,7 @@ package agent;
 
 import agent.Behavior;
 import agent.action.Action;
+import cells.BehaviorCell;
 import cells.Cell;
 import structural.identifiers.Coordinate;
 
@@ -70,7 +71,7 @@ public class MockBehavior extends Behavior {
     }
 
     @Override
-    public Behavior clone(Cell child) {
+    public Behavior clone(BehaviorCell child) {
         return new MockBehavior(child);
     }
 

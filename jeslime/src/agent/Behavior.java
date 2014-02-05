@@ -90,7 +90,7 @@ public class Behavior {
         return actionSequence;
     }
 
-    public Behavior clone(Cell child) {
+    public Behavior clone(BehaviorCell child) {
         int n = actionSequence.length;
         Action[] clonedActionSequence = new Action[n];
         for (int i = 0; i < n; i++) {

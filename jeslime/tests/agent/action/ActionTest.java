@@ -1,5 +1,6 @@
 package agent.action;
 
+import cells.BehaviorCell;
 import cells.Cell;
 import cells.MockCell;
 import junit.framework.TestCase;
@@ -14,13 +15,13 @@ public class ActionTest extends TestCase {
 
     MockLayerManager layerManager;
     Coordinate caller;
-    Cell callback;
+    BehaviorCell callback;
     ExposedAction query;
 
     @Override
     protected void setUp() throws Exception {
         layerManager = new MockLayerManager();
-        callback = new MockCell();
+        callback = new BehaviorCell();
         caller = new Coordinate(0, 0, 0);
 
         query = new ExposedAction(callback, layerManager);
@@ -69,11 +70,11 @@ public class ActionTest extends TestCase {
         }
 
         @Override
-        public Cell getCallback() {
+        public BehaviorCell getCallback() {
             return super.getCallback();
         }
 
-        public ExposedAction(Cell callback, LayerManager layerManager) {
+        public ExposedAction(BehaviorCell callback, LayerManager layerManager) {
             super(callback, layerManager);
         }
 
@@ -83,7 +84,7 @@ public class ActionTest extends TestCase {
         }
 
         @Override
-        public Action clone(Cell child) {
+        public Action clone(BehaviorCell child) {
             return new ExposedAction(child, layerManager);
         }
     }

@@ -50,7 +50,7 @@ public class BehaviorDispatcher {
         behavior.run(caller);
     }
 
-    public BehaviorDispatcher clone(Cell child) {
+    public BehaviorDispatcher clone(BehaviorCell child) {
         BehaviorDispatcher clone = new BehaviorDispatcher();
 
         // Clone the behavior catalog item for item.

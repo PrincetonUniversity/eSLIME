@@ -17,4 +17,10 @@ public abstract class EpsilonUtil {
 	public static double epsilon() {
 		return epsilon;
 	}
+
+    public static boolean epsilonEquals(double p, double q) {
+        double delta = p - q;
+        double magnitude = Math.abs(delta);
+        return (magnitude < epsilon());
+    }
 }

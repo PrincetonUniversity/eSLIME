@@ -1,5 +1,6 @@
 package agent.action;
 
+import cells.BehaviorCell;
 import cells.Cell;
 import layers.LayerManager;
 import structural.identifiers.Coordinate;
@@ -14,10 +15,10 @@ import structural.identifiers.Coordinate;
  */
 public abstract class Action {
 
-    private final Cell callback;
+    private final BehaviorCell callback;
     private final LayerManager layerManager;
 
-    public Action(Cell callback, LayerManager layerManager) {
+    public Action(BehaviorCell callback, LayerManager layerManager) {
         this.callback = callback;
         this.layerManager = layerManager;
     }
@@ -26,7 +27,7 @@ public abstract class Action {
         return layerManager;
     }
 
-    protected Cell getCallback() {
+    protected BehaviorCell getCallback() {
         return callback;
     }
 
@@ -42,5 +43,5 @@ public abstract class Action {
      */
     public abstract boolean equals(Object obj);
 
-    public abstract Action clone(Cell child);
+    public abstract Action clone(BehaviorCell child);
 }

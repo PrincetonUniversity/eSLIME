@@ -2,6 +2,7 @@ package agent.control;
 
 import agent.Behavior;
 import agent.MockBehavior;
+import cells.BehaviorCell;
 import cells.Cell;
 import cells.MockCell;
 import junit.framework.TestCase;
@@ -85,7 +86,7 @@ public class BehaviorDispatcherTest extends TestCase {
         String name = "testBehavior";
         query.map(name, behavior1);
 
-        MockCell alternate = new MockCell();
+        BehaviorCell alternate = new BehaviorCell();
         BehaviorDispatcher clone = query.clone(alternate);
 
         // The objects should be equal in that their behavior lists are equal.

@@ -17,6 +17,8 @@ public class BehaviorCell extends Cell {
     private double threshold;
     private BehaviorDispatcher dispatcher;
 
+    // Default constructor for testing
+    public BehaviorCell() {}
 
     public BehaviorCell(int state, double initialFitness, double threshold) {
         this.threshold = threshold;
@@ -93,6 +95,11 @@ public class BehaviorCell extends Cell {
 
     public void setDispatcher(BehaviorDispatcher dispatcher) {
         this.dispatcher = dispatcher;
+    }
+
+    @Override
+    public void setFitness(double fitness) {
+        super.setFitness(fitness);
     }
 
     /**
