@@ -21,6 +21,11 @@ public class SimpleCell extends Cell {
         throw new UnsupportedOperationException("Behaviors are not supported in the SimpleCell class.");
     }
 
+    @Override
+    public void die() {
+        throw new UnsupportedOperationException();
+    }
+
     @Deprecated
 	public SimpleCell(int state) {
 

@@ -5,6 +5,7 @@ import cells.BehaviorCell;
 import cells.Cell;
 import io.project.BehaviorLoader;
 import layers.LayerManager;
+import layers.cell.CellLayer;
 import org.dom4j.Element;
 import structural.identifiers.Coordinate;
 
@@ -18,15 +19,25 @@ import java.util.HashMap;
  * Created by David B Borenstein on 1/21/14.
  */
 public class BehaviorDispatcher {
+    private Cell callback;
+    private LayerManager layerManager;
     private HashMap<String, Behavior> behaviors;
 
     public BehaviorDispatcher() {
         behaviors = new HashMap<>();
     }
 
+    public BehaviorDispatcher(Cell callback, LayerManager layerManager) {
+        this.layerManager = layerManager;
+        this.callback = callback;
+    }
+
     public BehaviorDispatcher(Element behaviorRoot, Cell callback, LayerManager layerManager) {
         BehaviorLoader loader = new BehaviorLoader(this, callback, layerManager);
         loader.loadAllBehaviors(behaviorRoot);
+
+        this.layerManager = layerManager;
+        this.callback = callback;
     }
 
     public void map(String name, Behavior behavior) {
@@ -102,5 +113,15 @@ public class BehaviorDispatcher {
 
     public Behavior getMappedBehavior(String behaviorName) {
         return behaviors.get(behaviorName);
+    }
+
+    /**
+     * Signals to the LayerManager that the callback cell is dead
+     * and should be removed from the simulation.
+     */
+    public void die() {
+        CellLayer layer = layerManager.getCellLayer();
+        Coordinate coord = layer.getLookupManager().getCellLocation(callback);
+        layer.getUpdateManager().banish(coord);
     }
 }

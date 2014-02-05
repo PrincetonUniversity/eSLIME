@@ -32,8 +32,13 @@ public class FissionCell extends Cell {
 		checkDivisibility();
 		considerCount = 0;
 	}
-	
-	public FissionCell clone(int childState) {
+
+    @Override
+    public void die() {
+        throw new UnsupportedOperationException();
+    }
+
+    public FissionCell clone(int childState) {
 		double fitness = getFitness();
 		
 		FissionCell child = new FissionCell(childState, fitness, threshold);

@@ -84,6 +84,11 @@ public class BehaviorCell extends Cell {
         dispatcher.trigger(behaviorName, caller);
     }
 
+    @Override
+    public void die() {
+        dispatcher.die();
+    }
+
     private void checkDivisibility() {
         //System.out.println("   " + getFitness() + " -- " + threshold);
         if (getFitness() > threshold) {
@@ -112,11 +117,16 @@ public class BehaviorCell extends Cell {
      */
     @Override
     public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
         if (!(obj instanceof BehaviorCell)) {
             return false;
         }
 
         BehaviorCell other = (BehaviorCell) obj;
+
 
         return other.dispatcher.equals(this.dispatcher);
     }

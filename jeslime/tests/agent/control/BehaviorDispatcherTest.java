@@ -3,14 +3,11 @@ package agent.control;
 import agent.Behavior;
 import agent.MockBehavior;
 import cells.BehaviorCell;
-import cells.Cell;
-import cells.MockCell;
+import geometry.MockGeometry;
 import junit.framework.TestCase;
-import layers.LayerManager;
-import org.dom4j.Element;
+import layers.MockLayerManager;
+import layers.cell.CellLayer;
 import structural.identifiers.Coordinate;
-
-import java.util.HashMap;
 
 /**
  * Created by David B Borenstein on 1/21/14.
@@ -100,4 +97,23 @@ public class BehaviorDispatcherTest extends TestCase {
         assertEquals(alternate, clonedBehavior.getCallback());
     }
 
+    public void testDie() {
+        // Set up
+        MockGeometry geom = new MockGeometry();
+        Coordinate c = new Coordinate(0, 0, 0);
+        Coordinate[] cc = new Coordinate[] {c};
+        geom.setCanonicalSites(cc);
+        CellLayer layer = new CellLayer(geom, 0);
+        MockLayerManager layerManager = new MockLayerManager();
+        layerManager.setCellLayer(layer);
+
+        BehaviorCell cell = new BehaviorCell();
+        layer.getUpdateManager().place(cell, c);
+        query = new BehaviorDispatcher(cell, layerManager);
+
+        // Perform the test
+        assertTrue(layer.getViewer().isOccupied(c));
+        query.die();
+        assertFalse(layer.getViewer().isOccupied(c));
+    }
 }

@@ -54,6 +54,8 @@ public class CellUpdateManagerTest extends EslimeTestCase {
 		assertTrue(indices.isOccupied(t));
 		assertTrue(indices.isDivisible(t));
 		assertEquals(content.get(t).getState(), 1);
+
+        fail("This test needs to make sure that the location index is properly updated.");
 	}
 	
 	public void testDivide() {
@@ -77,6 +79,7 @@ public class CellUpdateManagerTest extends EslimeTestCase {
 		assertEquals(daughter.getState(), cell.getState());
 		assertEquals(daughter.getFitness(), cell.getFitness(), epsilon);
 
+        fail("This test needs to make sure that the location index is properly updated.");
 	}
 
 	
@@ -106,6 +109,8 @@ public class CellUpdateManagerTest extends EslimeTestCase {
 		assertTrue(content.get(o) == null);
 		assertFalse(indices.isOccupied(o));
 		assertFalse(indices.isDivisible(o));
+
+        fail("This test needs to make sure that the location index is properly updated.");
 	}
 	
 	public void testMove() {
@@ -118,9 +123,9 @@ public class CellUpdateManagerTest extends EslimeTestCase {
 		MockCellLayerIndices indices = new MockCellLayerIndices();
 		indices.setOccupied(o, true);
 		indices.setDivisible(o, true);
-		
+        Cell cell = new SimpleCell(1);
+	    indices.getCellLocationIndex().place(cell, o);
 		MockCellLayerContent content = new MockCellLayerContent(geom, indices);
-		Cell cell = new SimpleCell(1);
 
 		content.put(o, cell);
 
@@ -137,6 +142,8 @@ public class CellUpdateManagerTest extends EslimeTestCase {
 		assertFalse(indices.isDivisible(o));		
 		assertTrue(indices.isOccupied(t));
 		assertTrue(indices.isDivisible(t));
+
+        fail("This test needs to make sure that the location index is properly updated.");
 	}
 	
 	public void testSwap() {
@@ -147,12 +154,13 @@ public class CellUpdateManagerTest extends EslimeTestCase {
 		
 		geom.setCanonicalSites(new Coordinate[] {o, t});
 		MockCellLayerIndices indices = new MockCellLayerIndices();
+        Cell cell1 = new SimpleCell(1);
+        Cell cell2 = new SimpleCell(2);
 		indices.setOccupied(o, true);
 		indices.setDivisible(o, true);
-		
+	    indices.getCellLocationIndex().place(cell1, o);
+        indices.getCellLocationIndex().place(cell2, t);
 		MockCellLayerContent content = new MockCellLayerContent(geom, indices);
-		Cell cell1 = new SimpleCell(1);
-		Cell cell2 = new SimpleCell(2);
 
 		content.put(o, cell1);
 		content.put(t, cell2);
@@ -169,7 +177,8 @@ public class CellUpdateManagerTest extends EslimeTestCase {
 
 		assertEquals(content.get(o).getState(), 2);
 		assertEquals(content.get(t).getState(), 1);
-		
+        fail("This test needs to make sure that the location index is properly updated.");
+
 	}
 	
 	public void testPlace() {
@@ -191,6 +200,8 @@ public class CellUpdateManagerTest extends EslimeTestCase {
 		manager.place(cell, o);
 		
 		assertFalse(content.get(o) == null);
+
+        fail("This test needs to make sure that the location index is properly updated.");
 	}
 
 	// We'll trust the f_swap test to the integration tests

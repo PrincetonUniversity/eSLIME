@@ -101,4 +101,9 @@ public class SourceCell extends Cell {
 
         return false;
     }
+
+    @Override
+    public void die() {
+        throw new UnsupportedOperationException();
+    }
 }

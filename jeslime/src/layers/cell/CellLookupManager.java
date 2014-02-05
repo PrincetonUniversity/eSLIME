@@ -2,7 +2,9 @@ package layers.cell;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.IdentityHashMap;
 
+import cells.Cell;
 import geometry.Geometry;
 import structural.Flags;
 import structural.identifiers.Coordinate;
@@ -118,4 +120,9 @@ public class CellLookupManager {
 
 		return(res.toArray(new Coordinate[0]));
 	}
+
+    public Coordinate getCellLocation(Cell cell) {
+        CellLocationIndex locationIndex = indices.getCellLocationIndex();
+        return locationIndex.locate(cell);
+    }
 }

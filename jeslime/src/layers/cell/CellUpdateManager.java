@@ -132,8 +132,9 @@ public class CellUpdateManager {
 		
 		// Update occupancy indices
 		indices.getOccupiedSites().add(coord);
+        indices.getCellLocationIndex().place(cell, coord);
 
-		// If cell is divisible, add to divisibility index
+        // If cell is divisible, add to divisibility index
 		refreshDivisibility(coord);
 	}
 	
@@ -242,6 +243,8 @@ public class CellUpdateManager {
 		content.put(qCoord, cell);
 		indices.getOccupiedSites().add(qCoord);
 
+        indices.getCellLocationIndex().move(cell, qCoord);
+
 		// Update divisibility indices
 		refreshDivisibility(pCoord);
 		refreshDivisibility(qCoord);
@@ -265,12 +268,19 @@ public class CellUpdateManager {
 	        throw new IllegalStateException("Called swap on a vacant site. Use 'move' for this purpose.");
 	    }
 
-	    // Swap
-		Cell swap = content.get(pCoord);
-		content.put(pCoord, content.get(qCoord));
-		content.put(qCoord, swap);
+        // Identify cells
+        Cell p = content.get(pCoord);
+        Cell q = content.get(qCoord);
 
-	    // Both sites are occupied, so the only index to update is divisibility.
+	    // Swap
+		content.put(pCoord, q);
+		content.put(qCoord, p);
+
+        // Update location index
+        indices.getCellLocationIndex().move(p, qCoord);
+        indices.getCellLocationIndex().move(q, pCoord);
+
+	    // Update divisibility index
 		refreshDivisibility(pCoord);
 		refreshDivisibility(qCoord);
 	}

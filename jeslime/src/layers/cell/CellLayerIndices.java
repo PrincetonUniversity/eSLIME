@@ -1,9 +1,6 @@
 package layers.cell;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
+import java.util.*;
 
 import cells.Cell;
 import structural.identifiers.Coordinate;
@@ -31,11 +28,24 @@ public class CellLayerIndices {
 	
 	// Map that tracks count of cells with each state
 	protected HashMap<Integer, Integer> stateMap;
-		
+
+    public CellLocationIndex getCellLocationIndex() {
+        return cellLocationIndex;
+    }
+
+    protected CellLocationIndex cellLocationIndex;
+
+    // IdentityHashMap resolves the actual memory address of the
+    // key, ie, using == instead of equals(...). This way, no matter
+    // how equality is defined for cells, the cell-->coordinate map
+    // will uniquely map cells to a location.
+    protected IdentityHashMap<Cell, Coordinate> cellToCoord;
+
 	public CellLayerIndices() {
 		occupiedSites = new CellIndex();
 		divisibleSites = new CellIndex();
-		stateMap = new HashMap<Integer, Integer>();
+		stateMap = new HashMap<>();
+        cellLocationIndex = new CellLocationIndex();
 	}
 	
 	public boolean isOccupied(Coordinate cell) {

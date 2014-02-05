@@ -61,4 +61,9 @@ public class BehaviorCellTest extends EslimeTestCase {
         assertEquals(triggerName, dispatcher.getLastTriggeredName());
         assertEquals(caller, dispatcher.getLastTriggeredCaller());
     }
+
+    public void testDie() throws Exception {
+        query.die();
+        assertTrue(dispatcher.died());
+    }
 }

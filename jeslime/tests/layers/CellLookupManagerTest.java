@@ -35,10 +35,8 @@ public class CellLookupManagerTest extends TestCase {
 		assertEquals(lookup.getNeighborStates(c[1])[0], 4);
 		assertEquals(lookup.getNeighborStates(c[1])[1], 6);
 	}
-	
-	// TODO I'm going to live with the integration test in CellIntegrationTest until
-	// this function requires a refactor.
-	//public void testGetNearestVacancies() {
-	//	
-	//}
+
+    public void testGetCellLocation() {
+        fail("Not yet implemented");
+    }
 }

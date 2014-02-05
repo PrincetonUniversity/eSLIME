@@ -84,6 +84,17 @@ public class MockCell extends Cell {
         lastTriggeredCaller = caller;
     }
 
+    private boolean died;
+
+    @Override
+    public void die() {
+        died = true;
+    }
+
+    public boolean died() {
+        return died;
+    }
+
     @Override
     public void feed(double delta) {
 

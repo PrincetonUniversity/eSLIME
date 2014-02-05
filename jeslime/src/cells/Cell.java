@@ -103,4 +103,5 @@ public abstract class Cell {
      */
     public abstract void trigger(String behaviorName, Coordinate caller);
 
+    public abstract void die();
 }

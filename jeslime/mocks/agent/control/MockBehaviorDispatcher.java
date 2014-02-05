@@ -63,4 +63,14 @@ public class MockBehaviorDispatcher extends BehaviorDispatcher {
         lastTriggeredCaller = caller;
     }
 
+    private boolean died = false;
+
+    @Override
+    public void die() {
+        died = true;
+    }
+
+    public boolean died() {
+        return died;
+    }
 }

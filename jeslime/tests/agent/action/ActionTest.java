@@ -37,6 +37,7 @@ public class ActionTest extends TestCase {
         Cell expected = callback;
         Cell actual = query.getCallback();
         assertEquals(expected, actual);
+        assertTrue(expected == actual);
     }
 
     public void testRunNullCaller() throws Exception {
