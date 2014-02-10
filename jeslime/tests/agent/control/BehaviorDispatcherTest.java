@@ -7,6 +7,7 @@ import geometry.MockGeometry;
 import junit.framework.TestCase;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
+import layers.cell.CellLayerViewer;
 import structural.identifiers.Coordinate;
 
 /**
@@ -112,7 +113,9 @@ public class BehaviorDispatcherTest extends TestCase {
         query = new BehaviorDispatcher(cell, layerManager);
 
         // Perform the test
-        assertTrue(layer.getViewer().isOccupied(c));
+        CellLayerViewer viewer = layer.getViewer();
+        boolean isOccupied = viewer.isOccupied(c);
+        assertTrue(isOccupied);
         query.die();
         assertFalse(layer.getViewer().isOccupied(c));
     }

@@ -144,16 +144,16 @@ public class CellUpdateManager {
 	 */
 	public void banish(Coordinate coord) {
 		content.checkExists(coord);
+        Cell toRemove = content.get(coord);
 
 		if ((!coord.hasFlag(Flags.END_OF_WORLD)) && (!indices.isOccupied(coord))) {
 			throw new IllegalStateException("Attempting to banish cell at empty site");
 		}
 
 		indices.decrStateCount(content.get(coord));
-		
+
 		indices.getOccupiedSites().remove(coord);
 
-        Cell toRemove = content.get(coord);
 		content.put(coord, null);
         indices.getCellLocationIndex().remove(toRemove);
 		refreshDivisibility(coord);

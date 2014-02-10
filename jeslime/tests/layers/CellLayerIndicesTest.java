@@ -44,10 +44,6 @@ public class CellLayerIndicesTest extends TestCase {
 		assertEquals(indices.getOccupiedSites().size(), 1);
 	}
 
-    public void testGetLocationIndex() {
-        fail("Not yet implemented");
-    }
-
 	public void testGetDivisibleSites() {
 		CellLayerIndices indices = new CellLayerIndices();
 		assertEquals(indices.getDivisibleSites().size(), 0);

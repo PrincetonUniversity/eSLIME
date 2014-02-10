@@ -68,7 +68,7 @@ public class CellLayerContent {
 
 		// Validate input
 		if (!indices.isOccupied(coord))
-			throw new IllegalStateException("Attempted to access an empty cell.");
+			throw new IllegalStateException("Attempted to access an empty cell at " + coord);
 
 	    // Get pointer to cell and return it
 		Cell res = map.get(coord.canonicalize());
