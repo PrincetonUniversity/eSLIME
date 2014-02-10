@@ -42,9 +42,8 @@ public class MockGeometry extends Geometry {
 		return canonicalSites;
 	}
 	
-	/* cell neighbors */
 	private HashMap<Coordinate, Coordinate[]> cellNeighbors = new HashMap<Coordinate, Coordinate[]>();
-	
+
 	public void setCellNeighbors(Coordinate coord, Coordinate[] neighbors) {
 		cellNeighbors.put(coord, neighbors);
 	}
@@ -138,6 +137,5 @@ public class MockGeometry extends Geometry {
         lastRequestedScale = rangeScale;
         return null;
     }
-
 
 }
