@@ -3,9 +3,14 @@ package cells;
 import structural.identifiers.Coordinate;
 
 /**
+ * Mock cell class used for testing. We make it extend from BehaviorCell
+ * for compatibility with BehaviorCell-only classes. (BehaviorCell is a
+ * subclass of Cell which is capable of engaging in arbitrary behaviors,
+ * which can then be used for agent-based modeling.)
+ *
  * Created by dbborens on 1/13/14.
  */
-public class MockCell extends Cell {
+public class MockCell extends BehaviorCell {
 
     private int considerCount;
     private Cell child;

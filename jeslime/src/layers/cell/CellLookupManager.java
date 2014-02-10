@@ -50,7 +50,7 @@ public class CellLookupManager {
 		// Return
 		return states;
 	}
-	
+
 	/**
 	 * Get the site or sites with the minimum L1 (Manhattan) distance,
 	 * up to the specified maximum distance. If maxDistance is -1, the
