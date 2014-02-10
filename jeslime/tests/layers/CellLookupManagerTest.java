@@ -35,8 +35,4 @@ public class CellLookupManagerTest extends TestCase {
 		assertEquals(lookup.getNeighborStates(c[1])[0], 4);
 		assertEquals(lookup.getNeighborStates(c[1])[1], 6);
 	}
-
-    public void testGetCellLocation() {
-        fail("Not yet implemented");
-    }
 }

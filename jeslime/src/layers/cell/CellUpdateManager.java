@@ -152,8 +152,10 @@ public class CellUpdateManager {
 		indices.decrStateCount(content.get(coord));
 		
 		indices.getOccupiedSites().remove(coord);
-		content.put(coord, null);
 
+        Cell toRemove = content.get(coord);
+		content.put(coord, null);
+        indices.getCellLocationIndex().remove(toRemove);
 		refreshDivisibility(coord);
 	}
 	
