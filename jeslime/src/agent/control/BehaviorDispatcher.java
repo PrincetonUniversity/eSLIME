@@ -28,11 +28,13 @@ public class BehaviorDispatcher {
     }
 
     public BehaviorDispatcher(Cell callback, LayerManager layerManager) {
+        behaviors = new HashMap<>();
         this.layerManager = layerManager;
         this.callback = callback;
     }
 
     public BehaviorDispatcher(Element behaviorRoot, Cell callback, LayerManager layerManager) {
+        behaviors = new HashMap<>();
         BehaviorLoader loader = new BehaviorLoader(this, callback, layerManager);
         loader.loadAllBehaviors(behaviorRoot);
 

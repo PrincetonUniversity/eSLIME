@@ -160,4 +160,9 @@ public abstract class EslimeTestCase extends TestCase {
         Element root = document.getRootElement();
         return root;
     }
+
+    protected void assertNotEquals(Object p, Object q) {
+        boolean equality = p.equals(q);
+        assertFalse(equality);
+    }
 }
