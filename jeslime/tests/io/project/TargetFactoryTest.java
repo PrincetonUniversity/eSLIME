@@ -32,8 +32,8 @@ public class TargetFactoryTest extends TestCase {
 
     private void doTest(String targetName, Class expected) {
         Element element = createTargetElement(targetName);
-        Targeter targeter = TargetFactory.instantiate(null, null, element);
-        Class actual = targeter.getClass();
+        TargetRule targetRule = TargetFactory.instantiate(null, null, element);
+        Class actual = targetRule.getClass();
         assertEquals(expected, actual);
     }
 

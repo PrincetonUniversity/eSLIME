@@ -2,8 +2,6 @@ package agent.targets;
 
 import cells.MockCell;
 import geometry.MockGeometry;
-import junit.framework.TestCase;
-import layers.LayerManager;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import structural.identifiers.Coordinate;
@@ -12,7 +10,7 @@ import test.EslimeTestCase;
 /**
  * Created by dbborens on 2/10/14.
  */
-public class TargeterTest extends EslimeTestCase {
+public class TargetRuleTest extends EslimeTestCase {
 
     private MockGeometry geom;
     private MockLayerManager layerManager;
@@ -51,7 +49,7 @@ public class TargeterTest extends EslimeTestCase {
 
     public void testTargetAllNeighbors() {
         System.out.println();
-        Targeter query = new TargetAllNeighbors(self, layerManager);
+        TargetRule query = new TargetAllNeighbors(self, layerManager);
 
         // Get target list
         Coordinate[] actual = query.report(null);
@@ -62,7 +60,7 @@ public class TargeterTest extends EslimeTestCase {
     }
 
     public void testTargetVacantNeighbors() {
-        Targeter query = new TargetVacantNeighbors(self, layerManager);
+        TargetRule query = new TargetVacantNeighbors(self, layerManager);
 
         // Get target list
         Coordinate[] actual = query.report(null);
@@ -73,7 +71,7 @@ public class TargeterTest extends EslimeTestCase {
     }
 
     public void testTargetOccupiedNeighbors() {
-        Targeter query = new TargetOccupiedNeighbors(self, layerManager);
+        TargetRule query = new TargetOccupiedNeighbors(self, layerManager);
 
         // Get target list
         Coordinate[] actual = query.report(null);
@@ -84,7 +82,7 @@ public class TargeterTest extends EslimeTestCase {
     }
 
     public void testTargetSelf() {
-        Targeter query = new TargetSelf(self, layerManager);
+        TargetRule query = new TargetSelf(self, layerManager);
 
         // Get target list
         Coordinate[] actual = query.report(null);
@@ -96,7 +94,7 @@ public class TargeterTest extends EslimeTestCase {
 
     public void testTargetCaller() {
         // Left caller
-        Targeter query = new TargetCaller(self, layerManager);
+        TargetRule query = new TargetCaller(self, layerManager);
         Coordinate[] actual = query.report(occupiedNeighbor);
         Coordinate[] expected = new Coordinate[] {left};
         assertArraysEqual(expected, actual, true);
@@ -105,7 +103,7 @@ public class TargeterTest extends EslimeTestCase {
 
     // Null caller: should blow up
     public void testTargetCallerNull() {
-        Targeter query = new TargetCaller(self, layerManager);
+        TargetRule query = new TargetCaller(self, layerManager);
         boolean thrown = false;
         try {
             query.report(null);
@@ -116,5 +114,22 @@ public class TargeterTest extends EslimeTestCase {
         }
 
         assertTrue(thrown);
+    }
+
+    public void testEquality() {
+        fail();
+        // Make two targeters of the same class, but with different callbacks
+
+        // Make one targeter of a different class
+
+        // Test that the two of the same class are equal
+
+        // Test that the two of different classes are not equal
+    }
+
+    public void testClone()  {
+        // Verify that each class of targeter produces an appropriately classed
+        // clone.
+        fail();
     }
 }

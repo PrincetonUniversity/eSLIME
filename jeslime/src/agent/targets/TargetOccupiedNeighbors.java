@@ -13,7 +13,7 @@ import java.util.ArrayList;
  * of an Action.
  * Created by dbborens on 2/7/14.
  */
-public class TargetOccupiedNeighbors extends Targeter {
+public class TargetOccupiedNeighbors extends TargetRule {
     public TargetOccupiedNeighbors(BehaviorCell callback, LayerManager layerManager) {
         super(callback, layerManager);
     }

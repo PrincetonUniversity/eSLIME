@@ -15,7 +15,7 @@ import structural.identifiers.Coordinate;
  *
  * Created by dbborens on 2/7/14.
  */
-public abstract class Targeter {
+public abstract class TargetRule {
 
     protected BehaviorCell callback;
     protected LayerManager layerManager;
@@ -25,7 +25,7 @@ public abstract class Targeter {
      * @param callback The cell whose behavior is being described
      * @param layerManager
      */
-    public Targeter(BehaviorCell callback, LayerManager layerManager){
+    public TargetRule(BehaviorCell callback, LayerManager layerManager){
         this.callback = callback;
         this.layerManager = layerManager;
     }
@@ -37,4 +37,17 @@ public abstract class Targeter {
      * @param caller The cell that triggered the action.
      */
     public abstract Coordinate[] report(BehaviorCell caller);
+
+    @Override
+    /**
+     * Targeting rules are equal if and only if they are of the
+     * same class.
+     */
+    public boolean equals(Object obj) {
+        Class objClass = obj.getClass();
+        Class myClass = getClass();
+        return myClass.equals(objClass);
+    }
+
+    public abstract TargetRule clone(BehaviorCell child);
 }

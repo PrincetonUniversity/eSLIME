@@ -2,7 +2,6 @@ package io.project;
 
 import agent.targets.*;
 import cells.BehaviorCell;
-import cells.Cell;
 import layers.LayerManager;
 import org.dom4j.Element;
 
@@ -10,7 +9,7 @@ import org.dom4j.Element;
  * Created by dbborens on 2/10/14.
  */
 public abstract class TargetFactory {
-    public static Targeter instantiate(BehaviorCell callback, LayerManager layerManager, Element descriptor)  {
+    public static TargetRule instantiate(BehaviorCell callback, LayerManager layerManager, Element descriptor)  {
         String targetName = descriptor.getTextTrim();
 
         if (targetName.equalsIgnoreCase("all-neighbors")) {

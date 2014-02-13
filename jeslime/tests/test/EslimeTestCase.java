@@ -161,7 +161,7 @@ public abstract class EslimeTestCase extends TestCase {
         return root;
     }
 
-    protected void assertNotEquals(Object p, Object q) {
+    protected static void assertNotEquals(Object p, Object q) {
         boolean equality = p.equals(q);
         assertFalse(equality);
     }

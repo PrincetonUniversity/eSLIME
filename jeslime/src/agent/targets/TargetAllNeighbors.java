@@ -3,18 +3,14 @@ package agent.targets;
 import cells.BehaviorCell;
 import geometry.Geometry;
 import layers.LayerManager;
-import layers.cell.CellLayer;
-import layers.cell.CellLayerViewer;
 import structural.identifiers.Coordinate;
-
-import java.util.ArrayList;
 
 /**
  * Targets specify which cells should receive the consequences
  * of an Action.
  * Created by dbborens on 2/7/14.
  */
-public class TargetAllNeighbors extends Targeter {
+public class TargetAllNeighbors extends TargetRule {
 
     public TargetAllNeighbors(BehaviorCell callback, LayerManager layerManager) {
         super(callback, layerManager);
@@ -34,4 +30,6 @@ public class TargetAllNeighbors extends Targeter {
         // Return the array
         return neighbors;
     }
+
+
 }

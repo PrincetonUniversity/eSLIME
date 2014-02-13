@@ -9,7 +9,7 @@ import structural.identifiers.Coordinate;
  * of an Action.
  * Created by dbborens on 2/7/14.
  */
-public class TargetCaller extends Targeter {
+public class TargetCaller extends TargetRule {
     public TargetCaller(BehaviorCell callback, LayerManager layerManager) {
         super(callback, layerManager);
     }

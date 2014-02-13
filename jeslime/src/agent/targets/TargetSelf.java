@@ -13,7 +13,7 @@ import structural.identifiers.Coordinate;
  *
  * Created by dbborens on 2/7/14.
  */
-public class TargetSelf extends Targeter {
+public class TargetSelf extends TargetRule {
 
     public TargetSelf(BehaviorCell callback, LayerManager layerManager) {
         super(callback, layerManager);
