@@ -14,6 +14,12 @@ import java.util.ArrayList;
  * Created by dbborens on 2/7/14.
  */
 public class TargetVacantNeighbors extends TargetRule {
+
+    @Override
+    public TargetRule clone(BehaviorCell child) {
+        return new TargetVacantNeighbors(child, layerManager);
+    }
+
     public TargetVacantNeighbors(BehaviorCell callback, LayerManager layerManager) {
         super(callback, layerManager);
     }

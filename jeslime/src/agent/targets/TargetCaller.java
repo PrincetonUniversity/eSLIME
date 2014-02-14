@@ -10,6 +10,11 @@ import structural.identifiers.Coordinate;
  * Created by dbborens on 2/7/14.
  */
 public class TargetCaller extends TargetRule {
+    @Override
+    public TargetRule clone(BehaviorCell child) {
+        return new TargetCaller(child, layerManager);
+    }
+
     public TargetCaller(BehaviorCell callback, LayerManager layerManager) {
         super(callback, layerManager);
     }

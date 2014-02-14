@@ -25,4 +25,9 @@ public class TargetSelf extends TargetRule {
         Coordinate[] arr = new Coordinate[] { self };
         return arr;
     }
+
+    @Override
+    public TargetRule clone(BehaviorCell child) {
+        return new TargetSelf(child, layerManager);
+    }
 }

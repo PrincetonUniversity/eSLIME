@@ -1,16 +1,13 @@
 package agent.action;
 
-import agent.Behavior;
-import agent.control.BehaviorDispatcher;
-import agent.targets.TargetAllNeighbors;
+import agent.targets.MockTargetRule;
 import agent.targets.TargetOccupiedNeighbors;
 import agent.targets.TargetRule;
-import cells.BehaviorCell;
 import cells.MockCell;
 import geometry.MockGeometry;
-import junit.framework.TestCase;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
+import layers.cell.CellUpdateManager;
 import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
@@ -20,66 +17,75 @@ import test.EslimeTestCase;
 public class TriggerTest extends EslimeTestCase {
 
     private Action query;
-    private BehaviorCell causeCell, effectCell;
-    private BehaviorDispatcher dispatcher;
+    private MockCell causeCell, effectCell;
     private MockLayerManager layerManager;
-    private Behavior cause, effect;
-    private String causeName, effectName;
-    private TargetRule targetRule;
-    private Coordinate o;
-    private MockGeometry geom;
+    private String effectName;
+    private MockTargetRule targetRule;
     private CellLayer cellLayer;
+    private MockGeometry geom;
+    private Coordinate o, p, q;
 
     @Override
     protected void setUp() throws Exception {
-        // Start initializing objects. Order is somewhat brittle.
-        causeName = "triggers the effect";
-        effectName = "gets triggered during test";
 
+        // Construct base supporting objects.
+        causeCell = new MockCell();
+        effectCell = new MockCell();
+        targetRule = new MockTargetRule();
         layerManager = new MockLayerManager();
+        effectName = "effect";
 
-        causeCell = new BehaviorCell(1, 1.0, 1.0);
-        effectCell = new BehaviorCell(1, 1.0, 1.0);
+        // Configure geometric state.
+        geom = buildMockGeometry();
+        o = geom.getCanonicalSites()[0];
+        p = geom.getCanonicalSites()[1];
+        q = geom.getCanonicalSites()[2];
+        cellLayer = new CellLayer(geom, 0);
+        cellLayer.getUpdateManager().place(effectCell, o);
+        cellLayer.getUpdateManager().place(causeCell, q);
+        layerManager.setCellLayer(cellLayer);
+        Coordinate[] targets = new Coordinate[] {o};
+        targetRule.setTargets(targets);
 
-        targetRule = new TargetOccupiedNeighbors(causeCell, layerManager);
-        query = new Trigger(causeCell, layerManager, causeName, targetRule);
-
-        // Configure behavior dispatcher for CAUSE
-
-        // Configure behavior dispatcher for EFFECT
-
-        // Initialize geometry.
-
-        // Place the cause and effect cells next to each other.
-
-
-        // Old code -- use for guidance
-//        Action[] actionSequence = new Action[] {query};
-//        behavior = new Behavior(cell, layerManager, actionSequence);
-//        dispatcher = new BehaviorDispatcher(cell, layerManager);
-//        cell.setDispatcher(dispatcher);
-//        dispatcher.map(eventName, behavior);
-//
-//        // Set up geometrical environment
-//        geom = buildMockGeometry();
-//        o = geom.getCanonicalSites()[0];
-//        cellLayer = new CellLayer(geom, 0);
-//        layerManager.setCellLayer(cellLayer);
-//        cellLayer.getUpdateManager().place(cell, o);
+        // Create a trigger action.
+        query = new Trigger(causeCell, layerManager, effectName, targetRule);
     }
 
     public void testRun() throws Exception {
-        // Create another behavior cell and give it a mock behavior.
+        /*
+          A note on "callers" in this test: the trigger action causes
+          some named behavior to take place in the target cell(s). The
+          cause of the trigger action is therefore distinct from the
+          cause of the behavior that it triggers. Cells can of course
+          trigger their own behaviors, depending on the specified target.
+        */
 
-        // Trigger that behavior via the trigger action on the test cell.
+        // Set up a calling cell at some site.
+        MockCell dummy = new MockCell();
 
-        // The mock behavior should have been triggered.
-        fail();
+        CellUpdateManager updateManager = cellLayer.getUpdateManager();
+        updateManager.place(dummy, p);
+
+        // Run the proces originating at the dummy calling cell.
+        query.run(p);
+
+        // "dummy" should be the caller of the trigger() event.
+        // (The caller of the targeter is the cause of the Trigger event.)
+        assertEquals(dummy, targetRule.getLastCaller());
+
+        // The target cell's "effect" behavior should have fired.
+        assertEquals(effectName, effectCell.getLastTriggeredBehaviorName());
+
+        // "causeCell", which causes the target cell to execute the effect
+        // behavior, should be the caller of the effect behavior.
+        assertEquals(q, effectCell.getLastTriggeredCaller());
     }
 
     public void testEquals() throws Exception {
+        /*
+         Trigger actions
+         */
         Action identical, differentBehavior, differentTargeter;
-        makeCells();
 
         MockCell dummyCell1 = new MockCell();
         MockCell dummyCell2 = new MockCell();
@@ -87,22 +93,24 @@ public class TriggerTest extends EslimeTestCase {
         TargetRule sameTargetRule = new TargetOccupiedNeighbors(dummyCell1, layerManager);
         TargetRule differentTargetRule = new TargetOccupiedNeighbors(dummyCell2, layerManager);
 
+        String differentEffectName = "not the same as effectName";
 
-        String differentBehaviorName = "not the same as causeName";
+        identical = new Trigger(dummyCell1, layerManager, effectName, targetRule);
+        differentBehavior = new Trigger(dummyCell1, layerManager, differentEffectName, sameTargetRule);
+        differentTargeter = new Trigger(dummyCell2, layerManager, effectName, differentTargetRule);
 
-        identical = new Trigger(dummyCell1, layerManager, causeName, targetRule);
-        differentBehavior = new Trigger(dummyCell1, layerManager, differentBehaviorName, sameTargetRule);
-        differentTargeter = new Trigger(dummyCell2, layerManager, causeName, differentTargetRule);
-
-        assertEquals(cause, identical);
-        assertNotEquals(cause, differentBehavior);
-        assertNotEquals(cause, differentTargeter);
+        assertEquals(query, identical);
+        assertNotEquals(query, differentBehavior);
+        assertNotEquals(query, differentTargeter);
     }
 
     public void testClone() throws Exception {
-        // Clone a trigger.
-        // Confirm that they are equal.
-        fail();
+        MockCell cloneCell = new MockCell();
+        Action cloned = query.clone(cloneCell);
+        assert (cloned != query);
+        assertEquals(query, cloned);
+        assertEquals(cloneCell, cloned.getCallback());
+        assertEquals(causeCell, query.getCallback());
     }
 
 }

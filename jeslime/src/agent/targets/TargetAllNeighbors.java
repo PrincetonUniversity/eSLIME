@@ -31,5 +31,8 @@ public class TargetAllNeighbors extends TargetRule {
         return neighbors;
     }
 
-
+    @Override
+    public TargetRule clone(BehaviorCell child) {
+        return new TargetAllNeighbors(child, layerManager);
+    }
 }

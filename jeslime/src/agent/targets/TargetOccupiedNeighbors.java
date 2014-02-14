@@ -47,4 +47,10 @@ public class TargetOccupiedNeighbors extends TargetRule {
         // Return the array
         return ret;
     }
+
+    @Override
+    public TargetRule clone(BehaviorCell child) {
+        return new TargetOccupiedNeighbors(child, layerManager);
+    }
+
 }

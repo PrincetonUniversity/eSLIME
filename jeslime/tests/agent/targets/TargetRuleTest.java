@@ -117,19 +117,44 @@ public class TargetRuleTest extends EslimeTestCase {
     }
 
     public void testEquality() {
-        fail();
+        // Equality is defined at the superclass level, so one test is sufficient.
+
+        TargetRule p, q, r;
+
         // Make two targeters of the same class, but with different callbacks
+        p = new TargetSelf(new MockCell(), layerManager);
+        q = new TargetSelf(new MockCell(), layerManager);
 
         // Make one targeter of a different class
+        r = new TargetCaller(new MockCell(), layerManager);
 
         // Test that the two of the same class are equal
+        assertEquals(p, q);
 
         // Test that the two of different classes are not equal
+        assertNotEquals(p, r);
     }
 
     public void testClone()  {
-        // Verify that each class of targeter produces an appropriately classed
-        // clone.
-        fail();
+        MockCell parent = new MockCell();
+        TargetRule[] rules = new TargetRule[] {
+            new TargetAllNeighbors(parent, layerManager),
+            new TargetCaller(parent, layerManager),
+            new TargetOccupiedNeighbors(parent, layerManager),
+            new TargetSelf(parent, layerManager),
+            new TargetVacantNeighbors(parent, layerManager)
+        };
+
+        for (TargetRule rule : rules) {
+            doCloneTest(rule, parent);
+        }
+    }
+
+    private void doCloneTest(TargetRule original, MockCell parent) {
+        MockCell child = new MockCell();
+        TargetRule cloned = original.clone(child);
+        assertEquals(original, cloned);
+        assertEquals(parent, original.getCallback());
+        assertEquals(child, cloned.getCallback());
     }
 }

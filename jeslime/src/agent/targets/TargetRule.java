@@ -50,4 +50,8 @@ public abstract class TargetRule {
     }
 
     public abstract TargetRule clone(BehaviorCell child);
+
+    public BehaviorCell getCallback() {
+        return callback;
+    }
 }
