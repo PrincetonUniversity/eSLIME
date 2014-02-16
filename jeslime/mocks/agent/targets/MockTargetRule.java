@@ -12,7 +12,7 @@ public class MockTargetRule extends TargetRule {
     private BehaviorCell lastCaller;
 
     public MockTargetRule() {
-        super(null, null);
+        super(null, null, -1, null);
     }
 
     public void setTargets(Coordinate[] targets) {
@@ -24,7 +24,7 @@ public class MockTargetRule extends TargetRule {
     }
 
     @Override
-    public Coordinate[] report(BehaviorCell caller) {
+    protected Coordinate[] getCandidates(BehaviorCell caller) {
         lastCaller = caller;
         return targets;
     }

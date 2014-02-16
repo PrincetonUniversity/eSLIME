@@ -7,6 +7,7 @@ import layers.cell.CellLayerViewer;
 import structural.identifiers.Coordinate;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Targets specify which cells should receive the consequences
@@ -14,12 +15,12 @@ import java.util.ArrayList;
  * Created by dbborens on 2/7/14.
  */
 public class TargetOccupiedNeighbors extends TargetRule {
-    public TargetOccupiedNeighbors(BehaviorCell callback, LayerManager layerManager) {
-        super(callback, layerManager);
+    public TargetOccupiedNeighbors(BehaviorCell callback, LayerManager layerManager, int maximum, Random random) {
+        super(callback, layerManager, maximum, random);
     }
 
     @Override
-    public Coordinate[] report(BehaviorCell caller) {
+    protected Coordinate[] getCandidates(BehaviorCell caller) {
         // Get geometry
         Geometry geom = layerManager.getCellLayer().getGeometry();
 
@@ -50,7 +51,7 @@ public class TargetOccupiedNeighbors extends TargetRule {
 
     @Override
     public TargetRule clone(BehaviorCell child) {
-        return new TargetOccupiedNeighbors(child, layerManager);
+        return new TargetOccupiedNeighbors(child, layerManager, maximum, random);
     }
 
 }

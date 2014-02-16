@@ -44,4 +44,5 @@ public abstract class Action {
     public abstract boolean equals(Object obj);
 
     public abstract Action clone(BehaviorCell child);
+
 }

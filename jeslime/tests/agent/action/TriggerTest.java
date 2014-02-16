@@ -11,6 +11,8 @@ import layers.cell.CellUpdateManager;
 import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
+import java.util.Random;
+
 /**
  * Created by dbborens on 2/11/14.
  */
@@ -24,9 +26,12 @@ public class TriggerTest extends EslimeTestCase {
     private CellLayer cellLayer;
     private MockGeometry geom;
     private Coordinate o, p, q;
+    private Random random;
 
     @Override
     protected void setUp() throws Exception {
+        // Restart "random" number generator with fixed seed
+        random = new Random(RANDOM_SEED);
 
         // Construct base supporting objects.
         causeCell = new MockCell();
@@ -90,9 +95,8 @@ public class TriggerTest extends EslimeTestCase {
         MockCell dummyCell1 = new MockCell();
         MockCell dummyCell2 = new MockCell();
 
-        TargetRule sameTargetRule = new TargetOccupiedNeighbors(dummyCell1, layerManager);
-        TargetRule differentTargetRule = new TargetOccupiedNeighbors(dummyCell2, layerManager);
-
+        TargetRule sameTargetRule = new TargetOccupiedNeighbors(dummyCell1, layerManager, -1, random);
+        TargetRule differentTargetRule = new TargetOccupiedNeighbors(dummyCell2, layerManager, -1, random);
         String differentEffectName = "not the same as effectName";
 
         identical = new Trigger(dummyCell1, layerManager, effectName, targetRule);

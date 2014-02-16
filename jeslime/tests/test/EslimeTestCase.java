@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Random;
 
 import geometry.MockGeometry;
 import junitx.framework.FileAssert;
@@ -23,6 +24,8 @@ public abstract class EslimeTestCase extends TestCase {
     protected final String eslimeRoot = "./jeslime/";
     protected final String outputPath = eslimeRoot + "/output/";
     protected final String fixturePath = eslimeRoot + "/fixtures/";
+
+    protected final int RANDOM_SEED = 0;
 
     // Superceded by Comparable[] implementation
 	protected void assertArraysEqual(Coordinate[] expected, Coordinate[] actual, boolean sort) {

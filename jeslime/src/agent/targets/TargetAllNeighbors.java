@@ -5,6 +5,8 @@ import geometry.Geometry;
 import layers.LayerManager;
 import structural.identifiers.Coordinate;
 
+import java.util.Random;
+
 /**
  * Targets specify which cells should receive the consequences
  * of an Action.
@@ -12,12 +14,12 @@ import structural.identifiers.Coordinate;
  */
 public class TargetAllNeighbors extends TargetRule {
 
-    public TargetAllNeighbors(BehaviorCell callback, LayerManager layerManager) {
-        super(callback, layerManager);
+    public TargetAllNeighbors(BehaviorCell callback, LayerManager layerManager, int maximum, Random random) {
+        super(callback, layerManager, maximum, random);
     }
 
     @Override
-    public Coordinate[] report(BehaviorCell caller) {
+    protected Coordinate[] getCandidates(BehaviorCell caller) {
         // Get geometry
         Geometry geom = layerManager.getCellLayer().getGeometry();
 
@@ -33,6 +35,7 @@ public class TargetAllNeighbors extends TargetRule {
 
     @Override
     public TargetRule clone(BehaviorCell child) {
-        return new TargetAllNeighbors(child, layerManager);
+        return new TargetAllNeighbors(child, layerManager, maximum, random);
     }
+
 }

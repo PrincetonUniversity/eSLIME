@@ -30,9 +30,17 @@ public class TargetFactoryTest extends TestCase {
         doTest("self", TargetSelf.class);
     }
 
+    public void testSetMaximum() {
+        fail();
+    }
+
+    public void testNoMaximum() {
+        fail();
+    }
+
     private void doTest(String targetName, Class expected) {
         Element element = createTargetElement(targetName);
-        TargetRule targetRule = TargetFactory.instantiate(null, null, element);
+        TargetRule targetRule = TargetFactory.instantiate(null, null, element, null);
         Class actual = targetRule.getClass();
         assertEquals(expected, actual);
     }

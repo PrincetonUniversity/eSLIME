@@ -7,6 +7,8 @@ import layers.cell.CellLayer;
 import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
+import java.util.Random;
+
 /**
  * Created by dbborens on 2/10/14.
  */
@@ -18,9 +20,12 @@ public class TargetRuleTest extends EslimeTestCase {
     private MockCell self, occupiedNeighbor;
     private Coordinate[] cc, neighbors;
     private Coordinate left, right, center;
-
+    private Random random;
     @Override
     public void setUp() {
+        // Restart RN generator
+        random = new Random(RANDOM_SEED);
+
         geom = new MockGeometry();
 
         center = new Coordinate(1, 0, 0);
@@ -49,7 +54,7 @@ public class TargetRuleTest extends EslimeTestCase {
 
     public void testTargetAllNeighbors() {
         System.out.println();
-        TargetRule query = new TargetAllNeighbors(self, layerManager);
+        TargetRule query = new TargetAllNeighbors(self, layerManager, -1, random);
 
         // Get target list
         Coordinate[] actual = query.report(null);
@@ -60,7 +65,7 @@ public class TargetRuleTest extends EslimeTestCase {
     }
 
     public void testTargetVacantNeighbors() {
-        TargetRule query = new TargetVacantNeighbors(self, layerManager);
+        TargetRule query = new TargetVacantNeighbors(self, layerManager, -1, random);
 
         // Get target list
         Coordinate[] actual = query.report(null);
@@ -71,7 +76,7 @@ public class TargetRuleTest extends EslimeTestCase {
     }
 
     public void testTargetOccupiedNeighbors() {
-        TargetRule query = new TargetOccupiedNeighbors(self, layerManager);
+        TargetRule query = new TargetOccupiedNeighbors(self, layerManager, -1, random);
 
         // Get target list
         Coordinate[] actual = query.report(null);
@@ -82,7 +87,7 @@ public class TargetRuleTest extends EslimeTestCase {
     }
 
     public void testTargetSelf() {
-        TargetRule query = new TargetSelf(self, layerManager);
+        TargetRule query = new TargetSelf(self, layerManager, -1, random);
 
         // Get target list
         Coordinate[] actual = query.report(null);
@@ -94,7 +99,7 @@ public class TargetRuleTest extends EslimeTestCase {
 
     public void testTargetCaller() {
         // Left caller
-        TargetRule query = new TargetCaller(self, layerManager);
+        TargetRule query = new TargetCaller(self, layerManager, -1, random);
         Coordinate[] actual = query.report(occupiedNeighbor);
         Coordinate[] expected = new Coordinate[] {left};
         assertArraysEqual(expected, actual, true);
@@ -103,7 +108,7 @@ public class TargetRuleTest extends EslimeTestCase {
 
     // Null caller: should blow up
     public void testTargetCallerNull() {
-        TargetRule query = new TargetCaller(self, layerManager);
+        TargetRule query = new TargetCaller(self, layerManager, -1, random);
         boolean thrown = false;
         try {
             query.report(null);
@@ -122,11 +127,11 @@ public class TargetRuleTest extends EslimeTestCase {
         TargetRule p, q, r;
 
         // Make two targeters of the same class, but with different callbacks
-        p = new TargetSelf(new MockCell(), layerManager);
-        q = new TargetSelf(new MockCell(), layerManager);
+        p = new TargetSelf(new MockCell(), layerManager, -1, random);
+        q = new TargetSelf(new MockCell(), layerManager, -1, random);
 
         // Make one targeter of a different class
-        r = new TargetCaller(new MockCell(), layerManager);
+        r = new TargetCaller(new MockCell(), layerManager, -1, random);
 
         // Test that the two of the same class are equal
         assertEquals(p, q);
@@ -138,16 +143,24 @@ public class TargetRuleTest extends EslimeTestCase {
     public void testClone()  {
         MockCell parent = new MockCell();
         TargetRule[] rules = new TargetRule[] {
-            new TargetAllNeighbors(parent, layerManager),
-            new TargetCaller(parent, layerManager),
-            new TargetOccupiedNeighbors(parent, layerManager),
-            new TargetSelf(parent, layerManager),
-            new TargetVacantNeighbors(parent, layerManager)
+            new TargetAllNeighbors(parent, layerManager, -1, random),
+            new TargetCaller(parent, layerManager, -1, random),
+            new TargetOccupiedNeighbors(parent, layerManager, -1, random),
+            new TargetSelf(parent, layerManager, -1, random),
+            new TargetVacantNeighbors(parent, layerManager, -1, random)
         };
 
         for (TargetRule rule : rules) {
             doCloneTest(rule, parent);
         }
+    }
+
+    public void testNoMaximum() {
+        fail();
+    }
+
+    public void testMaximum() {
+        fail();
     }
 
     private void doCloneTest(TargetRule original, MockCell parent) {
@@ -157,4 +170,5 @@ public class TargetRuleTest extends EslimeTestCase {
         assertEquals(parent, original.getCallback());
         assertEquals(child, cloned.getCallback());
     }
+
 }
