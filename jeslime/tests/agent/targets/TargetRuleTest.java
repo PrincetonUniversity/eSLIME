@@ -53,7 +53,6 @@ public class TargetRuleTest extends EslimeTestCase {
     }
 
     public void testTargetAllNeighbors() {
-        System.out.println();
         TargetRule query = new TargetAllNeighbors(self, layerManager, -1, random);
 
         // Get target list
@@ -155,12 +154,19 @@ public class TargetRuleTest extends EslimeTestCase {
         }
     }
 
-    public void testNoMaximum() {
-        fail();
-    }
-
+    /*
+      All other tests are based on a no-maximum scheme, so an additional
+      testNoMaximum method is not necessary.
+     */
     public void testMaximum() {
-        fail();
+        TargetRule query = new TargetAllNeighbors(self, layerManager, 1, random);
+
+        // Get target list
+        Coordinate[] actual = query.report(null);
+        Coordinate[] expected = new Coordinate[] {left};
+
+        // Should contain all neighbors
+        assertArraysEqual(expected, actual, true);
     }
 
     private void doCloneTest(TargetRule original, MockCell parent) {

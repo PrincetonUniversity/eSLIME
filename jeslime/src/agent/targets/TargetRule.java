@@ -25,7 +25,6 @@ public abstract class TargetRule {
     protected int maximum;
     protected BehaviorCell callback;
     protected LayerManager layerManager;
-
     /**
      *
      * @param callback The cell whose behavior is being described
@@ -36,6 +35,10 @@ public abstract class TargetRule {
         this.layerManager = layerManager;
         this.maximum = maximum;
         this.random = random;
+    }
+
+    public int getMaximum() {
+        return maximum;
     }
 
     /**

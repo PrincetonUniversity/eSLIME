@@ -31,11 +31,18 @@ public class TargetFactoryTest extends TestCase {
     }
 
     public void testSetMaximum() {
-        fail();
+        Element element = createTargetElement("vacant-neighbors");
+        Element max = new BaseElement("max");
+        max.setText("2");
+        element.add(max);
+        TargetRule targetRule = TargetFactory.instantiate(null, null, element, null);
+        assertEquals(2, targetRule.getMaximum());
     }
 
     public void testNoMaximum() {
-        fail();
+        Element element = createTargetElement("vacant-neighbors");
+        TargetRule targetRule = TargetFactory.instantiate(null, null, element, null);
+        assertEquals(-1, targetRule.getMaximum());
     }
 
     private void doTest(String targetName, Class expected) {
@@ -48,7 +55,9 @@ public class TargetFactoryTest extends TestCase {
 
     private Element createTargetElement(String text) {
         BaseElement element = new BaseElement("target");
-        element.setText(text);
+        BaseElement className = new BaseElement("class");
+        className.setText(text);
+        element.add(className);
         return element;
     }
 
