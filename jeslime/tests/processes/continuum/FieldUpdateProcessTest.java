@@ -132,7 +132,7 @@ public class FieldUpdateProcessTest extends EslimeTestCase {
 
     private class ExposedFieldUpdateProcess extends FieldUpdateProcess {
         public ExposedFieldUpdateProcess(ProcessLoader loader, int processId, LayerManager layerManager, String layerId) {
-            super(loader, processId, layerManager, layerId);
+            super(loader, processId, layerManager, null, layerId);
         }
 
         @Override

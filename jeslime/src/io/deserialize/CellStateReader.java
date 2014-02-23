@@ -52,12 +52,11 @@ public class CellStateReader {
 		this.g = geom;
 		this.p = p;
 		this.path = path;
-		
+
+        deindexer = new CoordinateDeindexer(path);
 		File dataFile = new File(path + '/' + DATA_FILENAME);
 
 		try {
-
-
 
 			// Initialize read-through
 			FileReader fr = new FileReader(dataFile);

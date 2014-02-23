@@ -2,6 +2,8 @@ package structural;
 
 import structural.GeneralParameters;
 
+import java.util.Random;
+
 /**
  * Created by dbborens on 12/10/13.
  */
@@ -49,5 +51,9 @@ public class MockGeneralParameters extends GeneralParameters{
     @Override
     public String getProjectXML() {
         return "";
+    }
+
+    public void initializeRandom(long randomSeed) {
+        random = new Random(randomSeed);
     }
 }

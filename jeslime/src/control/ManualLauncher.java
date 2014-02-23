@@ -7,14 +7,12 @@ import java.io.File;
  * It is used for ad-hoc simulations and testing. Batch executions use
  * a command line argument to specify a parameters file.
  * 
- * @test (not needed)
  * @author dbborens
- * @see ConsoleLaunch
  */
 public class ManualLauncher {
 
 	public static void main(String[] args) {
-		String path = "/Users/dbborens/github/jeSLIME/jeslime/projects/sandbox.xml";
+		String path = "/Users/dbborens/IdeaProjects/jeSLIME/jeslime/fixtures/AgentRegression.xml";
 		Runner runner = new Runner(path);
 		runner.run();
 	}

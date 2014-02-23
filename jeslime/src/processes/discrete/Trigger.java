@@ -3,9 +3,11 @@ package processes.discrete;
 import cells.Cell;
 import io.project.ProcessLoader;
 import layers.LayerManager;
+import org.dom4j.Element;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
+import structural.XmlUtil;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
@@ -15,19 +17,20 @@ import structural.identifiers.Coordinate;
  */
 public class Trigger extends CellProcess {
     private String behaviorName;
-    private boolean skipDead;
+    private boolean skipVacant;
 
     public Trigger(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
         super(loader, layerManager, id, p);
-        behaviorName = get("process");
-        skipDead = Boolean.valueOf(get("skip-dead-sites"));
+        behaviorName = get("behavior");
+        Element e = loader.getProcess(id);
+        skipVacant = XmlUtil.getBoolean(e, "skip-vacant-sites");
 
     }
 
-    public Trigger(LayerManager layerManager, String behaviorName, boolean skipDead) {
+    public Trigger(LayerManager layerManager, String behaviorName, boolean skipVacant) {
         super(null, layerManager, 0, null);
         this.behaviorName = behaviorName;
-        this.skipDead = skipDead;
+        this.skipVacant = skipVacant;
     }
 
     @Override
@@ -43,16 +46,16 @@ public class Trigger extends CellProcess {
     public void fire(StepState state) throws HaltCondition {
 
         for (Coordinate c : activeSites) {
-            boolean dead = !layer.getViewer().isOccupied(c);
-            // If it's dead and we don't expect already-dead cells, throw error
-            if (dead && !skipDead) {
+            boolean vacant = !layer.getViewer().isOccupied(c);
+            // If it's vacant and we don't expect already-vacant cells, throw error
+            if (vacant && !skipVacant) {
                 String msg = "Attempted to trigger behavior " + behaviorName + " in coordinate " + c.toString() +
-                        " but the site was vacant or dead. This is illegal unless" +
-                        " the <skip-dead-sites> flag is set to true. Did you" +
+                        " but the site was dead or vacant. This is illegal unless" +
+                        " the <skip-vacant-sites> flag is set to true. Did you" +
                         " mean to set it? (id=" + getID() + ")";
 
                 throw new IllegalStateException(msg);
-            } else if (!dead) {
+            } else if (!vacant) {
                 Cell toTrigger = layer.getViewer().getCell(c);
 
                 // A null caller on the trigger method means that the caller is
@@ -62,5 +65,24 @@ public class Trigger extends CellProcess {
                 // Do nothing if site is vacant and skipDead is true.
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Trigger)) {
+            return false;
+        }
+
+        Trigger other = (Trigger) obj;
+
+        if (!this.behaviorName.equals(other.behaviorName)) {
+           return false;
+        }
+
+        if (skipVacant != other.skipVacant) {
+            return false;
+        }
+
+        return true;
     }
 }

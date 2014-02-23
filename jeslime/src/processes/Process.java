@@ -7,6 +7,7 @@ import org.dom4j.Element;
 
 import processes.gillespie.GillespieState;
 import layers.cell.CellLayer; import structural.Flags;
+import structural.GeneralParameters;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 import geometry.Geometry;
@@ -19,16 +20,19 @@ public abstract class Process {
 	private int id;
 	private int period;
 	private int start;
-	
+
 	// XML element associated with this process
 	protected Element e;
 	
 	protected LayerManager layerManager;
-	
+
+    protected GeneralParameters p;
+
 	/* Constructors */
 	
-	public Process(ProcessLoader loader, LayerManager layerManager, int id) {
+	public Process(ProcessLoader loader, LayerManager layerManager, GeneralParameters p, int id) {
 		this.layerManager = layerManager;
+        this.p = p;
 
 		if (loader == null) {
 			//System.err.println("WARNING: Mock behavior for process loader invoked. Use only for testing!");
@@ -83,25 +87,25 @@ public abstract class Process {
 		target();
 		fire(state);
 	}
-	
-	/**
-	 *  Pull in a single-datum element
-	 * @param g
-	 * @param key
-	 * @return
-	 */
-	private String get(Element g, String key) {
-		Element vElem = g.element(key);
-		if (vElem == null) {
-			throw new IllegalArgumentException("Required parameter '" + 
-					key + "' not defined for process " +
-					getProcessClass() + " (id=" + getID() +").");
-		}
-		
-		Object value = vElem.getData();
-		
-		return value.toString();
-	}
+
+    /**
+     *  Pull in a single-datum element
+     * @param g
+     * @param key
+     * @return
+     */
+    private String get(Element g, String key) {
+        Element vElem = g.element(key);
+        if (vElem == null) {
+            throw new IllegalArgumentException("Required parameter '" +
+                    key + "' not defined for process " +
+                    getProcessClass() + " (id=" + getID() +").");
+        }
+
+        Object value = vElem.getData();
+
+        return value.toString();
+    }
 
 	/**
 	 * Parameter getter with no default value. If the
@@ -131,7 +135,7 @@ public abstract class Process {
 		Object value = vElem.getData();
 		return value.toString();
 	}
-	
+
 	public int getPeriod() {
 		return period;
 	}
@@ -140,8 +144,8 @@ public abstract class Process {
 		return start;
 	}
 	
-	protected CellFactory getCellFactory(CellLayer layer) {
-		return new CellFactory(layer, e.element("cell-descriptor"));
+	protected CellFactory getCellFactory(LayerManager layerManager) {
+		return new CellFactory(layerManager, e.element("cell-descriptor"), p);
 	}
 
     // TODO The following methods should be refactored into a helper object

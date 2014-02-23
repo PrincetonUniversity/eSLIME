@@ -70,4 +70,19 @@ public class SimpleCell extends Cell {
     public double getProduction(String solute) {
         return 0;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof SimpleCell)) {
+            return false;
+        }
+
+        SimpleCell other = (SimpleCell) obj;
+
+        if (other.getState() != getState()) {
+            return false;
+        }
+
+        return true;
+    }
 }

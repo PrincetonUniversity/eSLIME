@@ -1,12 +1,12 @@
 package processes.discrete;
 
-import agent.control.MockBehaviorDispatcher;
 import cells.MockCell;
 import geometry.MockGeometry;
-import junit.framework.TestCase;
-import layers.LayerManager;
+import io.project.MockProcessLoader;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
+import org.dom4j.Element;
+import org.dom4j.tree.BaseElement;
 import processes.gillespie.GillespieState;
 import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
@@ -52,5 +52,22 @@ public class TriggerTest extends EslimeTestCase {
         trigger.fire(null);
         assertEquals("test", cell.getLastTriggeredBehaviorName());
         assertNull(cell.getLastTriggeredCaller());
+    }
+
+    public void testXmlConstructor() {
+        Element base = new BaseElement("trigger");
+        Element behaviorName = new BaseElement("behavior");
+        behaviorName.setText("test-behavior");
+        base.add(behaviorName);
+        Element skipVacant = new BaseElement("skip-vacant-sites");
+        base.add(skipVacant);
+
+        MockProcessLoader loader = new MockProcessLoader();
+        loader.setElement(0, base);
+
+        Trigger actual = new Trigger(loader, layerManager, 0, null);
+        Trigger expected = new Trigger(layerManager, "test-behavior", true);
+
+        assertEquals(expected, actual);
     }
 }

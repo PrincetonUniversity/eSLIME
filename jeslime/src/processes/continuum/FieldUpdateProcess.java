@@ -9,6 +9,7 @@ import no.uib.cipr.matrix.DenseVector;
 import processes.Process;
 import processes.StepState;
 import processes.gillespie.GillespieState;
+import structural.GeneralParameters;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
@@ -23,8 +24,8 @@ public class FieldUpdateProcess extends ContinuumProcess {
     private final SoluteLayer continuumLayer;
     private final Geometry geom;
 
-    public FieldUpdateProcess(ProcessLoader loader, int processId, LayerManager layerManager, String layerId) {
-       super(loader, layerManager, processId);
+    public FieldUpdateProcess(ProcessLoader loader, int processId, LayerManager layerManager, GeneralParameters p, String layerId) {
+       super(loader, layerManager, p, processId);
 
        discreteLayer = layerManager.getCellLayer();
        continuumLayer = layerManager.getSoluteLayer(layerId);

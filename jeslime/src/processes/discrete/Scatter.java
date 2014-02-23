@@ -56,7 +56,7 @@ public class Scatter extends CellProcess {
 		}
 
 		for (int i = 0; i < numGroups; i++) {
-			CellFactory factory = getCellFactory(layer);
+			CellFactory factory = getCellFactory(layerManager);
 			
 			// Create a cell factory for this group 
 			for (int j = 0; j < groupSize; j++) {

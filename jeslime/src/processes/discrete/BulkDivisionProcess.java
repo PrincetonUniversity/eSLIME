@@ -27,7 +27,7 @@ public abstract class BulkDivisionProcess extends CellProcess{
 	}
 
 	protected void execute(StepState state, Coordinate[] candidates) throws HaltCondition {
-		System.out.println("Executing bulk division process.");
+		System.out.println("Executing bulk division process. Candidate count: " + candidates.length);
 		HashSet<Coordinate> preliminary = new HashSet<Coordinate>();
 
 		Coordinate origin, target;

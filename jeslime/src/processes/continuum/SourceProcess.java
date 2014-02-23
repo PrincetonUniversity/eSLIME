@@ -5,6 +5,7 @@ import io.project.ProcessLoader;
 import layers.LayerManager;
 import processes.Process;
 import processes.StepState;
+import structural.GeneralParameters;
 import structural.halt.HaltCondition;
 
 /**
@@ -18,7 +19,7 @@ public class SourceProcess extends ContinuumProcess {
         throw new UnsupportedOperationException("This class won't work until after you implement source/sink active management");
     }
 
-    public SourceProcess(ProcessLoader loader, LayerManager layerManager, int id) {
-        super(loader, layerManager, id);
+    public SourceProcess(ProcessLoader loader, LayerManager layerManager, GeneralParameters p, int id) {
+        super(loader, layerManager, p, id);
     }
 }

@@ -63,14 +63,23 @@ public class MockBehaviorDispatcher extends BehaviorDispatcher {
         lastTriggeredCaller = caller;
     }
 
-    private boolean died = false;
+    private boolean reportEquals;
+    private boolean overrideEquals;
 
-    @Override
-    public void die() {
-        died = true;
+    public void setOverrideEquals(boolean overrideEquals) {
+        this.overrideEquals = overrideEquals;
+
+    }
+    public void setReportEquals(boolean reportEquals) {
+        this.reportEquals = reportEquals;
     }
 
-    public boolean died() {
-        return died;
+    @Override
+    public boolean equals(Object obj) {
+        if (overrideEquals) {
+            return reportEquals;
+        } else {
+            return super.equals(obj);
+        }
     }
 }

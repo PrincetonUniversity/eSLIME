@@ -288,7 +288,7 @@ public class CellUpdateManager {
 	}
 
 	
-	private void refreshDivisibility(Coordinate coord) {
+	public void refreshDivisibility(Coordinate coord) {
 		content.checkExists(coord);
 		
 		boolean divisible = indices.isOccupied(coord) && content.get(coord).isDivisible();

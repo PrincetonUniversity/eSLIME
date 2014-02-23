@@ -4,6 +4,7 @@ import geometry.Geometry;
 import io.project.ProcessLoader;
 import layers.LayerManager;
 import processes.gillespie.GillespieState;
+import structural.GeneralParameters;
 import structural.halt.HaltCondition;
 
 /**
@@ -27,8 +28,8 @@ public class MockProcess extends Process {
     // testing.
     private int timesFired = 0;
 
-	public MockProcess(ProcessLoader loader, LayerManager layerManager, int id) {
-		super(loader, layerManager, id);
+	public MockProcess(ProcessLoader loader, LayerManager layerManager, GeneralParameters p, int id) {
+		super(loader, layerManager, p, id);
 
         identifier = get("identifier");
 		weight = Double.valueOf(get("weight", "1.0"));
@@ -36,7 +37,7 @@ public class MockProcess extends Process {
 	}
 
     public MockProcess() {
-        super(null, null, 0);
+        super(null, null, null, 0);
     }
 
     public int getPeriod() {

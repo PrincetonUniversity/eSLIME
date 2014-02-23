@@ -4,11 +4,13 @@ import agent.Behavior;
 import agent.MockBehavior;
 import agent.control.BehaviorDispatcher;
 import agent.control.MockBehaviorDispatcher;
+import cells.BehaviorCell;
 import cells.Cell;
 import cells.MockCell;
 import layers.LayerManager;
 import layers.MockLayerManager;
 import org.dom4j.Element;
+import structural.MockGeneralParameters;
 import test.EslimeTestCase;
 
 /**
@@ -23,13 +25,15 @@ public class BehaviorLoaderTest extends EslimeTestCase {
     MockLayerManager manager;
     BehaviorLoader query;
     Element fixtures;
+    MockGeneralParameters p;
 
     @Override
     protected void setUp() throws Exception {
         callback = new MockCell();
         dispatcher = new MockBehaviorDispatcher();
         manager = new MockLayerManager();
-        query = new BehaviorLoader(dispatcher, callback, manager);
+        p = new MockGeneralParameters();
+        query = new BehaviorLoader(dispatcher, callback, manager, p);
 
         fixtures = readXmlFile("BehaviorLoaderTest.xml");
     }
@@ -58,8 +62,8 @@ public class BehaviorLoaderTest extends EslimeTestCase {
             super.loadBehavior(o);
         }
 
-        public ExposedBehaviorLoader(BehaviorDispatcher behaviorDispatcher, Cell callback, LayerManager layerManager) {
-            super(behaviorDispatcher, callback, layerManager);
+        public ExposedBehaviorLoader(BehaviorDispatcher behaviorDispatcher, BehaviorCell callback, LayerManager layerManager) {
+            super(behaviorDispatcher, callback, layerManager, null);
         }
     }
 }

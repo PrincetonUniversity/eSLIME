@@ -77,12 +77,32 @@ public class Behavior {
         for (int i = 0; i < getActionSequence().length; i++) {
             Action p = this.getActionSequence()[i];
             Action q = other.getActionSequence()[i];
-            if (!p.equals(q)) {
+            if (!actionsEqual(p, q)) {
                 return false;
             }
         }
 
         // The behaviors are equivalent.
+        return true;
+    }
+
+    private boolean actionsEqual(Action p, Action q) {
+        if (p == null && q == null) {
+            return true;
+        }
+
+        if (p == null && q != null) {
+            return false;
+        }
+
+        if (q == null && p != null) {
+            return false;
+        }
+
+        if (!p.equals(q)) {
+            return false;
+        }
+
         return true;
     }
 

@@ -2,9 +2,11 @@ package io.project;
 
 import agent.Behavior;
 import agent.control.BehaviorDispatcher;
+import cells.BehaviorCell;
 import cells.Cell;
 import layers.LayerManager;
 import org.dom4j.Element;
+import structural.GeneralParameters;
 
 import java.util.HashMap;
 
@@ -23,12 +25,15 @@ public class BehaviorLoader {
     private final BehaviorDispatcher behaviorDispatcher;
 
     // The cell whose behaviors are being loaded
-    private final Cell callback;
+    private final BehaviorCell callback;
 
-    public BehaviorLoader(BehaviorDispatcher behaviorDispatcher, Cell callback, LayerManager layerManager) {
+    private final GeneralParameters p;
+
+    public BehaviorLoader(BehaviorDispatcher behaviorDispatcher, BehaviorCell callback, LayerManager layerManager, GeneralParameters p) {
         this.behaviorDispatcher = behaviorDispatcher;
         this.callback = callback;
         this.layerManager = layerManager;
+        this.p = p;
     }
 
     public void loadAllBehaviors(Element behaviorsRoot) {
@@ -40,7 +45,7 @@ public class BehaviorLoader {
     protected void loadBehavior(Object o) {
         Element e = (Element) o;
         String name = e.getName();
-        Behavior behavior = BehaviorFactory.instantiate(e, callback, layerManager);
+        Behavior behavior = BehaviorFactory.instantiate(e, callback, layerManager, p);
         behaviorDispatcher.map(name, behavior);
     }
 

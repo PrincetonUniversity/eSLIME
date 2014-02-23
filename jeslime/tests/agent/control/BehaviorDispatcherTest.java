@@ -8,6 +8,7 @@ import junit.framework.TestCase;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import layers.cell.CellLayerViewer;
+import structural.MockGeneralParameters;
 import structural.identifiers.Coordinate;
 
 /**
@@ -98,25 +99,4 @@ public class BehaviorDispatcherTest extends TestCase {
         assertEquals(alternate, clonedBehavior.getCallback());
     }
 
-    public void testDie() {
-        // Set up
-        MockGeometry geom = new MockGeometry();
-        Coordinate c = new Coordinate(0, 0, 0);
-        Coordinate[] cc = new Coordinate[] {c};
-        geom.setCanonicalSites(cc);
-        CellLayer layer = new CellLayer(geom, 0);
-        MockLayerManager layerManager = new MockLayerManager();
-        layerManager.setCellLayer(layer);
-
-        BehaviorCell cell = new BehaviorCell();
-        layer.getUpdateManager().place(cell, c);
-        query = new BehaviorDispatcher(cell, layerManager);
-
-        // Perform the test
-        CellLayerViewer viewer = layer.getViewer();
-        boolean isOccupied = viewer.isOccupied(c);
-        assertTrue(isOccupied);
-        query.die();
-        assertFalse(layer.getViewer().isOccupied(c));
-    }
 }

@@ -11,8 +11,6 @@ import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 import structural.postprocess.ImageSequence;
 
-import javax.swing.text.AbstractWriter;
-
 /**
  *
  * @untested
@@ -72,7 +70,7 @@ public class SerializationManager {
 			tw.dispatchHalt(ex);
 		}
 		
-		if (p.isLineageMap()) {
+		if (p.isStateMap()) {
 			ImageSequence imgSequence = new ImageSequence(p.getInstancePath(), lm.getCellLayer().getGeometry(), p);
 			imgSequence.generate();
 		}		

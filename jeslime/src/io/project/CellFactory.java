@@ -1,12 +1,17 @@
 package io.project;
 
+import agent.control.BehaviorDispatcher;
+import cells.BehaviorCell;
+import layers.LayerManager;
 import org.dom4j.Element;
 
 import cells.Cell;
 import cells.FissionCell;
 import cells.SimpleCell;
 
-import layers.cell.CellLayer; 
+import layers.cell.CellLayer;
+import structural.GeneralParameters;
+
 /**
  * Instantiates a cell based on specifications from a cell descriptor
  * XML element. The requirements for this element depend on the class
@@ -14,23 +19,22 @@ import layers.cell.CellLayer;
  * multiple distinct cells of the same exact specification (include state
  * id) will be returned.
  * 
- * @untested
  * @author dbborens
  *
  */
 public class CellFactory {
 
-	private CellLayer layer;
+	private LayerManager layerManager;
 	private Element cellDescriptor;
+    private GeneralParameters p;
 	private int state;
-	
 	/**
 	 * @param cellDescriptor
 	 */
-	public CellFactory(CellLayer layer, Element cellDescriptor) {
-		this.layer = layer;
+	public CellFactory(LayerManager layerManager, Element cellDescriptor, GeneralParameters p) {
+		this.layerManager = layerManager;
 		this.cellDescriptor = cellDescriptor;
-		
+	    this.p = p;
 		String stateText = cellDescriptor.element("state").getTextTrim();
 
 		// State should be consistent across all cells instantiated by
@@ -46,7 +50,9 @@ public class CellFactory {
 			
 		} else if (className.equalsIgnoreCase("FissionCell")) {
 			return fissionCell(cellDescriptor, state);
-			
+
+        } else if (className.equalsIgnoreCase("BehaviorCell")) {
+            return behaviorCell(cellDescriptor, state);
 		} else {
 			
 			String msg = "Unrecognized cell class '" +
@@ -56,7 +62,24 @@ public class CellFactory {
 		}
 	}
 
-	private Cell fissionCell(Element cellDescriptor, int state) {
+    private Cell behaviorCell(Element cellDescriptor, int state) {
+        // Load cell properties
+        double initialFitness = Double.valueOf(cellDescriptor.element("initial-fitness").getText());
+        double threshold = Double.valueOf(cellDescriptor.element("threshold").getText());
+
+        // Construct cell
+        BehaviorCell cell = new BehaviorCell(layerManager, state, initialFitness, threshold);
+
+        // Load behaviors
+        Element behaviorRoot = cellDescriptor.element("behaviors");
+        BehaviorDispatcher dispatcher = new BehaviorDispatcher(behaviorRoot, cell, layerManager, p);
+        cell.setDispatcher(dispatcher);
+
+        // Return completed object
+        return cell;
+    }
+
+    private Cell fissionCell(Element cellDescriptor, int state) {
 		double initialFitness = Double.valueOf(cellDescriptor.element("initial-fitness").getText());
 		double threshold = Double.valueOf(cellDescriptor.element("threshold").getText());
 
@@ -79,6 +102,7 @@ public class CellFactory {
 	}
 
 	private int getNextState() {
+        CellLayer layer = layerManager.getCellLayer();
 		Integer[] states = layer.getViewer().getStateMapViewer().getStates();
 		Integer max = 0;
 		for (Integer s : states) {

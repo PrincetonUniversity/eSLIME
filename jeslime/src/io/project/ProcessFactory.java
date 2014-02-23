@@ -80,14 +80,17 @@ public class ProcessFactory {
 			return new MutateAll(loader, layerManager, id, p);
 			
 		} else if (processClass.equalsIgnoreCase("mock-process")) {
-			return new MockProcess(loader, layerManager, id);
+			return new MockProcess(loader, layerManager, p, id);
 			
 		} else if (processClass.equalsIgnoreCase("gillespie-process")) {
 			return new GillespieProcess(loader, layerManager, id, p);
 
         } else if (processClass.equalsIgnoreCase("field-update-process")) {
             String target = e.element("target").getTextTrim();
-            return new FieldUpdateProcess(loader, id, layerManager, target);
+            return new FieldUpdateProcess(loader, id, layerManager, p, target);
+
+        } else if (processClass.equalsIgnoreCase("trigger")) {
+            return new Trigger(loader, layerManager, id, p);
 
 		} else {
 			String msg = "Unrecognized process '" +

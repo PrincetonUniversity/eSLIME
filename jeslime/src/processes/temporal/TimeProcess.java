@@ -27,7 +27,7 @@ public abstract class TimeProcess extends Process {
 	public TimeProcess(ProcessLoader loader, LayerManager layerManager, int id,
 			GeneralParameters p) {
 		
-		super(loader, layerManager, id);
+		super(loader, layerManager, p, id);
 		
 		this.p = p;
 	}

@@ -1,6 +1,8 @@
 package cells;
 
 import agent.control.BehaviorDispatcher;
+import layers.LayerManager;
+import structural.EpsilonUtil;
 import structural.identifiers.Coordinate;
 
 /**
@@ -12,21 +14,29 @@ import structural.identifiers.Coordinate;
  */
 public class BehaviorCell extends Cell {
 
+    // State
     private int considerCount;
     private double nextFitness;
     private double threshold;
+
+    // Helpers
     private BehaviorDispatcher dispatcher;
+    private CallbackManager callbackManager;
 
     // Default constructor for testing
     public BehaviorCell() {}
-
-    public BehaviorCell(int state, double initialFitness, double threshold) {
+    public BehaviorCell(LayerManager layerManager, int state, double initialFitness, double threshold) {
         this.threshold = threshold;
+        callbackManager = new CallbackManager(this, layerManager);
 
         setState(state);
-        setFitness(initialFitness);
-        checkDivisibility();
+
+        // We use the superclass setFitness here so it doesn't try to update
+        // the location, as the cell is usually created before being placed.
+        super.setFitness(initialFitness);
+
         considerCount = 0;
+
     }
 
     @Override
@@ -48,7 +58,8 @@ public class BehaviorCell extends Cell {
             throw new IllegalStateException("Attempted to divide non-divisible cell.");
         }
 
-        BehaviorCell daughter = new BehaviorCell(getState(), getFitness() / 2, threshold);
+        LayerManager layerManager = callbackManager.getLayerManager();
+        BehaviorCell daughter = new BehaviorCell(layerManager, getState(), getFitness() / 2, threshold);
         double halfFitness = getFitness() / 2.0D;
         setFitness(halfFitness);
         daughter.setDispatcher(dispatcher.clone(daughter));
@@ -60,7 +71,8 @@ public class BehaviorCell extends Cell {
     public Cell clone(int childState) {
         double fitness = getFitness();
 
-        BehaviorCell child = new BehaviorCell(childState, fitness, threshold);
+        LayerManager layerManager = callbackManager.getLayerManager();
+        BehaviorCell child = new BehaviorCell(layerManager, childState, fitness, threshold);
         child.considerCount = considerCount;
         child.nextFitness = nextFitness;
         child.setDispatcher(dispatcher.clone(child));
@@ -86,7 +98,13 @@ public class BehaviorCell extends Cell {
 
     @Override
     public void die() {
-        dispatcher.die();
+        callbackManager.die();
+    }
+
+    @Override
+    protected void setDivisible(boolean divisible) {
+        super.setDivisible(divisible);
+        callbackManager.refreshDivisibility();
     }
 
     private void checkDivisibility() {
@@ -105,11 +123,14 @@ public class BehaviorCell extends Cell {
     @Override
     public void setFitness(double fitness) {
         super.setFitness(fitness);
+        checkDivisibility();
     }
 
     /**
      * A BehaviorCell is equal to another Object if and only if:
      *    - The other Object is a BehaviorCell.
+     *    - The other Object has a division threshold equal to this one.
+     *    - The other Object has a state ID equal to this one.
      *    - The other Object has a dispatcher that reports equality
      *      with this cell's dispatcher.
      *
@@ -127,6 +148,13 @@ public class BehaviorCell extends Cell {
 
         BehaviorCell other = (BehaviorCell) obj;
 
+        if (other.getState() != this.getState()) {
+            return false;
+        }
+
+        if (!EpsilonUtil.epsilonEquals(this.threshold, other.threshold)) {
+            return false;
+        }
 
         return other.dispatcher.equals(this.dispatcher);
     }

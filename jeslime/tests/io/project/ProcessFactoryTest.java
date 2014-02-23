@@ -98,45 +98,51 @@ public class ProcessFactoryTest extends TestCase {
         assertEquals(expected, actual);
     }
 
-    public void testInstantiate() {
-        Element child;
-        Element[] children;
-
-        // Exponential inverse
+    public void testExponentialInverse() {
         doTest("exponential-inverse", ExponentialInverse.class);
+    }
 
-        // Tick
-        child = new BaseElement("dt");
+    public void testTick() {
+        Element child = new BaseElement("dt");
         child.setText("1");
         doTest("tick", Tick.class, child);
 
-        // Divide anywhere
-        doTest("divide-anywhere", DivideAnywhere.class);
+    }
 
-        // Active layer divide
-        child = new BaseElement("depth");
+    public void testDivideAnywhere() {
+        doTest("divide-anywhere", DivideAnywhere.class);
+    }
+
+    public void testActiveLayerDivide() {
+        Element child = new BaseElement("depth");
         child.setText("1");
         doTest("active-layer-divide", ActiveLayerDivide.class, child);
 
-        // Neighbor swap
-        doTest("neighbor-swap", NeighborSwap.class);
+    }
 
-        // Scatter
-        children = new Element[] {
+    public void testNeighborSwap() {
+        doTest("neighbor-swap", NeighborSwap.class);
+    }
+
+    public void testScatter() {
+        Element[] children = new Element[] {
                 new BaseElement("types"),
                 new BaseElement("tokens")
         };
         children[0].setText("1");
         children[1].setText("1");
         doTest("scatter", Scatter.class, children);
+    }
 
-        // Fill
-        child = new BaseElement("skip-filled-sites");
+    public void testFill() {
+        Element child = new BaseElement("skip-filled-sites");
         child.setText("true");
         doTest("fill", Fill.class, child);
 
-        // Uniform biomass growth
-        children = new Element[] {
+    }
+
+    public void testUniformBiomassGrowth() {
+        Element[] children = new Element[] {
                 new BaseElement("delta"),
                 new BaseElement("defer")
         };
@@ -144,8 +150,10 @@ public class ProcessFactoryTest extends TestCase {
         children[1].setText("true");
         doTest("uniform-biomass-growth", UniformBiomassGrowth.class, children);
 
-        // Targeted biomass growth
-        children = new Element[] {
+    }
+
+    public void testTargetedBiomassGrowth() {
+        Element[] children = new Element[] {
                 new BaseElement("delta"),
                 new BaseElement("defer"),
                 new BaseElement("target")
@@ -154,29 +162,45 @@ public class ProcessFactoryTest extends TestCase {
         children[1].setText("true");
         children[2].setText("1");
         doTest("targeted-biomass-growth", TargetedBiomassGrowth.class, children);
+    }
 
-        // Mutate all
-        child = new BaseElement("mutation");
+    public void testMutateAll() {
+        Element child = new BaseElement("mutation");
 
         Attribute ancestral = new FlyweightAttribute(new QName("ancestral"), "1");
         Attribute mutant = new FlyweightAttribute(new QName("mutant"), "2");
         child.add(ancestral);
         child.add(mutant);
         doTest("mutate-all", MutateAll.class, child);
+    }
 
-        // Null process
-        child = new BaseElement("identifier");
+    public void testMockProcess() {
+        Element child = new BaseElement("identifier");
         child.setText("1");
         doTest("mock-process", MockProcess.class, child);
 
-        // Gillespie process
-        child = new BaseElement("children");
-        doTest("gillespie-process", GillespieProcess.class, child);
+    }
 
-        // Update field
-        child = new BaseElement("target");
+    public void testGillespieProcess() {
+        Element child = new BaseElement("children");
+        doTest("gillespie-process", GillespieProcess.class, child);
+    }
+
+    public void testFieldUpdateProcess() {
+        Element child = new BaseElement("target");
         child.setText("test");
         doTest("field-update-process", FieldUpdateProcess.class, child);
+
+    }
+
+    public void testTrigger() {
+        Element[] children = new Element[] {
+                new BaseElement("behavior"),
+                new BaseElement("skip-vacant-sites")
+        };
+
+        children[0].setText("test");
+        doTest("trigger", Trigger.class, children);
     }
 
     public void testGetProcesses() {

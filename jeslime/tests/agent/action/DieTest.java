@@ -30,7 +30,7 @@ public class DieTest extends EslimeTestCase {
     protected void setUp() throws Exception {
         // Set up test objects
         layerManager = new MockLayerManager();
-        cell = new BehaviorCell(1, 1.0, 1.0);
+        cell = new BehaviorCell(layerManager, 1, 1.0, 1.0);
         query = new Die(cell, layerManager);
         identical = new Die(cell ,layerManager);
         different = new AdjustFitness(cell, layerManager, 0.7);
@@ -39,7 +39,7 @@ public class DieTest extends EslimeTestCase {
         eventName = "TEST";
         Action[] actionSequence = new Action[] {query};
         behavior = new Behavior(cell, layerManager, actionSequence);
-        dispatcher = new BehaviorDispatcher(cell, layerManager);
+        dispatcher = new BehaviorDispatcher(cell, layerManager, null);
         cell.setDispatcher(dispatcher);
         dispatcher.map(eventName, behavior);
 

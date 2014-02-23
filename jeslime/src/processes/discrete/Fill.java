@@ -5,11 +5,14 @@ import io.project.CellFactory;
 import io.project.ProcessLoader;
 
 import layers.LayerManager;
+import org.dom4j.Element;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import cells.Cell;
 import structural.GeneralParameters;
-import layers.cell.CellLayer; import structural.halt.HaltCondition;
+import layers.cell.CellLayer;
+import structural.XmlUtil;
+import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
 /**
@@ -32,9 +35,8 @@ public class Fill extends CellProcess {
                           GeneralParameters p) {
         super(loader, layerManager, id, p);
 
-		skipFilled = Boolean.valueOf(get("skip-filled-sites"));
-		
-		
+        Element e = loader.getProcess(id);
+        skipFilled = XmlUtil.getBoolean(e, "skip-filled-sites");
 	}
 
 	public void target(GillespieState gs) throws HaltCondition {
@@ -45,7 +47,7 @@ public class Fill extends CellProcess {
 	}
 	
 	public void fire(StepState state) throws HaltCondition {
-		CellFactory factory = getCellFactory(layer);
+		CellFactory factory = getCellFactory(layerManager);
 		
 		for (Coordinate c : activeSites) {
 			boolean filled = layer.getViewer().isOccupied(c);

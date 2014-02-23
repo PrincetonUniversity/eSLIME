@@ -1,0 +1,14 @@
+<fixture>
+    <null />
+    <mock />
+    <die />
+    <trigger>
+        <behavior>test</behavior>
+        <target>
+            <class>self</class>
+        </target>
+    </trigger>
+    <adjust-fitness>
+        <delta>0.5</delta>
+    </adjust-fitness>
+</fixture>

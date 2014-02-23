@@ -24,7 +24,7 @@ public abstract class CellProcess extends Process {
 			GeneralParameters p) {
 		
 		
-		super(loader, layerManager, id);
+		super(loader, layerManager, p, id);
 		
 		this.p = p;
         layer = layerManager.getCellLayer();

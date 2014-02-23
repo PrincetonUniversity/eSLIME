@@ -4,6 +4,7 @@ import structural.GeneralParameters;
 import structural.identifiers.Coordinate;
 
 import java.io.BufferedReader;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -30,6 +31,15 @@ public class CoordinateDeindexer {
 
         try {
             deindex();
+        } catch (FileNotFoundException e) {
+            String msg = "eSLIME attempted to build a coordinate de-indexer, "
+            +  "but was unable to find a coordinate index file. This usually "
+            +  "happens when a post-processing step, such as a visualization, "
+            +  "requires an index but the user did not include a "
+            +  "<coordinate-indexer /> argument in the <serializers> section "
+            +  "of the script.";
+
+            throw new IllegalArgumentException(msg);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

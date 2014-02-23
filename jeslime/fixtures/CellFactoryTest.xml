@@ -1,0 +1,17 @@
+<fixture>
+    <cell-a>
+        <class>SimpleCell</class>
+        <state>1</state>
+    </cell-a>
+    <cell-b>
+        <class>BehaviorCell</class>
+        <initial-fitness>0.5</initial-fitness>
+        <threshold>1.0</threshold>
+        <state>2</state>
+        <behaviors>
+            <test-behavior>
+                <null />
+            </test-behavior>
+        </behaviors>
+    </cell-b>
+</fixture>

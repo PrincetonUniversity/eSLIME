@@ -35,14 +35,14 @@ public class GeneralParameters {
 	
 	// Output flags
 	
-	private boolean lineageMap;				// Visualize lineages as they grow
+	private boolean stateMap;				// Visualize lineages as they grow
 	// Output frames (blank means all)
 	private Set<Integer> frames;
 	
 	// Instantiated members
 	private double epsilon;			// Minimum measurable FP delta
 
-	private Random random;			// Random number generator
+	protected Random random;			// Random number generator
 	private long randomSeed;
 	// State members
 	private int instance;
@@ -204,13 +204,13 @@ public class GeneralParameters {
 	}
 	
 	private void loadFlags(Element g) {
-		lineageMap = Boolean.valueOf(get(g, "write-lineage-map"));
+        stateMap = XmlUtil.getBoolean(g, "write-state-map");
 	}
 
 	private void loadPaths(Element g) {
 		basePath = get(g, "path");
-		boolean isStamp = Boolean.valueOf(get(g, "date-stamp"));
-		
+        boolean isStamp = XmlUtil.getBoolean(g, "date-stamp");
+
 		if (isStamp) {
 			path = basePath + '/' + date() + '/';
 		} else {
@@ -318,8 +318,8 @@ public class GeneralParameters {
 		return instancePath;
 	}
 
-	public boolean isLineageMap() {
-		return lineageMap;
+	public boolean isStateMap() {
+		return stateMap;
 	}
 
 	public double getEpsilon() {

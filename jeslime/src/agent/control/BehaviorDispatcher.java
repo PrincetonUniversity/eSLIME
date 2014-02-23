@@ -7,6 +7,7 @@ import io.project.BehaviorLoader;
 import layers.LayerManager;
 import layers.cell.CellLayer;
 import org.dom4j.Element;
+import structural.GeneralParameters;
 import structural.identifiers.Coordinate;
 
 import java.util.HashMap;
@@ -19,23 +20,26 @@ import java.util.HashMap;
  * Created by David B Borenstein on 1/21/14.
  */
 public class BehaviorDispatcher {
-    private Cell callback;
+    private BehaviorCell callback;
     private LayerManager layerManager;
     private HashMap<String, Behavior> behaviors;
+    private GeneralParameters p;
 
     public BehaviorDispatcher() {
         behaviors = new HashMap<>();
     }
 
-    public BehaviorDispatcher(Cell callback, LayerManager layerManager) {
+    public BehaviorDispatcher(BehaviorCell callback, LayerManager layerManager, GeneralParameters p) {
         behaviors = new HashMap<>();
         this.layerManager = layerManager;
         this.callback = callback;
+        this.p = p;
     }
 
-    public BehaviorDispatcher(Element behaviorRoot, Cell callback, LayerManager layerManager) {
+    public BehaviorDispatcher(Element behaviorRoot, BehaviorCell callback, LayerManager layerManager, GeneralParameters p) {
+        this.p = p;
         behaviors = new HashMap<>();
-        BehaviorLoader loader = new BehaviorLoader(this, callback, layerManager);
+        BehaviorLoader loader = new BehaviorLoader(this, callback, layerManager, p);
         loader.loadAllBehaviors(behaviorRoot);
 
         this.layerManager = layerManager;
@@ -117,13 +121,4 @@ public class BehaviorDispatcher {
         return behaviors.get(behaviorName);
     }
 
-    /**
-     * Signals to the LayerManager that the callback cell is dead
-     * and should be removed from the simulation.
-     */
-    public void die() {
-        CellLayer layer = layerManager.getCellLayer();
-        Coordinate coord = layer.getLookupManager().getCellLocation(callback);
-        layer.getUpdateManager().banish(coord);
-    }
 }
