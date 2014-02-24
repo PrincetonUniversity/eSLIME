@@ -4,32 +4,22 @@ import agent.Behavior;
 import agent.control.BehaviorDispatcher;
 import cells.BehaviorCell;
 import cells.MockCell;
-import geometry.MockGeometry;
-import junit.framework.TestCase;
-import layers.MockLayerManager;
-import layers.cell.CellLayer;
-import structural.identifiers.Coordinate;
-import test.EslimeTestCase;
+import test.EslimeLatticeTestCase;
 
 /**
  * Created by dbborens on 2/10/14.
  */
-public class DieTest extends EslimeTestCase {
+public class DieTest extends EslimeLatticeTestCase {
     private Action query, identical, different;
     private BehaviorCell cell;
     private BehaviorDispatcher dispatcher;
-    private MockLayerManager layerManager;
     private Behavior behavior;
     private String eventName;
 
-    private Coordinate o;
-    private MockGeometry geom;
-    private CellLayer cellLayer;
-
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         // Set up test objects
-        layerManager = new MockLayerManager();
         cell = new BehaviorCell(layerManager, 1, 1.0, 1.0);
         query = new Die(cell, layerManager);
         identical = new Die(cell ,layerManager);
@@ -43,18 +33,13 @@ public class DieTest extends EslimeTestCase {
         cell.setDispatcher(dispatcher);
         dispatcher.map(eventName, behavior);
 
-        // Set up geometrical environment
-        geom = buildMockGeometry();
-        o = geom.getCanonicalSites()[0];
-        cellLayer = new CellLayer(geom, 0);
-        layerManager.setCellLayer(cellLayer);
-        cellLayer.getUpdateManager().place(cell, o);
+        layer.getUpdateManager().place(cell, origin);
     }
 
     public void testRun() throws Exception {
-        assertTrue(cellLayer.getViewer().isOccupied(o));
+        assertTrue(layer.getViewer().isOccupied(origin));
         cell.trigger("TEST", null);
-        assertFalse(cellLayer.getViewer().isOccupied(o));
+        assertFalse(layer.getViewer().isOccupied(origin));
     }
 
     public void testEquals() throws Exception {

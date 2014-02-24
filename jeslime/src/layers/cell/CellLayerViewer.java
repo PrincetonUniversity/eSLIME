@@ -77,4 +77,8 @@ public class CellLayerViewer {
 	public boolean isDivisible(Coordinate c) {
 		return indices.isDivisible(c);
 	}
+
+    public boolean exists(Cell cell) {
+        return indices.getCellLocationIndex().isIndexed(cell);
+    }
 }

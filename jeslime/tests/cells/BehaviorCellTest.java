@@ -67,14 +67,14 @@ public class BehaviorCellTest extends EslimeLatticeTestCase {
     }
 
     public void testDie() throws Exception {
-        fail("Not yet implemented");
-//        query.die();
-//        assertTrue(dispatcher.died());
+        assertTrue(layer.getViewer().isOccupied(origin));
+        query.die();
+        assertFalse(layer.getViewer().isOccupied(origin));
     }
 
     public void testEquals() {
         // Difference based on dispatcher (in)equality.
-        BehaviorCell other = new BehaviorCell(null, 1, 1.0, 0.5);
+        BehaviorCell other = new BehaviorCell(layerManager, 1, 1.0, 0.5);
         MockBehaviorDispatcher d2 = new MockBehaviorDispatcher();
         other.setDispatcher(d2);
         d2.setOverrideEquals(true);
@@ -88,12 +88,12 @@ public class BehaviorCellTest extends EslimeLatticeTestCase {
         assertEquals(query, other);
 
         // Test a cell that differs in division threshold.
-        other = new BehaviorCell(null, 1, 1.0, 1.0);
+        other = new BehaviorCell(layerManager, 1, 1.0, 1.0);
         other.setDispatcher(d2);
         assertNotEquals(query, other);
 
         // Test a cell that differs in state.
-        other = new BehaviorCell(null, 2, 1.0, 0.5);
+        other = new BehaviorCell(layerManager, 2, 1.0, 0.5);
         other.setDispatcher(d2);
         assertNotEquals(query, other);
     }
@@ -105,12 +105,25 @@ public class BehaviorCellTest extends EslimeLatticeTestCase {
      * that should be noted.
      */
     public void testDivisibilityThresholding() {
+        double threshold = query.getThreshold();
+
         // Start off below threshold.
-        
+        query.setFitness(threshold / 2);
+        assertDivisibilityStatus(false);
+
         // Adjust above threshold.
+        query.setFitness(threshold * 2);
+        assertDivisibilityStatus(true);
 
-        // Adjust below threshold.
+        // Adjust below threshold again.
+        query.setFitness(threshold / 2);
+        assertDivisibilityStatus(false);
+    }
 
-        fail("Not yet implemented.");
+    private void assertDivisibilityStatus(boolean expected) {
+        boolean layerActual = layer.getViewer().isDivisible(origin);
+        boolean cellActual = query.isDivisible();
+        assertEquals(expected, layerActual);
+        assertEquals(expected, cellActual);
     }
 }

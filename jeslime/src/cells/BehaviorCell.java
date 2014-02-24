@@ -33,7 +33,7 @@ public class BehaviorCell extends Cell {
 
         // We use the superclass setFitness here so it doesn't try to update
         // the location, as the cell is usually created before being placed.
-        super.setFitness(initialFitness);
+        setFitness(initialFitness);
 
         considerCount = 0;
 
@@ -157,5 +157,9 @@ public class BehaviorCell extends Cell {
         }
 
         return other.dispatcher.equals(this.dispatcher);
+    }
+
+    public double getThreshold() {
+        return threshold;
     }
 }

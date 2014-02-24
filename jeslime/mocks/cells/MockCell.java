@@ -19,6 +19,8 @@ public class MockCell extends BehaviorCell {
     private double production;
     private String lastTriggeredBehaviorName;
     private Coordinate lastTriggeredCaller;
+    private boolean divisible;
+    private boolean died;
 
     @Override
     public int consider() {
@@ -71,6 +73,16 @@ public class MockCell extends BehaviorCell {
     }
 
     @Override
+    public boolean isDivisible() {
+        return divisible;
+    }
+
+    @Override
+    protected void setDivisible(boolean divisible) {
+        this.divisible = divisible;
+    }
+
+    @Override
     public double getProduction(String solute) {
         return production;
     }
@@ -88,8 +100,6 @@ public class MockCell extends BehaviorCell {
         lastTriggeredBehaviorName = behaviorName;
         lastTriggeredCaller = caller;
     }
-
-    private boolean died;
 
     @Override
     public void die() {

@@ -2,6 +2,7 @@ package cells;
 
 import layers.LayerManager;
 import layers.cell.CellLayer;
+import layers.cell.CellLookupManager;
 import structural.identifiers.Coordinate;
 
 /**
@@ -38,8 +39,10 @@ public class CallbackManager {
     public void refreshDivisibility() {
         CellLayer layer = layerManager.getCellLayer();
 
-        Coordinate coord = layer.getLookupManager().getCellLocation(cell);
-        layer.getUpdateManager().refreshDivisibility(coord);
+        if (layer.getViewer().exists(cell)) {
+            Coordinate coord = layer.getLookupManager().getCellLocation(cell);
+            layer.getUpdateManager().refreshDivisibility(coord);
+        }
     }
 
     public LayerManager getLayerManager() {

@@ -1,13 +1,12 @@
 package layers;
 
 import cells.Cell;
+import cells.MockCell;
 import cells.SimpleCell;
+import layers.cell.*;
+import test.EslimeLatticeTestCase;
 import test.EslimeTestCase;
-import layers.cell.MockCellLayerContent;
-import layers.cell.MockCellLayerIndices;
 import geometry.MockGeometry;
-import layers.cell.CellIndex;
-import layers.cell.CellLayerViewer;
 import structural.identifiers.Coordinate;
 
 public class CellLayerViewerTest extends EslimeTestCase {
@@ -116,4 +115,14 @@ public class CellLayerViewerTest extends EslimeTestCase {
 		assertTrue(viewer.isDivisible(c1));
 		assertFalse(viewer.isDivisible(c2));
 	}
+
+    public void testExists() {
+        MockCellLayerIndices indices = new MockCellLayerIndices();
+        CellLocationIndex locationIndex = indices.getCellLocationIndex();
+        Cell cell = new MockCell();
+        assertFalse(locationIndex.isIndexed(cell));
+        Coordinate c = new Coordinate(0, 0, 0);
+        locationIndex.place(cell, c);
+        assertTrue(locationIndex.isIndexed(cell));
+    }
 }

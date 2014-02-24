@@ -9,7 +9,7 @@ public class MockCellLayerIndices extends CellLayerIndices {
 
 	private CellIndex occupied = new CellIndex();
 	private CellIndex divisible = new CellIndex();
-	
+
 	public void setOccupied(Coordinate k, Boolean v) {
 		if (v)
 			occupied.add(k);

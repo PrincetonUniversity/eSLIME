@@ -1,0 +1,14 @@
+<fixture>
+    <get-boolean>
+        <flag-only>
+            <test />
+        </flag-only>
+        <tag-true>
+            <test>true</test>
+        </tag-true>
+        <tag-false>
+            <test>false</test>
+        </tag-false>
+        <no-flag />
+    </get-boolean>
+</fixture>
