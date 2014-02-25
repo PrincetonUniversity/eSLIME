@@ -1,83 +1,72 @@
 package processes.discrete;
 
-import java.util.HashSet;
-import java.util.Random;
-
 import cells.Cell;
-import layers.LayerManager;
-import processes.StepState;
 import geometry.Geometry;
 import io.project.ProcessLoader;
+import layers.LayerManager;
+import processes.StepState;
 import structural.Flags;
 import structural.GeneralParameters;
-import layers.cell.CellLayer; 
 import structural.halt.HaltCondition;
 import structural.halt.LatticeFullEvent;
 import structural.identifiers.Coordinate;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.Random;
+
 public abstract class BulkDivisionProcess extends CellProcess{
 
-	protected Random random;
-    private Geometry geom;
+    // This class is in need of a refactor.
 
-	public BulkDivisionProcess(ProcessLoader loader, LayerManager layerManager, int id,
-			GeneralParameters p) {
-		super(loader, layerManager, id, p);
+    protected Random random;
+    private Geometry geom;
+    private int maxTargets;
+
+    public BulkDivisionProcess(ProcessLoader loader, LayerManager layerManager, int id,
+                               GeneralParameters p, int maxTargets) {
+        super(loader, layerManager, id, p);
 		random = p.getRandom();
         geom = layer.getGeometry();
-	}
+        this.maxTargets = maxTargets;
+    }
 
-	protected void execute(StepState state, Coordinate[] candidates) throws HaltCondition {
-		System.out.println("Executing bulk division process. Candidate count: " + candidates.length);
-		HashSet<Coordinate> preliminary = new HashSet<Coordinate>();
+    protected void execute(StepState state, Coordinate[] candidates) throws HaltCondition {
+//        System.out.println("Executing bulk division process. Candidate count: " + candidates.length);
+        Coordinate[] chosen = respectMaxTargets(candidates);
+        for (Coordinate dividingCell : chosen) {
+            doDivision(state, dividingCell);
+        }
+    }
 
-		Coordinate origin, target;
+    protected void doDivision(StepState state, Coordinate origin) throws HaltCondition {
+        HashSet<Coordinate> preliminary = new HashSet<Coordinate>();
 
-		if (candidates.length == 0) {
-			return;
-		} else {
+        Coordinate target;
 
-			int i = random.nextInt(candidates.length);
-			origin = candidates[i];
-		}
-		
-		System.out.println("   Origin: " + origin);
-		
-		// UNCOMMENT ME FOR HIGHLIGHTING
-		//state.highlight(origin);
-		
-		// Get nearest vacancies to the cell
+        // Get nearest vacancies to the cell
 		Coordinate[] targets = layer.getLookupManager().getNearestVacancies(origin, -1);
-		System.out.println("   Nearest vacancies: ");
-		for (Coordinate t : targets) {
-            int d = geom.getL1Distance(origin, t, Geometry.APPLY_BOUNDARIES);
-            boolean ba = (t.hasFlag(Flags.BOUNDARY_APPLIED));
-			System.out.println("      " + t + " (d=" + d +", ba=" + ba +")");
-		}
-		
-		// CONTINUE ADDING DIAGNOSTICS HERE
+
 		if (targets.length == 0) {
 			throw new LatticeFullEvent(state.getTime());
 		} else {
 			int i = random.nextInt(targets.length);
 			target = targets[i];
 		}
-		System.out.println("   Chose " + target + ".");
-		// Get child cell
+
+        // Get child cell
 		Cell child = layer.getUpdateManager().divide(origin);
 
 		// Move parent cell to the chosen vacancy, if necessary by shoving the
 		// parent and a line of interior cells toward the surface
 		Coordinate displacement = geom.getDisplacement(origin, target, Geometry.APPLY_BOUNDARIES);
-		System.out.println("   Displacement vector to target: " + displacement);
-		
-		if (!layer.getViewer().isOccupied(origin)) {
+
+        if (!layer.getViewer().isOccupied(origin)) {
 			throw new IllegalStateException();
 		}
-		
-		System.out.print("   Shoving...");
-		
-		shove(origin, displacement, preliminary);
+
+
+        shove(origin, displacement, preliminary);
 				
 		if (layer.getViewer().isOccupied(origin)) {
 			throw new IllegalStateException();
@@ -88,17 +77,12 @@ public abstract class BulkDivisionProcess extends CellProcess{
 
 			if (toCheck.hasFlag(Flags.END_OF_WORLD)) {
 				layer.getUpdateManager().banish(toCheck);
-			} else {
-				// UNCOMMENT ME AFTER GENERATING IMAGES FOR NED!
-				//state.highlight(toCheck);
 			}
 
 		}
 		
-		System.out.println("   Placing child cell.");
 		// Divide the child cell into the vacancy left by the parent
 		layer.getUpdateManager().place(child, origin);
-		System.out.println(" Division complete.");
 	}
 	
 	
@@ -112,7 +96,6 @@ public abstract class BulkDivisionProcess extends CellProcess{
 	 * TODO: This is so cloodgy and terrible.
 	 */
 	private void shove(Coordinate curLoc, Coordinate d, HashSet<Coordinate> sites) {
-		System.out.println("      Inside shove: curLoc=" + curLoc + "; d=" + d + ".");
 		// Base case 0: we've reached the target
 		if (d.norm() == 0) {
 			return;
@@ -171,4 +154,39 @@ public abstract class BulkDivisionProcess extends CellProcess{
 
 		sites.add(nextLoc);
 	}
+
+    private Coordinate[] respectMaxTargets(Coordinate[] candidates) {
+        // If maxTargets is < 0, it means that there is no maxTargets; return all.
+        if (maxTargets < 0) {
+            return candidates;
+        }
+        // If there the number of candidates does not exceed the max, return.
+        if (candidates.length <= maxTargets) {
+            return candidates;
+        }
+
+        // Otherwise, permute and choose the first n, where n = maxTargets.
+        permute(candidates);
+
+        Coordinate[] reduced = Arrays.copyOfRange(candidates, 0, maxTargets);
+
+        return reduced;
+    }
+
+    /**
+     * Fischer-Yates shuffling algorithm for permuting the contents of
+     * a coordinate array.
+     */
+    private void permute(Coordinate[] arr) {
+        for (int i = arr.length - 1; i > 0; i--) {
+            int j = random.nextInt(i + 1);
+            swap(arr, i, j);
+        }
+    }
+
+    private void swap(Coordinate[] arr, int i, int j) {
+        Coordinate temp = arr[j];
+        arr[j] = arr[i];
+        arr[i] = temp;
+    }
 }
