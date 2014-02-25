@@ -18,12 +18,13 @@ import structural.identifiers.Coordinate;
 public abstract class BulkDivisionProcess extends CellProcess{
 
 	protected Random random;
-
+    private Geometry geom;
 
 	public BulkDivisionProcess(ProcessLoader loader, LayerManager layerManager, int id,
 			GeneralParameters p) {
 		super(loader, layerManager, id, p);
 		random = p.getRandom();
+        geom = layer.getGeometry();
 	}
 
 	protected void execute(StepState state, Coordinate[] candidates) throws HaltCondition {
@@ -49,7 +50,9 @@ public abstract class BulkDivisionProcess extends CellProcess{
 		Coordinate[] targets = layer.getLookupManager().getNearestVacancies(origin, -1);
 		System.out.println("   Nearest vacancies: ");
 		for (Coordinate t : targets) {
-			System.out.println("      " + t + " (d=" + geom.getL1Distance(origin, t, Geometry.APPLY_BOUNDARIES) +", ba=" + (t.hasFlag(Flags.BOUNDARY_APPLIED)) +")");
+            int d = geom.getL1Distance(origin, t, Geometry.APPLY_BOUNDARIES);
+            boolean ba = (t.hasFlag(Flags.BOUNDARY_APPLIED));
+			System.out.println("      " + t + " (d=" + d +", ba=" + ba +")");
 		}
 		
 		// CONTINUE ADDING DIAGNOSTICS HERE

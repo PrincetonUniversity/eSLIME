@@ -18,7 +18,6 @@ public abstract class CellProcess extends Process {
     // These are easily accessed from the layer manager, but there
     // are very many calls to them thanks to some legacy code.
     protected CellLayer layer;
-    protected Geometry geom;
 
 	public CellProcess(ProcessLoader loader, LayerManager layerManager, int id,
 			GeneralParameters p) {

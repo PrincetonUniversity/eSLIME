@@ -24,11 +24,13 @@ import structural.identifiers.Coordinate;
 public class NeighborSwap extends CellProcess {
 
 	private List<SwapTuple> candidates = null;
+    private Geometry geom;
+
 	public NeighborSwap(ProcessLoader loader, LayerManager layerManager, int id,
 			GeneralParameters p) {
 		
 		super(loader, layerManager, id, p);
-		
+	    geom = layer.getGeometry();
 	}
 
 	@Override
