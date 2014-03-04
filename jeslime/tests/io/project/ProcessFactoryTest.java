@@ -30,22 +30,6 @@ public class ProcessFactoryTest extends TestCase {
     private CellLayer cl;
     private MockGeometry geometry;
 
-    // I'm not sure why I created this
-    private static final String[] RECOGNIZED_PROCESSES = new String[] {
-        "",
-        "tick",
-        "divide-anywhere",
-        "active-layer-divide",
-        "neighbor-swap",
-        "scatter",
-        "fill",
-        "uniform-biomass-growth",
-        "targeted-biomass-growth",
-        "mutate-all",
-        "gillespie-process",
-        "mock-process"
-    };
-
     @Override
     protected void setUp() throws Exception {
         loader = new MockProcessLoader();

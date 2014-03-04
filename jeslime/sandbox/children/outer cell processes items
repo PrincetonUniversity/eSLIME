@@ -1,0 +1,29 @@
+        <tick />
+
+        <fill>
+
+
+
+        </fill>
+
+        <fill>
+
+
+
+        </fill>
+
+        <uniform-biomass-growth>
+
+        </uniform-biomass-growth>
+
+        <trigger>
+
+        </trigger>
+
+        <cull />
+
+        <divide-anywhere />
+
+        <check-for-extinction />
+
+        <check-for-fixation />

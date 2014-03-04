@@ -18,8 +18,8 @@ public class DivideAnywhere extends BulkDivisionProcess {
 	private Coordinate[] candidates = null;
 	
 	public DivideAnywhere(ProcessLoader loader, LayerManager layerManager, int id,
-			 GeneralParameters p) {
-		super(loader, layerManager, id, p);
+			 GeneralParameters p, int maxTargets) {
+		super(loader, layerManager, id, p, maxTargets);
 	}
 
 	

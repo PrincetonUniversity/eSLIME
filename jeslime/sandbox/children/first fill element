@@ -1,0 +1,25 @@
+<state>sequential</state>
+<tokens>5</tokens>
+
+<cell-descriptor>
+    <class>BehaviorCell</class>
+    <initial-fitness>0.5</initial-fitness>
+    <threshold>1.0</threshold>
+
+    <behaviors>
+
+
+    </behaviors>
+
+</cell-descriptor>
+
+<!-- "offset" specifies a location as a distance from the center. -->
+<active-sites>
+    <mode>rectangle</mode>
+    <offset x="-2" y="0" />
+    <displacement dx="2" dy="2" />
+</active-sites>
+
+<!-- Do this once at t=0. -->
+<period>0</period>
+<start>0</start>

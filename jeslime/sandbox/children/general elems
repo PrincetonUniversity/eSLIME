@@ -1,0 +1,21 @@
+<!-- This test is deterministic, but eSLIME requires RS -->
+<random-seed>0</random-seed>
+
+<!-- We only need one pass -->
+<instances>1</instances>
+
+<!-- Write to test output directory -->
+<path>./jeslime/tests/output/a/</path>
+
+<!-- We will ultimately want fewer frames... -->
+<max-step>100</max-step>
+
+<!-- Don't use a date stamp (can't reproduce) -->
+<date-stamp>false</date-stamp>
+
+<!-- We want output from every step -->
+<output-frames>
+    <auto mode="all" />
+</output-frames>
+
+<write-state-map />

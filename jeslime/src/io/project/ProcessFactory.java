@@ -56,10 +56,12 @@ public class ProcessFactory {
 			return new Tick(loader, layerManager, id, p);
 			
 		} else if (processClass.equalsIgnoreCase("divide-anywhere")) {
-			return new DivideAnywhere(loader, layerManager, id, p);
+            int maxTargets = getMaxTargets(e);
+			return new DivideAnywhere(loader, layerManager, id, p, maxTargets);
 			
 		} else if (processClass.equalsIgnoreCase("active-layer-divide")) {
-				return new ActiveLayerDivide(loader, layerManager, id, p);
+                int maxTargets = getMaxTargets(e);
+				return new ActiveLayerDivide(loader, layerManager, id, p, maxTargets);
 				
 		} else if (processClass.equalsIgnoreCase("neighbor-swap")) {
 			return new NeighborSwap(loader, layerManager, id, p);
@@ -99,4 +101,15 @@ public class ProcessFactory {
 			throw new IllegalArgumentException(msg);
 		}		
 	}
+
+    private int getMaxTargets(Element e) {
+        Element maxElem = e.element("max-targets");
+        if (maxElem == null) {
+            return -1;
+        }
+
+        String maxStr = maxElem.getTextTrim();
+        Integer maxTargets = Integer.valueOf(maxStr);
+        return maxTargets;
+    }
 }

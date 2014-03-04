@@ -6,7 +6,9 @@ import layers.LayerManager;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
-import layers.cell.CellLayer; import structural.halt.HaltCondition;
+import layers.cell.CellLayer;
+import structural.XmlUtil;
+import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
 /**
@@ -30,8 +32,8 @@ public class UniformBiomassGrowth extends CellProcess {
 		super(loader, layerManager, id, p);
 		
 		delta = Double.valueOf(get("delta"));
-		
-		defer = Boolean.valueOf(get("defer"));
+
+        defer = XmlUtil.getBoolean(e, "defer");
 	}
 
 	public UniformBiomassGrowth(LayerManager layerManager,

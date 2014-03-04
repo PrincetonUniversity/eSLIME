@@ -1,0 +1,201 @@
+<simulation>
+    <version>0.5.0</version>
+
+    <!-- Declare general simulation properties -->
+    <general>
+        <random-seed>*</random-seed>
+        <instances>1000</instances>
+        <path>~dbborens/projects/T6SS/</path>
+        <date-stamp>true</date-stamp>
+        <max-step>1000000</max-step>
+        <output-frames>
+            <auto mode="decilog" />
+        </output-frames>
+        <write-state-map />
+    </general>
+
+    <!-- Declare geometry properties -->
+    <geometry>
+        <shape>
+            <class>Rectangle</class>
+            <width>32</width>
+            <height>32</height>
+        </shape>
+        <lattice>
+            <class>Rectangular</class>
+        </lattice>
+    </geometry>
+
+    <!-- One discrete field and multiple continuum fields may be defined -->
+    <layers>
+        <cell-layer>
+            <boundary>
+                <class>PlaneRingReflecting</class>
+            </boundary>
+        </cell-layer>
+    </layers>
+
+    <!-- Declare simulation events, and when they should occur -->
+    <cell-processes>
+        <!-- Each time step should advance the integrator clock by 1 unit of time. -->
+        <tick>
+            <dt>1.0</dt>
+        </tick>
+
+        <!-- At outset, put a few ATTACKERS in the system. -->
+        <fill>
+            <state>sequential</state>
+            <tokens>5</tokens>
+
+            <cell-descriptor>
+                <class>BehaviorCell</class>
+                <initial-fitness>0.5</initial-fitness>
+                <threshold>1.0</threshold>
+
+                <behaviors>
+                    <!-- Define the attack behavior. -->
+                    <attack>
+                        <!-- Step 1: Trigger the "be-attacked" behavior in a neighbor. -->
+                        <trigger>
+                            <target>
+                                <class>occupied-neighbors</class>
+                                <max>1</max>
+                            </target>
+                            <behavior>
+                                be-attacked
+                            </behavior>
+                        </trigger>
+
+                        <!-- Step 2: incur a cost. -->
+                        <adjust-fitness>
+                            <delta>-0.1</delta>
+                        </adjust-fitness>
+                    </attack>
+
+                    <!-- Being attacked involves taking a fitness penalty. -->
+                    <be-attacked>
+                        <adjust-fitness>
+                            <delta>-0.5</delta>
+                        </adjust-fitness>
+                    </be-attacked>
+                </behaviors>
+
+            </cell-descriptor>
+
+            <!-- "offset" specifies a location as a distance from the center. -->
+            <active-sites>
+                <mode>rectangle</mode>
+                <offset x="-2" y="0" />
+                <displacement dx="2" dy="2" />
+            </active-sites>
+
+            <!-- Do this once at t=0. -->
+            <period>0</period>
+            <start>0</start>
+        </fill>
+
+        <!-- At outset, put a few RETALIATORS in the system. -->
+        <fill>
+            <state>sequential</state>
+            <tokens>5</tokens>
+
+            <cell-descriptor>
+                <class>BehaviorCell</class>
+                <initial-fitness>0.5</initial-fitness>
+                <threshold>1.0</threshold>
+
+                <behaviors>
+                    <!-- Retaliators don't attack, so make this a null action. -->
+                    <attack>
+                        <null />
+                    </attack>
+
+                    <!-- Define the retaliator's response to being attacked. -->
+                    <be-attacked>
+
+                        <!-- Retaliators may shoot back, or they may do nothing. -->
+                        <stochastic-choice>
+
+                            <!-- Option 1: do nothing. -->
+                            <option weight="0.9">
+                                <null />
+                            </option>
+
+                            <!-- Option 2: Retaliate. -->
+                            <option weight="0.1">
+                                <!-- Step 1: Trigger the "be-attacked" behavior in the attacker. -->
+                                <trigger>
+
+                                    <target>
+                                        <class>caller</class>
+                                    </target>
+                                    <behavior>
+                                        be-attacked
+                                    </behavior>
+                                </trigger>
+
+                                <!-- Step 2: incur a cost. -->
+                                <adjust-fitness>
+                                    <delta>-0.1</delta>
+                                </adjust-fitness>
+                            </option>
+                        </stochastic-choice>
+                    </be-attacked>
+                </behaviors>
+
+            </cell-descriptor>
+
+            <active-sites>
+                <mode>rectangle</mode>
+                <offset x="1" y="0" />
+                <displacement dx="2" dy="2" />
+            </active-sites>
+
+            <!-- Do this once at t=0. -->
+            <period>0</period>
+            <start>0</start>
+        </fill>
+
+        <!-- During each cycle, let everyone grow. -->
+        <uniform-biomass-growth>
+            <delta>0.2</delta>
+        </uniform-biomass-growth>
+
+        <!-- Choose a cell to execute its "attack" behavior. -->
+        <trigger>
+            <behavior>attack</behavior>
+            <max-targets>1</max-targets>
+            <skip-vacant-sites />
+        </trigger>
+
+        <!-- Remove the cells that have died. -->
+        <cull />
+
+        <!-- Allow cells that are big enough to divide. -->
+        <divide-anywhere />
+
+        <!-- End the simulation if everyone is dead -->
+        <check-for-extinction />
+
+        <!-- End the simulation if one cell type has fixed -->
+        <check-for-fixation />
+
+    </cell-processes>
+
+    <!-- Declare the expected output modes -->
+    <writers>
+        <!-- Write out a data file containing discrete layer states -->
+        <cell-state-writer />
+
+        <!-- Write out parameters to a plain text file -->
+        <parameter-writer />
+
+        <!-- Report progress to stdout -->
+        <progress-reporter />
+
+        <!-- Create a catalog of coordinates to scalar indices. Required for some
+             post-processing, such as visualizations. -->
+        <coordinate-indexer />
+
+    </writers>
+</simulation>

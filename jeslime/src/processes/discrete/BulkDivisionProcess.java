@@ -32,7 +32,6 @@ public abstract class BulkDivisionProcess extends CellProcess{
     }
 
     protected void execute(StepState state, Coordinate[] candidates) throws HaltCondition {
-//        System.out.println("Executing bulk division process. Candidate count: " + candidates.length);
         Coordinate[] chosen = respectMaxTargets(candidates);
         for (Coordinate dividingCell : chosen) {
             doDivision(state, dividingCell);

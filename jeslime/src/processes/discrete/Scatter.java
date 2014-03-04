@@ -32,7 +32,7 @@ public class Scatter extends CellProcess {
 
 		random = p.getRandom();
 		
-		numGroups = Integer.valueOf(get("types"));
+		numGroups = Integer.valueOf(get("types", "1"));
 		groupSize = Integer.valueOf(get("tokens"));
 	}
 

@@ -19,8 +19,8 @@ public class ActiveLayerDivide extends BulkDivisionProcess {
 	private Coordinate[] candidates = null;
 	
 	public ActiveLayerDivide(ProcessLoader loader, LayerManager layerManager, int id,
-			GeneralParameters p) {
-		super(loader, layerManager, id, p);
+			GeneralParameters p, int maxTargets) {
+		super(loader, layerManager, id, p, maxTargets);
 		
 		depth = Integer.valueOf(get("depth"));
 	}

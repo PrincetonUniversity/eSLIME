@@ -1,0 +1,21 @@
+<attack>
+    <trigger>
+        <target>
+            <class>occupied-neighbors</class>
+            <max>1</max>
+        </target>
+        <behavior>
+            be-attacked
+        </behavior>
+    </trigger>
+
+    <adjust-fitness>
+        <delta>-0.1</delta>
+    </adjust-fitness>
+</attack>
+
+<be-attacked>
+    <adjust-fitness>
+        <delta>-0.5</delta>
+    </adjust-fitness>
+</be-attacked>
