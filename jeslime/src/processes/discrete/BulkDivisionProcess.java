@@ -33,10 +33,25 @@ public abstract class BulkDivisionProcess extends CellProcess{
 
     protected void execute(StepState state, Coordinate[] candidates) throws HaltCondition {
         Coordinate[] chosen = respectMaxTargets(candidates);
-        for (Coordinate dividingCell : chosen) {
-            doDivision(state, dividingCell);
+        Cell[] chosenCells = toCellArray(chosen);
+        for (Cell cell : chosenCells) {
+            Coordinate currentLocation = layer.getLookupManager().getCellLocation(cell);
+            doDivision(state, currentLocation);
         }
     }
+
+    private Cell[] toCellArray(Coordinate[] chosen) {
+        int n = chosen.length;
+        Cell[] cells = new Cell[n];
+        for (int i = 0; i < n; i++) {
+            Coordinate coord = chosen[i];
+            Cell cell = layer.getViewer().getCell(coord);
+            cells[i] = cell;
+        }
+
+        return cells;
+    }
+
 
     protected void doDivision(StepState state, Coordinate origin) throws HaltCondition {
         HashSet<Coordinate> preliminary = new HashSet<Coordinate>();
