@@ -33,16 +33,15 @@ import processes.StepState;
 import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
 import structural.halt.ExtinctionEvent;
-import structural.halt.FixationEvent;
 import structural.halt.HaltCondition;
 
 /**
  * Checks for extinction or fixation events.
- *
+ * <p/>
  * Created by dbborens on 1/13/14.
  */
-public class CheckForFixation extends CellProcess {
-    public CheckForFixation(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
+public class CheckForExtinction extends CellProcess {
+    public CheckForExtinction(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
         super(loader, layerManager, id, p);
     }
 
@@ -56,16 +55,10 @@ public class CheckForFixation extends CellProcess {
 
     @Override
     public void fire(StepState state) throws HaltCondition {
-		StateMapViewer smv = layer.getViewer().getStateMapViewer();
+        StateMapViewer smv = layer.getViewer().getStateMapViewer();
 
         if (smv.getStates().length == 0) {
             throw new ExtinctionEvent(state.getTime());
         }
-
-        for (Integer s : smv.getStates()) {
-			if (smv.getCount(s) == layer.getGeometry().getCanonicalSites().length) {
-				throw new FixationEvent(state.getTime(), s);
-			}
-		}
     }
 }
