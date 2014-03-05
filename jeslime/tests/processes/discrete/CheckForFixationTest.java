@@ -26,13 +26,13 @@
 
 package processes.discrete;
 
-import cells.Cell;
 import cells.MockCell;
 import geometry.MockGeometry;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import processes.StepState;
 import processes.gillespie.GillespieState;
+import structural.halt.ExtinctionEvent;
 import structural.halt.FixationEvent;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
@@ -82,9 +82,22 @@ public class CheckForFixationTest extends EslimeTestCase {
         assertEquals(expectFixation, fixed);
     }
 
-    public void testEmptyCase() {
+    public void testExtinctionCase() {
         makeOneCanonicalSite();
-        doTest(false);
+        boolean extinct = false;
+
+        try {
+            StepState state = new StepState();
+            query.fire(state);
+        } catch (ExtinctionEvent event) {
+            extinct = true;
+
+            // Nothing else is supposed to be thrown!
+        } catch (HaltCondition condition) {
+            fail("Unexpected halt condition " + condition.getClass().getSimpleName());
+        }
+
+        assertTrue(extinct);
     }
 
     // There's only one site -- automatically fixed once filled

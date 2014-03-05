@@ -26,14 +26,13 @@
 
 package processes.discrete;
 
-import geometry.Geometry;
 import io.project.ProcessLoader;
 import layers.LayerManager;
-import layers.cell.CellLayer;
 import layers.cell.StateMapViewer;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
+import structural.halt.ExtinctionEvent;
 import structural.halt.FixationEvent;
 import structural.halt.HaltCondition;
 
@@ -47,7 +46,7 @@ public class CheckForFixation extends CellProcess {
 
     @Override
     public void target(GillespieState gs) throws HaltCondition {
-        // There's only one event that can happen--we update.
+        // There's only one event that can happen in this process.
         if (gs != null) {
             gs.add(this.getID(), 1, 0.0D);
         }
@@ -57,7 +56,11 @@ public class CheckForFixation extends CellProcess {
     public void fire(StepState state) throws HaltCondition {
 		StateMapViewer smv = layer.getViewer().getStateMapViewer();
 
-		for (Integer s : smv.getStates()) {
+        if (smv.getStates().length == 0) {
+            throw new ExtinctionEvent(state.getTime());
+        }
+
+        for (Integer s : smv.getStates()) {
 			if (smv.getCount(s) == layer.getGeometry().getCanonicalSites().length) {
 				throw new FixationEvent(state.getTime(), s);
 			}
