@@ -26,8 +26,6 @@
 
 package structural;
 
-import java.lang.reflect.Array;
-import java.util.Arrays;
 import java.util.HashMap;
 
 /**
@@ -63,12 +61,12 @@ public class Chooser<T> {
      * Returns a particular process based on an input between 0
      * and the total weight, with processes sorted numerically
      * by ID number.
-     *
+     * <p/>
      * So if w_i is the weight of process i, then you'll get back
-     *
+     * <p/>
      * 0 <= x < w_1         --> return process 1's id
      * w_1 <= x < w_1 + w_2 --> return process 2's id
-     *    ...
+     * ...
      * w_n-1 <= x < sum(w)  --> return process n's id
      *
      * @return
@@ -119,11 +117,11 @@ public class Chooser<T> {
 
         // Recursive case 1: Midpoint is too low; check upper half.
         if (x >= max) {
-            return binaryRangeSearch(midpoint+1, upper, x, bins);
+            return binaryRangeSearch(midpoint + 1, upper, x, bins);
 
             // Recursive case 2: Midpoint is too high; check lower half.
         } else if (x < min) {
-            return binaryRangeSearch(lower, midpoint-1, x, bins);
+            return binaryRangeSearch(lower, midpoint - 1, x, bins);
 
             // Base case: x is less than the maximum and greater
             // than the minimum. In that case, the midpoint bin
