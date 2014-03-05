@@ -58,4 +58,14 @@ public abstract class XmlUtil {
         return Boolean.valueOf(elemText);
     }
 
+    public static double getDouble(Element e, String name, double defaultValue) {
+        Element valueElement = e.element(name);
+        if (valueElement == null) {
+            return defaultValue;
+        }
+
+        String valueText = valueElement.getTextTrim();
+        double ret = Double.valueOf(valueText);
+        return ret;
+    }
 }

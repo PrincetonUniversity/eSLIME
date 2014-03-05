@@ -28,16 +28,15 @@ package io.project;
 
 import layers.LayerManager;
 import org.dom4j.Element;
-
 import processes.MockProcess;
 import processes.Process;
 import processes.continuum.FieldUpdateProcess;
 import processes.discrete.*;
 import processes.gillespie.GillespieProcess;
-import processes.temporal.*;
+import processes.temporal.ExponentialInverse;
+import processes.temporal.Tick;
 import structural.GeneralParameters;
-import layers.cell.CellLayer;
-import geometry.Geometry;
+import structural.XmlUtil;
 
 /**
  * @untested 
@@ -120,7 +119,10 @@ public class ProcessFactory {
         } else if (processClass.equalsIgnoreCase("trigger")) {
             return new Trigger(loader, layerManager, id, p);
 
-		} else {
+        } else if (processClass.equalsIgnoreCase("cull")) {
+            double threshold = XmlUtil.getDouble(e, "threshold", 0.0);
+            return new Cull(loader, layerManager, id, p, threshold);
+        } else {
 			String msg = "Unrecognized process '" +
 					processClass + "' (id=" + id + ").";
 			

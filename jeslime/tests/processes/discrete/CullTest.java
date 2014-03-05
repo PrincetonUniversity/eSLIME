@@ -24,37 +24,16 @@
  * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
  */
 
-package structural;
+package processes.discrete;
 
-import org.dom4j.Element;
-import test.EslimeTestCase;
+import junit.framework.TestCase;
 
 /**
- * Created by dbborens on 2/20/14.
+ * Created by dbborens on 3/5/14.
  */
-public class XmlUtilTest extends EslimeTestCase {
-    Element fixtureRoot;
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        fixtureRoot = readXmlFile("XmlUtilTest.xml");
-    }
+public class CullTest extends TestCase {
 
-    public void testGetBoolean() throws Exception {
-        Element testRoot = fixtureRoot.element("get-boolean");
-        doBooleanTest(testRoot, "flag-only", true);
-        doBooleanTest(testRoot, "no-flag", false);
-        doBooleanTest(testRoot, "tag-true", true);
-        doBooleanTest(testRoot, "tag-false", false);
-    }
-
-    private void doBooleanTest(Element testRoot, String childName, boolean expected) {
-        Element child = testRoot.element(childName);
-        boolean actual = XmlUtil.getBoolean(child, "test");
-        assertEquals(expected, actual);
-    }
-
-    public void testGetDouble() throws Exception {
+    public void testLifeCycle() throws Exception {
         fail("Not yet implemented");
     }
 }
