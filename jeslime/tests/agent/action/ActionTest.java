@@ -28,7 +28,6 @@ package agent.action;
 
 import cells.BehaviorCell;
 import cells.Cell;
-import cells.MockCell;
 import junit.framework.TestCase;
 import layers.LayerManager;
 import layers.MockLayerManager;
