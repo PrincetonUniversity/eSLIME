@@ -1,30 +1,32 @@
+/*
+ * Copyright (c) 2014, David Bruce Borenstein and the Trustees of
+ * Princeton University.
+ *
+ * Except where otherwise noted, this work is subject to a Creative Commons
+ * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
+ * license.
+ *
+ * Attribute (BY) -- You must attribute the work in the manner specified
+ * by the author or licensor (but not in any way that suggests that they
+ * endorse you or your use of the work).
+ *
+ * NonCommercial (NC) -- You may not use this work for commercial purposes.
+ *
+ * ShareAlike (SA) -- If you remix, transform, or build upon the material,
+ * you must distribute your contributions under the same license as the
+ * original.
+ *
+ * The Licensor offers the Licensed Material as-is and as-available, and
+ * makes no representations or warranties of any kind concerning the
+ * Licensed Material, whether express, implied, statutory, or other.
+ *
+ * For the full license, please visit:
+ * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ */
+
 package structural.identifiers;
 
 
-/**
- *
- * Copyright (c) 2013, David Bruce Borenstein.
- * 
- * This work is licensed under the Creative Commons 2.0 BY-NC license.
- * 
- * Attribute (BY) -- You must attribute the work in the manner specified 
- * by the author or licensor (but not in any way that suggests that they 
- * endorse you or your use of the work).
- * 
- * Noncommercial (NC) -- You may not use this work for commercial purposes.
- * 
- * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc/3.0/legalcode
- * 
- * 
- * Same as "Extrema" but won't consider zero as a minimum or maximum. This way,
- * if a value has some fairly small set of values, all with the same sign,
- * they color plot will not show up as all one color. Note that if no non-zero
- * entries are considered, this method will malfunction.
- * 
- * @author dbborens@princeton.edu
- *
- */
 public class NonZeroExtrema extends Extrema {
 
 	@Override
