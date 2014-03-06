@@ -29,9 +29,9 @@ package io.project;
 import agent.action.*;
 import agent.targets.TargetRule;
 import cells.BehaviorCell;
-import cells.Cell;
 import layers.LayerManager;
 import org.dom4j.Element;
+import structural.Chooser;
 import structural.GeneralParameters;
 
 import java.util.Random;
@@ -53,12 +53,24 @@ public class ActionFactory {
                 return adjustFitness(e, callback, layerManager);
             case "trigger":
                 return trigger(e, callback, layerManager, p);
+            case "stochastic-choice":
+                return stochasticChoice(e, callback, layerManager, p);
             case "null":
                 return null;
             default:
                 String msg = "Unrecognized action '" + actionName + "'.";
                 throw new IllegalArgumentException(msg);
         }
+    }
+
+    private static Action stochasticChoice(Element e, BehaviorCell callback, LayerManager layerManager,
+                                           GeneralParameters p) {
+
+        Chooser<Action> chooser = ActionChooserFactory.instantiate(e, callback, layerManager, p);
+        Random random = p.getRandom();
+
+        Action action = new StochasticChoice(callback, layerManager, chooser, random);
+        return action;
     }
 
     private static Action mockAction() {
