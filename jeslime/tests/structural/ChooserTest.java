@@ -48,6 +48,17 @@ public class ChooserTest extends TestCase {
         fail("Not yet implemented.");
     }
 
+    public void testGetTotalWeight() throws Exception {
+        fail("Not yet implemented.");
+    }
+
+    public void testEquals() throws Exception {
+        fail("Not yet implemeented.");
+    }
+
+    public void testClone() throws Exception {
+        fail("Not yet implemented");
+    }
 
 //    private int doSearch(double x) {
 //        // These are irrelevant -- just for mock

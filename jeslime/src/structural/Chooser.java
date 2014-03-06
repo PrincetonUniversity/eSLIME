@@ -35,6 +35,7 @@ public class Chooser<T> {
 
     private HashMap<T, Double> weights;
     private boolean closed;
+    private double totalWeight = 0.0;
 
     public Chooser() {
         weights = new HashMap<>();
@@ -55,6 +56,10 @@ public class Chooser<T> {
         }
 
         closed = true;
+
+        for (double weight : weights.values()) {
+            totalWeight += weight;
+        }
     }
 
     /**
@@ -150,4 +155,60 @@ public class Chooser<T> {
         return upperBounds;
     }
 
+    public double getTotalWeight() {
+        if (!closed) {
+            throw new IllegalStateException("Chooser must be closed before checking total weight.");
+        }
+
+        return totalWeight;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Chooser)) {
+            return false;
+        }
+
+        Chooser other = (Chooser) obj;
+
+        if (!EpsilonUtil.epsilonEquals(totalWeight, other.totalWeight)) {
+            return false;
+        }
+
+        if (other.weights.size() != this.weights.size()) {
+            return false;
+        }
+
+        for (T key : weights.keySet()) {
+            if (!other.weights.containsKey(key)) {
+                return false;
+            }
+
+            double p = weights.get(key);
+            double q = (double) other.weights.get(key);
+
+            if (!EpsilonUtil.epsilonEquals(p, q)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public Chooser<T> clone() {
+        if (!closed) {
+            throw new IllegalStateException("Cannot clone chooser until it is closed.");
+        }
+
+        Chooser<T> cloned = new Chooser<T>();
+
+        for (T key : weights.keySet()) {
+            cloned.add(key, weights.get(key));
+        }
+
+        cloned.close();
+
+        return cloned;
+    }
 }

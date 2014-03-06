@@ -30,10 +30,8 @@ import agent.action.*;
 import agent.targets.TargetRule;
 import agent.targets.TargetSelf;
 import cells.MockCell;
-import junit.framework.TestCase;
 import layers.MockLayerManager;
 import org.dom4j.Element;
-import org.dom4j.tree.BaseElement;
 import structural.MockGeneralParameters;
 import test.EslimeTestCase;
 
@@ -74,6 +72,10 @@ public class ActionFactoryTest extends EslimeTestCase {
         Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
         Action expected = new Die(callback, layerManager);
         assertEquals(expected, actual);
+    }
+
+    public void testStochasticChoice() throws Exception {
+        fail("Not yet implemented.");
     }
 
     public void testTrigger() throws Exception {
