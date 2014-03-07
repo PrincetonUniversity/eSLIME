@@ -30,12 +30,15 @@ import cells.Cell;
 import io.project.ProcessLoader;
 import layers.LayerManager;
 import org.dom4j.Element;
+import processes.MaxTargetHelper;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
 import structural.XmlUtil;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
+
+import java.util.ArrayList;
 
 /**
  * Causes cells within the active area to perform the specified behavior.
@@ -44,13 +47,17 @@ import structural.identifiers.Coordinate;
 public class Trigger extends CellProcess {
     private String behaviorName;
     private boolean skipVacant;
+    private int maxTargets;
 
-    public Trigger(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
+    // We use a cell array because triggering may also move cells
+    private Cell[] targets;
+
+    public Trigger(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p, int maxTargets) {
         super(loader, layerManager, id, p);
         behaviorName = get("behavior");
         Element e = loader.getProcess(id);
         skipVacant = XmlUtil.getBoolean(e, "skip-vacant-sites");
-
+        this.maxTargets = maxTargets;
     }
 
     public Trigger(LayerManager layerManager, String behaviorName, boolean skipVacant) {
@@ -61,6 +68,7 @@ public class Trigger extends CellProcess {
 
     @Override
     public void target(GillespieState gs) throws HaltCondition {
+        targets = resolveTargets();
         // There may be a meaningful Gillespie implementation of this. If so,
         // we can add it when needed.
         if (gs != null) {
@@ -68,29 +76,48 @@ public class Trigger extends CellProcess {
         }
     }
 
-    @Override
-    public void fire(StepState state) throws HaltCondition {
+    private Cell[] resolveTargets() {
+        ArrayList<Coordinate> candidates = new ArrayList<>();
 
         for (Coordinate c : activeSites) {
             boolean vacant = !layer.getViewer().isOccupied(c);
             // If it's vacant and we don't expect already-vacant cells, throw error
             if (vacant && !skipVacant) {
-                String msg = "Attempted to trigger behavior " + behaviorName + " in coordinate " + c.toString() +
+                String msg = "Attempted to queue triggering of behavior " +
+                        behaviorName + " in coordinate " + c.toString() +
                         " but the site was dead or vacant. This is illegal unless" +
                         " the <skip-vacant-sites> flag is set to true. Did you" +
                         " mean to set it? (id=" + getID() + ")";
 
                 throw new IllegalStateException(msg);
             } else if (!vacant) {
-                Cell toTrigger = layer.getViewer().getCell(c);
-
-                // A null caller on the trigger method means that the caller is
-                // a process rather than a cell.
-                toTrigger.trigger(behaviorName, null);
+                candidates.add(c);
             } else {
                 // Do nothing if site is vacant and skipDead is true.
             }
         }
+
+        Coordinate[] selectedCoords = MaxTargetHelper.respectMaxTargets(candidates, maxTargets, p.getRandom());
+
+        Cell[] selectedCells = new Cell[selectedCoords.length];
+        for (int i = 0; i < selectedCells.length; i++) {
+            Coordinate coord = selectedCoords[i];
+            selectedCells[i] = layer.getViewer().getCell(coord);
+        }
+
+        return selectedCells;
+    }
+
+    @Override
+    public void fire(StepState state) throws HaltCondition {
+        System.out.println("Executing Trigger.");
+        for (Cell target : targets) {
+            System.out.println("   Triggering behavior '" + behaviorName + "' in cell of type" + target.getState());
+            // A null caller on the trigger method means that the caller is
+            // a process rather than a cell.
+            target.trigger(behaviorName, null);
+        }
+
     }
 
     @Override
@@ -102,7 +129,7 @@ public class Trigger extends CellProcess {
         Trigger other = (Trigger) obj;
 
         if (!this.behaviorName.equals(other.behaviorName)) {
-           return false;
+            return false;
         }
 
         if (skipVacant != other.skipVacant) {

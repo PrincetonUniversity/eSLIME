@@ -62,24 +62,15 @@ public abstract class ActionChooserFactory {
     }
 
     private static Action getAction(Element option, BehaviorCell callback, LayerManager layerManager, GeneralParameters p) {
-        Element actionElement = getOnlyChild(option);
-        Action action = ActionFactory.instantiate(actionElement, callback, layerManager, p);
-        return action;
-    }
-
-    private static Element getOnlyChild(Element option) {
         List elements = option.elements();
-
-        // Verify that there is only one child element.
-        if (elements.size() != 1) {
-            throw new IllegalArgumentException("Expect exactly one child element for a stochastic choice option.");
+        if (elements.size() == 0) {
+            throw new IllegalArgumentException("Expected an action or list of actions for stochastic choice option.");
+        } else if (elements.size() == 1) {
+            Element child = (Element) option.elements().iterator().next();
+            return ActionFactory.instantiate(child, callback, layerManager, p);
+        } else {
+            return BehaviorFactory.instantiateAsCompoundAction(option, callback, layerManager, p);
         }
-
-        Object child = elements.iterator().next();
-
-        Element ret = (Element) child;
-
-        return ret;
     }
 
     private static double getWeight(Element option) {

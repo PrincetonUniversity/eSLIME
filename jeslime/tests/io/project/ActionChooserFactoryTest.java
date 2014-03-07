@@ -32,7 +32,12 @@ import junit.framework.TestCase;
  * Created by dbborens on 3/6/14.
  */
 public class ActionChooserFactoryTest extends TestCase {
-    public void testInstantiate() throws Exception {
+    public void testInstantiateOneChild() throws Exception {
         fail("Not yet implemented.");
     }
+
+    public void testInstantiateMultipleChildren() throws Exception {
+        fail("Not yet implemented.");
+    }
+
 }

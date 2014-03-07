@@ -26,13 +26,12 @@
 
 package processes.discrete;
 
-import geometry.Geometry;
+import cells.Cell;
 import io.project.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
-import layers.cell.CellLayer;
 import structural.XmlUtil;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
@@ -60,7 +59,11 @@ public class UniformBiomassGrowth extends CellProcess {
 		delta = Double.valueOf(get("delta"));
 
         defer = XmlUtil.getBoolean(e, "defer");
-	}
+
+        if (defer) {
+            throw new UnsupportedOperationException("Deferred actions are currently disabled.");
+        }
+    }
 
 	public UniformBiomassGrowth(LayerManager layerManager,
 			double delta, boolean defer) {
@@ -80,11 +83,18 @@ public class UniformBiomassGrowth extends CellProcess {
 
 	@Override
 	public void fire(StepState state) throws HaltCondition {
-		// Feed the cells.
+        System.out.println("Executing uniform biomass growth.");
+        // Feed the cells.
 		for (Coordinate site : activeSites) {
 			if (layer.getViewer().isOccupied(site)) {
-				layer.getViewer().getCell(site).feed(delta);
-			}
+                Cell cell = layer.getViewer().getCell(site);
+                double oldFitness = cell.getFitness();
+                layer.getViewer().getCell(site).adjustFitness(delta);
+
+//                System.out.print("   Fed cell at " + site);
+//                System.out.print(". Before: " + oldFitness);
+//                System.out.println(". After: " + cell.getFitness());
+            }
 		}
 		
 		// If we're not defering updates, tell the cells to use the
@@ -98,8 +108,8 @@ public class UniformBiomassGrowth extends CellProcess {
 				}
 			}
 		}
-		
-		// It would be annoying to highlight cells just for being fed, so we
+
+        // It would be annoying to highlight cells just for being fed, so we
 		// don't.
 	}
 

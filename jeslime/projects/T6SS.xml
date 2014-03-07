@@ -4,10 +4,10 @@
     <!-- Declare general simulation properties -->
     <general>
         <random-seed>*</random-seed>
-        <instances>1000</instances>
-        <path>~dbborens/projects/T6SS/</path>
+        <instances>1</instances>
+        <path>/Users/dbborens/projects/T6SS/</path>
         <date-stamp>true</date-stamp>
-        <max-step>1000000</max-step>
+        <max-step>1000001</max-step>
         <output-frames>
             <auto mode="decilog" />
         </output-frames>
@@ -43,12 +43,18 @@
         </tick>
 
         <!-- At outset, put a few ATTACKERS in the system. -->
-        <fill>
-            <state>sequential</state>
+        <scatter>
+
+            <!-- "types" specifies the number of lineages to create. They will all have the same
+                 phenotype. "tokens" specifies the number of individuals of each phenotype to
+                 place. -->
+
+            <types>1</types>
             <tokens>5</tokens>
 
             <cell-descriptor>
                 <class>BehaviorCell</class>
+                <state>sequential</state>
                 <initial-fitness>0.5</initial-fitness>
                 <threshold>1.0</threshold>
 
@@ -75,32 +81,26 @@
                     <!-- Being attacked involves taking a fitness penalty. -->
                     <be-attacked>
                         <adjust-fitness>
-                            <delta>-0.5</delta>
+                            <delta>-5.0</delta>
                         </adjust-fitness>
                     </be-attacked>
                 </behaviors>
 
             </cell-descriptor>
 
-            <!-- "offset" specifies a location as a distance from the center. -->
-            <active-sites>
-                <mode>rectangle</mode>
-                <offset x="-2" y="0" />
-                <displacement dx="2" dy="2" />
-            </active-sites>
-
             <!-- Do this once at t=0. -->
             <period>0</period>
             <start>0</start>
-        </fill>
+        </scatter>
 
         <!-- At outset, put a few RETALIATORS in the system. -->
-        <fill>
-            <state>sequential</state>
+        <scatter>
+            <types>1</types>
             <tokens>5</tokens>
 
             <cell-descriptor>
                 <class>BehaviorCell</class>
+                <state>sequential</state>
                 <initial-fitness>0.5</initial-fitness>
                 <threshold>1.0</threshold>
 
@@ -136,7 +136,7 @@
 
                                 <!-- Step 2: incur a cost. -->
                                 <adjust-fitness>
-                                    <delta>-0.1</delta>
+                                    <delta>-0.3</delta>
                                 </adjust-fitness>
                             </option>
                         </stochastic-choice>
@@ -145,20 +145,15 @@
 
             </cell-descriptor>
 
-            <active-sites>
-                <mode>rectangle</mode>
-                <offset x="1" y="0" />
-                <displacement dx="2" dy="2" />
-            </active-sites>
-
             <!-- Do this once at t=0. -->
             <period>0</period>
             <start>0</start>
-        </fill>
+        </scatter>
+
 
         <!-- During each cycle, let everyone grow. -->
         <uniform-biomass-growth>
-            <delta>0.2</delta>
+            <delta>0.1</delta>
         </uniform-biomass-growth>
 
         <!-- Choose a cell to execute its "attack" behavior. -->
@@ -174,7 +169,7 @@
         <!-- Allow cells that are big enough to divide. -->
         <divide-anywhere />
 
-        <!-- End the simulation if everyone is dead -->
+        <!-- End the simulation if no living cells are present -->
         <check-for-extinction />
 
         <!-- End the simulation if one cell type has fixed -->

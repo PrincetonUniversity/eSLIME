@@ -37,7 +37,6 @@ import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 
 /**
  * Kill all cells whose biomass is less than a defined
@@ -56,13 +55,25 @@ public class Cull extends CellProcess {
     }
 
     public void target(GillespieState gs) throws HaltCondition {
-        HashSet<Coordinate> candidates = layer.getViewer().getOccupiedSites();
+        System.out.println("Identifying targets for Cull.");
+        /*
+           Things to do here:
+
+              4. Add a diagnostic message to BehaviorCell.setFitness for more information.
+         */
 
         ArrayList<Coordinate> targets = new ArrayList<Coordinate>();
 
-        for (Coordinate candidate : candidates) {
+        for (Coordinate candidate : activeSites) {
+            if (!layer.getViewer().isOccupied(candidate)) {
+                continue;
+            }
+
             Cell cell = layer.getViewer().getCell(candidate);
             if (cell.getFitness() <= threshold) {
+                System.out.println("Cell at " + candidate +
+                        " is below critical size: " + cell.getFitness() +
+                        " < " + threshold);
                 targets.add(candidate);
             }
         }
@@ -80,8 +91,12 @@ public class Cull extends CellProcess {
     }
 
     private void execute(StepState state, Coordinate[] targetsArr) {
+        if (targetsArr.length != 0) {
+            System.out.println("Executing cull.");
+        }
         CellUpdateManager manager = layer.getUpdateManager();
         for (Coordinate target : targetsArr) {
+            System.out.println("   Banishing cell at " + target);
             manager.banish(target);
         }
     }

@@ -24,11 +24,8 @@
  * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
  */
 
-package agent.behaviors;
+package agent.action;
 
-import agent.Behavior;
-import agent.action.Action;
-import agent.action.MockAction;
 import cells.BehaviorCell;
 import cells.Cell;
 import cells.MockCell;
@@ -38,17 +35,11 @@ import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 /**
- * Created by David B Borenstein on 1/21/14.
+ * Created by dbborens on 3/6/14.
  */
-public class BehaviorTest extends EslimeTestCase {
-   /*
-    * NOTE: As of 3/6/2014, these tests are nearly identical
-    * to those of the parent class, CompoundAction. This is
-    * deliberate, as I want to make sure that these objects
-    * are tested separately as they diverge.
-    */
+public class CompoundActionTest extends EslimeTestCase {
 
-    ExposedBehavior query;
+    ExposedCompoundAction query;
     MockLayerManager layerManager;
     MockCell callBack;
     MockAction a, b;
@@ -62,7 +53,7 @@ public class BehaviorTest extends EslimeTestCase {
         callBack = new MockCell();
         caller = new Coordinate(0, 0, 0);
         initActionSequence();
-        query = new ExposedBehavior(callBack, layerManager, actionSequence);
+        query = new ExposedCompoundAction(callBack, layerManager, actionSequence);
     }
 
     private void initActionSequence() {
@@ -113,12 +104,12 @@ public class BehaviorTest extends EslimeTestCase {
 
     public void testClone() throws Exception {
         BehaviorCell cloneCell = new BehaviorCell();
-        Behavior clone = query.clone(cloneCell);
+        CompoundAction clone = query.clone(cloneCell);
         assertEquals(cloneCell, clone.getCallback());
         assertEquals(clone, query);
     }
 
-    private class ExposedBehavior extends Behavior {
+    private class ExposedCompoundAction extends CompoundAction {
         @Override
         public LayerManager getLayerManager() {
             return super.getLayerManager();
@@ -129,7 +120,7 @@ public class BehaviorTest extends EslimeTestCase {
             super.run(caller);
         }
 
-        public ExposedBehavior(BehaviorCell callback, LayerManager layerManager, Action[] actionSequence) {
+        public ExposedCompoundAction(BehaviorCell callback, LayerManager layerManager, Action[] actionSequence) {
             super(callback, layerManager, actionSequence);
         }
 

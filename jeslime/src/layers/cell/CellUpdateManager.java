@@ -26,11 +26,9 @@
 
 package layers.cell;
 
-import java.util.HashSet;
-
+import cells.Cell;
 import structural.Flags;
 import structural.identifiers.Coordinate;
-import cells.Cell;
 
 /**
  * 
@@ -145,7 +143,6 @@ public class CellUpdateManager {
 	 * @param coord
 	 */
 	public void place(Cell cell, Coordinate coord) {
-
 		content.checkExists(coord);
 
 		if (indices.isOccupied(coord)) {
@@ -194,9 +191,8 @@ public class CellUpdateManager {
 	 * @param qCoord
 	 */
 	public void f_swap(Coordinate pCoord, Coordinate qCoord) {
-		System.out.println("       Swapping " + pCoord + " and " + qCoord +".");
-		
-		pCoord = pCoord.canonicalize();
+
+        pCoord = pCoord.canonicalize();
 		qCoord = qCoord.canonicalize();
 		
 		// When swapping a cell with itself, just return

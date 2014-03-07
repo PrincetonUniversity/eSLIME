@@ -87,6 +87,14 @@ public class CheckForExtinctionTest extends TestCase {
         doTest(false);
     }
 
+    /**
+     * Make sure that, if there are occupied sites and they subsequently all
+     * become vacant, this is still recorded as an exitnction event.
+     */
+    public void testTransitionToExtinction() {
+        fail("Not yet implemented.");
+    }
+
     private void makeOneCanonicalSite() {
         Coordinate[] cc = new Coordinate[]{
                 new Coordinate(0, 0, 1)

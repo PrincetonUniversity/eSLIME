@@ -32,7 +32,6 @@ import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import processes.StepState;
 import processes.gillespie.GillespieState;
-import structural.halt.ExtinctionEvent;
 import structural.halt.FixationEvent;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
@@ -48,12 +47,12 @@ public class CheckForFixationTest extends EslimeTestCase {
     private CheckForFixation query;
 
     public void testTargetSimple() throws Exception {
-        makeOneCanonicalSite();
+        makeTwoCanonicalSites();
         query.target(null);
     }
 
     public void testTargetGillespie() throws Exception {
-        makeOneCanonicalSite();
+        makeTwoCanonicalSites();
         Integer id = query.getID();
         Integer[] ids = new Integer[] {id};
         GillespieState gs = new GillespieState(ids);
@@ -82,27 +81,27 @@ public class CheckForFixationTest extends EslimeTestCase {
         assertEquals(expectFixation, fixed);
     }
 
-    public void testExtinctionCase() {
-        makeOneCanonicalSite();
-        boolean extinct = false;
-
-        try {
-            StepState state = new StepState();
-            query.fire(state);
-        } catch (ExtinctionEvent event) {
-            extinct = true;
-
-            // Nothing else is supposed to be thrown!
-        } catch (HaltCondition condition) {
-            fail("Unexpected halt condition " + condition.getClass().getSimpleName());
-        }
-
-        assertTrue(extinct);
-    }
+//    public void testExtinctionCase() {
+//        makeTwoCanonicalSites();
+//        boolean extinct = false;
+//
+//        try {
+//            StepState state = new StepState();
+//            query.fire(state);
+//        } catch (ExtinctionEvent event) {
+//            extinct = true;
+//
+//            // Nothing else is supposed to be thrown!
+//        } catch (HaltCondition condition) {
+//            fail("Unexpected halt condition " + condition.getClass().getSimpleName());
+//        }
+//
+//        assertTrue(extinct);
+//    }
 
     // There's only one site -- automatically fixed once filled
     public void testFixationCaseSingle() {
-        makeOneCanonicalSite();
+        makeTwoCanonicalSites();
         Coordinate coord = new Coordinate(0, 0, 1);
         MockCell cell = new MockCell();
         cell.setState(1);
@@ -148,6 +147,16 @@ public class CheckForFixationTest extends EslimeTestCase {
         doTest(false);
     }
 
+    /**
+     * Make sure that, after the extinction of all but one type of site, a
+     * fixation event is triggered.
+     */
+    public void testTwoToOneStateRegression() {
+        // This test should start with cells of two sites, then remove one.
+        // The state should now reflect fixation.
+        fail("Not yet implemented.");
+    }
+
     private void makeTwoCanonicalSites() {
         Coordinate[] cc = new Coordinate[] {
                 new Coordinate(0, 0, 1),
@@ -166,10 +175,4 @@ public class CheckForFixationTest extends EslimeTestCase {
         query = new CheckForFixation(null, layerManager, 0, null);
     }
 
-    private void makeOneCanonicalSite() {
-        Coordinate[] cc = new Coordinate[] {
-                new Coordinate(0, 0, 1)
-        };
-        setup(cc);
-    }
 }

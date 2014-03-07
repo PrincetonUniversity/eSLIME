@@ -32,7 +32,6 @@ import layers.cell.StateMapViewer;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
-import structural.halt.ExtinctionEvent;
 import structural.halt.FixationEvent;
 import structural.halt.HaltCondition;
 
@@ -56,15 +55,12 @@ public class CheckForFixation extends CellProcess {
 
     @Override
     public void fire(StepState state) throws HaltCondition {
-		StateMapViewer smv = layer.getViewer().getStateMapViewer();
-
-        if (smv.getStates().length == 0) {
-            throw new ExtinctionEvent(state.getTime());
-        }
+        System.out.println("Executing check for fixation.");
+        StateMapViewer smv = layer.getViewer().getStateMapViewer();
 
         for (Integer s : smv.getStates()) {
-			if (smv.getCount(s) == layer.getGeometry().getCanonicalSites().length) {
-				throw new FixationEvent(state.getTime(), s);
+            if (smv.getCount(s) == layer.getViewer().getOccupiedSites().size()) {
+                throw new FixationEvent(state.getTime(), s);
 			}
 		}
     }

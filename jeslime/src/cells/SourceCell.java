@@ -39,6 +39,7 @@ public class SourceCell extends Cell {
     private HashMap<String, Double> production;
 
     private double epsilon;
+
     public SourceCell(int state, HashMap<String, Double> production) {
         super();
         considerCount = 0;
@@ -82,7 +83,7 @@ public class SourceCell extends Cell {
     }
 
     @Override
-    public void feed(double delta) {
+    public void adjustFitness(double delta) {
         throw new UnsupportedOperationException("Source cells cannot eat");
     }
 
@@ -98,7 +99,7 @@ public class SourceCell extends Cell {
             return false;
         }
 
-        if (prodsUnequal(this, other))  {
+        if (prodsUnequal(this, other)) {
             return false;
         }
 

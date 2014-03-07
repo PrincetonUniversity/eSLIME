@@ -56,7 +56,8 @@ public class ActionFactoryTest extends EslimeTestCase {
     public void testNull() throws Exception {
         Element e = fixtureRoot.element("null");
         Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
-        assertNull(actual);
+        Action expected = new NullAction(null, null);
+        assertEquals(expected, actual);
     }
 
     public void testMock() throws Exception {

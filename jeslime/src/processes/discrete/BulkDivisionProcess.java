@@ -1,9 +1,26 @@
+/*
+ * Copyright (c) 2014, David Bruce Borenstein and the Trustees of
+ * Princeton University.
+ *
+ * This work is licensed under the Creative Commons 2.0 BY-NC license.
+ *
+ * Attribute (BY) -- You must attribute the work in the manner specified
+ * by the author or licensor (but not in any way that suggests that they
+ * endorse you or your use of the work).
+ *
+ * Noncommercial (NC) -- You may not use this work for commercial purposes.
+ *
+ * For the full license, please visit:
+ * http://creativecommons.org/licenses/by-nc/3.0/legalcode
+ */
+
 package processes.discrete;
 
 import cells.Cell;
 import geometry.Geometry;
 import io.project.ProcessLoader;
 import layers.LayerManager;
+import processes.MaxTargetHelper;
 import processes.StepState;
 import structural.Flags;
 import structural.GeneralParameters;
@@ -11,7 +28,6 @@ import structural.halt.HaltCondition;
 import structural.halt.LatticeFullEvent;
 import structural.identifiers.Coordinate;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Random;
 
@@ -32,7 +48,7 @@ public abstract class BulkDivisionProcess extends CellProcess{
     }
 
     protected void execute(StepState state, Coordinate[] candidates) throws HaltCondition {
-        Coordinate[] chosen = respectMaxTargets(candidates);
+        Coordinate[] chosen = MaxTargetHelper.respectMaxTargets(candidates, maxTargets, p.getRandom());
         Cell[] chosenCells = toCellArray(chosen);
         for (Cell cell : chosenCells) {
             Coordinate currentLocation = layer.getLookupManager().getCellLocation(cell);
@@ -169,38 +185,4 @@ public abstract class BulkDivisionProcess extends CellProcess{
 		sites.add(nextLoc);
 	}
 
-    private Coordinate[] respectMaxTargets(Coordinate[] candidates) {
-        // If maxTargets is < 0, it means that there is no maxTargets; return all.
-        if (maxTargets < 0) {
-            return candidates;
-        }
-        // If there the number of candidates does not exceed the max, return.
-        if (candidates.length <= maxTargets) {
-            return candidates;
-        }
-
-        // Otherwise, permute and choose the first n, where n = maxTargets.
-        permute(candidates);
-
-        Coordinate[] reduced = Arrays.copyOfRange(candidates, 0, maxTargets);
-
-        return reduced;
-    }
-
-    /**
-     * Fischer-Yates shuffling algorithm for permuting the contents of
-     * a coordinate array.
-     */
-    private void permute(Coordinate[] arr) {
-        for (int i = arr.length - 1; i > 0; i--) {
-            int j = random.nextInt(i + 1);
-            swap(arr, i, j);
-        }
-    }
-
-    private void swap(Coordinate[] arr, int i, int j) {
-        Coordinate temp = arr[j];
-        arr[j] = arr[i];
-        arr[i] = temp;
-    }
 }

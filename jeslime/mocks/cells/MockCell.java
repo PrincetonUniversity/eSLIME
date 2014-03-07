@@ -33,7 +33,7 @@ import structural.identifiers.Coordinate;
  * for compatibility with BehaviorCell-only classes. (BehaviorCell is a
  * subclass of Cell which is capable of engaging in arbitrary behaviors,
  * which can then be used for agent-based modeling.)
- *
+ * <p/>
  * Created by dbborens on 1/13/14.
  */
 public class MockCell extends BehaviorCell {
@@ -137,7 +137,7 @@ public class MockCell extends BehaviorCell {
     }
 
     @Override
-    public void feed(double delta) {
+    public void adjustFitness(double delta) {
 
     }
 }

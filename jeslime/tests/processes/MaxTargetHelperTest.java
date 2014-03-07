@@ -24,39 +24,23 @@
  * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
  */
 
-package processes.discrete;
+package processes;
 
-import io.project.ProcessLoader;
-import layers.LayerManager;
-import processes.StepState;
-import processes.gillespie.GillespieState;
-import structural.GeneralParameters;
-import structural.halt.ExtinctionEvent;
-import structural.halt.HaltCondition;
+import junit.framework.TestCase;
 
 /**
- * Checks for extinction or fixation events.
- * <p/>
- * Created by dbborens on 1/13/14.
+ * Created by dbborens on 3/7/14.
  */
-public class CheckForExtinction extends CellProcess {
-    public CheckForExtinction(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
-        super(loader, layerManager, id, p);
+public class MaxTargetHelperTest extends TestCase {
+    public void testOverMaximum() throws Exception {
+        fail("Not yet implemented");
     }
 
-    @Override
-    public void target(GillespieState gs) throws HaltCondition {
-        // There's only one event that can happen in this process.
-        if (gs != null) {
-            gs.add(this.getID(), 1, 0.0D);
-        }
+    public void testUnderMaximum() throws Exception {
+        fail("Not yet implemented");
     }
 
-    @Override
-    public void fire(StepState state) throws HaltCondition {
-
-        if (layer.getViewer().getOccupiedSites().size() == 0) {
-            throw new ExtinctionEvent(state.getTime());
-        }
+    public void testNoMaximum() throws Exception {
+        fail("Not yet implemented");
     }
 }

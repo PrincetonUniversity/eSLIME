@@ -26,10 +26,8 @@
 
 package agent;
 
-import agent.Behavior;
 import agent.action.Action;
 import cells.BehaviorCell;
-import cells.Cell;
 import structural.identifiers.Coordinate;
 
 import java.util.HashMap;
@@ -51,11 +49,12 @@ public class MockBehavior extends Behavior {
         callerCounts = new HashMap<>();
     }
 
-    public MockBehavior(Cell callback) {
+    public MockBehavior(BehaviorCell callback) {
         super(callback, null, null);
         timesRun = 0;
         callerCounts = new HashMap<>();
     }
+
     public Coordinate getLastCaller() {
         return lastCaller;
     }
@@ -77,7 +76,7 @@ public class MockBehavior extends Behavior {
         }
 
         int count = callerCounts.get(caller);
-        callerCounts.put(caller, count+1);
+        callerCounts.put(caller, count + 1);
     }
 
     public int getTimesRun() {

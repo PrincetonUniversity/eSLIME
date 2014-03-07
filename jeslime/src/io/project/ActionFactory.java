@@ -56,11 +56,15 @@ public class ActionFactory {
             case "stochastic-choice":
                 return stochasticChoice(e, callback, layerManager, p);
             case "null":
-                return null;
+                return nullAction(callback, layerManager);
             default:
                 String msg = "Unrecognized action '" + actionName + "'.";
                 throw new IllegalArgumentException(msg);
         }
+    }
+
+    private static Action nullAction(BehaviorCell callback, LayerManager layerManager) {
+        return new NullAction(callback, layerManager);
     }
 
     private static Action stochasticChoice(Element e, BehaviorCell callback, LayerManager layerManager,

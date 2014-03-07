@@ -24,39 +24,35 @@
  * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
  */
 
-package processes.discrete;
+package agent.action;
 
-import io.project.ProcessLoader;
+import cells.BehaviorCell;
 import layers.LayerManager;
-import processes.StepState;
-import processes.gillespie.GillespieState;
-import structural.GeneralParameters;
-import structural.halt.ExtinctionEvent;
-import structural.halt.HaltCondition;
+import structural.identifiers.Coordinate;
 
 /**
- * Checks for extinction or fixation events.
- * <p/>
- * Created by dbborens on 1/13/14.
+ * Created by dbborens on 3/6/14.
  */
-public class CheckForExtinction extends CellProcess {
-    public CheckForExtinction(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
-        super(loader, layerManager, id, p);
+public class NullAction extends Action {
+    public NullAction(BehaviorCell callback, LayerManager layerManager) {
+        super(callback, layerManager);
     }
 
     @Override
-    public void target(GillespieState gs) throws HaltCondition {
-        // There's only one event that can happen in this process.
-        if (gs != null) {
-            gs.add(this.getID(), 1, 0.0D);
-        }
+    public void run(Coordinate caller) {
     }
 
     @Override
-    public void fire(StepState state) throws HaltCondition {
-
-        if (layer.getViewer().getOccupiedSites().size() == 0) {
-            throw new ExtinctionEvent(state.getTime());
+    public boolean equals(Object obj) {
+        if (obj instanceof NullAction) {
+            return true;
         }
+
+        return false;
+    }
+
+    @Override
+    public Action clone(BehaviorCell child) {
+        return new NullAction(child, getLayerManager());
     }
 }

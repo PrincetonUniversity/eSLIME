@@ -74,4 +74,11 @@ public class CallbackManager {
     public LayerManager getLayerManager() {
         return layerManager;
     }
+
+    public Coordinate getMyLocation() {
+        CellLayer layer = layerManager.getCellLayer();
+        CellLookupManager lookupManager = layer.getLookupManager();
+        Coordinate coord = lookupManager.getCellLocation(cell);
+        return coord;
+    }
 }

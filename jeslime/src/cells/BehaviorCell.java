@@ -73,8 +73,8 @@ public class BehaviorCell extends Cell {
 
     @Override
     public void apply() {
-        setFitness(nextFitness);
-        checkDivisibility();
+//        setFitness(nextFitness);
+//        checkDivisibility();
         considerCount = 0;
     }
 
@@ -113,8 +113,11 @@ public class BehaviorCell extends Cell {
     }
 
     @Override
-    public void feed(double delta) {
-        throw new UnsupportedOperationException();
+    public void adjustFitness(double delta) {
+        double current = getFitness();
+        double next = current + delta;
+//        System.out.println("      Adjusting fitness of cell at " + callbackManager.getMyLocation() + " from " + current + " to " + next);
+        setFitness(next);
     }
 
     @Override
@@ -149,6 +152,14 @@ public class BehaviorCell extends Cell {
     @Override
     public void setFitness(double fitness) {
         super.setFitness(fitness);
+        if (fitness <= 0.0) {
+            try {
+                throw new RuntimeException();
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                System.exit(0);
+            }
+        }
         checkDivisibility();
     }
 
