@@ -152,14 +152,14 @@ public class BehaviorCell extends Cell {
     @Override
     public void setFitness(double fitness) {
         super.setFitness(fitness);
-        if (fitness <= 0.0) {
-            try {
-                throw new RuntimeException();
-            } catch (Exception ex) {
-                ex.printStackTrace();
-                System.exit(0);
-            }
-        }
+//        if (fitness <= 0.0) {
+//            try {
+//                throw new RuntimeException();
+//            } catch (Exception ex) {
+//                ex.printStackTrace();
+//                System.exit(0);
+//            }
+//        }
         checkDivisibility();
     }
 

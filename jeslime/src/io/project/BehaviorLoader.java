@@ -29,17 +29,14 @@ package io.project;
 import agent.Behavior;
 import agent.control.BehaviorDispatcher;
 import cells.BehaviorCell;
-import cells.Cell;
 import layers.LayerManager;
 import org.dom4j.Element;
 import structural.GeneralParameters;
 
-import java.util.HashMap;
-
 /**
  * The BehaviorLoader is used to load behaviors and their names into a
  * BehaviorDispatcher.
- *
+ * <p/>
  * Created by David B Borenstein on 1/21/14.
  */
 public class BehaviorLoader {
@@ -63,6 +60,11 @@ public class BehaviorLoader {
     }
 
     public void loadAllBehaviors(Element behaviorsRoot) {
+        // No behaviors specified? That's fine -- it's now just a base cell.
+        if (behaviorsRoot == null) {
+            return;
+        }
+
         for (Object o : behaviorsRoot.elements()) {
             loadBehavior(o);
         }

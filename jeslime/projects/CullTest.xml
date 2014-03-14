@@ -1,0 +1,100 @@
+<simulation>
+    <version>0.5.0</version>
+
+    <!-- Declare general simulation properties -->
+    <general>
+        <random-seed>*</random-seed>
+        <instances>1</instances>
+        <path>/Users/dbborens/projects/T6SS/</path>
+        <date-stamp>true</date-stamp>
+        <max-step>101</max-step>
+        <output-frames>
+            <auto mode="all"/>
+        </output-frames>
+        <write-state-map/>
+    </general>
+
+    <!-- Declare geometry properties -->
+    <geometry>
+        <shape>
+            <class>Rectangle</class>
+            <width>32</width>
+            <height>32</height>
+        </shape>
+        <lattice>
+            <class>Rectangular</class>
+        </lattice>
+    </geometry>
+
+    <!-- One discrete field and multiple continuum fields may be defined -->
+    <layers>
+        <cell-layer>
+            <boundary>
+                <class>PlaneRingReflecting</class>
+            </boundary>
+        </cell-layer>
+    </layers>
+
+    <!-- Declare simulation events, and when they should occur -->
+    <cell-processes>
+        <!-- Each time step should advance the integrator clock by 1 unit of time. -->
+        <tick>
+            <dt>1.0</dt>
+        </tick>
+
+        <!-- At outset, put a few ATTACKERS in the system. -->
+        <scatter>
+
+            <!-- "types" specifies the number of lineages to create. They will all have the same
+                 phenotype. "tokens" specifies the number of individuals of each phenotype to
+                 place. -->
+
+            <types>1</types>
+            <tokens>1</tokens>
+
+            <cell-descriptor>
+                <class>BehaviorCell</class>
+                <state>sequential</state>
+                <initial-fitness>1.0</initial-fitness>
+                <threshold>1.0</threshold>
+
+            </cell-descriptor>
+
+            <!-- Do this once at t=0. -->
+            <period>0</period>
+            <start>0</start>
+        </scatter>
+
+        <!-- During each cycle, let everyone grow. -->
+        <uniform-biomass-growth>
+            <delta>-0.1</delta>
+        </uniform-biomass-growth>
+
+        <!-- Remove the cells that have died. -->
+        <cull/>
+
+        <!-- Allow cells that are big enough to divide. -->
+        <divide-anywhere/>
+
+        <!-- End the simulation if no living cells are present -->
+        <check-for-extinction/>
+
+    </cell-processes>
+
+    <!-- Declare the expected output modes -->
+    <writers>
+        <!-- Write out a data file containing discrete layer states -->
+        <cell-state-writer/>
+
+        <!-- Write out parameters to a plain text file -->
+        <parameter-writer/>
+
+        <!-- Report progress to stdout -->
+        <progress-reporter/>
+
+        <!-- Create a catalog of coordinates to scalar indices. Required for some
+             post-processing, such as visualizations. -->
+        <coordinate-indexer/>
+
+    </writers>
+</simulation>
