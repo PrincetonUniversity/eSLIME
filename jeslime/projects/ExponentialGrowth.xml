@@ -1,48 +1,67 @@
+<!--
+  ~ Copyright (c) 2014, David Bruce Borenstein and the Trustees of
+  ~ Princeton University.
+  ~
+  ~ Except where otherwise noted, this work is subject to a Creative Commons
+  ~ Attribution (CC BY 4.0) license.
+  ~
+  ~ Attribute (BY): You must attribute the work in the manner specified
+  ~ by the author or licensor (but not in any way that suggests that they
+  ~ endorse you or your use of the work).
+  ~
+  ~ The Licensor offers the Licensed Material as-is and as-available, and
+  ~ makes no representations or warranties of any kind concerning the
+  ~ Licensed Material, whether express, implied, statutory, or other.
+  ~
+  ~ For the full license, please visit:
+  ~ http://creativecommons.org/licenses/by/4.0/legalcode
+  -->
+
 <simulation>
-	<general>
-		<version>v0.1.2</version>
-		<random-seed>*</random-seed>
-		<instances>2</instances>
-		<write-state-histogram>true</write-state-histogram>
-		<write-lineage-map>true</write-lineage-map>
-		<write-state>true</write-state>
-		<write-metadata>true</write-metadata>
-		<write-interval>false</write-interval>
-		<write-fix-time>true</write-fix-time>
-		<path>/Users/dbborens/state/jeSLIME/9-26-2013/battle</path>
-		<date-stamp>false</date-stamp>
-		<max-step>1000001</max-step>
-		<output-frames>
-			<auto mode="decilog" />
-		</output-frames>
-	</general>
-	<geometry>
-		<class>HexArena</class>
-		<width>16</width>
-		<height>16</height>
-	</geometry>
-	<processes>
-		<time-process>
-			<id>0</id>
-			<class>SimpleGillespie</class>
-			<period>1</period>
-		</time-process>
-		<cell-process>
-			<id>100</id>
-			<class>Scatter</class>
-			<period>0</period>
-			<types>4</types>
-			<tokens>64</tokens>
-		</cell-process>
-		<cell-process>
-			<id>200</id>
-			<class>DivideAnywhere</class>
-			<period>1</period>
-		</cell-process>
-		<cell-process>
-			<id>300</id>
-			<class>NeighborSwap</class>
-			<period>10</period>
-		</cell-process>
-	</processes>
+    <general>
+        <version>v0.1.2</version>
+        <random-seed>*</random-seed>
+        <instances>2</instances>
+        <write-state-histogram>true</write-state-histogram>
+        <write-lineage-map>true</write-lineage-map>
+        <write-state>true</write-state>
+        <write-metadata>true</write-metadata>
+        <write-interval>false</write-interval>
+        <write-fix-time>true</write-fix-time>
+        <path>/Users/dbborens/state/jeSLIME/9-26-2013/battle</path>
+        <date-stamp>false</date-stamp>
+        <max-step>1000001</max-step>
+        <output-frames>
+            <auto mode="decilog"/>
+        </output-frames>
+    </general>
+    <geometry>
+        <class>HexArena</class>
+        <width>16</width>
+        <height>16</height>
+    </geometry>
+    <processes>
+        <time-process>
+            <id>0</id>
+            <class>SimpleGillespie</class>
+            <period>1</period>
+        </time-process>
+        <cell-process>
+            <id>100</id>
+            <class>Scatter</class>
+            <period>0</period>
+            <types>4</types>
+            <tokens>64</tokens>
+        </cell-process>
+        <cell-process>
+            <id>200</id>
+            <class>DivideAnywhere</class>
+            <period>1</period>
+        </cell-process>
+        <cell-process>
+            <id>300</id>
+            <class>NeighborSwap</class>
+            <period>10</period>
+        </cell-process>
+    </processes>
 </simulation>

@@ -3,37 +3,30 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package geometry.shape;
 
-import java.util.*;
-
-import org.dom4j.Element;
-
 import geometry.lattice.Lattice;
 import geometry.lattice.TriangularLattice;
+import org.dom4j.Element;
 import structural.Flags;
 import structural.identifiers.Coordinate;
+
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * A hexagon-shaped arena. This is a strange geometry,
@@ -42,99 +35,97 @@ import structural.identifiers.Coordinate;
  * system is best thought of in terms of the non-orthogonal
  * basis vectors of the triangular lattice. For this reason,
  * it overrides many functions.
- * 
- * @author dbborens
  *
+ * @author dbborens
  */
 public class Hexagon extends Shape {
 
-	private int radius;
-	
-	public Hexagon(Lattice lattice, int radius) {
-		super(lattice);
-		this.radius = radius;
-		init();
-	}
+    private int radius;
 
-	public Hexagon(Lattice lattice, Element descriptor) {
-		super(lattice);
-		
-		radius = Integer.valueOf(descriptor.element("radius").getTextTrim());
+    public Hexagon(Lattice lattice, int radius) {
+        super(lattice);
+        this.radius = radius;
+        init();
+    }
 
-		init();
-	}
-	
-	@Override
-	protected void verify(Lattice lattice) {
-		if (!(lattice instanceof TriangularLattice)) {
-			throw new IllegalArgumentException("Hexagonal geometry shape requires a triangular lattice.");
-		}
-	}
+    public Hexagon(Lattice lattice, Element descriptor) {
+        super(lattice);
 
-	@Override
-	public Coordinate getCenter() {
+        radius = Integer.valueOf(descriptor.element("radius").getTextTrim());
+
+        init();
+    }
+
+    @Override
+    protected void verify(Lattice lattice) {
+        if (!(lattice instanceof TriangularLattice)) {
+            throw new IllegalArgumentException("Hexagonal geometry shape requires a triangular lattice.");
+        }
+    }
+
+    @Override
+    public Coordinate getCenter() {
         // This geometry is defined around a center coordinate of (r, r).
         // It is built up as a ring around this coordinate.
-		Coordinate center = new Coordinate(radius, radius, 0);
-		return center;
-	}
+        Coordinate center = new Coordinate(radius, radius, 0);
+        return center;
+    }
 
-	@Override
-	public Coordinate[] getBoundaries() {
-		ArrayList<Coordinate> coords = new ArrayList<Coordinate>();
-		ring(coords, radius);
-		
-		return coords.toArray(new Coordinate[0]);
-	}
+    @Override
+    public Coordinate[] getBoundaries() {
+        ArrayList<Coordinate> coords = new ArrayList<Coordinate>();
+        ring(coords, radius);
 
-	@Override
-	protected Coordinate[] calcSites() {
-		ArrayList<Coordinate> coords = new ArrayList<Coordinate>();
-		for (int r = 0; r <= radius; r++) {
-			ring(coords, r);
-		}
-		
-		return coords.toArray(new Coordinate[0]);
-	}
-	
-	private void ring(ArrayList<Coordinate> coords, int r) {
-		if (r == 0) {
-			include(coords, getCenter());
-			return;
-		}
-	
-		int x0 = getCenter().x();
-		int y0 = getCenter().y();
-		for (int k = 1; k <= r; k++) {
-			// Right side
-			include(coords, new Coordinate(x0+r, y0+k-1, 0));
+        return coords.toArray(new Coordinate[0]);
+    }
 
-			// Lower right side
-			include(coords, new Coordinate(x0+r-k, y0-k, 0));
+    @Override
+    protected Coordinate[] calcSites() {
+        ArrayList<Coordinate> coords = new ArrayList<Coordinate>();
+        for (int r = 0; r <= radius; r++) {
+            ring(coords, r);
+        }
 
-			// Lower left side
-			include(coords, new Coordinate(x0-k, y0-r, 0));
+        return coords.toArray(new Coordinate[0]);
+    }
 
-			// Left side
-			include(coords, new Coordinate(x0-r, y0-r+k, 0));
+    private void ring(ArrayList<Coordinate> coords, int r) {
+        if (r == 0) {
+            include(coords, getCenter());
+            return;
+        }
 
-			// Upper left side
-			include(coords, new Coordinate(x0-r+k, y0+k, 0));
+        int x0 = getCenter().x();
+        int y0 = getCenter().y();
+        for (int k = 1; k <= r; k++) {
+            // Right side
+            include(coords, new Coordinate(x0 + r, y0 + k - 1, 0));
 
-			// Upper right side
-			include(coords, new Coordinate(x0+k, y0+r, 0));
-		}
-	}
+            // Lower right side
+            include(coords, new Coordinate(x0 + r - k, y0 - k, 0));
 
+            // Lower left side
+            include(coords, new Coordinate(x0 - k, y0 - r, 0));
 
-	
-	@Override
-	protected void include(Collection<Coordinate> list, Coordinate coordinate) {
-		list.add(coordinate);		
-	}
+            // Left side
+            include(coords, new Coordinate(x0 - r, y0 - r + k, 0));
+
+            // Upper left side
+            include(coords, new Coordinate(x0 - r + k, y0 + k, 0));
+
+            // Upper right side
+            include(coords, new Coordinate(x0 + k, y0 + r, 0));
+        }
+    }
 
 
-	@Override
+    @Override
+    protected void include(Collection<Coordinate> list, Coordinate coordinate) {
+        list.add(coordinate);
+    }
+
+
+    @Override
     /**
      * Get extent overbound of the specified coordinate, if any.
      *
@@ -145,17 +136,17 @@ public class Hexagon extends Shape {
      * of the "true" basis vector <u, w> and therefore prefer the latter.
      *
      */
-	public Coordinate getOverbounds(Coordinate coord) {
-		// Get natural-basis displacement from center
-		Coordinate origin = getCenter();
-		Coordinate d = lattice.getDisplacement(origin, coord);
-		
-		// Remember that diameter of Hexagon geometry is 2r + 1,
-		// so out of bounds is r > R (strictly greater)
+    public Coordinate getOverbounds(Coordinate coord) {
+        // Get natural-basis displacement from center
+        Coordinate origin = getCenter();
+        Coordinate d = lattice.getDisplacement(origin, coord);
 
-        int[] overages = new int[] {0, 0, 0};
+        // Remember that diameter of Hexagon geometry is 2r + 1,
+        // so out of bounds is r > R (strictly greater)
+
+        int[] overages = new int[]{0, 0, 0};
         // Turn original displacement vector into an array.
-        int[] dArr = new int[] {d.x(), d.y(), d.z()};
+        int[] dArr = new int[]{d.x(), d.y(), d.z()};
 
         // Step 1: Look for simple overages.
         for (int i = 0; i < 3; i++) {
@@ -166,7 +157,7 @@ public class Hexagon extends Shape {
 
         // Step 2: While |d| exceeds the radius, eliminate the shortest
         // vector components.
-        while(norm(dArr) > radius) {
+        while (norm(dArr) > radius) {
 
             // Find minimum non-zero magnitude (mnz) of the remaining offsets.
             int mnz = mnz(dArr);
@@ -187,13 +178,13 @@ public class Hexagon extends Shape {
                 dArr[0] = 0;
                 continue;
 
-            // Case 2. |dw| > 0 and min(d) = dw.
+                // Case 2. |dw| > 0 and min(d) = dw.
             } else if (dArr[2] != 0 && a(dArr[2]) == mnz) {
                 overages[2] += dArr[2];
                 dArr[2] = 0;
                 continue;
 
-            // Case 3. |dv| > 0 and min(d) = dv.
+                // Case 3. |dv| > 0 and min(d) = dv.
             } else if (dArr[1] != 0 && a(dArr[1]) == mnz) {
                 overages[1] += dArr[1];
                 dArr[1] = 0;
@@ -203,10 +194,10 @@ public class Hexagon extends Shape {
             // Else, something went wrong.
             throw new IllegalStateException("Undefined state in Hexagon::getOverbounds.");
         }
-		
-		return new Coordinate(overages, Flags.VECTOR);
-		
-	}
+
+        return new Coordinate(overages, Flags.VECTOR);
+
+    }
 
     private int mnz(int[] dArr) {
         int mnz = Integer.MAX_VALUE;
@@ -233,7 +224,6 @@ public class Hexagon extends Shape {
 
     /**
      * Returns L1 norm.
-     *
      */
     private int norm(int[] arr) {
         int sum = 0;
@@ -248,22 +238,22 @@ public class Hexagon extends Shape {
     private int getOverage(int u) {
         int du;
         if (u > radius) {
-			du = u - radius;
-		} else if (u < radius * -1) {
-			du = u + radius;
-		} else {
-			du = 0;
-		}
+            du = u - radius;
+        } else if (u < radius * -1) {
+            du = u + radius;
+        } else {
+            du = 0;
+        }
 
         return du;
     }
 
     @Override
-	public int[] getDimensions() {
-		int d = (2 * radius) + 1;
-		
-		return new int[] {d, d, d};
-	}
+    public int[] getDimensions() {
+        int d = (2 * radius) + 1;
+
+        return new int[]{d, d, d};
+    }
 
     @Override
     public boolean equals(Object obj) {

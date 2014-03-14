@@ -1,3 +1,22 @@
+<!--
+  ~ Copyright (c) 2014, David Bruce Borenstein and the Trustees of
+  ~ Princeton University.
+  ~
+  ~ Except where otherwise noted, this work is subject to a Creative Commons
+  ~ Attribution (CC BY 4.0) license.
+  ~
+  ~ Attribute (BY): You must attribute the work in the manner specified
+  ~ by the author or licensor (but not in any way that suggests that they
+  ~ endorse you or your use of the work).
+  ~
+  ~ The Licensor offers the Licensed Material as-is and as-available, and
+  ~ makes no representations or warranties of any kind concerning the
+  ~ Licensed Material, whether express, implied, statutory, or other.
+  ~
+  ~ For the full license, please visit:
+  ~ http://creativecommons.org/licenses/by/4.0/legalcode
+  -->
+
 <!-- Integration test fixture for eSLIME. Creates and destroys sources
      for a solute that diffuses and decays with uniform coefficients
      and "infinite" boundary conditions. -->
@@ -25,7 +44,7 @@
 
         <!-- We want output from every step -->
         <output-frames>
-            <auto mode="all" />
+            <auto mode="all"/>
         </output-frames>
     </general>
 
@@ -141,7 +160,7 @@
             <!-- Place the source at the center of the integrator -->
             <active-sites>
                 <mode>list</mode>
-                <offset x="0" y="0" />
+                <offset x="0" y="0"/>
             </active-sites>
 
             <!-- Do this once at t=0. -->
@@ -172,7 +191,7 @@
             <!-- Place the source at the center of the integrator -->
             <active-sites>
                 <mode>list</mode>
-                <offset x="1" y="0" />
+                <offset x="1" y="0"/>
             </active-sites>
 
             <!-- Do this once at t=1. -->
@@ -185,7 +204,7 @@
             <!-- Place the source at the center of the integrator -->
             <active-sites>
                 <mode>list</mode>
-                <offset x="1" y="0" />
+                <offset x="1" y="0"/>
             </active-sites>
 
             <!-- Do this once at t=2. -->
@@ -203,16 +222,16 @@
     <writers>
 
         <!-- Write out a data file containing discrete layer states -->
-        <cell-state-writer />
+        <cell-state-writer/>
 
         <!-- Write out a data file containing continuum layer states -->
-        <continuum-state-writer />
+        <continuum-state-writer/>
 
         <!-- Write out parameters to a plain text file -->
-        <parameter-writer />
+        <parameter-writer/>
 
         <!-- Report progress to stdout -->
-        <progress-reporter />
+        <progress-reporter/>
 
     </writers>
 </simulation>

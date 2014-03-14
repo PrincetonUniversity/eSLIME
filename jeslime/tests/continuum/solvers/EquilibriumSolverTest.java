@@ -3,52 +3,52 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package continuum.solvers;
 
-import continuum.operations.*;
-
+import continuum.operations.CompoundOperator;
+import continuum.operations.Diffusion;
+import continuum.operations.Operator;
+import continuum.operations.Scaling;
 import geometry.Geometry;
 import geometry.boundaries.Absorbing;
 import geometry.boundaries.Boundary;
 import geometry.boundaries.PlaneRingReflecting;
-import geometry.shape.*;
-import geometry.lattice.*;
-
+import geometry.lattice.CubicLattice;
+import geometry.lattice.Lattice;
+import geometry.lattice.RectangularLattice;
+import geometry.lattice.TriangularLattice;
+import geometry.shape.Cuboid;
+import geometry.shape.Hexagon;
+import geometry.shape.Rectangle;
+import geometry.shape.Shape;
 import io.serialize.ContinuumStateWriter;
+import junitx.framework.FileAssert;
 import layers.MockLayerManager;
 import layers.MockSoluteLayer;
-import test.EslimeTestCase;
-import structural.MockGeneralParameters;
-import junitx.framework.FileAssert;
 import no.uib.cipr.matrix.DenseMatrix;
 import no.uib.cipr.matrix.DenseVector;
 import no.uib.cipr.matrix.Matrix;
 import structural.EpsilonUtil;
 import structural.Flags;
 import structural.MatrixUtils;
+import structural.MockGeneralParameters;
 import structural.identifiers.Coordinate;
 import structural.postprocess.SolutionViewer;
+import test.EslimeTestCase;
 
 import java.io.File;
 import java.util.HashSet;
@@ -57,7 +57,6 @@ import java.util.Set;
 /**
  * Tests that an equilibrium solver produces the expected
  * answers to within machine epsilon.
- *
  */
 public abstract class EquilibriumSolverTest extends EslimeTestCase {
 
@@ -85,6 +84,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
 
 
     /* Step 1: Verify operator correctness. */
+
     /**
      * Make sure that no diffusion and no decay implies identity.
      */
@@ -100,7 +100,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
         buildRectangularExample("absorbing", 0D, 1D, 0D);
         for (int i = 0; i < RECTANGULAR_DIM; i++) {
             for (int j = 0; j < RECTANGULAR_DIM; j++) {
-               assertEquals(0.0, operator.get(i, j), EpsilonUtil.epsilon());
+                assertEquals(0.0, operator.get(i, j), EpsilonUtil.epsilon());
             }
         }
     }
@@ -174,7 +174,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
     /**
      * Test to make sure that we're building the right matrix. (A test of
      * a test.)
-     *
+     * <p/>
      * TODO: This test does not check whether all entries that should be zero actually are.
      */
     public void testCorrectMatrix() {
@@ -194,7 +194,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
         double diagonal = 1.0 - (4.0 * diffusion) - decay;
 
         for (int i = 0; i < operator.numRows(); i++) {
-            Coordinate coord =sites[i];
+            Coordinate coord = sites[i];
 
             // Make sure the diagonal has the expected values.
             assertEquals(diagonal, operator.get(i, i), epsilon);
@@ -276,7 +276,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
     /**
      * Make assertions from predecessor modeling projects
      * that use rectangular lattices.
-     *
+     * <p/>
      * See testRectangularLattice below for parameters.
      */
     public void testLegacyRect() {
@@ -292,19 +292,19 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
         // It so happens that these agree exactly, because the matrix structure
         // is the same. As it is, the solver is approximate, so 10^(-12) is
         // a reasonable standard.
-        double l_0_0       = 0.0308244252465857;
-        double l_0_1       = 0.015681143111794024;
-        double l_0_2       = 0.009396096077584433;
-        double l_1_2       = 0.008169971789498123;
-        double l_0_15      = 1.4239973435592538E-4;
-        double l_0_100     = 0.0;
+        double l_0_0 = 0.0308244252465857;
+        double l_0_1 = 0.015681143111794024;
+        double l_0_2 = 0.009396096077584433;
+        double l_1_2 = 0.008169971789498123;
+        double l_0_15 = 1.4239973435592538E-4;
+        double l_0_100 = 0.0;
 
-        double p_0_0       = 0.0308244252465857;
-        double p_0_1       = 0.015681143111794024;
-        double p_0_2       = 0.009396096077584433;
-        double p_1_2       = 0.008169971789498123;
-        double p_0_15      = 1.4239973435592538E-4;
-        double p_0_100     = 0.0;
+        double p_0_0 = 0.0308244252465857;
+        double p_0_1 = 0.015681143111794024;
+        double p_0_2 = 0.009396096077584433;
+        double p_1_2 = 0.008169971789498123;
+        double p_0_15 = 1.4239973435592538E-4;
+        double p_0_100 = 0.0;
 
         // Test that solver agrees with test expectations from prior projects
         // to at least 10^(-12) tolerance.
@@ -327,7 +327,6 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
     /**
      * Make assertions from predecessor modeling projects
      * that use triangular lattices.
-     *
      */
     public void testLegacyTri() {
         // l_x_x is legacy value. p_x_x is current value.
@@ -339,24 +338,24 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
         // It would be desirable to verify that the two matrices may be generated
         // from one another by permuting columns and rows.
 
-        double l_0_0 =      0.019458732712560396;
-        double p_0_0 =      0.019458732712482003;
+        double l_0_0 = 0.019458732712560396;
+        double p_0_0 = 0.019458732712482003;
 
-        double l_0_1 =      0.009653359743639577;
-        double p_0_1 =      0.00965335974356578;
+        double l_0_1 = 0.009653359743639577;
+        double p_0_1 = 0.00965335974356578;
 
-        double l_0_2 =      0.006132997071546091;
-        double p_0_2 =      0.006132997071478953;
+        double l_0_2 = 0.006132997071546091;
+        double p_0_2 = 0.006132997071478953;
 
-        double l_1_2 =      0.006800485237957668;
-        double p_1_2 =      0.006800485237888667;
+        double l_1_2 = 0.006800485237957668;
+        double p_1_2 = 0.006800485237888667;
 
 
-        double l_0_15 =     1.913252233828328E-4;
-        double p_0_15 =     1.9132522337364754E-4;
+        double l_0_15 = 1.913252233828328E-4;
+        double p_0_15 = 1.9132522337364754E-4;
 
-        double p_0_100 =    0D;
-        double l_0_100 =    0D;
+        double p_0_100 = 0D;
+        double l_0_100 = 0D;
 
         // See testTriangularLattice below.
         buildTriangularExample("absorbing", 1e-4, 4e-6, 4e-6);
@@ -388,7 +387,6 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
      * et al. 2013, PLOS ONE, figure S1 / eq. S5). This test verifies
      * that some reasonable assumptions also hold for a different
      * boundary conditions.
-     *
      */
     public void testBoundarySanity() throws Exception {
         // Use a rectangular lattice that reflects in Y and is
@@ -408,9 +406,9 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
 
         // Rows closer to the center should have higher concentrations than
         // those further from the center.
-        for (int y = 0; y < ((RECTANGULAR_DIM -1) / 2); y++) {
+        for (int y = 0; y < ((RECTANGULAR_DIM - 1) / 2); y++) {
             double outer = getConcentration(0, y, result, geometry);
-            double inner = getConcentration(0, y+1, result, geometry);
+            double inner = getConcentration(0, y + 1, result, geometry);
             assertTrue(outer < inner);
         }
     }
@@ -605,7 +603,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
 
     protected Operator makeCompoundOperator(Geometry geometry, double diffusion, double decay) {
         double negDecay = decay * -1.0D;
-        Operator[] children = new Operator[] {
+        Operator[] children = new Operator[]{
                 new Scaling(geometry, true, negDecay),
                 new Diffusion(geometry, true, diffusion)
         };

@@ -3,25 +3,18 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package layers.cell;
@@ -35,7 +28,7 @@ import java.util.IdentityHashMap;
  * Class for associating cells to coordinates, with
  * cells identified by reference (==) rather than
  * object equality.
- *
+ * <p/>
  * Created by David B Borenstein on 2/5/14.
  */
 public class CellLocationIndex {
@@ -55,16 +48,16 @@ public class CellLocationIndex {
     }
 
     public void move(Cell cell, Coordinate coordinate) {
-       if (!locationMap.containsKey(cell))  {
-           throw new IllegalStateException("Attempting to move a cell that does not have an indexed spatial location.");
-       }
+        if (!locationMap.containsKey(cell)) {
+            throw new IllegalStateException("Attempting to move a cell that does not have an indexed spatial location.");
+        }
 
         remove(cell);
         place(cell, coordinate);
     }
 
     public void remove(Cell cell) {
-        if (!locationMap.containsKey(cell))  {
+        if (!locationMap.containsKey(cell)) {
             throw new IllegalStateException("Attempting to remove a cell that does not have an indexed spatial location.");
         }
 
@@ -72,7 +65,7 @@ public class CellLocationIndex {
     }
 
     public Coordinate locate(Cell cell) {
-        if (!locationMap.containsKey(cell))  {
+        if (!locationMap.containsKey(cell)) {
             throw new IllegalStateException("Attempting to locate a cell that does not have an indexed spatial location.");
         }
 
@@ -81,6 +74,6 @@ public class CellLocationIndex {
     }
 
     public boolean isIndexed(Cell cell) {
-       return locationMap.containsKey(cell);
+        return locationMap.containsKey(cell);
     }
 }

@@ -3,25 +3,18 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package io.project;
@@ -31,26 +24,25 @@ import geometry.MockGeometry;
 import geometry.SquareMockGeometry;
 import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;
-
 import structural.Flags;
 import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 public class CoordinateFactoryTest extends EslimeTestCase {
 
-	public void testInstantiateFromElement() {
-		Element ce = new BaseElement("coordinate");
-		Element ve = new BaseElement("vector");
-		Element de = new BaseElement("displacement");
-		
-		addAttributes(ce, 1, 2, 3);
-		addAttributes(ve, 2, 3, 4, 5);
-		addAttributes(de, 4, 5, 6);
+    public void testInstantiateFromElement() {
+        Element ce = new BaseElement("coordinate");
+        Element ve = new BaseElement("vector");
+        Element de = new BaseElement("displacement");
 
-		doTest(ce, 1, 2, 3 | Flags.PLANAR);
-		doTest(ve, 2, 3, 4, 5 | Flags.VECTOR);
-		doTest(de, 4, 5, 6 | Flags.VECTOR | Flags.PLANAR);
-	}
+        addAttributes(ce, 1, 2, 3);
+        addAttributes(ve, 2, 3, 4, 5);
+        addAttributes(de, 4, 5, 6);
+
+        doTest(ce, 1, 2, 3 | Flags.PLANAR);
+        doTest(ve, 2, 3, 4, 5 | Flags.VECTOR);
+        doTest(de, 4, 5, 6 | Flags.VECTOR | Flags.PLANAR);
+    }
 
     public void testOffset2D() {
         Element o1 = new BaseElement("offset");
@@ -91,58 +83,60 @@ public class CoordinateFactoryTest extends EslimeTestCase {
         actual = CoordinateFactory.offset(o2, geom);
         assertEquals(expected, actual);
     }
-	private void doTest(Element o, int x, int y, int z, int flags) {
-		Coordinate c = CoordinateFactory.instantiate(o);
-		assertEquals(x, c.x());
-		assertEquals(y, c.y());
-		assertEquals(z, c.z());
-		assertEquals(flags, c.flags());
-	}
-	
-	private void doTest(Object e, int x, int y, int z, int flags) {
-		Coordinate c = CoordinateFactory.instantiate(e);
-		assertEquals(x, c.x());
-		assertEquals(y, c.y());
-		assertEquals(z, c.z());
-		assertEquals(flags, c.flags());
-	}
-	private void doTest(Element e, int x, int y, int flags) {
-		Coordinate c = CoordinateFactory.instantiate(e);
-		assertEquals(x, c.x());
-		assertEquals(y, c.y());
-		assertEquals(flags, c.flags());
-	}
 
-	private void addAttributes(Element e, int x, int y, int flags) {
-		e.addAttribute("x", Integer.toString(x));
-		e.addAttribute("y", Integer.toString(y));
-		e.addAttribute("flags", Integer.toString(flags));
-	}
-	
-	private void doTest(Object o, int x, int y, int flags) {
-		Coordinate c = CoordinateFactory.instantiate(o);
-		assertEquals(x, c.x());
-		assertEquals(y, c.y());
-		assertEquals(flags, c.flags());		
-	}
-	
-	private void addAttributes(Element e, int x, int y, int z, int flags) {
-		addAttributes(e, x, y, flags);
-		e.addAttribute("z", Integer.toString(z));
-	}
-	
-	public void testInstantiateFromObject() {
-		Element ce = new BaseElement("coordinate");
-		Element ve = new BaseElement("vector");
-		Element de = new BaseElement("displacement");
-		
-		addAttributes(ce, 1, 2, 3);
-		addAttributes(ve, 2, 3, 4, 5);
-		addAttributes(de, 4, 5, 6);
+    private void doTest(Element o, int x, int y, int z, int flags) {
+        Coordinate c = CoordinateFactory.instantiate(o);
+        assertEquals(x, c.x());
+        assertEquals(y, c.y());
+        assertEquals(z, c.z());
+        assertEquals(flags, c.flags());
+    }
 
-		doTest((Object) ce, 1, 2, 3 | Flags.PLANAR);
-		doTest((Object) ve, 2, 3, 4, 5 | Flags.VECTOR);
-		doTest((Object) de, 4, 5, 6 | Flags.PLANAR | Flags.VECTOR);
-	}
+    private void doTest(Object e, int x, int y, int z, int flags) {
+        Coordinate c = CoordinateFactory.instantiate(e);
+        assertEquals(x, c.x());
+        assertEquals(y, c.y());
+        assertEquals(z, c.z());
+        assertEquals(flags, c.flags());
+    }
+
+    private void doTest(Element e, int x, int y, int flags) {
+        Coordinate c = CoordinateFactory.instantiate(e);
+        assertEquals(x, c.x());
+        assertEquals(y, c.y());
+        assertEquals(flags, c.flags());
+    }
+
+    private void addAttributes(Element e, int x, int y, int flags) {
+        e.addAttribute("x", Integer.toString(x));
+        e.addAttribute("y", Integer.toString(y));
+        e.addAttribute("flags", Integer.toString(flags));
+    }
+
+    private void doTest(Object o, int x, int y, int flags) {
+        Coordinate c = CoordinateFactory.instantiate(o);
+        assertEquals(x, c.x());
+        assertEquals(y, c.y());
+        assertEquals(flags, c.flags());
+    }
+
+    private void addAttributes(Element e, int x, int y, int z, int flags) {
+        addAttributes(e, x, y, flags);
+        e.addAttribute("z", Integer.toString(z));
+    }
+
+    public void testInstantiateFromObject() {
+        Element ce = new BaseElement("coordinate");
+        Element ve = new BaseElement("vector");
+        Element de = new BaseElement("displacement");
+
+        addAttributes(ce, 1, 2, 3);
+        addAttributes(ve, 2, 3, 4, 5);
+        addAttributes(de, 4, 5, 6);
+
+        doTest((Object) ce, 1, 2, 3 | Flags.PLANAR);
+        doTest((Object) ve, 2, 3, 4, 5 | Flags.VECTOR);
+        doTest((Object) de, 4, 5, 6 | Flags.PLANAR | Flags.VECTOR);
+    }
 
 }

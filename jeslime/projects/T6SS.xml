@@ -1,3 +1,22 @@
+<!--
+  ~ Copyright (c) 2014, David Bruce Borenstein and the Trustees of
+  ~ Princeton University.
+  ~
+  ~ Except where otherwise noted, this work is subject to a Creative Commons
+  ~ Attribution (CC BY 4.0) license.
+  ~
+  ~ Attribute (BY): You must attribute the work in the manner specified
+  ~ by the author or licensor (but not in any way that suggests that they
+  ~ endorse you or your use of the work).
+  ~
+  ~ The Licensor offers the Licensed Material as-is and as-available, and
+  ~ makes no representations or warranties of any kind concerning the
+  ~ Licensed Material, whether express, implied, statutory, or other.
+  ~
+  ~ For the full license, please visit:
+  ~ http://creativecommons.org/licenses/by/4.0/legalcode
+  -->
+
 <simulation>
     <version>0.5.0</version>
 
@@ -9,9 +28,9 @@
         <date-stamp>true</date-stamp>
         <max-step>1000001</max-step>
         <output-frames>
-            <auto mode="decilog" />
+            <auto mode="decilog"/>
         </output-frames>
-        <write-state-map />
+        <write-state-map/>
     </general>
 
     <!-- Declare geometry properties -->
@@ -107,7 +126,7 @@
                 <behaviors>
                     <!-- Retaliators don't attack, so make this a null action. -->
                     <attack>
-                        <null />
+                        <null/>
                     </attack>
 
                     <!-- Define the retaliator's response to being attacked. -->
@@ -118,7 +137,7 @@
 
                             <!-- Option 1: do nothing. -->
                             <option weight="0.9">
-                                <null />
+                                <null/>
                             </option>
 
                             <!-- Option 2: Retaliate. -->
@@ -160,37 +179,37 @@
         <trigger>
             <behavior>attack</behavior>
             <max-targets>1</max-targets>
-            <skip-vacant-sites />
+            <skip-vacant-sites/>
         </trigger>
 
         <!-- Remove the cells that have died. -->
-        <cull />
+        <cull/>
 
         <!-- Allow cells that are big enough to divide. -->
-        <divide-anywhere />
+        <divide-anywhere/>
 
         <!-- End the simulation if no living cells are present -->
-        <check-for-extinction />
+        <check-for-extinction/>
 
         <!-- End the simulation if one cell type has fixed -->
-        <check-for-fixation />
+        <check-for-fixation/>
 
     </cell-processes>
 
     <!-- Declare the expected output modes -->
     <writers>
         <!-- Write out a data file containing discrete layer states -->
-        <cell-state-writer />
+        <cell-state-writer/>
 
         <!-- Write out parameters to a plain text file -->
-        <parameter-writer />
+        <parameter-writer/>
 
         <!-- Report progress to stdout -->
-        <progress-reporter />
+        <progress-reporter/>
 
         <!-- Create a catalog of coordinates to scalar indices. Required for some
              post-processing, such as visualizations. -->
-        <coordinate-indexer />
+        <coordinate-indexer/>
 
     </writers>
 </simulation>

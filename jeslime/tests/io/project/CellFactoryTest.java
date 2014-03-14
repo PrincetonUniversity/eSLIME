@@ -3,25 +3,18 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package io.project;
@@ -38,7 +31,7 @@ import layers.cell.CellLayer;
 import org.dom4j.Element;
 import structural.MockGeneralParameters;
 import test.EslimeTestCase;
-import io.project.CellFactory;
+
 /**
  * Created by dbborens on 2/18/14.
  */
@@ -75,7 +68,7 @@ public class CellFactoryTest extends EslimeTestCase {
         BehaviorCell expected = new BehaviorCell(layerManager, 2, 0.5, 1.0);
         BehaviorDispatcher expectedDispatcher = new BehaviorDispatcher(expected, layerManager, p);
 
-        Action[] actionList = new Action[] {null};
+        Action[] actionList = new Action[]{null};
         Behavior testBehavior = new Behavior(expected, layerManager, actionList);
         expectedDispatcher.map("test-behavior", testBehavior);
         expected.setDispatcher(expectedDispatcher);

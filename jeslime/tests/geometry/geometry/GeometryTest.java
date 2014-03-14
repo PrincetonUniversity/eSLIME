@@ -3,69 +3,61 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package geometry.geometry;
 
-import test.EslimeTestCase;
-import geometry.MockGeometry;
-import geometry.lattice.MockLattice;
-import geometry.shape.MockShape;
-import structural.Flags;
-import structural.identifiers.Coordinate;
 import geometry.Geometry;
+import geometry.MockGeometry;
 import geometry.boundaries.Boundary;
 import geometry.lattice.Lattice;
+import geometry.lattice.MockLattice;
 import geometry.lattice.RectangularLattice;
+import geometry.shape.MockShape;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
+import structural.Flags;
+import structural.identifiers.Coordinate;
+import test.EslimeTestCase;
 
 /**
  * Pseudo-unit test for basic behavior of the Geometry object.
- * 
- * @untested
- * @author David Bruce Borenstein
  *
+ * @author David Bruce Borenstein
+ * @untested
  */
 public class GeometryTest extends EslimeTestCase {
 
-	private Geometry geom;
-	private Lattice lattice;
-	private Shape shape;
-	private Boundary boundary;
-	
-	private Coordinate p, q, r;
-	
-	@Override
-	public void setUp() {
-		lattice = new RectangularLattice();
-		shape = new Rectangle(lattice, 4, 4);
-		boundary = new MockBoundary(shape, lattice);
-		geom = new Geometry(lattice, shape, boundary);
-		
-		p = new Coordinate(1, 2, 0);
-		q = new Coordinate(3, 2, 0);
-		r = new Coordinate(4, 2, 0); 	// Wraps around
-	}
+    private Geometry geom;
+    private Lattice lattice;
+    private Shape shape;
+    private Boundary boundary;
+
+    private Coordinate p, q, r;
+
+    @Override
+    public void setUp() {
+        lattice = new RectangularLattice();
+        shape = new Rectangle(lattice, 4, 4);
+        boundary = new MockBoundary(shape, lattice);
+        geom = new Geometry(lattice, shape, boundary);
+
+        p = new Coordinate(1, 2, 0);
+        q = new Coordinate(3, 2, 0);
+        r = new Coordinate(4, 2, 0);    // Wraps around
+    }
 
     public void testCloneAtScale() {
         assertEquals(16, geom.getCanonicalSites().length);
@@ -77,529 +69,533 @@ public class GeometryTest extends EslimeTestCase {
         // Scales by 2 in both x and y directions --> 4 times as many sites
         assertEquals(64, scaled.getCanonicalSites().length);
     }
-	public void testNeighborsApply() {
-		Coordinate[] actual, expected;
-		
-		// Within bounds
-		actual = geom.getNeighbors(p, Geometry.APPLY_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(2, 2, 0),
-				new Coordinate(1, 3, 0),
-				new Coordinate(0, 2, 0),
-				new Coordinate(1, 1, 0)
-		};
-		assertArraysEqual(actual, expected, true);
-		
-		// One neighbor of bounds
-		actual = geom.getNeighbors(q, Geometry.APPLY_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(0, 2, Flags.BOUNDARY_APPLIED),
-				new Coordinate(3, 3, 0),
-				new Coordinate(2, 2, 0),
-				new Coordinate(3, 1, 0)
-		};
-		assertArraysEqual(actual, expected, true);
 
-		// Origin out of bounds
-		actual = geom.getNeighbors(q, Geometry.APPLY_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(1, 2, Flags.BOUNDARY_APPLIED),
-				new Coordinate(0, 3, Flags.BOUNDARY_APPLIED),
-				new Coordinate(3, 2, 0),
-				new Coordinate(3, 1, 0)
-		};
-	}
-	
-	public void testNeighborsFlag() {
-		Coordinate[] actual, expected;
-		
-		// One neighbor of bounds
-		actual = geom.getNeighbors(q, Geometry.FLAG_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(4, 2, Flags.BOUNDARY_IGNORED),
-				new Coordinate(3, 3, 0),
-				new Coordinate(2, 2, 0),
-				new Coordinate(3, 1, 0)
-		};
-		assertArraysEqual(actual, expected, true);
-		
-		// Origin out of bounds
-		actual = geom.getNeighbors(q, Geometry.FLAG_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(5, 2, Flags.BOUNDARY_IGNORED),
-				new Coordinate(4, 3, Flags.BOUNDARY_IGNORED),
-				new Coordinate(3, 2, 0),
-				new Coordinate(3, 1, 0)
-		};
-	}
-	
-	public void testNeighborsExclude() {
-		Coordinate[] actual, expected;
-		
-		// One neighbor of bounds
-		actual = geom.getNeighbors(q, Geometry.EXCLUDE_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(3, 3, 0),
-				new Coordinate(2, 2, 0),
-				new Coordinate(3, 1, 0)
-		};
-		assertArraysEqual(actual, expected, true);
-		
-		// Origin out of bounds
-		actual = geom.getNeighbors(q, Geometry.EXCLUDE_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(3, 2, 0),
-				new Coordinate(3, 1, 0)
-		};
-	}
-	
-	public void testNeighborsIgnore() {
-		Coordinate[] actual, expected;
-		
-		// One neighbor of bounds
-		actual = geom.getNeighbors(q, Geometry.IGNORE_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(4, 2, 0),
-				new Coordinate(3, 3, 0),
-				new Coordinate(2, 2, 0),
-				new Coordinate(3, 1, 0)
-		};
-		assertArraysEqual(actual, expected, true);
-		
-		// Origin out of bounds
-		actual = geom.getNeighbors(q, Geometry.IGNORE_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(5, 2, 0),
-				new Coordinate(4, 3, 0),
-				new Coordinate(3, 2, 0),
-				new Coordinate(3, 1, 0)
-		};
-	}
-	
-	public void testAnnulusApply() {
-		Coordinate[] actual, expected;
-		
-		// Within bounds
-		actual = geom.getAnnulus(p, 1, Geometry.APPLY_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(2, 2, 0),
-				new Coordinate(1, 3, 0),
-				new Coordinate(0, 2, 0),
-				new Coordinate(1, 1, 0)
-		};
-		assertArraysEqual(actual, expected, true);
-		
-		// One neighbor of bounds
-		actual = geom.getAnnulus(q, 1, Geometry.APPLY_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(0, 2, Flags.BOUNDARY_APPLIED),
-				new Coordinate(3, 3, 0),
-				new Coordinate(2, 2, 0),
-				new Coordinate(3, 1, 0)
-		};
-		assertArraysEqual(actual, expected, true);
+    public void testNeighborsApply() {
+        Coordinate[] actual, expected;
 
-		// Origin out of bounds
-		actual = geom.getAnnulus(q, 1, Geometry.APPLY_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(1, 2, Flags.BOUNDARY_APPLIED),
-				new Coordinate(0, 3, Flags.BOUNDARY_APPLIED),
-				new Coordinate(3, 2, 0),
-				new Coordinate(3, 1, 0)
-		};
-	}
-	
-	public void testAnnulusFlag() {
-		Coordinate[] actual, expected;
-		
-		// One neighbor of bounds
-		actual = geom.getAnnulus(q, 1, Geometry.FLAG_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(4, 2, Flags.BOUNDARY_IGNORED),
-				new Coordinate(3, 3, 0),
-				new Coordinate(2, 2, 0),
-				new Coordinate(3, 1, 0)
-		};
-		assertArraysEqual(actual, expected, true);
-		
-		// Origin out of bounds
-		actual = geom.getAnnulus(q, 1, Geometry.FLAG_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(5, 2, Flags.BOUNDARY_IGNORED),
-				new Coordinate(4, 3, Flags.BOUNDARY_IGNORED),
-				new Coordinate(3, 2, 0),
-				new Coordinate(3, 1, 0)
-		};
-	}
-	
-	public void testAnnulusExclude() {
-		Coordinate[] actual, expected;
-		
-		// One neighbor of bounds
-		actual = geom.getAnnulus(q, 1, Geometry.EXCLUDE_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(3, 3, 0),
-				new Coordinate(2, 2, 0),
-				new Coordinate(3, 1, 0)
-		};
-		assertArraysEqual(actual, expected, true);
-		
-		// Origin out of bounds
-		actual = geom.getAnnulus(q, 1, Geometry.EXCLUDE_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(3, 2, 0),
-				new Coordinate(3, 1, 0)
-		};
-	}
-	
-	public void testAnnulusIgnore() {
-		Coordinate[] actual, expected;
-		
-		// One neighbor of bounds
-		actual = geom.getAnnulus(q, 1, Geometry.IGNORE_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(4, 2, 0),
-				new Coordinate(3, 3, 0),
-				new Coordinate(2, 2, 0),
-				new Coordinate(3, 1, 0)
-		};
-		assertArraysEqual(actual, expected, true);
-		
-		// Origin out of bounds
-		actual = geom.getAnnulus(q, 1, Geometry.IGNORE_BOUNDARIES);
-		expected = new Coordinate[] {
-				new Coordinate(5, 2, 0),
-				new Coordinate(4, 3, 0),
-				new Coordinate(3, 2, 0),
-				new Coordinate(3, 1, 0)
-		};
-	}
-	
-	public void testRel2absApply() {
-		Coordinate expected = new Coordinate(0, 2, Flags.BOUNDARY_APPLIED);
-		Coordinate disp = new Coordinate(3, 0, Flags.VECTOR);
-		Coordinate actual = geom.rel2abs(p, disp, Geometry.APPLY_BOUNDARIES);
-		assertEquals(actual, expected);
-	}
-	
-	public void testRel2absFlag() {
-		Coordinate expected = new Coordinate(4, 2, Flags.BOUNDARY_IGNORED);
-		Coordinate disp = new Coordinate(3, 0, Flags.VECTOR);
-		Coordinate actual = geom.rel2abs(p, disp, Geometry.FLAG_BOUNDARIES);
-		assertEquals(actual, expected);
-	}
-	
-	public void testRel2absExclude() {
-		Coordinate disp = new Coordinate(3, 0, Flags.VECTOR);
-		Coordinate actual = geom.rel2abs(p, disp, Geometry.EXCLUDE_BOUNDARIES);
-		assertNull(actual);
-	}
-	
-	public void testRel2absIgnore() {
-		Coordinate expected = new Coordinate(4, 2, 0);
-		Coordinate disp = new Coordinate(3, 0, Flags.VECTOR);
-		Coordinate actual = geom.rel2abs(p, disp, Geometry.IGNORE_BOUNDARIES);
-		assertEquals(expected, actual);
-	}
-	
-	public void testL1DistanceApply() {
-		int actual, expected;
-		
-		// p->p
-		actual = geom.getL1Distance(p, p, Geometry.APPLY_BOUNDARIES);
-		expected = 0;
-		assertEquals(actual, expected);
-		
-		// p->q
-		actual = geom.getL1Distance(p, q, Geometry.APPLY_BOUNDARIES);
-		expected = 2;
-		assertEquals(actual, expected);
+        // Within bounds
+        actual = geom.getNeighbors(p, Geometry.APPLY_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(2, 2, 0),
+                new Coordinate(1, 3, 0),
+                new Coordinate(0, 2, 0),
+                new Coordinate(1, 1, 0)
+        };
+        assertArraysEqual(actual, expected, true);
 
-		// p->r
-		actual = geom.getL1Distance(p, r, Geometry.APPLY_BOUNDARIES);
-		expected = 1;
-		assertEquals(actual, expected);
+        // One neighbor of bounds
+        actual = geom.getNeighbors(q, Geometry.APPLY_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(0, 2, Flags.BOUNDARY_APPLIED),
+                new Coordinate(3, 3, 0),
+                new Coordinate(2, 2, 0),
+                new Coordinate(3, 1, 0)
+        };
+        assertArraysEqual(actual, expected, true);
 
-		// r->p
-		actual = geom.getL1Distance(r, p, Geometry.APPLY_BOUNDARIES);
-		expected = 1;
-		assertEquals(actual, expected);
+        // Origin out of bounds
+        actual = geom.getNeighbors(q, Geometry.APPLY_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(1, 2, Flags.BOUNDARY_APPLIED),
+                new Coordinate(0, 3, Flags.BOUNDARY_APPLIED),
+                new Coordinate(3, 2, 0),
+                new Coordinate(3, 1, 0)
+        };
+    }
 
-		// r->r
-		actual = geom.getL1Distance(r, r, Geometry.APPLY_BOUNDARIES);
-		expected = 0;
-		assertEquals(actual, expected);
-	}
-	
-	public void testL1DistanceIgnore() {
-		int actual, expected;
-		
-		// p->p
-		actual = geom.getL1Distance(p, p, Geometry.IGNORE_BOUNDARIES);
-		expected = 0;
-		assertEquals(actual, expected);
-		
-		// p->q
-		actual = geom.getL1Distance(p, q, Geometry.IGNORE_BOUNDARIES);
-		expected = 2;
-		assertEquals(actual, expected);
+    public void testNeighborsFlag() {
+        Coordinate[] actual, expected;
 
-		// p->r
-		actual = geom.getL1Distance(p, r, Geometry.IGNORE_BOUNDARIES);
-		expected = 3;
-		assertEquals(actual, expected);
+        // One neighbor of bounds
+        actual = geom.getNeighbors(q, Geometry.FLAG_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(4, 2, Flags.BOUNDARY_IGNORED),
+                new Coordinate(3, 3, 0),
+                new Coordinate(2, 2, 0),
+                new Coordinate(3, 1, 0)
+        };
+        assertArraysEqual(actual, expected, true);
 
-		// r->p
-		actual = geom.getL1Distance(r, p, Geometry.IGNORE_BOUNDARIES);
-		expected = 3;
-		assertEquals(actual, expected);
+        // Origin out of bounds
+        actual = geom.getNeighbors(q, Geometry.FLAG_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(5, 2, Flags.BOUNDARY_IGNORED),
+                new Coordinate(4, 3, Flags.BOUNDARY_IGNORED),
+                new Coordinate(3, 2, 0),
+                new Coordinate(3, 1, 0)
+        };
+    }
 
-		// r->r
-		actual = geom.getL1Distance(r, r, Geometry.IGNORE_BOUNDARIES);
-		expected = 0;
-		assertEquals(actual, expected);
-	}
-	
-	public void testL1DistanceExclude() {
-		boolean threw = false;
-		try {
-			geom.getL1Distance(p, q, Geometry.EXCLUDE_BOUNDARIES);
-		} catch (Exception ex) {
-			threw = true;
-		}
-		assertTrue(threw);		}
-	
-	public void testL1DistanceFlag() {
-		boolean threw = false;
-		try {
-			geom.getL1Distance(p, q, Geometry.FLAG_BOUNDARIES);
-		} catch (Exception ex) {
-			threw = true;
-		}
-		assertTrue(threw);	
-	}
-	
-	public void testDisplacementApply() {
-		Coordinate actual, expected;
-		
-		// p->p
-		actual = geom.getDisplacement(p, p, Geometry.APPLY_BOUNDARIES);
-		expected = new Coordinate(0, 0, Flags.VECTOR);
-		assertEquals(actual, expected);
-		
-		// p->q
-		actual = geom.getDisplacement(p, q, Geometry.APPLY_BOUNDARIES);
-		expected = new Coordinate(2, 0, Flags.VECTOR);
-		assertEquals(actual, expected);
+    public void testNeighborsExclude() {
+        Coordinate[] actual, expected;
 
-		// p->r
-		actual = geom.getDisplacement(p, r, Geometry.APPLY_BOUNDARIES);
-		expected = new Coordinate(-1, 0, Flags.VECTOR);
-		assertEquals(actual, expected);
+        // One neighbor of bounds
+        actual = geom.getNeighbors(q, Geometry.EXCLUDE_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(3, 3, 0),
+                new Coordinate(2, 2, 0),
+                new Coordinate(3, 1, 0)
+        };
+        assertArraysEqual(actual, expected, true);
 
-		// r->p
-		actual = geom.getDisplacement(r, p, Geometry.APPLY_BOUNDARIES);
-		expected = new Coordinate(1, 0, Flags.VECTOR);
-		assertEquals(actual, expected);
+        // Origin out of bounds
+        actual = geom.getNeighbors(q, Geometry.EXCLUDE_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(3, 2, 0),
+                new Coordinate(3, 1, 0)
+        };
+    }
 
-		// r->r
-		actual = geom.getDisplacement(r, r, Geometry.APPLY_BOUNDARIES);
-		expected = new Coordinate(0, 0, Flags.VECTOR);
-		assertEquals(actual, expected);
-	}
-	
-	public void testDisplacementFlag() {
-		boolean threw = false;
-		try {
-			geom.getDisplacement(p, q, Geometry.FLAG_BOUNDARIES);
-		} catch (Exception ex) {
-			threw = true;
-		}
-		assertTrue(threw);
-	}
-	
-	public void testDisplacementExclude() {
-		boolean threw = false;
-		try {
-			geom.getDisplacement(p, q, Geometry.EXCLUDE_BOUNDARIES);
-		} catch (Exception ex) {
-			threw = true;
-		}
-		assertTrue(threw);
-	}
-	
-	public void testDisplacementIgnore() {
-		Coordinate actual, expected;
-		
-		// p->p
-		actual = geom.getDisplacement(p, p, Geometry.IGNORE_BOUNDARIES);
-		expected = new Coordinate(0, 0, Flags.VECTOR);
-		assertEquals(actual, expected);
-		
-		// p->q
-		actual = geom.getDisplacement(p, q, Geometry.IGNORE_BOUNDARIES);
-		expected = new Coordinate(2, 0, Flags.VECTOR);
-		assertEquals(actual, expected);
+    public void testNeighborsIgnore() {
+        Coordinate[] actual, expected;
 
-		// p->r
-		actual = geom.getDisplacement(p, r, Geometry.IGNORE_BOUNDARIES);
-		expected = new Coordinate(3, 0, Flags.VECTOR);
-		assertEquals(actual, expected);
+        // One neighbor of bounds
+        actual = geom.getNeighbors(q, Geometry.IGNORE_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(4, 2, 0),
+                new Coordinate(3, 3, 0),
+                new Coordinate(2, 2, 0),
+                new Coordinate(3, 1, 0)
+        };
+        assertArraysEqual(actual, expected, true);
 
-		// r->p
-		actual = geom.getDisplacement(r, p, Geometry.IGNORE_BOUNDARIES);
-		expected = new Coordinate(-3, 0, Flags.VECTOR);
-		assertEquals(actual, expected);
+        // Origin out of bounds
+        actual = geom.getNeighbors(q, Geometry.IGNORE_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(5, 2, 0),
+                new Coordinate(4, 3, 0),
+                new Coordinate(3, 2, 0),
+                new Coordinate(3, 1, 0)
+        };
+    }
 
-		// r->r
-		actual = geom.getDisplacement(r, r, Geometry.IGNORE_BOUNDARIES);
-		expected = new Coordinate(0, 0, Flags.VECTOR);
-		assertEquals(actual, expected);
-	}
-	
-	public void testCanonicalSites() {
-		MockGeometry geom = new MockGeometry();
-		Coordinate[] canonicals = new Coordinate[] {
-				new Coordinate(1, 2, 3, 4),
-				new Coordinate(0, 0, 0, 0)
-		};
-		geom.setCanonicalSites(canonicals);
-		
-		Coordinate[] expected = canonicals.clone();
-		Coordinate[] actual = geom.getCanonicalSites();
-		
-		assertArraysEqual(expected, actual, true);
-	}
-	
-	public void testApplyExclude() {
-		Coordinate actual, expected;
-		
-		actual = geom.apply(p, Geometry.EXCLUDE_BOUNDARIES);
-		expected = p.clone();
-		assertEquals(expected, actual);
-		
-		actual = geom.apply(q, Geometry.EXCLUDE_BOUNDARIES);
-		expected = q.clone();
-		assertEquals(expected, actual);
+    public void testAnnulusApply() {
+        Coordinate[] actual, expected;
 
-		actual = geom.apply(r, Geometry.EXCLUDE_BOUNDARIES);
-		expected = null;
-		assertEquals(expected, actual);	}
-	
-	public void testApplyApply() {
-		Coordinate actual, expected;
-		
-		actual = geom.apply(p, Geometry.APPLY_BOUNDARIES);
-		expected = p.clone();
-		assertEquals(expected, actual);
-		
-		actual = geom.apply(q, Geometry.APPLY_BOUNDARIES);
-		expected = q.clone();
-		assertEquals(expected, actual);
+        // Within bounds
+        actual = geom.getAnnulus(p, 1, Geometry.APPLY_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(2, 2, 0),
+                new Coordinate(1, 3, 0),
+                new Coordinate(0, 2, 0),
+                new Coordinate(1, 1, 0)
+        };
+        assertArraysEqual(actual, expected, true);
 
-		actual = geom.apply(r, Geometry.APPLY_BOUNDARIES);
-		expected = new Coordinate(0, 2, Flags.BOUNDARY_APPLIED);
-		assertEquals(expected, actual);
-	}
-	
-	public void testApplyIgnore() {
-		Coordinate actual, expected;
-		
-		actual = geom.apply(p, Geometry.IGNORE_BOUNDARIES);
-		expected = p.clone();
-		assertEquals(expected, actual);
-		
-		actual = geom.apply(q, Geometry.IGNORE_BOUNDARIES);
-		expected = q.clone();
-		assertEquals(expected, actual);
+        // One neighbor of bounds
+        actual = geom.getAnnulus(q, 1, Geometry.APPLY_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(0, 2, Flags.BOUNDARY_APPLIED),
+                new Coordinate(3, 3, 0),
+                new Coordinate(2, 2, 0),
+                new Coordinate(3, 1, 0)
+        };
+        assertArraysEqual(actual, expected, true);
 
-		actual = geom.apply(r, Geometry.IGNORE_BOUNDARIES);
-		expected = r.clone();
-		assertEquals(expected, actual);
-	}
-	
-	public void testApplyFlag() {
-		Coordinate actual, expected;
-		
-		actual = geom.apply(p, Geometry.FLAG_BOUNDARIES);
-		expected = p.clone();
-		assertEquals(expected, actual);
-		
-		actual = geom.apply(q, Geometry.FLAG_BOUNDARIES);
-		expected = q.clone();
-		assertEquals(expected, actual);
+        // Origin out of bounds
+        actual = geom.getAnnulus(q, 1, Geometry.APPLY_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(1, 2, Flags.BOUNDARY_APPLIED),
+                new Coordinate(0, 3, Flags.BOUNDARY_APPLIED),
+                new Coordinate(3, 2, 0),
+                new Coordinate(3, 1, 0)
+        };
+    }
 
-		actual = geom.apply(r, Geometry.FLAG_BOUNDARIES);
-		expected = r.addFlags(Flags.BOUNDARY_IGNORED);
-		assertEquals(expected, actual);	
-	}
-	
-	public void testConnectivity() {
-		MockLattice lattice = new MockLattice();
-		MockShape shape = new MockShape();
-		Geometry geom = new Geometry(lattice, shape, null);
-		lattice.setConnectivity(5);
-		assertEquals(5, geom.getConnectivity());
-	}
-	
-	public void testDimensionality() {
-		MockLattice lattice = new MockLattice();
-		MockShape shape = new MockShape();
-		Geometry geom = new Geometry(lattice, shape, null);
-		lattice.setDimensionality(5);
-		assertEquals(5, geom.getDimensionality());
-	}
-	
-	/**
-	 * Tests coordToIndex(...) and rebuildIndex()
-	 */
-	public void testCoordinateIndex() {
-		MockGeometry geom = new MockGeometry();
-		Coordinate o, p;
-		o = new Coordinate(0, 0, 0, 0);
-		
-		// Notice not canonical.
-		p = new Coordinate(1, 2, 3, 4);
-		
-		Coordinate[] canonicals = new Coordinate[] {o};
-		geom.setCanonicalSites(canonicals);
-		
-		assertNull(geom.coordToIndex(p));
-		assertNotNull(geom.coordToIndex(o));
-		
-		geom.setCanonicalSites(new Coordinate[] {o, p});
-		
-		assertNotNull(geom.coordToIndex(p));
-		assertNotNull(geom.coordToIndex(o));
-		assertFalse(geom.coordToIndex(o).equals(geom.coordToIndex(p)));
-	}
+    public void testAnnulusFlag() {
+        Coordinate[] actual, expected;
+
+        // One neighbor of bounds
+        actual = geom.getAnnulus(q, 1, Geometry.FLAG_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(4, 2, Flags.BOUNDARY_IGNORED),
+                new Coordinate(3, 3, 0),
+                new Coordinate(2, 2, 0),
+                new Coordinate(3, 1, 0)
+        };
+        assertArraysEqual(actual, expected, true);
+
+        // Origin out of bounds
+        actual = geom.getAnnulus(q, 1, Geometry.FLAG_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(5, 2, Flags.BOUNDARY_IGNORED),
+                new Coordinate(4, 3, Flags.BOUNDARY_IGNORED),
+                new Coordinate(3, 2, 0),
+                new Coordinate(3, 1, 0)
+        };
+    }
+
+    public void testAnnulusExclude() {
+        Coordinate[] actual, expected;
+
+        // One neighbor of bounds
+        actual = geom.getAnnulus(q, 1, Geometry.EXCLUDE_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(3, 3, 0),
+                new Coordinate(2, 2, 0),
+                new Coordinate(3, 1, 0)
+        };
+        assertArraysEqual(actual, expected, true);
+
+        // Origin out of bounds
+        actual = geom.getAnnulus(q, 1, Geometry.EXCLUDE_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(3, 2, 0),
+                new Coordinate(3, 1, 0)
+        };
+    }
+
+    public void testAnnulusIgnore() {
+        Coordinate[] actual, expected;
+
+        // One neighbor of bounds
+        actual = geom.getAnnulus(q, 1, Geometry.IGNORE_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(4, 2, 0),
+                new Coordinate(3, 3, 0),
+                new Coordinate(2, 2, 0),
+                new Coordinate(3, 1, 0)
+        };
+        assertArraysEqual(actual, expected, true);
+
+        // Origin out of bounds
+        actual = geom.getAnnulus(q, 1, Geometry.IGNORE_BOUNDARIES);
+        expected = new Coordinate[]{
+                new Coordinate(5, 2, 0),
+                new Coordinate(4, 3, 0),
+                new Coordinate(3, 2, 0),
+                new Coordinate(3, 1, 0)
+        };
+    }
+
+    public void testRel2absApply() {
+        Coordinate expected = new Coordinate(0, 2, Flags.BOUNDARY_APPLIED);
+        Coordinate disp = new Coordinate(3, 0, Flags.VECTOR);
+        Coordinate actual = geom.rel2abs(p, disp, Geometry.APPLY_BOUNDARIES);
+        assertEquals(actual, expected);
+    }
+
+    public void testRel2absFlag() {
+        Coordinate expected = new Coordinate(4, 2, Flags.BOUNDARY_IGNORED);
+        Coordinate disp = new Coordinate(3, 0, Flags.VECTOR);
+        Coordinate actual = geom.rel2abs(p, disp, Geometry.FLAG_BOUNDARIES);
+        assertEquals(actual, expected);
+    }
+
+    public void testRel2absExclude() {
+        Coordinate disp = new Coordinate(3, 0, Flags.VECTOR);
+        Coordinate actual = geom.rel2abs(p, disp, Geometry.EXCLUDE_BOUNDARIES);
+        assertNull(actual);
+    }
+
+    public void testRel2absIgnore() {
+        Coordinate expected = new Coordinate(4, 2, 0);
+        Coordinate disp = new Coordinate(3, 0, Flags.VECTOR);
+        Coordinate actual = geom.rel2abs(p, disp, Geometry.IGNORE_BOUNDARIES);
+        assertEquals(expected, actual);
+    }
+
+    public void testL1DistanceApply() {
+        int actual, expected;
+
+        // p->p
+        actual = geom.getL1Distance(p, p, Geometry.APPLY_BOUNDARIES);
+        expected = 0;
+        assertEquals(actual, expected);
+
+        // p->q
+        actual = geom.getL1Distance(p, q, Geometry.APPLY_BOUNDARIES);
+        expected = 2;
+        assertEquals(actual, expected);
+
+        // p->r
+        actual = geom.getL1Distance(p, r, Geometry.APPLY_BOUNDARIES);
+        expected = 1;
+        assertEquals(actual, expected);
+
+        // r->p
+        actual = geom.getL1Distance(r, p, Geometry.APPLY_BOUNDARIES);
+        expected = 1;
+        assertEquals(actual, expected);
+
+        // r->r
+        actual = geom.getL1Distance(r, r, Geometry.APPLY_BOUNDARIES);
+        expected = 0;
+        assertEquals(actual, expected);
+    }
+
+    public void testL1DistanceIgnore() {
+        int actual, expected;
+
+        // p->p
+        actual = geom.getL1Distance(p, p, Geometry.IGNORE_BOUNDARIES);
+        expected = 0;
+        assertEquals(actual, expected);
+
+        // p->q
+        actual = geom.getL1Distance(p, q, Geometry.IGNORE_BOUNDARIES);
+        expected = 2;
+        assertEquals(actual, expected);
+
+        // p->r
+        actual = geom.getL1Distance(p, r, Geometry.IGNORE_BOUNDARIES);
+        expected = 3;
+        assertEquals(actual, expected);
+
+        // r->p
+        actual = geom.getL1Distance(r, p, Geometry.IGNORE_BOUNDARIES);
+        expected = 3;
+        assertEquals(actual, expected);
+
+        // r->r
+        actual = geom.getL1Distance(r, r, Geometry.IGNORE_BOUNDARIES);
+        expected = 0;
+        assertEquals(actual, expected);
+    }
+
+    public void testL1DistanceExclude() {
+        boolean threw = false;
+        try {
+            geom.getL1Distance(p, q, Geometry.EXCLUDE_BOUNDARIES);
+        } catch (Exception ex) {
+            threw = true;
+        }
+        assertTrue(threw);
+    }
+
+    public void testL1DistanceFlag() {
+        boolean threw = false;
+        try {
+            geom.getL1Distance(p, q, Geometry.FLAG_BOUNDARIES);
+        } catch (Exception ex) {
+            threw = true;
+        }
+        assertTrue(threw);
+    }
+
+    public void testDisplacementApply() {
+        Coordinate actual, expected;
+
+        // p->p
+        actual = geom.getDisplacement(p, p, Geometry.APPLY_BOUNDARIES);
+        expected = new Coordinate(0, 0, Flags.VECTOR);
+        assertEquals(actual, expected);
+
+        // p->q
+        actual = geom.getDisplacement(p, q, Geometry.APPLY_BOUNDARIES);
+        expected = new Coordinate(2, 0, Flags.VECTOR);
+        assertEquals(actual, expected);
+
+        // p->r
+        actual = geom.getDisplacement(p, r, Geometry.APPLY_BOUNDARIES);
+        expected = new Coordinate(-1, 0, Flags.VECTOR);
+        assertEquals(actual, expected);
+
+        // r->p
+        actual = geom.getDisplacement(r, p, Geometry.APPLY_BOUNDARIES);
+        expected = new Coordinate(1, 0, Flags.VECTOR);
+        assertEquals(actual, expected);
+
+        // r->r
+        actual = geom.getDisplacement(r, r, Geometry.APPLY_BOUNDARIES);
+        expected = new Coordinate(0, 0, Flags.VECTOR);
+        assertEquals(actual, expected);
+    }
+
+    public void testDisplacementFlag() {
+        boolean threw = false;
+        try {
+            geom.getDisplacement(p, q, Geometry.FLAG_BOUNDARIES);
+        } catch (Exception ex) {
+            threw = true;
+        }
+        assertTrue(threw);
+    }
+
+    public void testDisplacementExclude() {
+        boolean threw = false;
+        try {
+            geom.getDisplacement(p, q, Geometry.EXCLUDE_BOUNDARIES);
+        } catch (Exception ex) {
+            threw = true;
+        }
+        assertTrue(threw);
+    }
+
+    public void testDisplacementIgnore() {
+        Coordinate actual, expected;
+
+        // p->p
+        actual = geom.getDisplacement(p, p, Geometry.IGNORE_BOUNDARIES);
+        expected = new Coordinate(0, 0, Flags.VECTOR);
+        assertEquals(actual, expected);
+
+        // p->q
+        actual = geom.getDisplacement(p, q, Geometry.IGNORE_BOUNDARIES);
+        expected = new Coordinate(2, 0, Flags.VECTOR);
+        assertEquals(actual, expected);
+
+        // p->r
+        actual = geom.getDisplacement(p, r, Geometry.IGNORE_BOUNDARIES);
+        expected = new Coordinate(3, 0, Flags.VECTOR);
+        assertEquals(actual, expected);
+
+        // r->p
+        actual = geom.getDisplacement(r, p, Geometry.IGNORE_BOUNDARIES);
+        expected = new Coordinate(-3, 0, Flags.VECTOR);
+        assertEquals(actual, expected);
+
+        // r->r
+        actual = geom.getDisplacement(r, r, Geometry.IGNORE_BOUNDARIES);
+        expected = new Coordinate(0, 0, Flags.VECTOR);
+        assertEquals(actual, expected);
+    }
+
+    public void testCanonicalSites() {
+        MockGeometry geom = new MockGeometry();
+        Coordinate[] canonicals = new Coordinate[]{
+                new Coordinate(1, 2, 3, 4),
+                new Coordinate(0, 0, 0, 0)
+        };
+        geom.setCanonicalSites(canonicals);
+
+        Coordinate[] expected = canonicals.clone();
+        Coordinate[] actual = geom.getCanonicalSites();
+
+        assertArraysEqual(expected, actual, true);
+    }
+
+    public void testApplyExclude() {
+        Coordinate actual, expected;
+
+        actual = geom.apply(p, Geometry.EXCLUDE_BOUNDARIES);
+        expected = p.clone();
+        assertEquals(expected, actual);
+
+        actual = geom.apply(q, Geometry.EXCLUDE_BOUNDARIES);
+        expected = q.clone();
+        assertEquals(expected, actual);
+
+        actual = geom.apply(r, Geometry.EXCLUDE_BOUNDARIES);
+        expected = null;
+        assertEquals(expected, actual);
+    }
+
+    public void testApplyApply() {
+        Coordinate actual, expected;
+
+        actual = geom.apply(p, Geometry.APPLY_BOUNDARIES);
+        expected = p.clone();
+        assertEquals(expected, actual);
+
+        actual = geom.apply(q, Geometry.APPLY_BOUNDARIES);
+        expected = q.clone();
+        assertEquals(expected, actual);
+
+        actual = geom.apply(r, Geometry.APPLY_BOUNDARIES);
+        expected = new Coordinate(0, 2, Flags.BOUNDARY_APPLIED);
+        assertEquals(expected, actual);
+    }
+
+    public void testApplyIgnore() {
+        Coordinate actual, expected;
+
+        actual = geom.apply(p, Geometry.IGNORE_BOUNDARIES);
+        expected = p.clone();
+        assertEquals(expected, actual);
+
+        actual = geom.apply(q, Geometry.IGNORE_BOUNDARIES);
+        expected = q.clone();
+        assertEquals(expected, actual);
+
+        actual = geom.apply(r, Geometry.IGNORE_BOUNDARIES);
+        expected = r.clone();
+        assertEquals(expected, actual);
+    }
+
+    public void testApplyFlag() {
+        Coordinate actual, expected;
+
+        actual = geom.apply(p, Geometry.FLAG_BOUNDARIES);
+        expected = p.clone();
+        assertEquals(expected, actual);
+
+        actual = geom.apply(q, Geometry.FLAG_BOUNDARIES);
+        expected = q.clone();
+        assertEquals(expected, actual);
+
+        actual = geom.apply(r, Geometry.FLAG_BOUNDARIES);
+        expected = r.addFlags(Flags.BOUNDARY_IGNORED);
+        assertEquals(expected, actual);
+    }
+
+    public void testConnectivity() {
+        MockLattice lattice = new MockLattice();
+        MockShape shape = new MockShape();
+        Geometry geom = new Geometry(lattice, shape, null);
+        lattice.setConnectivity(5);
+        assertEquals(5, geom.getConnectivity());
+    }
+
+    public void testDimensionality() {
+        MockLattice lattice = new MockLattice();
+        MockShape shape = new MockShape();
+        Geometry geom = new Geometry(lattice, shape, null);
+        lattice.setDimensionality(5);
+        assertEquals(5, geom.getDimensionality());
+    }
+
+    /**
+     * Tests coordToIndex(...) and rebuildIndex()
+     */
+    public void testCoordinateIndex() {
+        MockGeometry geom = new MockGeometry();
+        Coordinate o, p;
+        o = new Coordinate(0, 0, 0, 0);
+
+        // Notice not canonical.
+        p = new Coordinate(1, 2, 3, 4);
+
+        Coordinate[] canonicals = new Coordinate[]{o};
+        geom.setCanonicalSites(canonicals);
+
+        assertNull(geom.coordToIndex(p));
+        assertNotNull(geom.coordToIndex(o));
+
+        geom.setCanonicalSites(new Coordinate[]{o, p});
+
+        assertNotNull(geom.coordToIndex(p));
+        assertNotNull(geom.coordToIndex(o));
+        assertFalse(geom.coordToIndex(o).equals(geom.coordToIndex(p)));
+    }
 
 
-	private class MockBoundary extends Boundary {
+    private class MockBoundary extends Boundary {
 
-		public MockBoundary(Shape shape, Lattice lattice ) {
-			super(shape, lattice);
-		}
+        public MockBoundary(Shape shape, Lattice lattice) {
+            super(shape, lattice);
+        }
 
-		@Override
-		public Coordinate apply(Coordinate c) {
-			int x = c.x() % 4;
-			int y = c.y() % 4;
-			
-			int flags = 0;
-			if (x != c.x() || y != c.y()) {
-				flags |= Flags.BOUNDARY_APPLIED;
-			}
-			return new Coordinate(x, y, flags);
-		}
+        @Override
+        public Coordinate apply(Coordinate c) {
+            int x = c.x() % 4;
+            int y = c.y() % 4;
 
-		@Override
-		public boolean isInfinite() {
-			return false;
-		}
+            int flags = 0;
+            if (x != c.x() || y != c.y()) {
+                flags |= Flags.BOUNDARY_APPLIED;
+            }
+            return new Coordinate(x, y, flags);
+        }
 
-		@Override
-		protected void verify(Shape shape, Lattice lattice) {}
+        @Override
+        public boolean isInfinite() {
+            return false;
+        }
+
+        @Override
+        protected void verify(Shape shape, Lattice lattice) {
+        }
 
         @Override
         public Boundary clone(Shape scaledShape, Lattice clonedLattice) {

@@ -1,9 +1,27 @@
+<!--
+  ~ Copyright (c) 2014, David Bruce Borenstein and the Trustees of
+  ~ Princeton University.
+  ~
+  ~ Except where otherwise noted, this work is subject to a Creative Commons
+  ~ Attribution (CC BY 4.0) license.
+  ~
+  ~ Attribute (BY): You must attribute the work in the manner specified
+  ~ by the author or licensor (but not in any way that suggests that they
+  ~ endorse you or your use of the work).
+  ~
+  ~ The Licensor offers the Licensed Material as-is and as-available, and
+  ~ makes no representations or warranties of any kind concerning the
+  ~ Licensed Material, whether express, implied, statutory, or other.
+  ~
+  ~ For the full license, please visit:
+  ~ http://creativecommons.org/licenses/by/4.0/legalcode
+  -->
+
 <!-- A trivial model incorporating agent-driven events (behaviors). -->
 
 <simulation>
 
     <version>0.5.0</version>
-
 
 
     <general>
@@ -24,14 +42,13 @@
 
         <!-- We want output from every step -->
         <output-frames>
-            <auto mode="all" />
+            <auto mode="all"/>
         </output-frames>
 
         <!-- Visualizations should get their own tag. Not yet implemented
              (2/20/2014) -->
-        <write-state-map />
+        <write-state-map/>
     </general>
-
 
 
     <geometry>
@@ -46,7 +63,6 @@
     </geometry>
 
 
-
     <layers>
         <cell-layer>
             <boundary>
@@ -54,7 +70,6 @@
             </boundary>
         </cell-layer>
     </layers>
-
 
 
     <cell-processes>
@@ -96,7 +111,7 @@
             <!-- "offset" specifies a location as a distance from the center. -->
             <active-sites>
                 <mode>list</mode>
-                <offset x="0" y="0" />
+                <offset x="0" y="0"/>
             </active-sites>
 
             <!-- Do this once at t=0. -->
@@ -125,7 +140,7 @@
             <!-- Specify location -->
             <active-sites>
                 <mode>list</mode>
-                <offset x="1" y="0" />
+                <offset x="1" y="0"/>
             </active-sites>
 
             <!-- Takes place only at start -->
@@ -136,28 +151,27 @@
         <!-- Ongoing: Trigger "grow" behavior in all live cells -->
         <trigger>
             <behavior>grow</behavior>
-            <skip-vacant-sites />
+            <skip-vacant-sites/>
         </trigger>
 
         <!-- Ongoing: All divisible cells should divide when possible -->
-        <divide-anywhere />
+        <divide-anywhere/>
     </cell-processes>
-
 
 
     <writers>
         <!-- Write out a data file containing discrete layer states -->
-        <cell-state-writer />
+        <cell-state-writer/>
 
         <!-- Write out parameters to a plain text file -->
-        <parameter-writer />
+        <parameter-writer/>
 
         <!-- Report progress to stdout -->
-        <progress-reporter />
+        <progress-reporter/>
 
         <!-- Create a catalog of coordinates to scalar indices. Required for some
              post-processing, such as visualizations. -->
-        <coordinate-indexer />
+        <coordinate-indexer/>
     </writers>
 
 </simulation>

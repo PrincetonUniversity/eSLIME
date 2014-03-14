@@ -3,38 +3,30 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package agent.action;
 
 import cells.BehaviorCell;
-import cells.Cell;
 import layers.LayerManager;
 import structural.EpsilonUtil;
 import structural.identifiers.Coordinate;
 
 /**
  * Adjusts the agent's fitness by a predefined delta.
- *
+ * <p/>
  * Created by David B Borenstein on 2/5/14.
  */
 public class AdjustFitness extends Action {
@@ -61,7 +53,7 @@ public class AdjustFitness extends Action {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof  AdjustFitness)) {
+        if (!(obj instanceof AdjustFitness)) {
             return false;
         }
 

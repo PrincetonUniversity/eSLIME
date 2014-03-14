@@ -1,126 +1,145 @@
+<!--
+  ~ Copyright (c) 2014, David Bruce Borenstein and the Trustees of
+  ~ Princeton University.
+  ~
+  ~ Except where otherwise noted, this work is subject to a Creative Commons
+  ~ Attribution (CC BY 4.0) license.
+  ~
+  ~ Attribute (BY): You must attribute the work in the manner specified
+  ~ by the author or licensor (but not in any way that suggests that they
+  ~ endorse you or your use of the work).
+  ~
+  ~ The Licensor offers the Licensed Material as-is and as-available, and
+  ~ makes no representations or warranties of any kind concerning the
+  ~ Licensed Material, whether express, implied, statutory, or other.
+  ~
+  ~ For the full license, please visit:
+  ~ http://creativecommons.org/licenses/by/4.0/legalcode
+  -->
+
 <simulation>
 
-	<!-- Since the project specification can change between versions, eSLIME
-	     checks the project description against the internal version number.
-	     The simulation will not run if they don't match.
-	-->
-	
-	<version>v0.3.1</version>
-	
-	<!-- Some general parameters about the output of the simulation. -->
-	
-	<general>
-		<random-seed>*</random-seed>
-		<instances>1</instances>
-		<write-lineage-map>true</write-lineage-map>
-		<path>/Users/dbborens/state/jeSLIME/</path>
-		<date-stamp>true</date-stamp>
-		<max-step>1001</max-step>
-		<output-frames>
-			<auto mode="decilog" />
-		</output-frames>
-	</general>
+    <!-- Since the project specification can change between versions, eSLIME
+         checks the project description against the internal version number.
+         The simulation will not run if they don't match.
+    -->
 
-	
-	<!-- Use a rectangular arena geometry with a triangular lattice. -->
-	
-	<geometry>
-		<shape>
-			<class>Rectangle</class>
-			<width>10</width>
-			<height>8</height>
-		</shape>
-		<lattice>
-			<class>Triangular</class>
-		</lattice>
-		<boundary>
-			<class>PlaneRingHard</class>
-		</boundary>
-	</geometry>
-	
-	<!-- 
-	     Describe how the simulation will proceed. "period=0" means it
-	     happens only once.
-	-->
-	
-	<processes>
-	
-		<scatter>
-			<id>50</id>
-			<class>Scatter</class>
-			<cell-descriptor>
-				<class>FissionCell</class>
-				<state>1</state>
-				<initial-fitness>0.5</initial-fitness>
-				<threshold>1.0</threshold>
-			</cell-descriptor>
-			<period>0</period>
-			<types>1</types>
-			<tokens>1</tokens>
-		</scatter>
-		
-		<scatter>
-			<id>51</id>
-			<class>Scatter</class>
-			<cell-descriptor>
-				<class>FissionCell</class>
-				<state>2</state>
-				<initial-fitness>0.5</initial-fitness>
-				<threshold>1.0</threshold>
-			</cell-descriptor>
-			<period>0</period>
-			<types>1</types>
-			<tokens>1</tokens>
-		</scatter>		
-		
-		<uniform-biomass-growth>
-			<id>150</id>
-			<class>UniformBiomassGrowth</class>
-			<delta>0.01</delta>
-			<defer>false</defer>
-		</uniform-biomass-growth>
-		
-		<divide-anywhere>
-			<id>200</id>
-			<class>DivideAnywhere</class>
-		</divide-anywhere>
-		
-		<neighbor-swap>
-			<id>300</id>
-			<class>NeighborSwap</class>
-			<period>10</period>
-		</neighbor-swap>
-		
-		<tick>
-			<id>0</id>
-			<dt>1.0</dt>
-		</tick>		
-	</processes>
-	
-	<!-- 
-	     Writers are used to specify the kinds of output that should be
-	     created during the simulation. This is the raw output; visualizations
-	     are handled in their own section. Note that visualizations often
-	     have prerequisites.
-	     
-	     State is only captured in the frames specified by the "output-frames"
-	     tag. This will eventually be modified to specify frames by either
-	     simulation time (t) or cycle number (n). 
-	-->
-	<writers>
-	
-		<!-- 
-		    This writer creates a FASTA-like vector representation of the system
-		    state. This includes the phenotype of each cell, the fitness, and so
-		    on. It also writes an index file that specifies the mapping between
-		    vector index and coordinate value. Finally, it records information
-		    about global extrema, such as the minimum and
-		    maximum of each solute field, as well as minimum and maximum fitnesses.
-		    This is used for setting the scale of some visualizations.
-		-->
-		
-		<state-vector />
-		<parameter-writer />
-		<progress-reporter />
-	</writers>
+    <version>v0.3.1</version>
+
+    <!-- Some general parameters about the output of the simulation. -->
+
+    <general>
+        <random-seed>*</random-seed>
+        <instances>1</instances>
+        <write-lineage-map>true</write-lineage-map>
+        <path>/Users/dbborens/state/jeSLIME/</path>
+        <date-stamp>true</date-stamp>
+        <max-step>1001</max-step>
+        <output-frames>
+            <auto mode="decilog"/>
+        </output-frames>
+    </general>
+
+
+    <!-- Use a rectangular arena geometry with a triangular lattice. -->
+
+    <geometry>
+        <shape>
+            <class>Rectangle</class>
+            <width>10</width>
+            <height>8</height>
+        </shape>
+        <lattice>
+            <class>Triangular</class>
+        </lattice>
+        <boundary>
+            <class>PlaneRingHard</class>
+        </boundary>
+    </geometry>
+
+    <!--
+         Describe how the simulation will proceed. "period=0" means it
+         happens only once.
+    -->
+
+    <processes>
+
+        <scatter>
+            <id>50</id>
+            <class>Scatter</class>
+            <cell-descriptor>
+                <class>FissionCell</class>
+                <state>1</state>
+                <initial-fitness>0.5</initial-fitness>
+                <threshold>1.0</threshold>
+            </cell-descriptor>
+            <period>0</period>
+            <types>1</types>
+            <tokens>1</tokens>
+        </scatter>
+
+        <scatter>
+            <id>51</id>
+            <class>Scatter</class>
+            <cell-descriptor>
+                <class>FissionCell</class>
+                <state>2</state>
+                <initial-fitness>0.5</initial-fitness>
+                <threshold>1.0</threshold>
+            </cell-descriptor>
+            <period>0</period>
+            <types>1</types>
+            <tokens>1</tokens>
+        </scatter>
+
+        <uniform-biomass-growth>
+            <id>150</id>
+            <class>UniformBiomassGrowth</class>
+            <delta>0.01</delta>
+            <defer>false</defer>
+        </uniform-biomass-growth>
+
+        <divide-anywhere>
+            <id>200</id>
+            <class>DivideAnywhere</class>
+        </divide-anywhere>
+
+        <neighbor-swap>
+            <id>300</id>
+            <class>NeighborSwap</class>
+            <period>10</period>
+        </neighbor-swap>
+
+        <tick>
+            <id>0</id>
+            <dt>1.0</dt>
+        </tick>
+    </processes>
+
+    <!--
+         Writers are used to specify the kinds of output that should be
+         created during the simulation. This is the raw output; visualizations
+         are handled in their own section. Note that visualizations often
+         have prerequisites.
+
+         State is only captured in the frames specified by the "output-frames"
+         tag. This will eventually be modified to specify frames by either
+         simulation time (t) or cycle number (n).
+    -->
+    <writers>
+
+        <!--
+            This writer creates a FASTA-like vector representation of the system
+            state. This includes the phenotype of each cell, the fitness, and so
+            on. It also writes an index file that specifies the mapping between
+            vector index and coordinate value. Finally, it records information
+            about global extrema, such as the minimum and
+            maximum of each solute field, as well as minimum and maximum fitnesses.
+            This is used for setting the scale of some visualizations.
+        -->
+
+        <state-vector/>
+        <parameter-writer/>
+        <progress-reporter/>
+    </writers>
 </simulation>

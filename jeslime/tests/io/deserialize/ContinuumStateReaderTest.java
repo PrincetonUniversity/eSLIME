@@ -3,31 +3,24 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package io.deserialize;
 
-import test.EslimeTestCase;
 import structural.ContinuumState;
+import test.EslimeTestCase;
 
 import java.io.File;
 
@@ -57,12 +50,12 @@ public class ContinuumStateReaderTest extends EslimeTestCase {
     public void testNext() throws Exception {
         // Look at first record
         ContinuumState state = csr.next();
-        double[] values = new double[] {1.0, 2.0, 3.0, 4.0, 5.0};
+        double[] values = new double[]{1.0, 2.0, 3.0, 4.0, 5.0};
         assertStatesEqual(state, 1, 1.0, values);
 
         // Second record
         state = csr.next();
-        values = new double[] {0.0, 0.1, 0.2, 0.3, 0.4};
+        values = new double[]{0.0, 0.1, 0.2, 0.3, 0.4};
         assertStatesEqual(state, 2, 2.0, values);
     }
 
@@ -75,6 +68,7 @@ public class ContinuumStateReaderTest extends EslimeTestCase {
             assertEquals(values[i], state.getData().get(i));
         }
     }
+
     @Override
     public void tearDown() {
         csr.close();

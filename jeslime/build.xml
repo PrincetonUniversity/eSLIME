@@ -1,58 +1,77 @@
+<!--
+  ~ Copyright (c) 2014, David Bruce Borenstein and the Trustees of
+  ~ Princeton University.
+  ~
+  ~ Except where otherwise noted, this work is subject to a Creative Commons
+  ~ Attribution (CC BY 4.0) license.
+  ~
+  ~ Attribute (BY): You must attribute the work in the manner specified
+  ~ by the author or licensor (but not in any way that suggests that they
+  ~ endorse you or your use of the work).
+  ~
+  ~ The Licensor offers the Licensed Material as-is and as-available, and
+  ~ makes no representations or warranties of any kind concerning the
+  ~ Licensed Material, whether express, implied, statutory, or other.
+  ~
+  ~ For the full license, please visit:
+  ~ http://creativecommons.org/licenses/by/4.0/legalcode
+  -->
+
 <project>
 
-	<path id="master.class.path">
-		<pathelement location="lib/netlib-java/arpack_combo-0.1.jar" />
-		<pathelement location="lib/netlib-java/netlib-java-0.9.3.jar" />
-		<pathelement location="lib/dom4j/dom4j-1.6.1.jar" />
-	</path>
+    <path id="master.class.path">
+        <pathelement location="lib/netlib-java/arpack_combo-0.1.jar"/>
+        <pathelement location="lib/netlib-java/netlib-java-0.9.3.jar"/>
+        <pathelement location="lib/dom4j/dom4j-1.6.1.jar"/>
+    </path>
 
-	<path id="project.class.path">
-		<path refid="master.class.path"/>
-		<fileset dir="src">
-			<include name="**/*.java"/>
-		</fileset>
-	</path>
-	
-	<path id="manifest.class.path">
-		<path refid="master.class.path"/>
-		<fileset dir="build/classes">
-			<include name="**/*.class"/>
-		</fileset>
-	</path>
+    <path id="project.class.path">
+        <path refid="master.class.path"/>
+        <fileset dir="src">
+            <include name="**/*.java"/>
+        </fileset>
+    </path>
+
+    <path id="manifest.class.path">
+        <path refid="master.class.path"/>
+        <fileset dir="build/classes">
+            <include name="**/*.class"/>
+        </fileset>
+    </path>
 
 
-	<target name="clean">
-		<delete dir="build"/>
-	</target>
+    <target name="clean">
+        <delete dir="build"/>
+    </target>
 
-	<target name="build">
-		<mkdir dir="build/classes"/>
-		<javac srcdir="src" destdir="build/classes">
-			<classpath refid="project.class.path" />
-		</javac>
-	</target>
+    <target name="build">
+        <mkdir dir="build/classes"/>
+        <javac srcdir="src" destdir="build/classes">
+            <classpath refid="project.class.path"/>
+        </javac>
+    </target>
 
-	<target name="jar">
-		<manifestclasspath property="lib.list" jarfile="build/jeSLIME.jar">
-		   <classpath refid="manifest.class.path" />
-		</manifestclasspath>
-		<jar destfile="build/jeSLIME.jar" basedir="build/classes">
-			<manifest>
-				<attribute name="Main-Class" value="control.ConsoleLauncher"/>
-				<attribute name="Class-Path" value="${lib.list}"/>
-			</manifest>
-		</jar>
-	</target>
+    <target name="jar">
+        <manifestclasspath property="lib.list" jarfile="build/jeSLIME.jar">
+            <classpath refid="manifest.class.path"/>
+        </manifestclasspath>
+        <jar destfile="build/jeSLIME.jar" basedir="build/classes">
+            <manifest>
+                <attribute name="Main-Class" value="control.ConsoleLauncher"/>
+                <attribute name="Class-Path" value="${lib.list}"/>
+            </manifest>
+        </jar>
+    </target>
 
-	<target name="default">
-		<echo message="Build Classpath: ${dep_cp}" />
-		<echo message="Manifest Classpath: ${manifest_cp}" />
-	</target>
+    <target name="default">
+        <echo message="Build Classpath: ${dep_cp}"/>
+        <echo message="Manifest Classpath: ${manifest_cp}"/>
+    </target>
 
-	<target name="run">
-		<java jar="build/jeSLIME.jar" fork="true">
-			<arg line="${args}" />
-		</java>	
-	</target>
+    <target name="run">
+        <java jar="build/jeSLIME.jar" fork="true">
+            <arg line="${args}"/>
+        </java>
+    </target>
 
 </project>

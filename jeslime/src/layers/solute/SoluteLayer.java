@@ -3,25 +3,18 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package layers.solute;
@@ -31,21 +24,20 @@ import geometry.Geometry;
 import layers.Layer;
 import layers.LayerManager;
 import no.uib.cipr.matrix.DenseVector;
-
-import java.util.HashMap;
-
 import structural.identifiers.Coordinate;
 import structural.postprocess.SolutionViewer;
 
+import java.util.HashMap;
+
 public abstract class SoluteLayer extends Layer {
 
-	// Current model state
-	protected SolutionViewer state;
-	
+    // Current model state
+    protected SolutionViewer state;
+
     protected String id;
 
-	protected HashMap<Coordinate, Integer> coordToIndex;
-	
+    protected HashMap<Coordinate, Integer> coordToIndex;
+
     protected LayerManager manager;
 
     protected Solver solver;
@@ -60,37 +52,37 @@ public abstract class SoluteLayer extends Layer {
     /**
      * Constructor for normal use.
      */
-	public SoluteLayer(Geometry geom, LayerManager manager, Solver solver, String id) {
-		geometry = geom;
-		this.id = id;
+    public SoluteLayer(Geometry geom, LayerManager manager, Solver solver, String id) {
+        geometry = geom;
+        this.id = id;
 
         this.manager = manager;
 
         this.solver = solver;
-	}
+    }
 
-	public void push(SolutionViewer state) {
-		this.state = state;
-	}
-	
-	public SolutionViewer getState() {
-		return state;
-	}
-	
-	public Geometry getGeom() {
-		return geometry;
-	}
+    public void push(SolutionViewer state) {
+        this.state = state;
+    }
 
-	public HashMap<Coordinate, Integer> getCoordToIndex() {
-		return coordToIndex;
-	}
+    public SolutionViewer getState() {
+        return state;
+    }
+
+    public Geometry getGeom() {
+        return geometry;
+    }
+
+    public HashMap<Coordinate, Integer> getCoordToIndex() {
+        return coordToIndex;
+    }
 
     public Solver getSolver() {
         return solver;
     }
 
     public void setSource(DenseVector source) {
-        this.source = source; 
+        this.source = source;
     }
 
     public abstract void setDt(double dt);

@@ -3,32 +3,24 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package geometry.boundaries;
 
 import geometry.lattice.Lattice;
 import geometry.shape.Shape;
-import structural.Flags;
 import structural.identifiers.Coordinate;
 
 /**
@@ -36,7 +28,7 @@ import structural.identifiers.Coordinate;
  * position. Since Geometry removes null values, the result
  * is that cells adjacent to the boundary have fewer neighbors
  * than cells at the interior.
- *
+ * <p/>
  * Created by David B Borenstein on 12/22/13.
  */
 public class Absorbing extends Boundary {

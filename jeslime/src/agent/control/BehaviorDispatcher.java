@@ -3,35 +3,26 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package agent.control;
 
 import agent.Behavior;
 import cells.BehaviorCell;
-import cells.Cell;
 import io.project.BehaviorLoader;
 import layers.LayerManager;
-import layers.cell.CellLayer;
 import org.dom4j.Element;
 import structural.GeneralParameters;
 import structural.identifiers.Coordinate;
@@ -42,7 +33,7 @@ import java.util.HashMap;
  * BehaviorDispatcher is a map between behavior names and the
  * behaviors themselves. It is associated with a particular cell,
  * and can be used to trigger behaviors in that cell.
- *
+ * <p/>
  * Created by David B Borenstein on 1/21/14.
  */
 public class BehaviorDispatcher {
@@ -80,9 +71,9 @@ public class BehaviorDispatcher {
      * Trigger a behavior associated with the cell.
      *
      * @param behaviorName
-     * @param caller The coordinate from which the call originated. If
-     *               the call originated with a top-down process, the
-     *               caller will be null.
+     * @param caller       The coordinate from which the call originated. If
+     *                     the call originated with a top-down process, the
+     *                     caller will be null.
      */
     public void trigger(String behaviorName, Coordinate caller) {
         if (!behaviors.containsKey(behaviorName)) {
@@ -108,10 +99,11 @@ public class BehaviorDispatcher {
 
     /**
      * A BehaviorDispatcher is equal to another object only if:
-     *    (1) The other Object is a BehaviorDispatcher.
-     *    (2) Each Behavior in the other BehaviorDispatcher
-     *        has an equivalent Behavior mapped to the same name
-     *        as this BehaviorDispatcher.
+     * (1) The other Object is a BehaviorDispatcher.
+     * (2) Each Behavior in the other BehaviorDispatcher
+     * has an equivalent Behavior mapped to the same name
+     * as this BehaviorDispatcher.
+     *
      * @param obj
      * @return
      */

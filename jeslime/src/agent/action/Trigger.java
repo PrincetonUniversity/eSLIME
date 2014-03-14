@@ -3,25 +3,18 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package agent.action;
@@ -46,10 +39,10 @@ public class Trigger extends Action {
      * Trigger a predesignated behavior in a cell or set of cells designated by a
      * targeting rule.
      *
-     * @param callback The cell associated with this behavior
+     * @param callback     The cell associated with this behavior
      * @param layerManager
      * @param behaviorName The name of the behavior to be triggered in the targets.
-     * @param targetRule The targeting rule used to identify targets when called.
+     * @param targetRule   The targeting rule used to identify targets when called.
      */
     public Trigger(BehaviorCell callback, LayerManager layerManager, String behaviorName, TargetRule targetRule) {
         super(callback, layerManager);
@@ -76,6 +69,7 @@ public class Trigger extends Action {
 
     /**
      * Returns the location of the cell whose behavior this is.
+     *
      * @return
      */
     private Coordinate getOwnLocation() {

@@ -3,25 +3,18 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package agent.targets;
@@ -47,6 +40,7 @@ public class TargetRuleTest extends EslimeTestCase {
     private Coordinate[] cc, neighbors;
     private Coordinate left, right, center;
     private Random random;
+
     @Override
     public void setUp() {
         // Restart RN generator
@@ -58,7 +52,7 @@ public class TargetRuleTest extends EslimeTestCase {
         left = new Coordinate(0, 0, 0);
         right = new Coordinate(2, 0, 0);
 
-        cc = new Coordinate[] { center, left, right };
+        cc = new Coordinate[]{center, left, right};
 
         geom.setCanonicalSites(cc);
 
@@ -74,7 +68,7 @@ public class TargetRuleTest extends EslimeTestCase {
         cellLayer.getUpdateManager().place(occupiedNeighbor, left);
 
         // Associate the neighborhood with the coordinate
-        neighbors = new Coordinate[] {left, right};
+        neighbors = new Coordinate[]{left, right};
         geom.setCellNeighbors(center, neighbors);
     }
 
@@ -94,7 +88,7 @@ public class TargetRuleTest extends EslimeTestCase {
 
         // Get target list
         Coordinate[] actual = query.report(null);
-        Coordinate[] expected = new Coordinate[] {right};
+        Coordinate[] expected = new Coordinate[]{right};
 
         // Should contain all neighbors
         assertArraysEqual(expected, actual, true);
@@ -105,7 +99,7 @@ public class TargetRuleTest extends EslimeTestCase {
 
         // Get target list
         Coordinate[] actual = query.report(null);
-        Coordinate[] expected = new Coordinate[] {left};
+        Coordinate[] expected = new Coordinate[]{left};
 
         // Should contain all neighbors
         assertArraysEqual(expected, actual, true);
@@ -116,7 +110,7 @@ public class TargetRuleTest extends EslimeTestCase {
 
         // Get target list
         Coordinate[] actual = query.report(null);
-        Coordinate[] expected = new Coordinate[] {center};
+        Coordinate[] expected = new Coordinate[]{center};
 
         // Should contain all neighbors
         assertArraysEqual(expected, actual, true);
@@ -126,7 +120,7 @@ public class TargetRuleTest extends EslimeTestCase {
         // Left caller
         TargetRule query = new TargetCaller(self, layerManager, -1, random);
         Coordinate[] actual = query.report(occupiedNeighbor);
-        Coordinate[] expected = new Coordinate[] {left};
+        Coordinate[] expected = new Coordinate[]{left};
         assertArraysEqual(expected, actual, true);
 
     }
@@ -165,14 +159,14 @@ public class TargetRuleTest extends EslimeTestCase {
         assertNotEquals(p, r);
     }
 
-    public void testClone()  {
+    public void testClone() {
         MockCell parent = new MockCell();
-        TargetRule[] rules = new TargetRule[] {
-            new TargetAllNeighbors(parent, layerManager, -1, random),
-            new TargetCaller(parent, layerManager, -1, random),
-            new TargetOccupiedNeighbors(parent, layerManager, -1, random),
-            new TargetSelf(parent, layerManager, -1, random),
-            new TargetVacantNeighbors(parent, layerManager, -1, random)
+        TargetRule[] rules = new TargetRule[]{
+                new TargetAllNeighbors(parent, layerManager, -1, random),
+                new TargetCaller(parent, layerManager, -1, random),
+                new TargetOccupiedNeighbors(parent, layerManager, -1, random),
+                new TargetSelf(parent, layerManager, -1, random),
+                new TargetVacantNeighbors(parent, layerManager, -1, random)
         };
 
         for (TargetRule rule : rules) {
@@ -189,7 +183,7 @@ public class TargetRuleTest extends EslimeTestCase {
 
         // Get target list
         Coordinate[] actual = query.report(null);
-        Coordinate[] expected = new Coordinate[] {left};
+        Coordinate[] expected = new Coordinate[]{left};
 
         // Should contain all neighbors
         assertArraysEqual(expected, actual, true);

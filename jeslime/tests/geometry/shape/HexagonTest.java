@@ -3,25 +3,18 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package geometry.shape;
@@ -36,19 +29,19 @@ import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 public class HexagonTest extends EslimeTestCase {
-	
-	private Hexagon hex;
+
+    private Hexagon hex;
     private Lattice lattice;
 
-	@Override
-	public void setUp() {
-		lattice = new TriangularLattice();
-		
-		hex = new Hexagon(lattice, 2);
-	}
-	
-	public void testGetCenter() {
-		Coordinate actual, expected;
+    @Override
+    public void setUp() {
+        lattice = new TriangularLattice();
+
+        hex = new Hexagon(lattice, 2);
+    }
+
+    public void testGetCenter() {
+        Coordinate actual, expected;
         Lattice lattice = new TriangularLattice();
 
         for (int r = 0; r < 10; r++) {
@@ -57,69 +50,69 @@ public class HexagonTest extends EslimeTestCase {
             actual = hex.getCenter();
             assertEquals(expected, actual);
         }
-	}
-	
-	public void testGetBoundaries() {
-		Coordinate[] actual, expected;
-		
-		expected = new Coordinate[] {
-			new Coordinate(0, 0, 0),
-			new Coordinate(0, 1, 0),
-			new Coordinate(0, 2, 0),
-			new Coordinate(1, 3, 0),
-			new Coordinate(2, 4, 0),
-			new Coordinate(3, 4, 0),
-			new Coordinate(4, 4, 0),
-			new Coordinate(4, 3, 0),
-			new Coordinate(4, 2, 0),
-			new Coordinate(3, 1, 0),
-			new Coordinate(2, 0, 0),
-			new Coordinate(1, 0, 0)
-		};
-		
-		actual = hex.getBoundaries();
-		assertArraysEqual(actual, expected, true);
-	}
-	
-	public void testCanonicalSites() {
+    }
 
-		Coordinate[] actual, expected;
+    public void testGetBoundaries() {
+        Coordinate[] actual, expected;
 
-		expected = new Coordinate[] {
-				new Coordinate(2, 2, 0),
-				new Coordinate(1, 1, 0),
-				new Coordinate(1, 2, 0),
-				new Coordinate(2, 3, 0),
-				new Coordinate(3, 3, 0),
-				new Coordinate(3, 2, 0),
-				new Coordinate(2, 1, 0),
-				new Coordinate(0, 0, 0),
-				new Coordinate(0, 1, 0),
-				new Coordinate(0, 2, 0),
-				new Coordinate(1, 3, 0),
-				new Coordinate(2, 4, 0),
-				new Coordinate(3, 4, 0),
-				new Coordinate(4, 4, 0),
-				new Coordinate(4, 3, 0),
-				new Coordinate(4, 2, 0),
-				new Coordinate(3, 1, 0),
-				new Coordinate(2, 0, 0),
-				new Coordinate(1, 0, 0)
-			};
-			actual = hex.getCanonicalSites();
-			assertArraysEqual(actual, expected, true);
-	}
+        expected = new Coordinate[]{
+                new Coordinate(0, 0, 0),
+                new Coordinate(0, 1, 0),
+                new Coordinate(0, 2, 0),
+                new Coordinate(1, 3, 0),
+                new Coordinate(2, 4, 0),
+                new Coordinate(3, 4, 0),
+                new Coordinate(4, 4, 0),
+                new Coordinate(4, 3, 0),
+                new Coordinate(4, 2, 0),
+                new Coordinate(3, 1, 0),
+                new Coordinate(2, 0, 0),
+                new Coordinate(1, 0, 0)
+        };
 
+        actual = hex.getBoundaries();
+        assertArraysEqual(actual, expected, true);
+    }
 
-	public void testOverboundsInside() {
+    public void testCanonicalSites() {
+
+        Coordinate[] actual, expected;
+
+        expected = new Coordinate[]{
+                new Coordinate(2, 2, 0),
+                new Coordinate(1, 1, 0),
+                new Coordinate(1, 2, 0),
+                new Coordinate(2, 3, 0),
+                new Coordinate(3, 3, 0),
+                new Coordinate(3, 2, 0),
+                new Coordinate(2, 1, 0),
+                new Coordinate(0, 0, 0),
+                new Coordinate(0, 1, 0),
+                new Coordinate(0, 2, 0),
+                new Coordinate(1, 3, 0),
+                new Coordinate(2, 4, 0),
+                new Coordinate(3, 4, 0),
+                new Coordinate(4, 4, 0),
+                new Coordinate(4, 3, 0),
+                new Coordinate(4, 2, 0),
+                new Coordinate(3, 1, 0),
+                new Coordinate(2, 0, 0),
+                new Coordinate(1, 0, 0)
+        };
+        actual = hex.getCanonicalSites();
+        assertArraysEqual(actual, expected, true);
+    }
 
 
-		// In-bounds coordinates -- origin is (2, 2)
-		Coordinate a, b, c, d;
-		a = new Coordinate(2, 2, 0);
-		b = new Coordinate(3, 3, 0);
-		c = new Coordinate(2, 0, 0);
-		d = new Coordinate(4, 2, 0);
+    public void testOverboundsInside() {
+
+
+        // In-bounds coordinates -- origin is (2, 2)
+        Coordinate a, b, c, d;
+        a = new Coordinate(2, 2, 0);
+        b = new Coordinate(3, 3, 0);
+        c = new Coordinate(2, 0, 0);
+        d = new Coordinate(4, 2, 0);
 
         Coordinate actual, expected;
 
@@ -145,34 +138,34 @@ public class HexagonTest extends EslimeTestCase {
         Coordinate p, q, r, s, t, u;
 
         p = new Coordinate(5, 2, 0);   // +3u
-		q = new Coordinate(5, 5, 0);   // +3v
-		r = new Coordinate(2, 5, 0);   // +3w
-		s = new Coordinate(-1, 2, 0);  // -3u
-		t = new Coordinate(-1, -1, 0); // -3v
+        q = new Coordinate(5, 5, 0);   // +3v
+        r = new Coordinate(2, 5, 0);   // +3w
+        s = new Coordinate(-1, 2, 0);  // -3u
+        t = new Coordinate(-1, -1, 0); // -3v
         u = new Coordinate(2, -1, 0); // -3w
 
 
         Coordinate actual, expected;
 
         expected = new Coordinate(1, 0, 0, Flags.VECTOR);
-		actual = hex.getOverbounds(p);
-		assertEquals(expected, actual);
+        actual = hex.getOverbounds(p);
+        assertEquals(expected, actual);
 
-		expected = new Coordinate(0, 1, 0, Flags.VECTOR);
-		actual = hex.getOverbounds(q);
-		assertEquals(expected, actual);
-		
-		expected = new Coordinate(0, 0, 1, Flags.VECTOR);
-		actual = hex.getOverbounds(r);
-		assertEquals(expected, actual);
-		
-		expected = new Coordinate(-1, 0, 0, Flags.VECTOR);
-		actual = hex.getOverbounds(s);
-		assertEquals(expected, actual);
-		
-		expected = new Coordinate(0, -1, 0, Flags.VECTOR);
-		actual = hex.getOverbounds(t);
-		assertEquals(expected, actual);
+        expected = new Coordinate(0, 1, 0, Flags.VECTOR);
+        actual = hex.getOverbounds(q);
+        assertEquals(expected, actual);
+
+        expected = new Coordinate(0, 0, 1, Flags.VECTOR);
+        actual = hex.getOverbounds(r);
+        assertEquals(expected, actual);
+
+        expected = new Coordinate(-1, 0, 0, Flags.VECTOR);
+        actual = hex.getOverbounds(s);
+        assertEquals(expected, actual);
+
+        expected = new Coordinate(0, -1, 0, Flags.VECTOR);
+        actual = hex.getOverbounds(t);
+        assertEquals(expected, actual);
 
         expected = new Coordinate(0, 0, -1, Flags.VECTOR);
         actual = hex.getOverbounds(u);
@@ -231,16 +224,16 @@ public class HexagonTest extends EslimeTestCase {
         actual = hex.getOverbounds(r);
         assertEquals(expected, actual);
     }
-	
-	public void testDimensions() {
-		int[] actual, expected;
-		expected = new int[] {5, 5, 5};
-		actual = hex.getDimensions();
-		assertArraysEqual(actual, expected, false);
-	}
-	
+
+    public void testDimensions() {
+        int[] actual, expected;
+        expected = new int[]{5, 5, 5};
+        actual = hex.getDimensions();
+        assertArraysEqual(actual, expected, false);
+    }
+
 	/*public void testGetLimits() {
-		Coordinate[] actual, expected;
+        Coordinate[] actual, expected;
 
 		// Even
 		expected = new Coordinate[] {
@@ -255,7 +248,6 @@ public class HexagonTest extends EslimeTestCase {
     /**
      * Make sure that getNeighbors() returns the correct
      * coordinates.
-     *
      */
     public void testNeighbors() {
 

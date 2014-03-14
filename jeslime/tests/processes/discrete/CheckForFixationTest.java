@@ -3,25 +3,18 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package processes.discrete;
@@ -54,7 +47,7 @@ public class CheckForFixationTest extends EslimeTestCase {
     public void testTargetGillespie() throws Exception {
         makeTwoCanonicalSites();
         Integer id = query.getID();
-        Integer[] ids = new Integer[] {id};
+        Integer[] ids = new Integer[]{id};
         GillespieState gs = new GillespieState(ids);
         query.target(gs);
         gs.close();
@@ -69,11 +62,11 @@ public class CheckForFixationTest extends EslimeTestCase {
             StepState state = new StepState();
             query.fire(state);
 
-        // Fixation events halt flow in the simulation.
+            // Fixation events halt flow in the simulation.
         } catch (FixationEvent event) {
             fixed = true;
 
-        // Nothing else is supposed to be thrown!
+            // Nothing else is supposed to be thrown!
         } catch (HaltCondition condition) {
             fail("Unexpected halt condition " + condition.getClass().getSimpleName());
         }
@@ -129,7 +122,7 @@ public class CheckForFixationTest extends EslimeTestCase {
             Coordinate coord = new Coordinate(i, 0, 0);
             MockCell cell = new MockCell();
             // state 0 is reserved for death / nullity
-            cell.setState(i+1);
+            cell.setState(i + 1);
             layer.getUpdateManager().place(cell, coord);
         }
         doTest(false);
@@ -158,7 +151,7 @@ public class CheckForFixationTest extends EslimeTestCase {
     }
 
     private void makeTwoCanonicalSites() {
-        Coordinate[] cc = new Coordinate[] {
+        Coordinate[] cc = new Coordinate[]{
                 new Coordinate(0, 0, 1),
                 new Coordinate(1, 0, 1)
         };

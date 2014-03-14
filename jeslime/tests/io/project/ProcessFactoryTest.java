@@ -3,25 +3,18 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package io.project;
@@ -31,18 +24,20 @@ import junit.framework.TestCase;
 import layers.MockLayerManager;
 import layers.MockSoluteLayer;
 import layers.cell.CellLayer;
-import org.dom4j.*;
+import org.dom4j.Attribute;
+import org.dom4j.Element;
+import org.dom4j.QName;
 import org.dom4j.tree.BaseElement;
 import org.dom4j.tree.FlyweightAttribute;
+import processes.MockProcess;
 import processes.Process;
+import processes.continuum.FieldUpdateProcess;
+import processes.discrete.*;
 import processes.gillespie.GillespieProcess;
 import processes.temporal.ExponentialInverse;
+import processes.temporal.Tick;
 import structural.MockGeneralParameters;
 import structural.identifiers.Coordinate;
-import processes.*;
-import processes.temporal.*;
-import processes.continuum.*;
-import processes.discrete.*;
 
 /**
  * Created by David B Borenstein on 1/7/14.
@@ -63,7 +58,7 @@ public class ProcessFactoryTest extends TestCase {
 
         geometry = new MockGeometry();
 
-        Coordinate[] canonicalSites = new Coordinate[] {
+        Coordinate[] canonicalSites = new Coordinate[]{
                 new Coordinate(0, 0, 0)
         };
 
@@ -97,7 +92,7 @@ public class ProcessFactoryTest extends TestCase {
     }
 
     private void doTest(String elementName, Class expected, Element child) {
-        Element[] children = new Element[] {child};
+        Element[] children = new Element[]{child};
         doTest(elementName, expected, children);
     }
 
@@ -135,7 +130,7 @@ public class ProcessFactoryTest extends TestCase {
     }
 
     public void testScatter() {
-        Element[] children = new Element[] {
+        Element[] children = new Element[]{
                 new BaseElement("types"),
                 new BaseElement("tokens")
         };
@@ -152,7 +147,7 @@ public class ProcessFactoryTest extends TestCase {
     }
 
     public void testUniformBiomassGrowth() {
-        Element[] children = new Element[] {
+        Element[] children = new Element[]{
                 new BaseElement("delta"),
                 new BaseElement("defer")
         };
@@ -163,7 +158,7 @@ public class ProcessFactoryTest extends TestCase {
     }
 
     public void testTargetedBiomassGrowth() {
-        Element[] children = new Element[] {
+        Element[] children = new Element[]{
                 new BaseElement("delta"),
                 new BaseElement("defer"),
                 new BaseElement("target")
@@ -204,7 +199,7 @@ public class ProcessFactoryTest extends TestCase {
     }
 
     public void testTrigger() {
-        Element[] children = new Element[] {
+        Element[] children = new Element[]{
                 new BaseElement("behavior"),
                 new BaseElement("skip-vacant-sites")
         };

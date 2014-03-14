@@ -3,25 +3,18 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package processes.continuum;
@@ -32,9 +25,7 @@ import layers.LayerManager;
 import layers.cell.CellLayer;
 import layers.solute.SoluteLayer;
 import no.uib.cipr.matrix.DenseVector;
-import processes.Process;
 import processes.StepState;
-import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
@@ -51,11 +42,11 @@ public class FieldUpdateProcess extends ContinuumProcess {
     private final Geometry geom;
 
     public FieldUpdateProcess(ProcessLoader loader, int processId, LayerManager layerManager, GeneralParameters p, String layerId) {
-       super(loader, layerManager, p, processId);
+        super(loader, layerManager, p, processId);
 
-       discreteLayer = layerManager.getCellLayer();
-       continuumLayer = layerManager.getSoluteLayer(layerId);
-       geom = layerManager.getCellLayer().getGeometry();
+        discreteLayer = layerManager.getCellLayer();
+        continuumLayer = layerManager.getSoluteLayer(layerId);
+        geom = layerManager.getCellLayer().getGeometry();
     }
 
     @Override

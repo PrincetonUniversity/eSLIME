@@ -3,30 +3,22 @@
  * Princeton University.
  *
  * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0)
- * license.
+ * Attribution (CC BY 4.0) license.
  *
- * Attribute (BY) -- You must attribute the work in the manner specified
+ * Attribute (BY): You must attribute the work in the manner specified
  * by the author or licensor (but not in any way that suggests that they
  * endorse you or your use of the work).
- *
- * NonCommercial (NC) -- You may not use this work for commercial purposes.
- *
- * ShareAlike (SA) -- If you remix, transform, or build upon the material,
- * you must distribute your contributions under the same license as the
- * original.
  *
  * The Licensor offers the Licensed Material as-is and as-available, and
  * makes no representations or warranties of any kind concerning the
  * Licensed Material, whether express, implied, statutory, or other.
  *
  * For the full license, please visit:
- * http://creativecommons.org/licenses/by-nc-sa/4.0/legalcode
+ * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
 package processes;
 
-import geometry.Geometry;
 import io.project.ProcessLoader;
 import layers.LayerManager;
 import processes.gillespie.GillespieState;
@@ -38,7 +30,6 @@ import structural.halt.HaltCondition;
  * was invoked. Used for testing.
  *
  * @author David Bruce Borenstein
- *
  */
 public class MockProcess extends Process {
 
@@ -48,19 +39,19 @@ public class MockProcess extends Process {
     private int period;
 
     // Some identifier to let the user distinguish between null processes
-	private String identifier;
+    private String identifier;
 
     // Tells the user how many times the process was invoked. Useful for
     // testing.
     private int timesFired = 0;
 
-	public MockProcess(ProcessLoader loader, LayerManager layerManager, GeneralParameters p, int id) {
-		super(loader, layerManager, p, id);
+    public MockProcess(ProcessLoader loader, LayerManager layerManager, GeneralParameters p, int id) {
+        super(loader, layerManager, p, id);
 
         identifier = get("identifier");
-		weight = Double.valueOf(get("weight", "1.0"));
-		count = Integer.valueOf(get("count", "1"));
-	}
+        weight = Double.valueOf(get("weight", "1.0"));
+        count = Integer.valueOf(get("count", "1"));
+    }
 
     public MockProcess() {
         super(null, null, null, 0);
@@ -99,22 +90,22 @@ public class MockProcess extends Process {
     }
 
     @Override
-	protected String getProcessClass() {
-		return getClass().getSimpleName(); 
-	}
+    protected String getProcessClass() {
+        return getClass().getSimpleName();
+    }
 
-	@Override
-	public void target(GillespieState gs) throws HaltCondition {
-		if (gs != null) {
-			gs.add(getID(), count, weight);
-		}
-	}
+    @Override
+    public void target(GillespieState gs) throws HaltCondition {
+        if (gs != null) {
+            gs.add(getID(), count, weight);
+        }
+    }
 
-	@Override
-	public void fire(StepState state) throws HaltCondition {
+    @Override
+    public void fire(StepState state) throws HaltCondition {
         timesFired++;
-		System.out.println("   Fired null event " + getID() + ".");
-	}
+        System.out.println("   Fired null event " + getID() + ".");
+    }
 
     public int getTimesFired() {
         return timesFired;
