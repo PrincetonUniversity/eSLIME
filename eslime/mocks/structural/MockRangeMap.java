@@ -6,7 +6,6 @@ package structural;
 public class MockRangeMap<T> extends RangeMap<T> {
 
     public MockRangeMap() {
-        close();
     }
 
     private boolean reportEquality;
@@ -24,6 +23,7 @@ public class MockRangeMap<T> extends RangeMap<T> {
     /**
      * Returns true if and only if reportEquality is set to
      * true.
+     *
      * @param obj
      * @return
      */
@@ -43,6 +43,7 @@ public class MockRangeMap<T> extends RangeMap<T> {
     }
 
     private int timesCloned;
+
     @Override
     public RangeMap<T> clone() {
         timesCloned++;

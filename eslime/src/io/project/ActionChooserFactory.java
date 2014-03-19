@@ -24,8 +24,8 @@ import cells.BehaviorCell;
 import layers.LayerManager;
 import org.dom4j.Attribute;
 import org.dom4j.Element;
-import structural.RangeMap;
 import structural.GeneralParameters;
+import structural.RangeMap;
 
 import java.util.List;
 
@@ -56,7 +56,6 @@ public abstract class ActionChooserFactory {
             chooser.add(action, weight);
         }
 
-        chooser.close();
         return (chooser);
     }
 

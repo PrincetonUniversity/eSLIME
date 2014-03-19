@@ -20,7 +20,6 @@
 package structural;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * A weighted collection of items of class T. Each T has some weight associated
@@ -39,51 +38,42 @@ import java.util.HashMap;
  */
 public class RangeMap<T> {
 
-    private HashMap<T, Double> weights;
-    
-    // We track the floor of each element, rather than counting on the key
-    // set of weights, so that we can compare across RangeMaps by preserving
-    // order. The first element is pre-loaded as 0.0, but each ceiling is then
-    // appended. This means that bins has one too many elements, which is
+
+    //private HashMap<T, Double> weights;
+
+    // We track the floor of each element. It might seem easier to use, eg,
+    // a HashMap, but we want order to be preserved and for items to be
+    // loaded sequentially.
+
+    // The first element is pre-loaded as 0.0, but each ceiling is then
+    // appended. This means that floors has one too many elements, which is
     // handled accordingly.
-    private ArrayList<Double> bins;
-    
-    private boolean closed;
-    private double totalWeight = 0.0;
+    private ArrayList<Double> floors;
+
+    // We track the value associated with each floor in the same order as
+    // the floors. Note that keys should always be one element shorter than
+    // floors.
+
+    private ArrayList<T> keys;
 
     public RangeMap() {
-        weights = new HashMap<>();
-        bins = new ArrayList<>();
-        bins.add(0.0);
-        closed = false;
+        //weights = new HashMap<>();
+        floors = new ArrayList<>();
+        keys = new ArrayList<>();
+        floors.add(0.0);
     }
 
     public void add(T token, double weight) {
-        if (closed) {
-            throw new IllegalStateException("Attempted to write to finalized chooser.");
-        }
-
+        keys.add(token);
         appendBin(weight);
-        weights.put(token, weight);
-        
+//        weights.put(token, weight);
+
     }
 
     private void appendBin(double weight) {
-        int n = bins.size();
-        double lastBin = bins.get(n - 1);
-        bins.add(lastBin + weight);
-    }
-
-    public void close() {
-        if (closed) {
-            throw new IllegalStateException("Attempted to close state, but it was already closed.");
-        }
-
-        closed = true;
-
-        for (double weight : weights.values()) {
-            totalWeight += weight;
-        }
+        int n = floors.size();
+        double lastBin = floors.get(n - 1);
+        floors.add(lastBin + weight);
     }
 
     /**
@@ -101,89 +91,26 @@ public class RangeMap<T> {
      * @return
      */
     public T selectTarget(double x) {
-        if (!closed) {
-            throw new IllegalStateException("Selection sought before chooser was closed. Before choosing a selection from a chooser, you must signal that all selections are loaded by calling close().");
-        }
 
-        Object[] keys = weights.keySet().toArray(new Object[0]);
+        RangeSearchHelper helper = new RangeSearchHelper(floors);
 
-        Integer target = findKey(x);
+        Integer target = helper.findKey(x);
 
-        T ret = (T) keys[target];
+        T ret = keys.get(target);
+
         return ret;
     }
 
-    private int findKey(double x) {
-        int lower = 0;
-
-        // -1 because bins.size() is one larger than its largest index, and
-        // -1 because bins() contains one too many elements (since we put a
-        // dummy element in at the beginning)
-        int upper = bins.size() - 1 - 1;
-
-        // Find the desired key using a binary range search
-        return binaryRangeSearch(lower, upper, x);
-    }
-
-    // Recursive binary range search -- public exposure for testing
-    public int binaryRangeSearch(int lower, int upper, double x) {
-        // Find midpoint of current range, rounded down.
-        int midpoint = (lower + upper) / 2;
-
-        // Set the bounds of the bucket.
-        double max = bins.get(midpoint);
-        double min;
-
-        // Failure case: we didn't find it.
-        if (upper < lower) {
-            return -1;
-        }
-
-        // Lower bound must be 0.
-        if (midpoint == 0) {
-            min = 0D;
-        } else {
-            min = bins.get(midpoint - 1);
-        }
-
-        // Recursive case 1: Midpoint is too low; check upper half.
-        if (x >= max) {
-            return binaryRangeSearch(midpoint + 1, upper, x);
-
-            // Recursive case 2: Midpoint is too high; check lower half.
-        } else if (x < min) {
-            return binaryRangeSearch(lower, midpoint - 1, x);
-
-            // Base case: x is less than the maximum and greater
-            // than the minimum. In that case, the midpoint bin
-            // is exactly right, so return it.
-        } else {
-            return midpoint;
-        }
-    }
-
-    // Construct an array of upper bounds, with indices corresponding to
-    // keys. So process 0 will have a weight range of 0 to upperBounds[0],
-    // and process i will have a weight range of upperBounds[i - 1] to
-    // upperBounds[i].
-    private double[] upperBoundArray(Object[] keys) {
-        double[] upperBounds = new double[weights.size()];
-        double total = 0D;
-        int i = 0;
-        for (Object obj : keys) {
-            // This object/T silliness is a quirk of Java arrays.
-            T key = (T) obj;
-            total += weights.get(key);
-            upperBounds[i] = total;
-            i++;
-        }
-
-        return upperBounds;
-    }
-
     public double getTotalWeight() {
-        if (!closed) {
-            throw new IllegalStateException("Chooser must be closed before checking total weight.");
+
+        if (floors.size() == 1) {
+            return 0.0;
+        }
+
+        double totalWeight = 0;
+        for (int i = 0; i < floors.size() - 1; i++) {
+            double weight = floors.get(i + 1) - floors.get(i);
+            totalWeight += weight;
         }
 
         return totalWeight;
@@ -197,7 +124,7 @@ public class RangeMap<T> {
 
         RangeMap other = (RangeMap) obj;
 
-        if (!EpsilonUtil.epsilonEquals(totalWeight, other.totalWeight)) {
+        if (!EpsilonUtil.epsilonEquals(getTotalWeight(), other.getTotalWeight())) {
             return false;
         }
 
@@ -223,16 +150,16 @@ public class RangeMap<T> {
     private boolean contentsEqual(RangeMap p, RangeMap q) {
         // If they have a different number of elements, we already know that 
         // they are unequal.
-        if (p.weights.size() != q.weights.size()) {
+        if (p.floors.size() != q.floors.size()) {
             return false;
         }
 
         // Test each subsequent bin by its midpoint value.
-        // The -1 is because the variable bins ends with the last ceiling added,
+        // The -1 is because the variable floors ends with the last ceiling added,
         // but it is supposed to be a list of floors.
-        for (int i = 0; i < bins.size() - 1; i++) {
-            double range = bins.get(i+1) - bins.get(i);
-            double floor = bins.get(i);
+        for (int i = 0; i < floors.size() - 1; i++) {
+            double range = floors.get(i + 1) - floors.get(i);
+            double floor = floors.get(i);
             double midpoint = floor + (range / 2.0);
 
             if (!binsEqual(p, q, midpoint)) {
@@ -256,18 +183,26 @@ public class RangeMap<T> {
 
     @Override
     public RangeMap<T> clone() {
-        if (!closed) {
-            throw new IllegalStateException("Cannot clone range map until it is closed.");
-        }
 
         RangeMap<T> cloned = new RangeMap<T>();
 
-        for (T key : weights.keySet()) {
-            cloned.add(key, weights.get(key));
+        for (int i = 1; i < floors.size(); i++) {
+            T key = keys.get(i - 1);
+            Double weight = floors.get(i);
+
+            cloned.add(key, weight);
         }
 
-        cloned.close();
-
         return cloned;
+    }
+
+    /**
+     * Return the total number of bins (ranges) in the range map.
+     *
+     * @return
+     */
+    public int getNumBins() {
+        // The first bin is a dummy, so we want one fewer
+        return floors.size() - 1;
     }
 }

@@ -36,7 +36,6 @@ public class GillespieChooser {
             double weight = state.getWeight(processId);
             chooser.add(processId, weight);
         }
-        chooser.close();
     }
 
     /**

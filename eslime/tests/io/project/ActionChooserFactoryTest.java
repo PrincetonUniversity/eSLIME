@@ -33,6 +33,7 @@ public class ActionChooserFactoryTest extends EslimeTestCase {
     private Element root;
     private Action singleton;
     private Action multi;
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -43,7 +44,7 @@ public class ActionChooserFactoryTest extends EslimeTestCase {
     public void testInstantiateOneChild() throws Exception {
         RangeMap<Action> chooser = getChooser("singleton-case");
 
-        Action actual =  chooser.selectTarget(0.25);
+        Action actual = chooser.selectTarget(0.25);
         Action expected = singleton;
 
         assertEquals(expected, actual);
@@ -52,7 +53,7 @@ public class ActionChooserFactoryTest extends EslimeTestCase {
     public void testInstantiateMultipleChildren() throws Exception {
         RangeMap<Action> chooser = getChooser("multi-case");
 
-        Action actual =  chooser.selectTarget(0.25);
+        Action actual = chooser.selectTarget(0.25);
         Action expected = multi;
         assertEquals(expected, actual);
     }
@@ -61,7 +62,7 @@ public class ActionChooserFactoryTest extends EslimeTestCase {
         singleton = new MockAction();
 
 
-        Action[] sequence = new Action[] {
+        Action[] sequence = new Action[]{
                 new MockAction(),
                 new MockAction()
         };
@@ -72,10 +73,10 @@ public class ActionChooserFactoryTest extends EslimeTestCase {
     /**
      * Test that the factory successfully builds a chooser
      * with more than one child.
+     *
      * @throws Exception
      */
     public void testChooserIntegration() throws Exception {
-        fail("Don't bother debugging this test until you've implemented RangeMapTest.");
         RangeMap<Action> expected = new RangeMap<>();
         expected.add(singleton, 0.5);
         expected.add(multi, 1.0);

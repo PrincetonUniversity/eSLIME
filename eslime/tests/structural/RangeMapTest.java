@@ -19,72 +19,172 @@
 
 package structural;
 
-import junit.framework.TestCase;
+import test.EslimeTestCase;
 
 /**
  * Created by dbborens on 3/5/14.
  */
-public class RangeMapTest extends TestCase {
-    public void testAdd() throws Exception {
-        fail("Not yet implemented.");
+public class RangeMapTest extends EslimeTestCase {
+    private RangeMap<Integer> query;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        query = new RangeMap<>();
     }
 
-    public void testClose() throws Exception {
-        fail("Not yet implemented.");
+    public void testAdd() throws Exception {
+        // Verify that rangemap is empty.
+        assertEquals(0.0, query.getTotalWeight(), epsilon);
+        assertEquals(0, query.getNumBins());
+
+        // Add an item.
+        query.add(1, 0.5);
+
+        // Verify that the total weight is the weight of the item added.
+        assertEquals(0.5, query.getTotalWeight(), epsilon);
+
+        // Verify that there is one item in the range map.
+        assertEquals(1, query.getNumBins());
     }
 
     public void testSelectTarget() throws Exception {
-        fail("Not yet implemented.");
+        setupThreeElementCase();
+        Integer actual, expected;
+
+        // First bin
+        expected = 5;
+        actual = query.selectTarget(0.25);
+        assertEquals(expected, actual);
+
+        // Second bin
+        expected = -3;
+        actual = query.selectTarget(1.0);
+        assertEquals(expected, actual);
+
+        // Third bin
+        expected = 0;
+        actual = query.selectTarget(1.75);
+        assertEquals(expected, actual);
     }
 
-    public void testBinaryRangeSearch() throws Exception {
-        fail("Not yet implemented.");
+    public void testLowerBoundInclusivity() throws Exception {
+        setupThreeElementCase();
+        Integer actual, expected;
+
+        // First bin
+        expected = 5;
+        actual = query.selectTarget(0.0);
+        assertEquals(expected, actual);
+
+        // Second bin
+        expected = -3;
+        actual = query.selectTarget(0.5);
+        assertEquals(expected, actual);
+
+        // Third bin
+        expected = 0;
+        actual = query.selectTarget(1.5);
+        assertEquals(expected, actual);
     }
 
     public void testGetTotalWeight() throws Exception {
-        fail("Not yet implemented.");
+        setupThreeElementCase();
+        assertEquals(2.0, query.getTotalWeight(), epsilon);
     }
 
+    /**
+     * Make sure that, when two range maps have members of
+     * unequal classes, they are not themselves considered
+     * equal.
+     *
+     * @throws Exception
+     */
+    public void testInequalityClassCase() throws Exception {
+        setupThreeElementCase();
+        RangeMap<String> other = new RangeMap<>();
+        other.add("Due to type erasure, there is no way to check equality until at least one element is loaded. This may have been fixed in Java 8.", 1.0);
+        assertNotEquals(query, other);
+    }
+
+    /**
+     * Make sure that, when two range maps have members of
+     * the same class with unequal values, they are not
+     * considered equal.
+     *
+     * @throws Exception
+     */
+    public void testInequalityValueCase() throws Exception {
+        setupThreeElementCase();
+        RangeMap<Integer> other = new RangeMap<>();
+        other.add(1, 0.5);      // Different
+        other.add(-3, 1.0);     // Same
+        other.add(0, 0.5);      // Same
+
+        assertNotEquals(query, other);
+    }
+
+    /**
+     * Make sure that, when two range maps have members of
+     * the same class with equal values, but they have
+     * different weights, they are not considered equal.
+     *
+     * @throws Exception
+     */
+    public void testInequalityWeightsCase() throws Exception {
+        setupThreeElementCase();
+        RangeMap<Integer> other = new RangeMap<>();
+        other.add(5, 0.25);      // Different
+        other.add(-3, 1.0);     // Same
+        other.add(0, 0.5);      // Same
+
+        assertNotEquals(query, other);
+    }
+
+    /**
+     * Make sure that, when two range maps have members of
+     * the same class with equal values, but in the wrong
+     * order, they are not considered equal.
+     *
+     * @throws Exception
+     */
+    public void testInequalityOrderCase() throws Exception {
+        setupThreeElementCase();
+        RangeMap<Integer> other = new RangeMap<>();
+        other.add(-3, 1.0);     // Used to be second
+        other.add(5, 0.5);      // Used to be first
+        other.add(0, 0.5);      // Same
+
+        assertNotEquals(query, other);
+    }
+
+    /**
+     * Make sure that, if two range maps have the same ranges
+     * in the same order pointing to equal items, they are
+     * considered equal.
+     *
+     * @throws Exception
+     */
     public void testEquals() throws Exception {
-        fail("Not yet implemeented.");
+        setupThreeElementCase();
+        RangeMap<Integer> other = new RangeMap<>();
+        other.add(5, 0.5);      // Same
+        other.add(-3, 1.0);     // Same
+        other.add(0, 0.5);      // Same
+
+        assertEquals(query, other);
     }
 
     public void testClone() throws Exception {
-        fail("Not yet implemented");
+        RangeMap<Integer> clone = query.clone();
+        assertEquals(query, clone);
     }
 
-//    private int doSearch(double x) {
-//        // These are irrelevant -- just for mock
-//        Integer[] arr = new Integer[0];
-//        GillespieState gs = new GillespieState(arr);
-//
-//        // Set up the chooser
-//        GillespieChooser chooser = new GillespieChooser(gs);
-//        double[] bins = new double[] {1.0, 2.0, 3.0, 4.0, 5.0};
-//
-//        int result = chooser.binaryRangeSearch(0, 4, x, bins);
-//
-//        return result;
-//    }
-//
-//    /**
-//     * Test the binary range search on the GillespieChooser.
-//     */
-//    public void testBinaryRangeSearch() {
-//
-//        // Failure case
-//        assertEquals(-1, doSearch(-0.5));
-//
-//        // Standard cases
-//        assertEquals(0, doSearch(0.5));
-//        assertEquals(1, doSearch(1.5));
-//        assertEquals(2, doSearch(2.5));
-//
-//        // Edge case -- lower is inclusive
-//        assertEquals(0, doSearch(0.0));
-//
-//        // Edge case -- upper is exclusive
-//        assertEquals(-1, doSearch(5.0));
-//
+    private void setupThreeElementCase() {
+        query.add(5, 0.5);
+        query.add(-3, 1.0);
+        query.add(0, 0.5);
+    }
+
 }
 
