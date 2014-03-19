@@ -93,18 +93,6 @@ public class CompoundAction extends Action {
     }
 
     private boolean actionsEqual(Action p, Action q) {
-        if (p == null && q == null) {
-            return true;
-        }
-
-        if (p == null && q != null) {
-            return false;
-        }
-
-        if (q == null && p != null) {
-            return false;
-        }
-
         if (!p.equals(q)) {
             return false;
         }

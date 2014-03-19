@@ -53,8 +53,8 @@ public class Trigger extends CellProcess {
         this.maxTargets = maxTargets;
     }
 
-    public Trigger(LayerManager layerManager, String behaviorName, boolean skipVacant) {
-        super(null, layerManager, 0, null);
+    public Trigger(LayerManager layerManager, String behaviorName, GeneralParameters p, boolean skipVacant) {
+        super(null, layerManager, 0, p);
         this.behaviorName = behaviorName;
         this.skipVacant = skipVacant;
     }

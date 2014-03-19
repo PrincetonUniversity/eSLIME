@@ -24,7 +24,7 @@ import agent.targets.TargetRule;
 import cells.BehaviorCell;
 import layers.LayerManager;
 import org.dom4j.Element;
-import structural.Chooser;
+import structural.RangeMap;
 import structural.GeneralParameters;
 
 import java.util.Random;
@@ -63,7 +63,7 @@ public class ActionFactory {
     private static Action stochasticChoice(Element e, BehaviorCell callback, LayerManager layerManager,
                                            GeneralParameters p) {
 
-        Chooser<Action> chooser = ActionChooserFactory.instantiate(e, callback, layerManager, p);
+        RangeMap<Action> chooser = ActionChooserFactory.instantiate(e, callback, layerManager, p);
         Random random = p.getRandom();
 
         Action action = new StochasticChoice(callback, layerManager, chooser, random);

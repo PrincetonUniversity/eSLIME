@@ -21,7 +21,7 @@ package agent.action;
 
 import cells.BehaviorCell;
 import layers.LayerManager;
-import structural.Chooser;
+import structural.RangeMap;
 import structural.identifiers.Coordinate;
 
 import java.util.Random;
@@ -34,22 +34,22 @@ import java.util.Random;
  * Created by dbborens on 3/6/14.
  */
 public class StochasticChoice extends Action {
-    private Chooser<Action> choices;
+    private RangeMap<Action> chooser;
     private Random random;
 
     public StochasticChoice(BehaviorCell callback, LayerManager layerManager,
-                            Chooser<Action> choices, Random random) {
+                            RangeMap<Action> chooser, Random random) {
 
         super(callback, layerManager);
-        this.choices = choices;
+        this.chooser = chooser;
         this.random = random;
     }
 
     @Override
     public void run(Coordinate caller) {
-        double range = choices.getTotalWeight();
+        double range = chooser.getTotalWeight();
         double x = random.nextDouble() * range;
-        Action choice = choices.selectTarget(x);
+        Action choice = chooser.selectTarget(x);
         choice.run(caller);
     }
 
@@ -61,7 +61,7 @@ public class StochasticChoice extends Action {
 
         StochasticChoice other = (StochasticChoice) obj;
 
-        if (!choices.equals(other.choices)) {
+        if (!chooser.equals(other.chooser)) {
             return false;
         }
 
@@ -70,8 +70,8 @@ public class StochasticChoice extends Action {
 
     @Override
     public Action clone(BehaviorCell child) {
-        Chooser<Action> clonedChoices = choices.clone();
-        StochasticChoice cloned = new StochasticChoice(child, getLayerManager(), clonedChoices, random);
+        RangeMap<Action> clonedChooser= chooser.clone();
+        StochasticChoice cloned = new StochasticChoice(child, getLayerManager(), clonedChooser, random);
         return cloned;
     }
 }

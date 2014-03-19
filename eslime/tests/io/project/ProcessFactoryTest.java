@@ -152,7 +152,7 @@ public class ProcessFactoryTest extends TestCase {
                 new BaseElement("defer")
         };
         children[0].setText("0.0");
-        children[1].setText("true");
+        children[1].setText("false");
         doTest("uniform-biomass-growth", UniformBiomassGrowth.class, children);
 
     }
@@ -164,7 +164,7 @@ public class ProcessFactoryTest extends TestCase {
                 new BaseElement("target")
         };
         children[0].setText("0.0");
-        children[1].setText("true");
+        children[1].setText("false");
         children[2].setText("1");
         doTest("targeted-biomass-growth", TargetedBiomassGrowth.class, children);
     }

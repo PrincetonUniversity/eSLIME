@@ -24,7 +24,7 @@ import junit.framework.TestCase;
 /**
  * Created by dbborens on 3/5/14.
  */
-public class ChooserTest extends TestCase {
+public class RangeMapTest extends TestCase {
     public void testAdd() throws Exception {
         fail("Not yet implemented.");
     }

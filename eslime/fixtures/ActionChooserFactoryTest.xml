@@ -1,0 +1,22 @@
+<fixture>
+    <singleton-case>
+        <option weight="0.5">
+            <mock />
+        </option>
+    </singleton-case>
+    <multi-case>
+        <option weight="1.0">
+            <mock />
+            <mock />
+        </option>
+    </multi-case>
+    <integration-case>
+        <option weight="0.5">
+            <mock />
+        </option>
+        <option weight="1.0">
+            <mock />
+            <mock />
+        </option>
+    </integration-case>
+</fixture>

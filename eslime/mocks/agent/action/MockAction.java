@@ -75,11 +75,11 @@ public class MockAction extends Action {
         return (obj instanceof MockAction);
     }
 
-    public int timesCaller(Coordinate caller) {
-        if (!callerCounts.containsKey(caller))
-            return 0;
-
-        return callerCounts.get(caller);
-    }
+//    public int timesCaller(Coordinate caller) {
+//        if (!callerCounts.containsKey(caller))
+//            return 0;
+//
+//        return callerCounts.get(caller);
+//    }
 
 }

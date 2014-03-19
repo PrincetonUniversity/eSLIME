@@ -24,20 +24,26 @@ import cells.BehaviorCell;
 import layers.LayerManager;
 import org.dom4j.Attribute;
 import org.dom4j.Element;
-import structural.Chooser;
+import structural.RangeMap;
 import structural.GeneralParameters;
 
 import java.util.List;
 
 /**
+ * Constructs an action chooser, which is used in construting a StochasticChoice
+ * object. Each choice has a weighting and one or more actions to be executed in
+ * sequence. If more than one action is specified, the actions are executed in
+ * the order specified whenever the option is chosen.
+ *
+ * For examples, see
  * Created by dbborens on 3/6/14.
  */
 public abstract class ActionChooserFactory {
 
-    public static Chooser<Action> instantiate(Element base, BehaviorCell callback, LayerManager layerManager,
+    public static RangeMap<Action> instantiate(Element base, BehaviorCell callback, LayerManager layerManager,
                                               GeneralParameters p) {
 
-        Chooser<Action> chooser = new Chooser<>();
+        RangeMap<Action> chooser = new RangeMap<>();
         // Iterate through all enumerated options.
         for (Object o : base.elements("option")) {
             Element option = (Element) o;

@@ -38,7 +38,7 @@ public abstract class EslimeTestCase extends TestCase {
 
     protected double epsilon = calcEpsilon();
 
-    protected final String eslimeRoot = "./jeslime/";
+    protected final String eslimeRoot = "./eslime/";
     protected final String outputPath = eslimeRoot + "/output/";
     protected final String fixturePath = eslimeRoot + "/fixtures/";
 

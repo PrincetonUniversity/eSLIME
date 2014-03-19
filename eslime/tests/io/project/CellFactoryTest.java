@@ -21,6 +21,7 @@ package io.project;
 
 import agent.Behavior;
 import agent.action.Action;
+import agent.action.NullAction;
 import agent.control.BehaviorDispatcher;
 import cells.BehaviorCell;
 import cells.Cell;
@@ -68,7 +69,7 @@ public class CellFactoryTest extends EslimeTestCase {
         BehaviorCell expected = new BehaviorCell(layerManager, 2, 0.5, 1.0);
         BehaviorDispatcher expectedDispatcher = new BehaviorDispatcher(expected, layerManager, p);
 
-        Action[] actionList = new Action[]{null};
+        Action[] actionList = new Action[]{new NullAction(null, null)};
         Behavior testBehavior = new Behavior(expected, layerManager, actionList);
         expectedDispatcher.map("test-behavior", testBehavior);
         expected.setDispatcher(expectedDispatcher);

@@ -31,6 +31,10 @@ import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 /**
+ * Fixation is defined as only one cell type existing in the system. The
+ * CheckForFixation process should throw a HaltCondition if and only if this
+ * definition is met.
+ *
  * Created by dbborens on 1/13/14.
  */
 public class CheckForFixationTest extends EslimeTestCase {
@@ -117,6 +121,11 @@ public class CheckForFixationTest extends EslimeTestCase {
     // The lattice is full, but there are at least two
     // kinds of cells -- should not result in a thrown HaltCondition
     public void testFullNonFixationCase() {
+        setUpMixedCase();
+        doTest(false);
+    }
+
+    private void setUpMixedCase() {
         makeTwoCanonicalSites();
         for (int i = 0; i < 2; i++) {
             Coordinate coord = new Coordinate(i, 0, 0);
@@ -125,19 +134,17 @@ public class CheckForFixationTest extends EslimeTestCase {
             cell.setState(i + 1);
             layer.getUpdateManager().place(cell, coord);
         }
-        doTest(false);
     }
 
-
     // There's only one species, but there's still room
-    // to grow -- should not result in a thrown HaltCondition
+    // to grow -- should still be considered "fixation"
     public void testOpenSpaceCase() {
         makeTwoCanonicalSites();
         Coordinate coord = new Coordinate(0, 0, 0);
         MockCell cell = new MockCell();
         cell.setState(1);
         layer.getUpdateManager().place(cell, coord);
-        doTest(false);
+        doTest(true);
     }
 
     /**
@@ -145,9 +152,17 @@ public class CheckForFixationTest extends EslimeTestCase {
      * fixation event is triggered.
      */
     public void testTwoToOneStateRegression() {
-        // This test should start with cells of two sites, then remove one.
+        // This test should start with two cells, each of a different type.
+        setUpMixedCase();
+
+        // We don't expect a fixation state exception.
+        doTest(false);
+
+        // Remove one of the cells. Now there's only one cell type in the system.
+        layer.getUpdateManager().banish(new Coordinate(0, 0, 0));
+
         // The state should now reflect fixation.
-        fail("Not yet implemented.");
+        doTest(true);
     }
 
     private void makeTwoCanonicalSites() {

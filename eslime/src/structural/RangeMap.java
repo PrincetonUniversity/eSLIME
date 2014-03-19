@@ -19,19 +19,42 @@
 
 package structural;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by dbborens on 3/5/14.
+ * A weighted collection of items of class T. Each T has some weight associated
+ * with it. The total weight of the system is the sum of these weights. The
+ * order of the items is identical to that in which they were loaded.
+ *
+ * For example, I might load Foo with weight 0.5, and Bar with weight 1.0. That
+ * would mean that weight range 0 <= weight < 0.5 corresponds to foo, and
+ * 0.5 <= weight < 1.5 corresponds to bar.
+ *
+ * After the collection is declared final (using the close() method), the user
+ * may sample the collection by invoking the selectTarget(...) method, which
+ * will retrieve items by range in the manner described above.
+ *
+ * One would like
  */
-public class Chooser<T> {
+public class RangeMap<T> {
 
     private HashMap<T, Double> weights;
+    
+    // We track the floor of each element, rather than counting on the key
+    // set of weights, so that we can compare across RangeMaps by preserving
+    // order. The first element is pre-loaded as 0.0, but each ceiling is then
+    // appended. This means that bins has one too many elements, which is
+    // handled accordingly.
+    private ArrayList<Double> bins;
+    
     private boolean closed;
     private double totalWeight = 0.0;
 
-    public Chooser() {
+    public RangeMap() {
         weights = new HashMap<>();
+        bins = new ArrayList<>();
+        bins.add(0.0);
         closed = false;
     }
 
@@ -40,7 +63,15 @@ public class Chooser<T> {
             throw new IllegalStateException("Attempted to write to finalized chooser.");
         }
 
+        appendBin(weight);
         weights.put(token, weight);
+        
+    }
+
+    private void appendBin(double weight) {
+        int n = bins.size();
+        double lastBin = bins.get(n - 1);
+        bins.add(lastBin + weight);
     }
 
     public void close() {
@@ -76,29 +107,31 @@ public class Chooser<T> {
 
         Object[] keys = weights.keySet().toArray(new Object[0]);
 
-        double[] upperBounds = upperBoundArray(keys);
-
-        Integer target = findKey(x, upperBounds);
+        Integer target = findKey(x);
 
         T ret = (T) keys[target];
         return ret;
     }
 
-    private int findKey(double x, double[] bins) {
+    private int findKey(double x) {
         int lower = 0;
-        int upper = bins.length - 1;
+
+        // -1 because bins.size() is one larger than its largest index, and
+        // -1 because bins() contains one too many elements (since we put a
+        // dummy element in at the beginning)
+        int upper = bins.size() - 1 - 1;
 
         // Find the desired key using a binary range search
-        return binaryRangeSearch(lower, upper, x, bins);
+        return binaryRangeSearch(lower, upper, x);
     }
 
     // Recursive binary range search -- public exposure for testing
-    public int binaryRangeSearch(int lower, int upper, double x, double[] bins) {
+    public int binaryRangeSearch(int lower, int upper, double x) {
         // Find midpoint of current range, rounded down.
         int midpoint = (lower + upper) / 2;
 
         // Set the bounds of the bucket.
-        double max = bins[midpoint];
+        double max = bins.get(midpoint);
         double min;
 
         // Failure case: we didn't find it.
@@ -110,16 +143,16 @@ public class Chooser<T> {
         if (midpoint == 0) {
             min = 0D;
         } else {
-            min = bins[midpoint - 1];
+            min = bins.get(midpoint - 1);
         }
 
         // Recursive case 1: Midpoint is too low; check upper half.
         if (x >= max) {
-            return binaryRangeSearch(midpoint + 1, upper, x, bins);
+            return binaryRangeSearch(midpoint + 1, upper, x);
 
             // Recursive case 2: Midpoint is too high; check lower half.
         } else if (x < min) {
-            return binaryRangeSearch(lower, midpoint - 1, x, bins);
+            return binaryRangeSearch(lower, midpoint - 1, x);
 
             // Base case: x is less than the maximum and greater
             // than the minimum. In that case, the midpoint bin
@@ -158,29 +191,51 @@ public class Chooser<T> {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Chooser)) {
+        if (!(obj instanceof RangeMap)) {
             return false;
         }
 
-        Chooser other = (Chooser) obj;
+        RangeMap other = (RangeMap) obj;
 
         if (!EpsilonUtil.epsilonEquals(totalWeight, other.totalWeight)) {
             return false;
         }
 
-        if (other.weights.size() != this.weights.size()) {
+
+        if (!contentsEqual(this, other)) {
             return false;
         }
 
-        for (T key : weights.keySet()) {
-            if (!other.weights.containsKey(key)) {
-                return false;
-            }
+        return true;
+    }
 
-            double p = weights.get(key);
-            double q = (double) other.weights.get(key);
+    /**
+     * Returns true if each weight range in each map returns equal objects for
+     * the same value of x.
+     *
+     * One would like to use a simpler method of comparing maps, say by asking
+     * whether each key is contained in both maps. However, as
+     * this class is generic, one is instead forced to compare element by
+     * element.
+     *
+     * @return
+     */
+    private boolean contentsEqual(RangeMap p, RangeMap q) {
+        // If they have a different number of elements, we already know that 
+        // they are unequal.
+        if (p.weights.size() != q.weights.size()) {
+            return false;
+        }
 
-            if (!EpsilonUtil.epsilonEquals(p, q)) {
+        // Test each subsequent bin by its midpoint value.
+        // The -1 is because the variable bins ends with the last ceiling added,
+        // but it is supposed to be a list of floors.
+        for (int i = 0; i < bins.size() - 1; i++) {
+            double range = bins.get(i+1) - bins.get(i);
+            double floor = bins.get(i);
+            double midpoint = floor + (range / 2.0);
+
+            if (!binsEqual(p, q, midpoint)) {
                 return false;
             }
         }
@@ -188,13 +243,24 @@ public class Chooser<T> {
         return true;
     }
 
+    private boolean binsEqual(RangeMap p, RangeMap q, double midpoint) {
+        Object pResult = p.selectTarget(midpoint);
+        Object qResult = q.selectTarget(midpoint);
+
+        if (!pResult.equals(qResult)) {
+            return false;
+        }
+       
+        return true;
+    }
+
     @Override
-    public Chooser<T> clone() {
+    public RangeMap<T> clone() {
         if (!closed) {
-            throw new IllegalStateException("Cannot clone chooser until it is closed.");
+            throw new IllegalStateException("Cannot clone range map until it is closed.");
         }
 
-        Chooser<T> cloned = new Chooser<T>();
+        RangeMap<T> cloned = new RangeMap<T>();
 
         for (T key : weights.keySet()) {
             cloned.add(key, weights.get(key));

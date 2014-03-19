@@ -19,7 +19,7 @@
 
 package processes.gillespie;
 
-import structural.Chooser;
+import structural.RangeMap;
 
 /**
  * @author dbborens
@@ -27,10 +27,10 @@ import structural.Chooser;
  */
 public class GillespieChooser {
 
-    private Chooser<Integer> chooser;
+    private RangeMap<Integer> chooser;
 
     public GillespieChooser(GillespieState state) {
-        chooser = new Chooser<>();
+        chooser = new RangeMap<>();
 
         for (Integer processId : state.getKeys()) {
             double weight = state.getWeight(processId);

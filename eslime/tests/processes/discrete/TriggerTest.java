@@ -27,6 +27,7 @@ import layers.cell.CellLayer;
 import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;
 import processes.gillespie.GillespieState;
+import structural.MockGeneralParameters;
 import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
@@ -38,14 +39,17 @@ public class TriggerTest extends EslimeTestCase {
     private Trigger trigger;
     private CellLayer layer;
     private MockLayerManager layerManager;
-
+    private MockGeneralParameters p;
     @Override
     protected void setUp() throws Exception {
         MockGeometry geom = buildMockGeometry();
+
+        p = new MockGeneralParameters();
+        p.initializeRandom(0);
         layer = new CellLayer(geom, 0);
         layerManager = new MockLayerManager();
         layerManager.setCellLayer(layer);
-        trigger = new Trigger(layerManager, "test", true);
+        trigger = new Trigger(layerManager, "test", p, true);
     }
 
     /**
@@ -57,6 +61,7 @@ public class TriggerTest extends EslimeTestCase {
         GillespieState state = new GillespieState(keys);
 
         // Gillespie state should be updated by target
+
         trigger.target(state);
         state.close();
         assertEquals(1, state.getTotalCount());
@@ -67,7 +72,7 @@ public class TriggerTest extends EslimeTestCase {
         MockCell cell = new MockCell();
         Coordinate c = layer.getGeometry().getCanonicalSites()[0];
         layer.getUpdateManager().place(cell, c);
-
+        trigger.target(null);
         trigger.fire(null);
         assertEquals("test", cell.getLastTriggeredBehaviorName());
         assertNull(cell.getLastTriggeredCaller());
@@ -84,8 +89,8 @@ public class TriggerTest extends EslimeTestCase {
         MockProcessLoader loader = new MockProcessLoader();
         loader.setElement(0, base);
 
-        Trigger actual = new Trigger(loader, layerManager, 0, null);
-        Trigger expected = new Trigger(layerManager, "test-behavior", true);
+        Trigger actual = new Trigger(loader, layerManager, 0, null, -1);
+        Trigger expected = new Trigger(layerManager, "test-behavior", p, true);
 
         assertEquals(expected, actual);
     }
