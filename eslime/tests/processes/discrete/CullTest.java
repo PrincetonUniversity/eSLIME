@@ -19,14 +19,73 @@
 
 package processes.discrete;
 
-import junit.framework.TestCase;
+import cells.MockCell;
+import processes.StepState;
+import test.EslimeLatticeTestCase;
 
 /**
  * Created by dbborens on 3/5/14.
  */
-public class CullTest extends TestCase {
+public class CullTest extends EslimeLatticeTestCase {
 
+    private final double THRESHOLD = 0.5;
+
+    private Cull query;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        query = new Cull(null, layerManager, 0, null, 0.5);
+    }
+
+    /**
+     * Verify that cells clearly above and below the threshold are handled as
+     * expected.
+     *
+     * @throws Exception
+     */
     public void testLifeCycle() throws Exception {
-        fail("Not yet implemented");
+        MockCell live = new MockCell();
+        MockCell die = new MockCell();
+
+        live.setFitness(THRESHOLD + 0.1);
+        die.setFitness(THRESHOLD - 0.1);
+
+        // Place a cell above the threshold.
+        layer.getUpdateManager().place(live, x);
+
+        // Place a cell below the threshold.
+        layer.getUpdateManager().place(die, y);
+
+        // Verify that there are two live cells.
+        assertEquals(2, layer.getViewer().getOccupiedSites().size());
+
+        // Cull.
+        query.target();
+        query.fire(new StepState());
+
+        // Only the one above the threshold should survive.
+        assertTrue(layer.getViewer().isOccupied(x));
+        assertEquals(1, layer.getViewer().getOccupiedSites().size());
+    }
+
+    /**
+     * Cull is supposed to kill any cells that are less than or equl to the
+     * threshold. This test verifies that cells at the threshold are culled.
+     *
+     * @throws Exception
+     */
+    public void testBorderlineCase() throws Exception {
+        MockCell borderline = new MockCell();
+        borderline.setFitness(THRESHOLD);
+        layer.getUpdateManager().place(borderline, x);
+
+        assertTrue(layer.getViewer().isOccupied(x));
+
+        // Cull.
+        query.target();
+        query.fire(new StepState());
+
+        assertFalse(layer.getViewer().isOccupied(x));
     }
 }

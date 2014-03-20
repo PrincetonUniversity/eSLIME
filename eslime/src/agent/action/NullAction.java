@@ -20,15 +20,14 @@
 package agent.action;
 
 import cells.BehaviorCell;
-import layers.LayerManager;
 import structural.identifiers.Coordinate;
 
 /**
  * Created by dbborens on 3/6/14.
  */
 public class NullAction extends Action {
-    public NullAction(BehaviorCell callback, LayerManager layerManager) {
-        super(callback, layerManager);
+    public NullAction() {
+        super(null, null);
     }
 
     @Override
@@ -46,6 +45,6 @@ public class NullAction extends Action {
 
     @Override
     public Action clone(BehaviorCell child) {
-        return new NullAction(child, getLayerManager());
+        return new NullAction();
     }
 }
