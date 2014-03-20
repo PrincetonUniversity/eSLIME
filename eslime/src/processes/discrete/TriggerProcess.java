@@ -40,6 +40,7 @@ import java.util.ArrayList;
 public class TriggerProcess extends CellProcess {
     private String behaviorName;
     private boolean skipVacant;
+    private boolean requireNeighbors;
     private int maxTargets;
 
     // We use a cell array because triggering may also move cells
@@ -51,13 +52,15 @@ public class TriggerProcess extends CellProcess {
         Element e = loader.getProcess(id);
         skipVacant = XmlUtil.getBoolean(e, "skip-vacant-sites");
         maxTargets = XmlUtil.getInteger(e, "max-targets", -1);
+        requireNeighbors = XmlUtil.getBoolean(e, "require-neighbors");
     }
 
-    public TriggerProcess(LayerManager layerManager, String behaviorName, GeneralParameters p, boolean skipVacant, int maxTargets) {
+    public TriggerProcess(LayerManager layerManager, String behaviorName, GeneralParameters p, boolean skipVacant, boolean requireNeighbors, int maxTargets) {
         super(null, layerManager, 0, p);
         this.behaviorName = behaviorName;
         this.skipVacant = skipVacant;
         this.maxTargets = maxTargets;
+        this.requireNeighbors = requireNeighbors;
     }
 
     @Override
@@ -71,9 +74,62 @@ public class TriggerProcess extends CellProcess {
     }
 
     private Cell[] resolveTargets() {
-        ArrayList<Coordinate> candidates = new ArrayList<>();
+        ArrayList<Coordinate> vacancyFiltered = respectVacancyRequirements(activeSites);
+        ArrayList<Coordinate> neighborFiltered = respectNeighborhoodRequirements(vacancyFiltered);
+        Coordinate[] selectedCoords = MaxTargetHelper.respectMaxTargets(neighborFiltered, maxTargets, p.getRandom());
 
-        for (Coordinate c : activeSites) {
+        Cell[] selectedCells = new Cell[selectedCoords.length];
+        for (int i = 0; i < selectedCells.length; i++) {
+            Coordinate coord = selectedCoords[i];
+            selectedCells[i] = layer.getViewer().getCell(coord);
+        }
+
+        return selectedCells;
+    }
+
+    /**
+     * If require-neighbors is set, removes any candidates that don't have any
+     * occupied neighbors.
+     */
+    private ArrayList<Coordinate> respectNeighborhoodRequirements(ArrayList<Coordinate> unfiltered) {
+        ArrayList<Coordinate> filtered = new ArrayList<>(unfiltered.size());
+        if (!requireNeighbors) {
+            return unfiltered;
+        }
+
+        for (Coordinate candidate : unfiltered) {
+            int[] neighborStates = layer.getLookupManager().getNeighborStates(candidate);
+
+            // Count up the number of vacant neighbors.
+            int numVacantNeighbors = 0;
+            for (int i = 0; i < numVacantNeighbors; i++) {
+                if (neighborStates[i] == 0) {
+                    numVacantNeighbors++;
+                }
+            }
+
+            // This cell has occupied neighbors only if the number of neighbors
+            // is greater than the number of vacant neighbors.
+            if (numVacantNeighbors < neighborStates.length) {
+                filtered.add(candidate);
+            }
+        }
+
+        return filtered;
+    }
+
+    /**
+     * If active sites are to be skipped, eliminates them from the candidate
+     * sites. If they are not to be skipped, blows up if it finds one.
+     *
+     * @param unfiltered
+     */
+    private ArrayList<Coordinate> respectVacancyRequirements(Coordinate[] unfiltered) {
+        ArrayList<Coordinate> candidates = new ArrayList<>(unfiltered.length);
+
+
+        for (Coordinate c : unfiltered) {
+
             boolean vacant = !layer.getViewer().isOccupied(c);
             // If it's vacant and we don't expect already-vacant cells, throw error
             if (vacant && !skipVacant) {
@@ -85,21 +141,14 @@ public class TriggerProcess extends CellProcess {
 
                 throw new IllegalStateException(msg);
             } else if (!vacant) {
+
                 candidates.add(c);
             } else {
                 // Do nothing if site is vacant and skipDead is true.
             }
         }
 
-        Coordinate[] selectedCoords = MaxTargetHelper.respectMaxTargets(candidates, maxTargets, p.getRandom());
-
-        Cell[] selectedCells = new Cell[selectedCoords.length];
-        for (int i = 0; i < selectedCells.length; i++) {
-            Coordinate coord = selectedCoords[i];
-            selectedCells[i] = layer.getViewer().getCell(coord);
-        }
-
-        return selectedCells;
+        return candidates;
     }
 
     @Override

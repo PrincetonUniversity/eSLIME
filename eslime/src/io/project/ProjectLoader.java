@@ -31,7 +31,7 @@ import java.io.File;
  * an XML document. Verifies that general structure of the document
  * is that of a jeSLIME parameters file. Provides handles to
  * sub-elements.
- * <p/>
+ *
  * It is important, both for speed and resource management, to load
  * elements into native data structures and close the ParameterLoader
  * early on.

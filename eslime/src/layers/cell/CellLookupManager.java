@@ -93,7 +93,7 @@ public class CellLookupManager {
         }
 
         // Initialize return object
-        ArrayList<Coordinate> res = new ArrayList<Coordinate>();
+        ArrayList<Coordinate> res = new ArrayList();
 
         // Loop through looking for vacancies (starting with target site)
         int r = 0;
@@ -101,7 +101,7 @@ public class CellLookupManager {
         // I included this extra map so I could check for duplicates in best
         // case O(1) time, but if I have to do that, doesn't it seem like I should
         // be returning a set instead of building two data structures?
-        HashSet<Coordinate> incl = new HashSet<Coordinate>();
+        HashSet<Coordinate> incl = new HashSet();
 
         while ((maxDistance == -1) || (r <= maxDistance)) {
 

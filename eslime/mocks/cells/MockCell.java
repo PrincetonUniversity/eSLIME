@@ -40,6 +40,7 @@ public class MockCell extends BehaviorCell {
     private Coordinate lastTriggeredCaller;
     private boolean divisible;
     private boolean died;
+    private int triggerCount = 0;
 
     @Override
     public int consider() {
@@ -114,10 +115,15 @@ public class MockCell extends BehaviorCell {
         return lastTriggeredBehaviorName;
     }
 
+    public int getTriggerCount() {
+        return triggerCount;
+    }
+
     @Override
     public void trigger(String behaviorName, Coordinate caller) {
         lastTriggeredBehaviorName = behaviorName;
         lastTriggeredCaller = caller;
+        triggerCount++;
     }
 
     @Override
