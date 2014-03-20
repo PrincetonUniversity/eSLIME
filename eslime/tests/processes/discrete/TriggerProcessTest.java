@@ -39,7 +39,7 @@ import test.EslimeTestCase;
  *
  * Created by David B Borenstein on 2/18/14.
  */
-public class CaseSensitivityIssues extends EslimeTestCase {
+public class TriggerProcessTest extends EslimeTestCase {
 
     private TriggerProcess trigger;
     private CellLayer layer;
