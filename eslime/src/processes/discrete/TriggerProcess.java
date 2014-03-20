@@ -37,7 +37,7 @@ import java.util.ArrayList;
  * Causes cells within the active area to perform the specified behavior.
  * Created by David B Borenstein on 2/15/14.
  */
-public class Trigger extends CellProcess {
+public class TriggerProcess extends CellProcess {
     private String behaviorName;
     private boolean skipVacant;
     private int maxTargets;
@@ -45,18 +45,19 @@ public class Trigger extends CellProcess {
     // We use a cell array because triggering may also move cells
     private Cell[] targets;
 
-    public Trigger(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p, int maxTargets) {
+    public TriggerProcess(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
         super(loader, layerManager, id, p);
         behaviorName = get("behavior");
         Element e = loader.getProcess(id);
         skipVacant = XmlUtil.getBoolean(e, "skip-vacant-sites");
-        this.maxTargets = maxTargets;
+        maxTargets = XmlUtil.getInteger(e, "max-targets", -1);
     }
 
-    public Trigger(LayerManager layerManager, String behaviorName, GeneralParameters p, boolean skipVacant) {
+    public TriggerProcess(LayerManager layerManager, String behaviorName, GeneralParameters p, boolean skipVacant, int maxTargets) {
         super(null, layerManager, 0, p);
         this.behaviorName = behaviorName;
         this.skipVacant = skipVacant;
+        this.maxTargets = maxTargets;
     }
 
     @Override
@@ -103,7 +104,7 @@ public class Trigger extends CellProcess {
 
     @Override
     public void fire(StepState state) throws HaltCondition {
-        System.out.println("Executing Trigger.");
+        System.out.println("Executing Trigger. " + targets.length);
         for (Cell target : targets) {
             System.out.println("   Triggering behavior '" + behaviorName + "' in cell of type" + target.getState());
             // A null caller on the trigger method means that the caller is
@@ -115,11 +116,11 @@ public class Trigger extends CellProcess {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Trigger)) {
+        if (!(obj instanceof TriggerProcess)) {
             return false;
         }
 
-        Trigger other = (Trigger) obj;
+        TriggerProcess other = (TriggerProcess) obj;
 
         if (!this.behaviorName.equals(other.behaviorName)) {
             return false;

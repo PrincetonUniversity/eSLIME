@@ -109,8 +109,8 @@ public class ProcessFactory {
             return new FieldUpdateProcess(loader, id, layerManager, p, target);
 
         } else if (processClass.equalsIgnoreCase("trigger")) {
-            int maxTargets = getMaxTargets(e);
-            return new Trigger(loader, layerManager, id, p, maxTargets);
+//            int maxTargets = getMaxTargets(e);
+            return new TriggerProcess(loader, layerManager, id, p);
 
         } else if (processClass.equalsIgnoreCase("cull")) {
             double threshold = XmlUtil.getDouble(e, "threshold", 0.0);

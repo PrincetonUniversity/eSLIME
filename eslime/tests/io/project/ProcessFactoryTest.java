@@ -205,7 +205,7 @@ public class ProcessFactoryTest extends TestCase {
         };
 
         children[0].setText("test");
-        doTest("trigger", Trigger.class, children);
+        doTest("trigger", TriggerProcess.class, children);
     }
 
     public void testGetProcesses() {

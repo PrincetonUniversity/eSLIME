@@ -25,15 +25,15 @@ import java.util.ArrayList;
  * A weighted collection of items of class T. Each T has some weight associated
  * with it. The total weight of the system is the sum of these weights. The
  * order of the items is identical to that in which they were loaded.
- *
+ * <p/>
  * For example, I might load Foo with weight 0.5, and Bar with weight 1.0. That
  * would mean that weight range 0 <= weight < 0.5 corresponds to foo, and
  * 0.5 <= weight < 1.5 corresponds to bar.
- *
+ * <p/>
  * After the collection is declared final (using the close() method), the user
  * may sample the collection by invoking the selectTarget(...) method, which
  * will retrieve items by range in the manner described above.
- *
+ * <p/>
  * One would like
  */
 public class RangeMap<T> {
@@ -55,6 +55,12 @@ public class RangeMap<T> {
     // floors.
 
     private ArrayList<T> keys;
+
+    public RangeMap(int initialSize) {
+        floors = new ArrayList<>(initialSize + 1);
+        keys = new ArrayList<>(initialSize);
+        floors.add(0.0);
+    }
 
     public RangeMap() {
         //weights = new HashMap<>();
@@ -139,7 +145,7 @@ public class RangeMap<T> {
     /**
      * Returns true if each weight range in each map returns equal objects for
      * the same value of x.
-     *
+     * <p/>
      * One would like to use a simpler method of comparing maps, say by asking
      * whether each key is contained in both maps. However, as
      * this class is generic, one is instead forced to compare element by
@@ -177,14 +183,14 @@ public class RangeMap<T> {
         if (!pResult.equals(qResult)) {
             return false;
         }
-       
+
         return true;
     }
 
     @Override
     public RangeMap<T> clone() {
-
-        RangeMap<T> cloned = new RangeMap<T>();
+        int n = keys.size();
+        RangeMap<T> cloned = new RangeMap(n);
 
         for (int i = 1; i < floors.size(); i++) {
             T key = keys.get(i - 1);

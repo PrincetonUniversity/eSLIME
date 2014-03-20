@@ -21,8 +21,8 @@ package processes;
 
 import structural.identifiers.Coordinate;
 
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -68,7 +68,7 @@ public abstract class MaxTargetHelper {
         arr[i] = temp;
     }
 
-    public static Coordinate[] respectMaxTargets(ArrayList<Coordinate> candidates, int maxTargets, Random random) {
+    public static Coordinate[] respectMaxTargets(List<Coordinate> candidates, int maxTargets, Random random) {
         // This method is a target for optimization.
         Coordinate[] candidateArr = candidates.toArray(new Coordinate[0]);
         return respectMaxTargets(candidateArr, maxTargets, random);

@@ -30,4 +30,24 @@
         </tag-false>
         <no-flag/>
     </get-boolean>
+
+    <get-integer>
+        <default/>
+        <negative>
+            <test>-5</test>
+        </negative>
+        <positive>
+            <test>2</test>
+        </positive>
+    </get-integer>
+
+    <get-double>
+        <default/>
+        <negative>
+            <test>-0.5</test>
+        </negative>
+        <scientific>
+            <test>4e-3</test>
+        </scientific>
+    </get-double>
 </fixture>

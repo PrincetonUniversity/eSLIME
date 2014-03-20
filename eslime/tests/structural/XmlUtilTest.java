@@ -48,7 +48,30 @@ public class XmlUtilTest extends EslimeTestCase {
         assertEquals(expected, actual);
     }
 
-    public void testGetDouble() throws Exception {
-        fail("Not yet implemented");
+    private void doIntegerTest(Element testRoot, String childName, int expected) {
+        Element child = testRoot.element(childName);
+        int actual = XmlUtil.getInteger(child, "test", -1);
+        assertEquals(expected, actual);
     }
+
+    private void doDoubleTest(Element testRoot, String childName, double expected) {
+        Element child = testRoot.element(childName);
+        double actual = XmlUtil.getDouble(child, "test", -1.0);
+        assertEquals(expected, actual, epsilon);
+    }
+
+    public void testGetDouble() throws Exception {
+        Element testRoot = fixtureRoot.element("get-double");
+        doDoubleTest(testRoot, "default", -1.0);
+        doDoubleTest(testRoot, "negative", -0.5);
+        doDoubleTest(testRoot, "scientific", 4e-3);
+    }
+
+    public void testGetInteger() throws Exception {
+        Element testRoot = fixtureRoot.element("get-integer");
+        doIntegerTest(testRoot, "default", -1);
+        doIntegerTest(testRoot, "negative", -5);
+        doIntegerTest(testRoot, "positive", 2);
+    }
+
 }

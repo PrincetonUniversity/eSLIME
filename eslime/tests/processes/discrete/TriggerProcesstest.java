@@ -32,11 +32,16 @@ import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 /**
+ * This is a test for the TriggerProcess object, which is a discrete process
+ * that triggers behaviors in cells. It should not be confused with the Trigger
+ * action, which is an action that individual cells can execute as part of a
+ * behavior.
+ *
  * Created by David B Borenstein on 2/18/14.
  */
-public class TriggerTest extends EslimeTestCase {
+public class TriggerProcesstest extends EslimeTestCase {
 
-    private Trigger trigger;
+    private TriggerProcess trigger;
     private CellLayer layer;
     private MockLayerManager layerManager;
     private MockGeneralParameters p;
@@ -49,7 +54,9 @@ public class TriggerTest extends EslimeTestCase {
         layer = new CellLayer(geom, 0);
         layerManager = new MockLayerManager();
         layerManager.setCellLayer(layer);
-        trigger = new Trigger(layerManager, "test", p, true);
+
+
+        trigger = new TriggerProcess(layerManager, "test", p, true, -1);
     }
 
     /**
@@ -72,6 +79,7 @@ public class TriggerTest extends EslimeTestCase {
         MockCell cell = new MockCell();
         Coordinate c = layer.getGeometry().getCanonicalSites()[0];
         layer.getUpdateManager().place(cell, c);
+        assertTrue(layer.getViewer().isOccupied(c));
         trigger.target(null);
         trigger.fire(null);
         assertEquals("test", cell.getLastTriggeredBehaviorName());
@@ -89,8 +97,8 @@ public class TriggerTest extends EslimeTestCase {
         MockProcessLoader loader = new MockProcessLoader();
         loader.setElement(0, base);
 
-        Trigger actual = new Trigger(loader, layerManager, 0, null, -1);
-        Trigger expected = new Trigger(layerManager, "test-behavior", p, true);
+        TriggerProcess actual = new TriggerProcess(loader, layerManager, 0, null);
+        TriggerProcess expected = new TriggerProcess(layerManager, "test-behavior", p, true, -1);
 
         assertEquals(expected, actual);
     }

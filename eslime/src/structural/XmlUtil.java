@@ -61,4 +61,15 @@ public abstract class XmlUtil {
         double ret = Double.valueOf(valueText);
         return ret;
     }
+
+    public static int getInteger(Element e, String name, int defaultValue) {
+        Element valueElement = e.element(name);
+        if (valueElement == null) {
+            return defaultValue;
+        }
+
+        String valueText = valueElement.getTextTrim();
+        Integer ret = Integer.valueOf(valueText);
+        return ret;
+    }
 }

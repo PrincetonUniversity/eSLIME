@@ -72,11 +72,7 @@ public class CheckForExtinctionTest extends TestCase {
     }
 
     public void testNonExtinctionCase() {
-        makeOneCanonicalSite();
-        Coordinate coord = new Coordinate(0, 0, 1);
-        MockCell cell = new MockCell();
-        cell.setState(1);
-        layer.getUpdateManager().place(cell, coord);
+        populateSingletonCase();
         doTest(false);
     }
 
@@ -85,7 +81,19 @@ public class CheckForExtinctionTest extends TestCase {
      * become vacant, this is still recorded as an exitnction event.
      */
     public void testTransitionToExtinction() {
-        fail("Not yet implemented.");
+        Coordinate coord = populateSingletonCase();
+        doTest(false);
+        layer.getUpdateManager().banish(coord);
+        doTest(true);
+    }
+
+    private Coordinate populateSingletonCase() {
+        makeOneCanonicalSite();
+        Coordinate coord = new Coordinate(0, 0, 1);
+        MockCell cell = new MockCell();
+        cell.setState(1);
+        layer.getUpdateManager().place(cell, coord);
+        return coord;
     }
 
     private void makeOneCanonicalSite() {

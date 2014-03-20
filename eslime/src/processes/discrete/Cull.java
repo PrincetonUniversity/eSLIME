@@ -48,12 +48,6 @@ public class Cull extends CellProcess {
     }
 
     public void target(GillespieState gs) throws HaltCondition {
-        System.out.println("Identifying targets for Cull.");
-        /*
-           Things to do here:
-
-              4. Add a diagnostic message to BehaviorCell.setFitness for more information.
-         */
 
         ArrayList<Coordinate> targets = new ArrayList<Coordinate>();
 
@@ -64,9 +58,6 @@ public class Cull extends CellProcess {
 
             Cell cell = layer.getViewer().getCell(candidate);
             if (cell.getFitness() <= threshold) {
-                System.out.println("Cell at " + candidate +
-                        " is below critical size: " + cell.getFitness() +
-                        " < " + threshold);
                 targets.add(candidate);
             }
         }
@@ -85,13 +76,10 @@ public class Cull extends CellProcess {
 
     private void execute(StepState state, Coordinate[] targetsArr) {
         if (targetsArr.length != 0) {
-            System.out.println("Executing cull.");
         }
         CellUpdateManager manager = layer.getUpdateManager();
         for (Coordinate target : targetsArr) {
-            System.out.println("   Banishing cell at " + target);
             manager.banish(target);
         }
     }
-
 }

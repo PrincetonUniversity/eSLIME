@@ -26,6 +26,7 @@ import cells.MockCell;
 import layers.MockLayerManager;
 import org.dom4j.Element;
 import structural.MockGeneralParameters;
+import structural.RangeMap;
 import test.EslimeTestCase;
 
 /**
@@ -49,7 +50,7 @@ public class ActionFactoryTest extends EslimeTestCase {
     public void testNull() throws Exception {
         Element e = fixtureRoot.element("null");
         Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
-        Action expected = new NullAction(null, null);
+        Action expected = new NullAction();
         assertEquals(expected, actual);
     }
 
@@ -69,7 +70,13 @@ public class ActionFactoryTest extends EslimeTestCase {
     }
 
     public void testStochasticChoice() throws Exception {
-        fail("Not yet implemented.");
+        Element e = fixtureRoot.element("stochastic-choice");
+        Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
+        RangeMap<Action> chooser = new RangeMap(1);
+        Action child = new NullAction();
+        chooser.add(child, 1.0);
+        Action expected = new StochasticChoice(callback, layerManager, chooser, p.getRandom());
+        assertEquals(expected, actual);
     }
 
     public void testTrigger() throws Exception {
