@@ -39,7 +39,7 @@ import test.EslimeTestCase;
  *
  * Created by David B Borenstein on 2/18/14.
  */
-public class TriggerProcesstest extends EslimeTestCase {
+public class TriggerProcessTest extends EslimeTestCase {
 
     private TriggerProcess trigger;
     private CellLayer layer;
@@ -56,7 +56,7 @@ public class TriggerProcesstest extends EslimeTestCase {
         layerManager.setCellLayer(layer);
 
 
-        trigger = new TriggerProcess(layerManager, "test", p, true, -1);
+        trigger = new TriggerProcess(layerManager, "test", p, true, false, -1);
     }
 
     /**
@@ -98,8 +98,60 @@ public class TriggerProcesstest extends EslimeTestCase {
         loader.setElement(0, base);
 
         TriggerProcess actual = new TriggerProcess(loader, layerManager, 0, null);
-        TriggerProcess expected = new TriggerProcess(layerManager, "test-behavior", p, true, -1);
+        TriggerProcess expected = new TriggerProcess(layerManager, "test-behavior", p, true, false, -1);
 
         assertEquals(expected, actual);
     }
+
+    /**
+     * Make sure that, if cells are required to have occupied neigbhors in order
+     * to be triggered, that the requirement is honored.
+     *
+     * @throws Exception
+     */
+    public void testRequireNeighborsFlag() throws Exception {
+        // Unlike the other tests, we want a trigger process that requires
+        // cells to have at least one occupied neighbor in order to be
+        // triggered.
+        trigger = new TriggerProcess(layerManager, "test", p, true, true, -1);
+
+        // Set up two neighboring cells and one isolated cell.
+        MockCell neighbor1 = new MockCell();
+        MockCell neighbor2 = new MockCell();
+        MockCell isolated  = new MockCell();
+        setUpNeighborhoodTestCase(neighbor1, neighbor2, isolated);
+
+
+        // Execute the trigger event.
+        trigger.target(null);
+        trigger.fire(null);
+
+        // Only the neighboring cells should be triggered.
+        assertEquals(1, neighbor1.getTriggerCount());
+        assertEquals(1, neighbor2.getTriggerCount());
+        assertEquals(0, isolated.getTriggerCount());
+    }
+
+    private void setUpNeighborhoodTestCase(MockCell neighbor1, MockCell neighbor2, MockCell isolated) {
+        MockGeometry geom = (MockGeometry) layer.getGeometry();
+        // 0, 0, 0
+        Coordinate nc1 = geom.getCanonicalSites()[0];
+        layer.getUpdateManager().place(neighbor1, nc1);
+
+        // 0, 0, 1
+        Coordinate nc2 = geom.getCanonicalSites()[1];
+        layer.getUpdateManager().place(neighbor2, nc2);
+
+        // 0, 1, 1
+        Coordinate ni  = geom.getCanonicalSites()[3];
+        layer.getUpdateManager().place(isolated, ni);
+
+        // Since we're using a mock geometry, we have to manually define
+        // the neighborhoods.
+        geom.setCellNeighbors(nc1, new Coordinate[] {nc2});
+        geom.setCellNeighbors(nc2, new Coordinate[] {nc1});
+        geom.setCellNeighbors(ni, new Coordinate[] {});
+
+    }
+
 }
