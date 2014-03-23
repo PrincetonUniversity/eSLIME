@@ -17,7 +17,7 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package io.visual;
+package io.visual.legacy;
 
 import geometry.Geometry;
 import io.deserialize.ConditionViewer;
@@ -32,7 +32,8 @@ import java.io.IOException;
 import java.util.HashSet;
 
 
-public class HexMapWriter implements Visualization {
+@Deprecated
+public class HexMapWriter implements LegacyVisualization {
 
     private static final int EDGE = 10;
 

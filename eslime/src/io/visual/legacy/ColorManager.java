@@ -17,7 +17,7 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package io.visual;
+package io.visual.legacy;
 
 import structural.GeneralParameters;
 
@@ -26,7 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Random;
 
-
+@Deprecated
 public class ColorManager {
 
     private Map<Integer, Color> colorMap = new HashMap<Integer, Color>();

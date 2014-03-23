@@ -1,0 +1,9 @@
+<component name="CopyrightManager">
+  <copyright>
+    <option name="notice" value="/*&#10;* Copyright (c) 2014, David Bruce Borenstein and the Trustees of&#10;* Princeton University.&#10;*&#10;* Except where otherwise noted, this work is subject to a Creative Commons&#10;* Attribution (CC BY 4.0) license.&#10;*&#10;* Attribute (BY): You must attribute the work in the manner specified&#10;* by the author or licensor (but not in any way that suggests that they&#10;* endorse you or your use of the work).&#10;*&#10;* The Licensor offers the Licensed Material as-is and as-available, and&#10;* makes no representations or warranties of any kind concerning the&#10;* Licensed Material, whether express, implied, statutory, or other.&#10;*&#10;* For the full license, please visit:&#10;* http://creativecommons.org/licenses/by/4.0/legalcode&#10;*/" />
+    <option name="keyword" value="Copyright" />
+    <option name="allowReplaceKeyword" value="" />
+    <option name="myName" value="CC BY Intl 4.0" />
+    <option name="myLocal" value="true" />
+  </copyright>
+</component>

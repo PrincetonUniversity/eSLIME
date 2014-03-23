@@ -22,7 +22,7 @@ package structural.postprocess;
 import geometry.Geometry;
 import io.deserialize.CellStateReader;
 import io.deserialize.ConditionViewer;
-import io.visual.HexMapWriter;
+import io.visual.legacy.HexMapWriter;
 import structural.GeneralParameters;
 
 public class ImageSequence {
