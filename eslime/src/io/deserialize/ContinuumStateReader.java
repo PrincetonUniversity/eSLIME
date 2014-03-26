@@ -31,14 +31,13 @@ import java.util.Iterator;
 public class ContinuumStateReader implements Iterator<ContinuumState> {
 
     private DataInputStream input;
-    private String filename;
 
     private ContinuumState current;
 
-    public ContinuumStateReader(File filename) {
+    public ContinuumStateReader(File file) {
         // Open the file.
         try {
-            FileInputStream fileInputStream = new FileInputStream(filename);
+            FileInputStream fileInputStream = new FileInputStream(file);
             BufferedInputStream bufferedInputStream = new BufferedInputStream(fileInputStream);
 
             input = new DataInputStream(bufferedInputStream);
@@ -115,16 +114,8 @@ public class ContinuumStateReader implements Iterator<ContinuumState> {
     }
 
     private DenseVector readData() throws IOException {
-        // Length is encoded, redundantly, in each vector.
-        int length = input.readInt();
-
-        //System.out.println("I think length is " + length);
-        DenseVector ret = new DenseVector(length);
-        for (int i = 0; i < length; i++) {
-            double value = input.readDouble();
-            ret.set(i, value);
-        }
-
+        double[] data = PrimitiveDeserializer.readDoubleVector(input);
+        DenseVector ret = new DenseVector(data);
         return ret;
     }
 
@@ -144,7 +135,7 @@ public class ContinuumStateReader implements Iterator<ContinuumState> {
         for (int i = 0; i < 2; i++) {
             boolean obs = input.readBoolean();
             if (!obs) {
-                throw new IOException("Continuum state file '" + filename + "' is corrupt.");
+                throw new IOException("Continuum state file is corrupt.");
             }
         }
     }
@@ -160,7 +151,7 @@ public class ContinuumStateReader implements Iterator<ContinuumState> {
         for (int i = 0; i < 2; i++) {
             boolean obs = input.readBoolean();
             if (obs) {
-                throw new IOException("Continuum state file '" + filename + "' is corrupt.");
+                throw new IOException("Continuum state file is corrupt.");
             }
         }
     }

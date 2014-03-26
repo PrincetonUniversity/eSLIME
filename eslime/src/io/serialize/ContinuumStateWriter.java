@@ -132,13 +132,14 @@ public class ContinuumStateWriter extends Serializer {
      */
     private void processData(int frame) throws IOException {
         DenseVector data = layer.getState().getSolution();
+        updateExtrema(data, frame);
 
-        // Encode length (as a reality check)
-        int length = data.size();
-        dataStream.writeInt(length);
+        PrimitiveSerializer.writeDoubleVector(dataStream, data.getData());
+    }
+
+    private void updateExtrema(DenseVector data, int frame) {
         for (int i = 0; i < data.size(); i++) {
             double datum = data.get(i);
-            dataStream.writeDouble(data.get(i));
             extrema.consider(datum, sites[i], frame);
         }
     }
