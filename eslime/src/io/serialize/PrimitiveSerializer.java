@@ -114,7 +114,7 @@ public abstract class PrimitiveSerializer {
      * Convert a vector of coordinates to integers, and then append to a
      * data output stream.
      */
-    public static void writeCoercedCoordinateVecotr(DataOutputStream dataOutputStream,
+    public static void writeCoercedCoordinateVector(DataOutputStream dataOutputStream,
                                                     List<Coordinate> vector,
                                                     Geometry geometry) {
 

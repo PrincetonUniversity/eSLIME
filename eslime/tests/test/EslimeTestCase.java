@@ -44,8 +44,22 @@ public abstract class EslimeTestCase extends TestCase {
 
     protected final int RANDOM_SEED = 0;
 
+//    // Superceded by Comparable[] implementation
+//    protected void assertArraysEqual(Coordinate[] expected, Coordinate[] actual, boolean sort) {
+//        assertEquals(expected.length, actual.length);
+//
+//        if (sort) {
+//            Arrays.sort(actual);
+//            Arrays.sort(expected);
+//        }
+//
+//        for (int i = 0; i < expected.length; i++) {
+//            assertEquals(expected[i], actual[i]);
+//        }
+//    }
+
     // Superceded by Comparable[] implementation
-    protected void assertArraysEqual(Coordinate[] expected, Coordinate[] actual, boolean sort) {
+    protected void assertArraysEqual(int[] actual, int[] expected, boolean sort) {
         assertEquals(expected.length, actual.length);
 
         if (sort) {
@@ -58,14 +72,21 @@ public abstract class EslimeTestCase extends TestCase {
         }
     }
 
-    // Superceded by Comparable[] implementation
-    protected void assertArraysEqual(int[] actual, int[] expected, boolean sort) {
+    protected void assertArraysEqual(double[] actual, double[] expected, boolean sort) {
         assertEquals(expected.length, actual.length);
 
         if (sort) {
             Arrays.sort(actual);
             Arrays.sort(expected);
         }
+
+        for (int i = 0; i < expected.length; i++) {
+            assertEquals(expected[i], actual[i], epsilon);
+        }
+    }
+
+    protected void assertArraysEqual(boolean[] actual, boolean[] expected) {
+        assertEquals(expected.length, actual.length);
 
         for (int i = 0; i < expected.length; i++) {
             assertEquals(expected[i], actual[i]);
@@ -166,6 +187,16 @@ public abstract class EslimeTestCase extends TestCase {
     protected void assertBinaryFilesEqual(String filename) {
         String fixture = fixturePath + filename;
         String output = outputPath + filename;
+
+        File fixtureFile = new File(fixture);
+        File outputFile = new File(output);
+
+        FileAssert.assertBinaryEquals(fixtureFile, outputFile);
+    }
+
+    protected void assertBinaryFilesEqual(String fixtureName, String outputName) {
+        String fixture = fixturePath + fixtureName;
+        String output = outputPath + outputName;
 
         File fixtureFile = new File(fixture);
         File outputFile = new File(output);

@@ -43,6 +43,12 @@ public class CoordinateDeindexer {
     protected HashMap<Integer, Coordinate> indexToCoord;
     protected HashMap<Coordinate, Integer> coordToIndex;
 
+    /**
+     * Default constructor for testing only!
+     */
+    public CoordinateDeindexer() {
+    }
+
     public CoordinateDeindexer(String path) {
 
         this.path = path;
