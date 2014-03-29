@@ -21,12 +21,12 @@ package io.deserialize;
 
 
 import geometry.Geometry;
+import layers.LightweightSystemState;
 import no.uib.cipr.matrix.DenseVector;
 import no.uib.cipr.matrix.Vector;
-import structural.GeneralParameters;
-import structural.VectorViewer;
 import structural.identifiers.Coordinate;
 import structural.identifiers.Extrema;
+import structural.utilities.VectorViewer;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -34,11 +34,9 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.HashSet;
 
-// TODO This class desperately needs refactoring.
-public class CellStateReader {
+@Deprecated
+public class LegacyCellStateReader {
 
-    private GeneralParameters p;
-    private Geometry g;
 
     private static final String DATA_FILENAME = "data.txt";
     private static final String METADATA_FILENAME = "metadata.txt";
@@ -60,12 +58,21 @@ public class CellStateReader {
     // so we just pass in a path.
     private String path;
 
-    public CellStateReader(String path, GeneralParameters p, Geometry geom) {
-        this.g = geom;
-        this.p = p;
+    public LegacyCellStateReader(String path, Geometry geom) {
         this.path = path;
 
         deindexer = new CoordinateDeindexer(path);
+        initFile(path);
+    }
+
+    public LegacyCellStateReader(String path, CoordinateDeindexer deindexer) {
+        this.deindexer = deindexer;
+        this.path = path;
+
+        initFile(path);
+    }
+
+    private void initFile(String path) {
         File dataFile = new File(path + '/' + DATA_FILENAME);
 
         try {
@@ -108,7 +115,7 @@ public class CellStateReader {
         VectorViewer f = null;        // Fitness
 
         Extrema ef = getFitnessExtremes();
-        int[] states = new int[g.getCanonicalSites().length];
+        int[] states = new int[deindexer.getNumSites()];
         HashSet<Coordinate> highlights = new HashSet<Coordinate>();
         while (prevLine != null) {
             // We come into this loop with a header line in prevLine
@@ -169,7 +176,7 @@ public class CellStateReader {
 
 
     private VectorViewer readVector(Extrema ex) throws IOException {
-        Vector v = new DenseVector(g.getCanonicalSites().length);
+        Vector v = new DenseVector(deindexer.getNumSites());
         prevLine = br.readLine();
 
         // Line counter. Should reach p.H().
@@ -195,7 +202,7 @@ public class CellStateReader {
      * Skip ahead to the next field or end of file
      */
     private int[] readStates() throws IOException {
-        int[] states = new int[g.getCanonicalSites().length];
+        int[] states = new int[deindexer.getNumSites()];
 
         prevLine = br.readLine();
 
@@ -215,5 +222,11 @@ public class CellStateReader {
         }
 
         return states;
+    }
+
+    public void populate(LightweightSystemState state) {
+        ConditionViewer viewer = next();
+        state.setFitnessVector(viewer.getFitnessVector());
+        state.setStateVector(viewer.getStateVector());
     }
 }

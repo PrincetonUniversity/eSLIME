@@ -21,8 +21,8 @@ package geometry.lattice;
 
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 /**

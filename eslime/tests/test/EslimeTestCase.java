@@ -27,6 +27,7 @@ import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.dom4j.tree.BaseElement;
+import structural.MockGeneralParameters;
 import structural.identifiers.Coordinate;
 
 import java.io.File;
@@ -36,27 +37,16 @@ import java.util.Arrays;
 
 public abstract class EslimeTestCase extends TestCase {
 
-    protected double epsilon = calcEpsilon();
-
     protected final String eslimeRoot = "./eslime/";
     protected final String outputPath = eslimeRoot + "/output/";
     protected final String fixturePath = eslimeRoot + "/fixtures/";
-
     protected final int RANDOM_SEED = 0;
+    protected double epsilon = calcEpsilon();
 
-//    // Superceded by Comparable[] implementation
-//    protected void assertArraysEqual(Coordinate[] expected, Coordinate[] actual, boolean sort) {
-//        assertEquals(expected.length, actual.length);
-//
-//        if (sort) {
-//            Arrays.sort(actual);
-//            Arrays.sort(expected);
-//        }
-//
-//        for (int i = 0; i < expected.length; i++) {
-//            assertEquals(expected[i], actual[i]);
-//        }
-//    }
+    protected static void assertNotEquals(Object p, Object q) {
+        boolean equality = p.equals(q);
+        assertFalse(equality);
+    }
 
     // Superceded by Comparable[] implementation
     protected void assertArraysEqual(int[] actual, int[] expected, boolean sort) {
@@ -214,8 +204,11 @@ public abstract class EslimeTestCase extends TestCase {
         return root;
     }
 
-    protected static void assertNotEquals(Object p, Object q) {
-        boolean equality = p.equals(q);
-        assertFalse(equality);
+    protected MockGeneralParameters makeMockGeneralParameters() {
+        MockGeneralParameters ret = new MockGeneralParameters();
+        ret.setInstancePath(outputPath);
+        ret.setPath(outputPath);
+        ret.initializeRandom(RANDOM_SEED);
+        return ret;
     }
 }

@@ -25,8 +25,8 @@ import cells.SimpleCell;
 import geometry.MockGeometry;
 import layers.cell.CellLayerContent;
 import layers.cell.MockCellLayerIndices;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 public class CellLayerContentTest extends EslimeTestCase {

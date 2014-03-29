@@ -21,7 +21,7 @@ package continuum.solvers;
 
 import geometry.Geometry;
 import no.uib.cipr.matrix.Matrix;
-import structural.MatrixUtils;
+import structural.utilities.MatrixUtils;
 
 public abstract class Solver {
 

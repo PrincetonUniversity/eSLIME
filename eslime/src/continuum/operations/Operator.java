@@ -21,9 +21,9 @@ package continuum.operations;
 
 import geometry.Geometry;
 import no.uib.cipr.matrix.sparse.CompDiagMatrix;
-import structural.EpsilonUtil;
-import structural.MatrixUtils;
 import structural.identifiers.Coordinate;
+import structural.utilities.EpsilonUtil;
+import structural.utilities.MatrixUtils;
 
 public abstract class Operator extends CompDiagMatrix {
 

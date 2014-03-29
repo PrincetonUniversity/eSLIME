@@ -31,8 +31,8 @@ import geometry.shape.Shape;
 import junit.framework.TestCase;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 
 public class UniformBiomassGrowthTest extends TestCase {
 

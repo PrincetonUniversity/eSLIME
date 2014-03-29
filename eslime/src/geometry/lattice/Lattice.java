@@ -19,8 +19,8 @@
 
 package geometry.lattice;
 
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 
 public abstract class Lattice {
 

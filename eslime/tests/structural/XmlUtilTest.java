@@ -20,6 +20,7 @@
 package structural;
 
 import org.dom4j.Element;
+import structural.utilities.XmlUtil;
 import test.EslimeTestCase;
 
 /**

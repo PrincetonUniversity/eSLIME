@@ -20,6 +20,7 @@
 package io.deserialize;
 
 import structural.identifiers.Coordinate;
+import structural.utilities.FileConventions;
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
@@ -36,12 +37,10 @@ import java.util.regex.Pattern;
 public class CoordinateDeindexer {
 
     // This file specifies the relationship between vector index and coordinate.
-    private final String COORDMAP_FILENAME = "coordmap.txt";
-
-    private String path;
 
     protected HashMap<Integer, Coordinate> indexToCoord;
     protected HashMap<Coordinate, Integer> coordToIndex;
+    private String path;
 
     /**
      * Default constructor for testing only!
@@ -82,7 +81,7 @@ public class CoordinateDeindexer {
         indexToCoord = new HashMap<Integer, Coordinate>();
         coordToIndex = new HashMap<Coordinate, Integer>();
 
-        String fn = path + '/' + COORDMAP_FILENAME;
+        String fn = path + '/' + FileConventions.COORDINATE_FILENAME;
         FileReader mfr = new FileReader(fn);
         BufferedReader mbr = new BufferedReader(mfr);
         String next = mbr.readLine();
@@ -129,5 +128,9 @@ public class CoordinateDeindexer {
         }
 
         return c;
+    }
+
+    public int getNumSites() {
+        return indexToCoord.size();
     }
 }

@@ -19,8 +19,6 @@
 
 package structural.identifiers;
 
-import structural.Flags;
-
 
 public class Coordinate implements Comparable<Coordinate> {
     protected final int x, y, z;

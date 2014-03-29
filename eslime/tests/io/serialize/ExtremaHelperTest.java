@@ -19,6 +19,7 @@
 
 package io.serialize;
 
+import io.serialize.text.ExtremaHelper;
 import structural.identifiers.Coordinate;
 import structural.identifiers.Extrema;
 import test.EslimeTestCase;

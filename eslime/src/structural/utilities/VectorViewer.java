@@ -1,26 +1,29 @@
 /*
- * Copyright (c) 2014, David Bruce Borenstein and the Trustees of
- * Princeton University.
  *
- * Except where otherwise noted, this work is subject to a Creative Commons
- * Attribution (CC BY 4.0) license.
+ *  Copyright (c) 2014, David Bruce Borenstein and the Trustees of
+ *  Princeton University.
  *
- * Attribute (BY): You must attribute the work in the manner specified
- * by the author or licensor (but not in any way that suggests that they
- * endorse you or your use of the work).
+ *  Except where otherwise noted, this work is subject to a Creative Commons
+ *  Attribution (CC BY 4.0) license.
  *
- * The Licensor offers the Licensed Material as-is and as-available, and
- * makes no representations or warranties of any kind concerning the
- * Licensed Material, whether express, implied, statutory, or other.
+ *  Attribute (BY): You must attribute the work in the manner specified
+ *  by the author or licensor (but not in any way that suggests that they
+ *  endorse you or your use of the work).
  *
- * For the full license, please visit:
- * http://creativecommons.org/licenses/by/4.0/legalcode
+ *  The Licensor offers the Licensed Material as-is and as-available, and
+ *  makes no representations or warranties of any kind concerning the
+ *  Licensed Material, whether express, implied, statutory, or other.
+ *
+ *  For the full license, please visit:
+ *  http://creativecommons.org/licenses/by/4.0/legalcode
+ * /
  */
 
-package structural;
+package structural.utilities;
 
 import no.uib.cipr.matrix.Vector;
 
+@Deprecated
 public class VectorViewer {
 
     protected Vector v;
@@ -74,6 +77,15 @@ public class VectorViewer {
 
         double x = (v.get(i) - min) / range;
         return x;
+    }
+
+    public double[] getData() {
+        double[] data = new double[v.size()];
+        for (int i = 0; i < v.size(); i++) {
+            data[i] = v.get(i);
+        }
+
+        return data;
     }
 }
 

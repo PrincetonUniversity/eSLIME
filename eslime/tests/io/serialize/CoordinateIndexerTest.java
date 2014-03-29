@@ -20,14 +20,13 @@
 package io.serialize;
 
 import geometry.MockGeometry;
-import junitx.framework.FileAssert;
+import io.serialize.text.CoordinateIndexer;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import structural.MockGeneralParameters;
 import structural.identifiers.Coordinate;
+import structural.utilities.FileConventions;
 import test.EslimeTestCase;
-
-import java.io.File;
 
 /**
  * Created by dbborens on 12/10/13.
@@ -64,16 +63,10 @@ public class CoordinateIndexerTest extends EslimeTestCase {
         indexer.dispatchHalt(null);
 
         // Compare output to fixture
-        String fixture = fixturePath + "coordmap.txt";
-        String output = outputPath + "coordmap.txt";
+        String fixture = fixturePath + FileConventions.COORDINATE_FILENAME;
+        String output = outputPath + FileConventions.COORDINATE_FILENAME;
 
-        File fixtureFile = new File(fixture);
-        File outputFile = new File(output);
-
-        FileAssert.assertEquals(fixtureFile, outputFile);
-
-        // Clean up
-        outputFile.delete();
+        assertFilesEqual(FileConventions.COORDINATE_FILENAME);
     }
 
 }

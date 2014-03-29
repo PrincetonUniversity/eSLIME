@@ -19,8 +19,8 @@
 
 package io.deserialize;
 
+import layers.ContinuumState;
 import no.uib.cipr.matrix.DenseVector;
-import structural.ContinuumState;
 
 import java.io.*;
 import java.util.Iterator;

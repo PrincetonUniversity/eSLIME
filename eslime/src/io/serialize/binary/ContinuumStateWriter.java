@@ -17,8 +17,9 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package io.serialize;
+package io.serialize.binary;
 
+import io.serialize.Serializer;
 import layers.LayerManager;
 import layers.solute.SoluteLayer;
 import no.uib.cipr.matrix.DenseVector;
@@ -26,6 +27,8 @@ import structural.GeneralParameters;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
 import structural.identifiers.Extrema;
+import structural.utilities.FileConventions;
+import structural.utilities.PrimitiveSerializer;
 
 import java.io.*;
 
@@ -40,9 +43,6 @@ public class ContinuumStateWriter extends Serializer {
     private SoluteLayer layer;
     private Extrema extrema;
 
-    private static String prefix = "solute";
-    private static String stateSuffix = ".state.bin";
-    private static String mdSuffix = ".metadata.txt";
 
     private DataOutputStream dataStream;
 
@@ -74,7 +74,7 @@ public class ContinuumStateWriter extends Serializer {
     }
 
     private void initFiles() {
-        String filename = makeFileName();
+        String filename = FileConventions.makeContinuumStateFilename(layer.getId());
         String filepath = p.getInstancePath() + '/' + filename;
 
         try {
@@ -89,13 +89,6 @@ public class ContinuumStateWriter extends Serializer {
         }
     }
 
-    private String makeFileName() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(prefix);
-        sb.append(layer.getId());
-        sb.append(stateSuffix);
-        return sb.toString();
-    }
 
     public void initStructures() {
         sites = layer.getGeometry().getCanonicalSites();
@@ -183,7 +176,8 @@ public class ContinuumStateWriter extends Serializer {
     private void writeMetadata() {
         // Write the extrema file.
         try {
-            File metadata = new File(getMetadataFilename());
+            String filename = FileConventions.makeContinuumMetadataFilename(layer.getId());
+            File metadata = new File(filename);
             String filepath = p.getInstancePath() + '/' + metadata;
             FileWriter mfw = new FileWriter(filepath);
             BufferedWriter mbw = new BufferedWriter(mfw);
@@ -199,13 +193,6 @@ public class ContinuumStateWriter extends Serializer {
         }
     }
 
-    private String getMetadataFilename() {
-        StringBuilder sb = new StringBuilder();
-        sb.append(prefix);
-        sb.append(layer.getId());
-        sb.append(mdSuffix);
-        return sb.toString();
-    }
 
     @Override
     public void close() {

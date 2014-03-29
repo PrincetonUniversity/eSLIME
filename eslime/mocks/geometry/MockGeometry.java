@@ -19,8 +19,8 @@
 
 package geometry;
 
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,14 +29,19 @@ public class MockGeometry extends Geometry {
 
 	/* infinite */
 
+    protected Coordinate[] canonicalSites;
+    private boolean infinite;
+    private HashMap<Coordinate, Coordinate[]> cellNeighbors = new HashMap<Coordinate, Coordinate[]>();
+    private int connectivity;
+
+    /* canonicalSites */
+    private int dimensionality;
+    private Coordinate center;
+    private boolean reportEquals;
+    private double lastRequestedScale = 0;
+
     public MockGeometry() {
         super(null, null, null);
-    }
-
-    private boolean infinite;
-
-    public void setInfinite(boolean infinite) {
-        this.infinite = infinite;
     }
 
     @Override
@@ -44,9 +49,14 @@ public class MockGeometry extends Geometry {
         return infinite;
     }
 
-	/* canonicalSites */
+    public void setInfinite(boolean infinite) {
+        this.infinite = infinite;
+    }
 
-    protected Coordinate[] canonicalSites;
+    @Override
+    public Coordinate[] getCanonicalSites() {
+        return canonicalSites;
+    }
 
     public void setCanonicalSites(Coordinate[] canonicalSites) {
         // Note that the MockGeometry override of setCanonicalSites
@@ -55,13 +65,6 @@ public class MockGeometry extends Geometry {
         this.canonicalSites = canonicalSites;
         rebuildIndex();
     }
-
-    @Override
-    public Coordinate[] getCanonicalSites() {
-        return canonicalSites;
-    }
-
-    private HashMap<Coordinate, Coordinate[]> cellNeighbors = new HashMap<Coordinate, Coordinate[]>();
 
     public void setCellNeighbors(Coordinate coord, Coordinate[] neighbors) {
         cellNeighbors.put(coord, neighbors);
@@ -95,8 +98,6 @@ public class MockGeometry extends Geometry {
         }
     }
 
-    private int connectivity;
-
     public int getConnectivity() {
         return connectivity;
     }
@@ -104,8 +105,6 @@ public class MockGeometry extends Geometry {
     public void setConnectivity(int connectivity) {
         this.connectivity = connectivity;
     }
-
-    private int dimensionality;
 
     public int getDimensionality() {
         return dimensionality;
@@ -120,17 +119,13 @@ public class MockGeometry extends Geometry {
         return origin.addFlags(Flags.UNDEFINED);
     }
 
-    private Coordinate center;
-
-    public void setCenter(Coordinate center) {
-        this.center = center;
-    }
-
     public Coordinate getCenter() {
         return center;
     }
 
-    private boolean reportEquals;
+    public void setCenter(Coordinate center) {
+        this.center = center;
+    }
 
     /**
      * Causes the equality operator of this mock object to return
@@ -148,8 +143,6 @@ public class MockGeometry extends Geometry {
     public double getLastRequestedScale() {
         return lastRequestedScale;
     }
-
-    private double lastRequestedScale = 0;
 
     @Override
     public Geometry cloneAtScale(double rangeScale) {

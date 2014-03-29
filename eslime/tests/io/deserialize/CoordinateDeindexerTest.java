@@ -30,30 +30,34 @@ import java.util.HashMap;
  */
 public class CoordinateDeindexerTest extends EslimeTestCase {
 
-    private ExposedDeindexer deindexer;
+    private ExposedDeindexer query;
 
     @Override
     public void setUp() {
-        deindexer = new ExposedDeindexer(fixturePath);
+        query = new ExposedDeindexer(fixturePath);
     }
 
     public void testIndex() {
         // This coordinate has index 1 -- see test fixture
         Coordinate input = new Coordinate(0, 1, 1);
-        assertEquals(1, (int) deindexer.getIndex(input));
+        assertEquals(1, (int) query.getIndex(input));
     }
 
     public void testDeindex() {
         Coordinate expected = new Coordinate(0, 1, 1);
-        Coordinate actual = deindexer.getCoordinate(1);
+        Coordinate actual = query.getCoordinate(1);
         assertEquals(expected, actual);
     }
 
     public void testParseCoordinate() {
         String input = "(3, 5, 9 | 0)";
         Coordinate expected = new Coordinate(3, 5, 9, 0);
-        Coordinate actual = deindexer.parseCoordinate(input);
+        Coordinate actual = query.parseCoordinate(input);
         assertEquals(expected, actual);
+    }
+
+    public void testGetNumSites() {
+        assertEquals(4, query.getNumSites());
     }
 
     private class ExposedDeindexer extends CoordinateDeindexer {

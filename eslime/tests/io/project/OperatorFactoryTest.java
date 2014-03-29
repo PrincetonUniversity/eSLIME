@@ -22,12 +22,12 @@ package io.project;
 import continuum.operations.*;
 import geometry.CubicMockGeometry;
 import geometry.LinearMockGeometry;
-import io.serialize.CoordinateSerializer;
 import no.uib.cipr.matrix.Matrix;
 import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
+import structural.utilities.CoordinateSerializer;
 import test.EslimeTestCase;
 
 public class OperatorFactoryTest extends EslimeTestCase {

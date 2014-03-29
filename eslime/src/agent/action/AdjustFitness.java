@@ -21,8 +21,8 @@ package agent.action;
 
 import cells.BehaviorCell;
 import layers.LayerManager;
-import structural.EpsilonUtil;
 import structural.identifiers.Coordinate;
+import structural.utilities.EpsilonUtil;
 
 /**
  * Adjusts the agent's fitness by a predefined delta.

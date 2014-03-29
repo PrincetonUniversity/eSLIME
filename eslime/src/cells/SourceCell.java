@@ -19,8 +19,8 @@
 
 package cells;
 
-import structural.EpsilonUtil;
 import structural.identifiers.Coordinate;
+import structural.utilities.EpsilonUtil;
 
 import java.util.HashMap;
 

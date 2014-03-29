@@ -21,8 +21,8 @@ package geometry.shape;
 
 import geometry.lattice.Lattice;
 import geometry.lattice.RectangularLattice;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 public class RectangleTest extends EslimeTestCase {

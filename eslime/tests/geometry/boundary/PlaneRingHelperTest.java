@@ -22,8 +22,8 @@ package geometry.boundary;
 import geometry.boundaries.PlaneRingHelper;
 import geometry.lattice.Lattice;
 import geometry.lattice.RectangularLattice;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 public class PlaneRingHelperTest extends EslimeTestCase {

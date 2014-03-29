@@ -20,8 +20,8 @@
 package layers;
 
 import layers.cell.CellIndex;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 public class CellIndexTest extends EslimeTestCase {

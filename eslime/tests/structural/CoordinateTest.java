@@ -21,6 +21,7 @@ package structural;
 
 import junit.framework.TestCase;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 
 import java.util.HashSet;
 

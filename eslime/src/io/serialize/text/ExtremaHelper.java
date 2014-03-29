@@ -17,7 +17,7 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package io.serialize;
+package io.serialize.text;
 
 import structural.identifiers.Extrema;
 

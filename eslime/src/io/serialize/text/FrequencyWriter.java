@@ -17,8 +17,9 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package io.serialize;
+package io.serialize.text;
 
+import io.serialize.Serializer;
 import layers.LayerManager;
 import layers.cell.CellLayer;
 import layers.cell.StateMapViewer;
@@ -41,19 +42,15 @@ import java.util.TreeSet;
  */
 public class FrequencyWriter extends Serializer {
 
-    private boolean closed = true;
-
     private static final String FILENAME = "histo.txt";
-    private BufferedWriter bw;
-
     ArrayList<Integer> frames = new ArrayList<Integer>();
-
     // The keys to this map are FRAMES. The values are a mapping from STATE
     // number to count. If a state number does not appear, that means the
     // count was zero at that time.
     HashMap<Integer, HashMap<Integer, Integer>> histo;
-
     HashSet<Integer> observedStates = new HashSet<Integer>();
+    private boolean closed = true;
+    private BufferedWriter bw;
 
     public FrequencyWriter(GeneralParameters p) {
         super(p);

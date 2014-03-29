@@ -17,8 +17,9 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package io.serialize;
+package io.serialize.text;
 
+import io.serialize.Serializer;
 import structural.GeneralParameters;
 import structural.halt.FixationEvent;
 import structural.halt.HaltCondition;
@@ -29,8 +30,8 @@ import java.io.BufferedWriter;
 
 public class FixationTimeWriter extends Serializer {
 
-    private boolean closed = true;
     private static final String FILENAME = "ttf.txt";
+    private boolean closed = true;
     private BufferedWriter bw;
 
     public FixationTimeWriter(GeneralParameters p) {

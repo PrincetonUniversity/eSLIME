@@ -17,8 +17,9 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package io.serialize;
+package io.serialize.text;
 
+import io.serialize.Serializer;
 import layers.LayerManager;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;

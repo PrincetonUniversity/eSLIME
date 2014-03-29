@@ -27,9 +27,9 @@ import processes.MaxTargetHelper;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 import structural.GeneralParameters;
-import structural.XmlUtil;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
+import structural.utilities.XmlUtil;
 
 import java.util.ArrayList;
 

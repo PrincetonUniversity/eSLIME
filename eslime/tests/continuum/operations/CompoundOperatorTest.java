@@ -22,8 +22,8 @@ package continuum.operations;
 import geometry.*;
 import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;
-import structural.EpsilonUtil;
 import structural.identifiers.Coordinate;
+import structural.utilities.EpsilonUtil;
 import test.EslimeTestCase;
 
 /**

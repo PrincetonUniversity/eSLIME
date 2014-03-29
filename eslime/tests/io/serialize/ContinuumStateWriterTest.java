@@ -20,6 +20,7 @@
 package io.serialize;
 
 import geometry.MockGeometry;
+import io.serialize.binary.ContinuumStateWriter;
 import layers.MockLayerManager;
 import layers.MockSoluteLayer;
 import no.uib.cipr.matrix.DenseVector;

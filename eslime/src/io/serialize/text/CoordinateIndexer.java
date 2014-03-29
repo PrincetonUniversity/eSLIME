@@ -17,14 +17,16 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package io.serialize;
+package io.serialize.text;
 
 import geometry.Geometry;
+import io.serialize.Serializer;
 import layers.LayerManager;
 import layers.cell.CellLayer;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
+import structural.utilities.FileConventions;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -34,7 +36,6 @@ import java.io.IOException;
 public class CoordinateIndexer extends Serializer {
 
     // This file specifies the relationship between vector index and coordinate.
-    private final String COORDMAP_FILENAME = "coordmap.txt";
 
     public CoordinateIndexer(GeneralParameters p) {
         super(p);
@@ -44,7 +45,7 @@ public class CoordinateIndexer extends Serializer {
         CellLayer layer = layerManager.getCellLayer();
         try {
 
-            String coordMapFileStr = p.getInstancePath() + '/' + COORDMAP_FILENAME;
+            String coordMapFileStr = p.getInstancePath() + '/' + FileConventions.COORDINATE_FILENAME;
             File coordMapFile = new File(coordMapFileStr);
             FileWriter fw = new FileWriter(coordMapFile);
             BufferedWriter bwp = new BufferedWriter(fw);

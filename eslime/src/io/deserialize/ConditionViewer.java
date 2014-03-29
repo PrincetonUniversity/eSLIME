@@ -19,11 +19,12 @@
 
 package io.deserialize;
 
-import structural.VectorViewer;
 import structural.identifiers.Coordinate;
+import structural.utilities.VectorViewer;
 
 import java.util.HashSet;
 
+@Deprecated
 public class ConditionViewer {
 
     private VectorViewer f;
@@ -74,4 +75,11 @@ public class ConditionViewer {
         return frame;
     }
 
+    public int[] getStateVector() {
+        return states;
+    }
+
+    public double[] getFitnessVector() {
+        return f.getData();
+    }
 }

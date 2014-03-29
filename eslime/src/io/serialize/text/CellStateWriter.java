@@ -17,9 +17,10 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package io.serialize;
+package io.serialize.text;
 
 import geometry.Geometry;
+import io.serialize.Serializer;
 import layers.LayerManager;
 import layers.cell.CellLayer;
 import structural.GeneralParameters;
@@ -48,13 +49,14 @@ import java.util.Date;
  *
  * @author dbborens@princeton.edu
  */
+@Deprecated
 public class CellStateWriter extends Serializer {
 
     private static final double log10 = Math.log(10D);
 
     // This file contains state vectors, with vector indices corresponding
     // to coordinates. The mapping between index value and coordinate is
-    // specified in coordmap.txt.
+    // specified in coordinate.txt.
     private final String STATE_FILENAME = "data.txt";
 
     private final String METADATA_FILENAME = "metadata.txt";

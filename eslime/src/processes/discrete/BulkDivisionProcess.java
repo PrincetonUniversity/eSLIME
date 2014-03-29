@@ -25,11 +25,11 @@ import io.project.ProcessLoader;
 import layers.LayerManager;
 import processes.MaxTargetHelper;
 import processes.StepState;
-import structural.Flags;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;
 import structural.halt.LatticeFullEvent;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 
 import java.util.HashSet;
 import java.util.Random;

@@ -22,9 +22,9 @@ package structural.postprocess;
 import geometry.MockGeometry;
 import junit.framework.TestCase;
 import no.uib.cipr.matrix.DenseVector;
-import structural.EpsilonUtil;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
+import structural.utilities.EpsilonUtil;
 
 /**
  * Created by dbborens on 12/16/13.

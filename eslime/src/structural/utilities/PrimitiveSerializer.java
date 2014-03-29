@@ -19,7 +19,7 @@
  * /
  */
 
-package io.serialize;
+package structural.utilities;
 
 import geometry.Geometry;
 import structural.identifiers.Coordinate;

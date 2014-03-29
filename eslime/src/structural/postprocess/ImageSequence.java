@@ -20,8 +20,8 @@
 package structural.postprocess;
 
 import geometry.Geometry;
-import io.deserialize.CellStateReader;
 import io.deserialize.ConditionViewer;
+import io.deserialize.LegacyCellStateReader;
 import io.visual.legacy.HexMapWriter;
 import structural.GeneralParameters;
 
@@ -51,7 +51,7 @@ public class ImageSequence {
 
     public void generate() {
         System.out.println("Generating image sequence.");
-        CellStateReader reader = new CellStateReader(path, p, geom);
+        LegacyCellStateReader reader = new LegacyCellStateReader(path, geom);
 
         ConditionViewer condition = reader.next();
 

@@ -26,8 +26,8 @@ import geometry.lattice.Lattice;
 import geometry.lattice.RectangularLattice;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 public class AdvectionTest extends EslimeTestCase {

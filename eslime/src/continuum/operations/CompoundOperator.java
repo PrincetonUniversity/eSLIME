@@ -22,7 +22,7 @@ package continuum.operations;
 import geometry.Geometry;
 import io.project.OperatorLoader;
 import org.dom4j.Element;
-import structural.EpsilonUtil;
+import structural.utilities.EpsilonUtil;
 
 public class CompoundOperator extends Operator {
 

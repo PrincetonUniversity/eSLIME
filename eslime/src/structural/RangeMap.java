@@ -19,6 +19,8 @@
 
 package structural;
 
+import structural.utilities.EpsilonUtil;
+
 import java.util.ArrayList;
 
 /**

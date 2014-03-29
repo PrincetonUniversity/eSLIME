@@ -24,7 +24,12 @@ package io.deserialize;
 
 import structural.identifiers.Coordinate;
 
+import java.util.HashMap;
+
 /**
+ * This isn't really a mock coordinate de-indexer, so much as an in-memory
+ * one. Eventually, it may get a promotion.
+ * <p/>
  * Created by David B Borenstein on 3/25/14.
  */
 public class MockCoordinateDeindexer extends CoordinateDeindexer {
@@ -36,10 +41,21 @@ public class MockCoordinateDeindexer extends CoordinateDeindexer {
 
     public void setUnderlying(Coordinate[] underlying) {
         this.underlying = underlying;
+        deindex();
     }
 
+
     @Override
-    public Coordinate getCoordinate(Integer index) {
-        return underlying[index];
+    protected void deindex() {
+        indexToCoord = new HashMap<>();
+        coordToIndex = new HashMap<>();
+
+
+        for (Integer i = 0; i < underlying.length; i++) {
+            Coordinate c = underlying[i];
+            indexToCoord.put(i, c);
+            coordToIndex.put(c, i);
+        }
+
     }
 }

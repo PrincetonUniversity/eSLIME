@@ -20,8 +20,8 @@
 package layers.cell;
 
 import cells.Cell;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 
 /**
  * @author David Bruce Borenstein

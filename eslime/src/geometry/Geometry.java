@@ -22,8 +22,8 @@ package geometry;
 import geometry.boundaries.Boundary;
 import geometry.lattice.Lattice;
 import geometry.shape.Shape;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 
 import java.util.ArrayList;
 import java.util.HashMap;

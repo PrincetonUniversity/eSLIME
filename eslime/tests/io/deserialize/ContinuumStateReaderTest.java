@@ -19,7 +19,7 @@
 
 package io.deserialize;
 
-import structural.ContinuumState;
+import layers.ContinuumState;
 import test.EslimeTestCase;
 
 import java.io.File;

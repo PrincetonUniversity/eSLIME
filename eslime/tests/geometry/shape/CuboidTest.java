@@ -21,15 +21,14 @@ package geometry.shape;
 
 import geometry.lattice.CubicLattice;
 import geometry.lattice.Lattice;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 public class CuboidTest extends EslimeTestCase {
+    Lattice evenLattice;
     private Shape odd;
     private Shape even;
-
-    Lattice evenLattice;
 
     @Override
     public void setUp() {

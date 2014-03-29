@@ -24,8 +24,8 @@ import geometry.boundaries.Arena;
 import geometry.boundaries.Boundary;
 import geometry.lattice.Lattice;
 import geometry.lattice.TriangularLattice;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 public class HexagonTest extends EslimeTestCase {

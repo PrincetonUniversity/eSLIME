@@ -21,6 +21,7 @@ package structural;
 
 import io.project.ProjectLoader;
 import org.dom4j.*;
+import structural.utilities.XmlUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -36,25 +37,21 @@ import java.util.Set;
 public class GeneralParameters {
 
 
+    protected Random random;            // Random number generator
     // Dimensions
     private int maxStep;
     private int instances;
-
     // Path variables
     private String basePath;        // Path as specified
     private String path;            // May contain a time stamp
-    private String instancePath;    // Includes instance number�(if applies)
 
     // Output flags
-
+    private String instancePath;    // Includes instance number�(if applies)
     private boolean stateMap;                // Visualize lineages as they grow
     // Output frames (blank means all)
     private Set<Integer> frames;
-
     // Instantiated members
     private double epsilon;            // Minimum measurable FP delta
-
-    protected Random random;            // Random number generator
     private long randomSeed;
     // State members
     private int instance;
@@ -301,7 +298,7 @@ public class GeneralParameters {
      * name has been shortened.
      * @return
      */
-	/*public int H() {
+    /*public int H() {
 		return height;
 	}*/
 

@@ -17,12 +17,12 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package io.serialize;
+package structural.utilities;
 
 import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 
 /**
  * @author dbborens

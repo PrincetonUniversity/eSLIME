@@ -19,8 +19,6 @@
 
 package structural.identifiers;
 
-import structural.Flags;
-
 public class TemporalCoordinate extends Coordinate {
 
     private double t;

@@ -21,8 +21,8 @@ package layers.cell;
 
 import cells.Cell;
 import geometry.Geometry;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 
 import java.util.HashMap;
 

@@ -20,8 +20,9 @@
 package io.serialize;
 
 import org.dom4j.Element;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
+import structural.utilities.CoordinateSerializer;
 import test.EslimeTestCase;
 
 public class CoordinateSerializerTest extends EslimeTestCase {

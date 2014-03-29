@@ -26,25 +26,22 @@ import io.project.ProcessLoader;
 import layers.LayerManager;
 import org.dom4j.Element;
 import processes.gillespie.GillespieState;
-import structural.Flags;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 
 import java.util.ArrayList;
 
 public abstract class Process {
 
+    // XML element associated with this process
+    protected Element e;
+    protected LayerManager layerManager;
+    protected GeneralParameters p;
     private int id;
     private int period;
     private int start;
-
-    // XML element associated with this process
-    protected Element e;
-
-    protected LayerManager layerManager;
-
-    protected GeneralParameters p;
 
 	/* Constructors */
 

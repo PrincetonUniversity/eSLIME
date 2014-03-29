@@ -21,8 +21,8 @@ package geometry.boundaries;
 
 import geometry.lattice.Lattice;
 import geometry.shape.Shape;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 
 /**
  * All boundaries are treated as infinite. However, going beyond

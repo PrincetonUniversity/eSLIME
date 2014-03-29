@@ -17,29 +17,34 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package structural;
+package layers;
 
-public abstract class EpsilonUtil {
+import no.uib.cipr.matrix.DenseVector;
 
-    private final static double epsilon = calcEpsilon();
+/**
+ * Created by dbborens on 12/11/13.
+ */
+public class ContinuumState {
 
-    private static double calcEpsilon() {
-        double eps = 1.0D;
+    private final int frame;
+    private DenseVector data;
+    private double gillespie;
 
-        while ((1.0 + (eps / 2.0)) != 1.0) {
-            eps /= 2.0;
-        }
-
-        return eps;
+    public ContinuumState(DenseVector data, double gillespie, int frame) {
+        this.data = data;
+        this.gillespie = gillespie;
+        this.frame = frame;
     }
 
-    public static double epsilon() {
-        return epsilon;
+    public int getFrame() {
+        return frame;
     }
 
-    public static boolean epsilonEquals(double p, double q) {
-        double delta = p - q;
-        double magnitude = Math.abs(delta);
-        return (magnitude < epsilon());
+    public double getGillespie() {
+        return gillespie;
+    }
+
+    public DenseVector getData() {
+        return data;
     }
 }

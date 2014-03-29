@@ -29,7 +29,7 @@ import processes.gillespie.GillespieProcess;
 import processes.temporal.ExponentialInverse;
 import processes.temporal.Tick;
 import structural.GeneralParameters;
-import structural.XmlUtil;
+import structural.utilities.XmlUtil;
 
 /**
  * @author dbborens

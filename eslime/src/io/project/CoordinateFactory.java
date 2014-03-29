@@ -21,8 +21,8 @@ package io.project;
 
 import geometry.Geometry;
 import org.dom4j.Element;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 
 /**
  * @author dbborens

@@ -21,8 +21,8 @@ package cells;
 
 import agent.control.BehaviorDispatcher;
 import layers.LayerManager;
-import structural.EpsilonUtil;
 import structural.identifiers.Coordinate;
+import structural.utilities.EpsilonUtil;
 
 /**
  * Flexible cell class capable of performing arbitrary

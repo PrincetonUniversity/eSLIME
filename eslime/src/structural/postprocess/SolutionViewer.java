@@ -21,8 +21,8 @@ package structural.postprocess;
 
 import geometry.Geometry;
 import no.uib.cipr.matrix.DenseVector;
-import structural.Flags;
 import structural.identifiers.Coordinate;
+import structural.identifiers.Flags;
 
 /**
  * Read-only wrapper for solutions to continuum processes.

@@ -19,6 +19,9 @@
 
 package io.serialize;
 
+import io.serialize.binary.ContinuumStateWriter;
+import io.serialize.interactive.ProgressReporter;
+import io.serialize.text.*;
 import org.dom4j.Element;
 import structural.GeneralParameters;
 

@@ -17,8 +17,9 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package io.serialize;
+package io.serialize.text;
 
+import io.serialize.Serializer;
 import layers.LayerManager;
 import structural.GeneralParameters;
 import structural.halt.HaltCondition;
@@ -31,10 +32,9 @@ import java.io.IOException;
 
 public class IntervalWriter extends Serializer {
 
+    private final String INTERVAL_FILENAME = "interval.txt";
     // I/O handle for the interval file (What changed at each time step, and how long it took)
     private BufferedWriter intervalWriter;
-    private final String INTERVAL_FILENAME = "interval.txt";
-
     private long prevTime;
 
     public IntervalWriter(GeneralParameters p) {
