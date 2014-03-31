@@ -58,6 +58,10 @@ public class ContinuumStateWriter extends Serializer {
     public void init(LayerManager layerManager) {
         super.init(layerManager);
 
+        if (layerManager.getSoluteLayers().length == 0) {
+            throw new IllegalArgumentException("Attempted to build a continuum state writer for a model that contains no continuum components.");
+        }
+
         if (layerManager.getSoluteLayers().length != 1) {
             throw new UnsupportedOperationException("Support not yet implemented for multiple solute layer serialization. To do this, all you need to do is turn all of the state variables into maps of ID --> whatever.");
         }

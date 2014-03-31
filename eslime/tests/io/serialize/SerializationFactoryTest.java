@@ -49,7 +49,7 @@ public class SerializationFactoryTest extends EslimeTestCase {
     }
 
     public void testCellStateWriter() {
-        doTest("cell-state-writer", CellStateWriter.class);
+        doTest("cell-state-writer", LegacyCellStateWriter.class);
     }
 
     public void testFixationTimeWriter() {

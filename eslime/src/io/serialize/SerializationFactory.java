@@ -35,7 +35,7 @@ public abstract class SerializationFactory {
 
         // Cell writers
         if (writerClass.equalsIgnoreCase("cell-state-writer")) {
-            CellStateWriter bsw = new CellStateWriter(p);
+            LegacyCellStateWriter bsw = new LegacyCellStateWriter(p);
             return bsw;
         } else if (writerClass.equalsIgnoreCase("fixation-time")) {
             FixationTimeWriter ftw = new FixationTimeWriter(p);

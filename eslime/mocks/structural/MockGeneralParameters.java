@@ -26,13 +26,18 @@ import java.util.Random;
  */
 public class MockGeneralParameters extends GeneralParameters {
 
+    private boolean isFrameValue;
+    private String instancePath;
+
+    /* Instance path */
+    private String path;
+    private int T;
+
     public MockGeneralParameters() {
         super();
     }
 
-    /* Instance path */
-
-    private String instancePath;
+    /* Path */
 
     public String getInstancePath() {
         return instancePath;
@@ -42,16 +47,12 @@ public class MockGeneralParameters extends GeneralParameters {
         this.instancePath = instancePath;
     }
 
-    /* Path */
-
-    private String path;
+    public String getPath() {
+        return path;
+    }
 
     public void setPath(String path) {
         this.path = path;
-    }
-
-    public String getPath() {
-        return path;
     }
 
     @Override
@@ -63,8 +64,6 @@ public class MockGeneralParameters extends GeneralParameters {
         T = t;
     }
 
-    private int T;
-
     @Override
     public String getProjectXML() {
         return "";
@@ -72,5 +71,18 @@ public class MockGeneralParameters extends GeneralParameters {
 
     public void initializeRandom(long randomSeed) {
         random = new Random(randomSeed);
+    }
+
+    public void setIsFrameValue(boolean isFrameValue) {
+        this.isFrameValue = isFrameValue;
+    }
+
+    @Override
+    public boolean isFrame(Integer frame) {
+        return isFrameValue;
+    }
+
+    public void setFrameValue(boolean isFrameValue) {
+        this.isFrameValue = isFrameValue;
     }
 }

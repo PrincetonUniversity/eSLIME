@@ -84,7 +84,6 @@ public class SystemStateReader implements Iterator<SystemState> {
     }
 
     public LightweightSystemState next() {
-        cursor++;
 
         // Construct display object
         LightweightSystemState state = new LightweightSystemState(deindexer);
@@ -100,6 +99,9 @@ public class SystemStateReader implements Iterator<SystemState> {
 
         // Populate cell change highlights
         highlightReader.populate(state);
+
+        // Advance the cursor
+        cursor++;
 
         // Return display object
         return state;

@@ -50,7 +50,7 @@ import java.util.Date;
  * @author dbborens@princeton.edu
  */
 @Deprecated
-public class CellStateWriter extends Serializer {
+public class LegacyCellStateWriter extends Serializer {
 
     private static final double log10 = Math.log(10D);
 
@@ -77,7 +77,7 @@ public class CellStateWriter extends Serializer {
 
     //public CellStateWriter(String stateDir, Parameters p, int n) {
 
-    public CellStateWriter(GeneralParameters p) {
+    public LegacyCellStateWriter(GeneralParameters p) {
         super(p);
     }
 

@@ -21,7 +21,19 @@
 
 package io.deserialize;
 
+import cells.MockCell;
+import io.serialize.Serializer;
+import io.serialize.binary.ContinuumStateWriter;
+import io.serialize.binary.HighlightWriter;
+import io.serialize.binary.TimeWriter;
+import io.serialize.text.CoordinateIndexer;
+import io.serialize.text.LegacyCellStateWriter;
 import layers.LightweightSystemState;
+import layers.MockSoluteLayer;
+import no.uib.cipr.matrix.DenseVector;
+import structural.MockGeneralParameters;
+import structural.identifiers.Coordinate;
+import structural.postprocess.SolutionViewer;
 import test.EslimeLatticeTestCase;
 
 /**
@@ -41,36 +53,127 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
 
     @Override
     protected void setUp() throws Exception {
-        soluteIds = new String[]{"42", "43"};
+        super.setUp();
+        String path = fixturePath + "SystemStateReader/";
+
+        soluteIds = new String[]{"0"};
         channelIds = new int[]{0};
 
-        query = new SystemStateReader(soluteIds, channelIds, fixturePath);
+        query = new SystemStateReader(soluteIds, channelIds, path);
     }
 
+    /**
+     * The hasNext() function determines its value from the time file. If
+     * the the other files disagree with this file, an error will occur.
+     *
+     * @throws Exception
+     */
     public void testHasNext() throws Exception {
         // There are two frames specified in the time fixture, so we expect
-        // that hasNext() will return true.
+        // that hasNext() will return true twice, and then return false the
+        // third time.
         assertTrue(query.hasNext());
 
         query.next();
         assertTrue(query.hasNext());
 
-        // Ideally, we'd like to run next() one more time and see that it
-        // returns false. However, not all of the fixtures have a second frame,
-        // and it didn't seem like a subtle enough problem to warrant a whole
-        // set of fixtures just for perfect coverage.
+        query.next();
+        assertFalse(query.hasNext());
     }
 
     public void testNext() throws Exception {
         LightweightSystemState state = query.next();
 
-        fail("Not yet implemented");
+        // Check solute state
+        assertEquals(1.0, state.getValue("0", origin), epsilon);
+
+        // Check cell state
+        assertEquals(5, state.getState(x));
+        assertEquals(2.0, state.getFitness(x), epsilon);
+
+        // Empty cells should be 0 and 0.0
+        assertEquals(0, state.getState(origin));
+        assertEquals(0.0, state.getFitness(origin), epsilon);
+
+        // Check time and frame
+        assertEquals(2, state.getFrame());
+        assertEquals(1.7, state.getTime(), epsilon);
+
+        // Check highlighting
+        assertTrue(state.isHighlighted(0, x));
+        assertFalse(state.isHighlighted(0, y));
     }
 
     /**
-     * For solutes, we can use solute42 and solute43, which are predefined
-     * fixtures. For everything else, it pays to generate new stubs.
+     * Create the fixture files used in this test.
      */
-    private void generateExpected() {
+    @SuppressWarnings("unused")
+    private void generateFixtures() {
+
+        Serializer[] serializers = makeSerializerArray();
+
+        /* Populate the system */
+        MockSoluteLayer layer0 = initializeSoluteLayer("0");
+        layerManager.addSoluteLayer("0", layer0);
+
+        pushState(layer0, new double[]{1.0, 2.0, 3.0, 4.0, 5.0});
+
+        placeCell(x, 2.0, 5);
+        placeCell(y, 1.0, 3);
+
+        Coordinate[] highlights = new Coordinate[]{x};
+
+        /* Initialize output and push first state */
+        for (Serializer serializer : serializers) {
+            serializer.init(layerManager);
+            serializer.step(highlights, 1.7, 2);
+        }
+
+        /* Set up second state */
+        layer.getUpdateManager().banish(x);
+        highlights = new Coordinate[]{y};
+        pushState(layer0, new double[]{0.1, 0.2, 0.3, 0.4, 0.5});
+
+        /* Push second state and close fixture */
+        for (Serializer serializer : serializers) {
+            serializer.step(highlights, 4.8, 6);
+            serializer.dispatchHalt(null);
+        }
+    }
+
+    private Serializer[] makeSerializerArray() {
+        MockGeneralParameters p = makeMockGeneralParameters();
+        p.setIsFrameValue(true);
+        Serializer[] ret = new Serializer[]{
+                new CoordinateIndexer(p),
+                new TimeWriter(p),
+                new ContinuumStateWriter(p),
+                new LegacyCellStateWriter(p),
+                new HighlightWriter(p)
+        };
+
+        return ret;
+    }
+
+    private MockSoluteLayer initializeSoluteLayer(String id) {
+        MockSoluteLayer ret = new MockSoluteLayer();
+        ret.setGeometry(geom);
+        ret.setId(id);
+        return ret;
+    }
+
+    private MockCell placeCell(Coordinate coord, double fitness, int state) {
+        MockCell cell = new MockCell();
+        cell.setFitness(fitness);
+        cell.setState(state);
+        layer.getUpdateManager().place(cell, coord);
+
+        return cell;
+    }
+
+    private void pushState(MockSoluteLayer layer, double[] state) {
+        DenseVector vector = new DenseVector(state);
+        SolutionViewer viewer = new SolutionViewer(vector, geom);
+        layer.push(viewer);
     }
 }
