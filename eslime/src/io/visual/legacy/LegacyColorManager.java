@@ -27,13 +27,13 @@ import java.util.Map;
 import java.util.Random;
 
 @Deprecated
-public class ColorManager {
+public class LegacyColorManager {
 
     private Map<Integer, Color> colorMap = new HashMap<Integer, Color>();
 
     private Random random;
 
-    public ColorManager(GeneralParameters p) {
+    public LegacyColorManager(GeneralParameters p) {
         random = p.getRandom();
     }
 

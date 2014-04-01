@@ -42,7 +42,7 @@ public class HexMapWriter implements LegacyVisualization {
     private Point pixels = new Point();
 
     private Geometry geom;
-    private ColorManager colorManager;
+    private LegacyColorManager colorManager;
 
     // For now, this hidden feature is for debug only
     private boolean showNumbers = false;
@@ -55,7 +55,7 @@ public class HexMapWriter implements LegacyVisualization {
         this.path = path;
         this.geom = geom;
 
-        colorManager = new ColorManager(p);
+        colorManager = new LegacyColorManager(p);
         init();
     }
 
