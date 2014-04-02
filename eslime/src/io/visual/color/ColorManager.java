@@ -12,4 +12,7 @@ public abstract class ColorManager {
     public abstract Color getColor(Coordinate c, SystemState systemState);
 
     public abstract Color getBorderColor();
+
+    @Override
+    public abstract boolean equals(Object obj);
 }

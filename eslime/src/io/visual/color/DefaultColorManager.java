@@ -32,6 +32,11 @@ import java.awt.*;
 public class DefaultColorManager extends ColorManager {
 
     @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof DefaultColorManager);
+    }
+
+    @Override
     public Color getColor(Coordinate c, SystemState systemState) {
         int state = systemState.getState(c);
 

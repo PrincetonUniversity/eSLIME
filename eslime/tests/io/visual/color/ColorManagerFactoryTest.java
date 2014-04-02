@@ -22,23 +22,24 @@
 package io.visual.color;
 
 import org.dom4j.Element;
+import test.EslimeTestCase;
 
 /**
- * Created by dbborens on 4/1/14.
+ * Created by dbborens on 4/2/14.
  */
-public abstract class ColorManagerFactory {
+public class ColorManagerFactoryTest extends EslimeTestCase {
+    Element fixtureRoot;
 
-    public static ColorManager instantiate(Element element) {
-        String className = getClassName(element);
-        if (className.equalsIgnoreCase("default")) {
-            return new DefaultColorManager();
-        } else {
-            throw new IllegalArgumentException("Unrecognized color manager class '" + className + "'");
-        }
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        fixtureRoot = readXmlFile("ColorManagerFactoryTest.xml");
     }
 
-    private static String getClassName(Element element) {
-        Element classNameElem = element.element("class");
-        return classNameElem.getTextTrim();
+    public void testDefaultColorCase() {
+        Element element = fixtureRoot.element("default-case");
+        ColorManager actual = ColorManagerFactory.instantiate(element);
+        ColorManager expected = new DefaultColorManager();
+        assertEquals(expected, actual);
     }
 }
