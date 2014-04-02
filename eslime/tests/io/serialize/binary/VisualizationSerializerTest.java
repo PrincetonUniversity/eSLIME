@@ -40,4 +40,4 @@ public class VisualizationSerializerTest extends TestCase {
     public void testLifeCycle() {
         fail("Don't bother implementing this test until all aspects of MapVisualization work as expected. You will want to generate a set of reference images and then assert that these are binary-equal to the output of the visualization.");
     }
-
+}

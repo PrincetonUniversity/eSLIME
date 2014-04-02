@@ -22,14 +22,13 @@
 package io.deserialize;
 
 import layers.LightweightSystemState;
-import layers.SystemState;
 
 import java.util.Iterator;
 
 /**
  * Created by dbborens on 3/26/14.
  */
-public class SystemStateReader implements Iterable<SystemState> {
+public class SystemStateReader implements Iterable<LightweightSystemState> {
 
     // A list of all time points measured in the data files, as measured
     // in system time.
@@ -84,11 +83,11 @@ public class SystemStateReader implements Iterable<SystemState> {
     }
 
     @Override
-    public Iterator<SystemState> iterator() {
+    public Iterator<LightweightSystemState> iterator() {
         return new SystemStateIterator();
     }
 
-    private class SystemStateIterator implements Iterator<SystemState> {
+    private class SystemStateIterator implements Iterator<LightweightSystemState> {
 
         @Override
         public LightweightSystemState next() {

@@ -36,6 +36,8 @@ import structural.identifiers.Coordinate;
 import structural.postprocess.SolutionViewer;
 import test.EslimeLatticeTestCase;
 
+import java.util.Iterator;
+
 /**
  * Test for the SystemStateReader. As an I/O orchestrator whose main function
  * is to open a bunch of files, this is an annoying class to mock. Ultimately,
@@ -47,7 +49,10 @@ import test.EslimeLatticeTestCase;
  * Created by dbborens on 3/28/14.
  */
 public class SystemStateReaderTest extends EslimeLatticeTestCase {
-    private SystemStateReader query;
+    // The only thing SystemStateReader does is to return an anonymous
+    // iterator. Therefore, each test is actually about this iterator,
+    // and the iterator is the query.
+    private Iterator<LightweightSystemState> query;
     private String[] soluteIds;
     private int[] channelIds;
 
@@ -58,8 +63,8 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
 
         soluteIds = new String[]{"0"};
         channelIds = new int[]{0};
-
-        query = new SystemStateReader(soluteIds, channelIds, path);
+        SystemStateReader parent = new SystemStateReader(soluteIds, channelIds, path);
+        query = parent.iterator();
     }
 
     /**
