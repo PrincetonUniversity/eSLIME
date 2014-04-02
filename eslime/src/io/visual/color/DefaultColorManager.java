@@ -21,8 +21,34 @@
 
 package io.visual.color;
 
+import layers.SystemState;
+import structural.identifiers.Coordinate;
+
+import java.awt.*;
+
 /**
  * Created by dbborens on 4/1/14.
  */
-public class DefaultColorManager {
+public class DefaultColorManager extends ColorManager {
+
+    @Override
+    public Color getColor(Coordinate c, SystemState systemState) {
+        int state = systemState.getState(c);
+
+        switch (state) {
+            case 0:
+                return Color.BLACK;
+            case 1:
+                return Color.BLUE;
+            case 2:
+                return Color.RED;
+            default:
+                throw new UnsupportedOperationException("Default color manager supports only states 1 and 2, or dead.");
+        }
+    }
+
+    @Override
+    public Color getBorderColor() {
+        return Color.DARK_GRAY;
+    }
 }
