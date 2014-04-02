@@ -30,7 +30,8 @@ import java.awt.image.BufferedImage;
  * Superclass for defining visualizations based on system state data.
  * The Visualization returns an Image object upon render. Depending on
  * user needs, this visualization may then either be written to disk or
- * to the screen.
+ * to the screen. A single visualization object may be used to generate
+ * visualizations from several simulations.
  *
  * Created by David B Borenstein on 3/23/14.
  */
@@ -54,7 +55,17 @@ public interface Visualization {
     public abstract BufferedImage render(SystemState systemState);
 
     /**
-     * Perform any actions necessary for finalizing the process.
+     * Perform any actions necessary for finalizing the current visualization.
      */
     public abstract void conclude();
+
+    /**
+     * Get a list of solute field IDs that are expected for this visualization.
+     */
+    public abstract String[] getSoluteIds();
+
+    /**
+     * Get a list of highlight channels that are expected for this visualization.
+     */
+    public abstract int[] getHighlightChannels();
 }

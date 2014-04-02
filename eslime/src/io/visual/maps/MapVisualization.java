@@ -58,6 +58,18 @@ public class MapVisualization implements Visualization {
     }
 
     @Override
+    public String[] getSoluteIds() {
+        // At the moment, no solute fields are supported.
+        return new String[]{};
+    }
+
+    @Override
+    public int[] getHighlightChannels() {
+        // At the moment, only highlight channel 0 is supported.
+        return new int[]{0};
+    }
+
+    @Override
     public void init(Geometry geometry) {
         Coordinate[] coordinates = geometry.getCanonicalSites();
         members.setCoordinates(coordinates);

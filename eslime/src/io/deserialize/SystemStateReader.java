@@ -29,7 +29,7 @@ import java.util.Iterator;
 /**
  * Created by dbborens on 3/26/14.
  */
-public class SystemStateReader implements Iterator<SystemState> {
+public class SystemStateReader implements Iterable<SystemState> {
 
     // A list of all time points measured in the data files, as measured
     // in system time.
@@ -68,10 +68,6 @@ public class SystemStateReader implements Iterator<SystemState> {
         cellStateReader = new LegacyCellStateReader(fileRoot, deindexer);
     }
 
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException();
-    }
 
     private void loadTime(String fileRoot) {
         TimeReader timeReader = new TimeReader(fileRoot);
@@ -79,33 +75,6 @@ public class SystemStateReader implements Iterator<SystemState> {
         frames = timeReader.getFrames();
     }
 
-    public boolean hasNext() {
-        return (cursor < frames.length);
-    }
-
-    public LightweightSystemState next() {
-
-        // Construct display object
-        LightweightSystemState state = new LightweightSystemState(deindexer);
-
-        // Populate time and frame
-        setTimeAndFrame(state);
-
-        // Populate cell states
-        cellStateReader.populate(state);
-
-        // Populate state of continuum fields
-        continuumStateReaderManager.populate(state);
-
-        // Populate cell change highlights
-        highlightReader.populate(state);
-
-        // Advance the cursor
-        cursor++;
-
-        // Return display object
-        return state;
-    }
 
     private void setTimeAndFrame(LightweightSystemState state) {
         double time = times[cursor];
@@ -113,4 +82,47 @@ public class SystemStateReader implements Iterator<SystemState> {
         state.setTime(time);
         state.setFrame(frame);
     }
+
+    @Override
+    public Iterator<SystemState> iterator() {
+        return new SystemStateIterator();
+    }
+
+    private class SystemStateIterator implements Iterator<SystemState> {
+
+        @Override
+        public LightweightSystemState next() {
+
+            // Construct display object
+            LightweightSystemState state = new LightweightSystemState(deindexer);
+
+            // Populate time and frame
+            setTimeAndFrame(state);
+
+            // Populate cell states
+            cellStateReader.populate(state);
+
+            // Populate state of continuum fields
+            continuumStateReaderManager.populate(state);
+
+            // Populate cell change highlights
+            highlightReader.populate(state);
+
+            // Advance the cursor
+            cursor++;
+
+            // Return display object
+            return state;
+        }
+
+        public boolean hasNext() {
+            return (cursor < frames.length);
+        }
+
+        @Override
+        public void remove() {
+            throw new UnsupportedOperationException();
+        }
+    }
+
 }
