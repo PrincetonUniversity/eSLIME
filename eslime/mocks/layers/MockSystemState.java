@@ -31,6 +31,7 @@ import java.util.HashMap;
 public class MockSystemState extends SystemState {
 
     private HashMap<Coordinate, Integer> stateMap;
+    private boolean highlighted;
 
     public MockSystemState() {
         stateMap = new HashMap<>();
@@ -65,8 +66,13 @@ public class MockSystemState extends SystemState {
         return 0;
     }
 
+    public void setHighlighted(boolean value) {
+        highlighted = value;
+    }
+
     @Override
     public boolean isHighlighted(int channel, Coordinate coord) {
-        return false;
+        return highlighted;
     }
+
 }
