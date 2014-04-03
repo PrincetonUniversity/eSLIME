@@ -42,4 +42,10 @@ public class ColorManagerFactoryTest extends EslimeTestCase {
         ColorManager expected = new DefaultColorManager();
         assertEquals(expected, actual);
     }
+
+    public void testNullCase() {
+        ColorManager actual = ColorManagerFactory.instantiate(null);
+        ColorManager expected = new DefaultColorManager();
+        assertEquals(expected, actual);
+    }
 }

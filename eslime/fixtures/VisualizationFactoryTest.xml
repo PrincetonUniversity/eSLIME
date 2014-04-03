@@ -20,21 +20,5 @@
   -->
 
 <fixture>
-    <typical-case>
-        <highlights>
-            <channel index="0">
-                <glyph>
-                    <class>mock</class>
-                </glyph>
-            </channel>
-        </highlights>
-
-        <color>
-            <class>default</class>
-        </color>
-
-        <edge>5.0</edge>
-    </typical-case>
-
-    <minimal-case/>
+    <map/>
 </fixture>

@@ -33,6 +33,8 @@ import structural.utilities.XmlUtil;
  */
 public abstract class MapFactory {
 
+    public static final double DEFAULT_EDGE = 10.0;
+
     public static MapVisualization instantiate(Element mapElement) {
         // Make highlight manager
         HighlightManager highlightManager = makeHighlightManager(mapElement);
@@ -74,7 +76,7 @@ public abstract class MapFactory {
     }
 
     private static double getEdge(Element root) {
-        double edge = XmlUtil.getDouble(root, "edge");
+        double edge = XmlUtil.getDouble(root, "edge", DEFAULT_EDGE);
         return edge;
     }
 }

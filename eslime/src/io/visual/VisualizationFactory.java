@@ -19,32 +19,30 @@
  * /
  */
 
-package io.visual.color;
+package io.visual;
 
+import io.visual.map.MapFactory;
 import org.dom4j.Element;
 
 /**
- * Created by dbborens on 4/1/14.
+ * Created by dbborens on 4/3/14.
  */
-public abstract class ColorManagerFactory {
+public abstract class VisualizationFactory {
 
-    public static ColorManager instantiate(Element element) {
-        // If no color manager is specified, use the default color manager.
+    public static Visualization instantiate(Element root) {
+        String className = getClassName(root);
 
-        if (element == null) {
-            return new DefaultColorManager();
-        }
-
-        String className = getClassName(element);
-        if (className.equalsIgnoreCase("default")) {
-            return new DefaultColorManager();
+        if (className.equalsIgnoreCase("map")) {
+            return MapFactory.instantiate(root);
         } else {
-            throw new IllegalArgumentException("Unrecognized color manager class '" + className + "'");
+            throw new IllegalArgumentException("Unrecognized visualization " +
+                    "class '" + className + "'");
         }
     }
 
-    private static String getClassName(Element element) {
-        Element classNameElem = element.element("class");
-        return classNameElem.getTextTrim();
+    public static String getClassName(Element root) {
+        Element cnNode = root.element("class");
+        String className = cnNode.getTextTrim();
+        return className;
     }
 }

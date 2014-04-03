@@ -46,19 +46,42 @@ public class MapFactoryTest extends EslimeLatticeTestCase {
         geom.setConnectivity(3);
     }
 
-    public void testInstantiate() throws Exception {
-        MapVisualization actual = MapFactory.instantiate(root);
+    public void testTypicalCase() throws Exception {
+        Element typicalCase = root.element("typical-case");
+        MapVisualization actual = MapFactory.instantiate(typicalCase);
         actual.init(geom);
 
-        MapVisualization expected = makeExpected();
+        MapVisualization expected = makeTypicalCase();
         assertEquals(expected, actual);
     }
 
-    private MapVisualization makeExpected() {
+    public void testMinimalCase() throws Exception {
+        Element minimalCase = root.element("minimal-case");
+        MapVisualization actual = MapFactory.instantiate(minimalCase);
+        actual.init(geom);
+
+        MapVisualization expected = makeMinimalCase();
+        assertEquals(expected, actual);
+    }
+
+    private MapVisualization makeMinimalCase() {
+        ColorManager colorManager = new DefaultColorManager();
+        HighlightManager highlightManager = new HighlightManager();
+        double edge = 10.0;
+
+        MapState mapState = new MapState(colorManager, edge);
+        mapState.setHighlightManager(highlightManager);
+
+        MapVisualization mapVisualization = new MapVisualization(mapState);
+        mapVisualization.init(geom);
+        return mapVisualization;
+    }
+
+    private MapVisualization makeTypicalCase() {
         ColorManager colorManager = new DefaultColorManager();
         HighlightManager highlightManager = new HighlightManager();
         highlightManager.setGlyph(0, new MockGlyph());
-        double edge = 10.0;
+        double edge = 5.0;
 
         MapState mapState = new MapState(colorManager, edge);
         mapState.setHighlightManager(highlightManager);

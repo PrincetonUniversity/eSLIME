@@ -32,9 +32,16 @@ import org.dom4j.Element;
 public abstract class HighlightManagerFactory {
     public static HighlightManager instantiate(Element highlightRoot) {
         HighlightManager renderer = new HighlightManager();
+
+        // No highlight tag? Fine. Return the empty manager.
+        if (highlightRoot == null) {
+            return renderer;
+        }
+
         for (Object o : highlightRoot.elements()) {
             loadGlyph(renderer, (Element) o);
         }
+
         return renderer;
     }
 

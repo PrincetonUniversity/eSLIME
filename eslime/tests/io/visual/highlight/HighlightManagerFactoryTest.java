@@ -46,6 +46,17 @@ public class HighlightManagerFactoryTest extends EslimeTestCase {
         assertEquals(expected, actual);
     }
 
+    /**
+     * If there is no highlight tag, we should get back an empty highlight
+     * manager and no exceptions should be thrown.
+     *
+     * @throws Exception
+     */
+    public void testNullCase() throws Exception {
+        HighlightManager expected = new HighlightManager();
+        HighlightManager actual = HighlightManagerFactory.instantiate(null);
+        assertEquals(expected, actual);
+    }
     private HighlightManager buildExpected() {
         HighlightManager expected = new HighlightManager();
         expected.setGlyph(0, new MockGlyph());
