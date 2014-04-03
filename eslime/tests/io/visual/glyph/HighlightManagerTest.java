@@ -53,7 +53,7 @@ public class HighlightManagerTest extends EslimeLatticeTestCase {
     public void testOverlayGlyphs() throws Exception {
         MockSystemState systemState = new MockSystemState();
         systemState.setHighlighted(true);
-        query.overlayGlyphs(origin, systemState);
+        query.render(origin, systemState);
         assertEquals(origin, glyph.getLastOverlaid());
     }
 }

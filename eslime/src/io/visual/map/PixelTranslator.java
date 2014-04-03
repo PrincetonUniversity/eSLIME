@@ -19,7 +19,7 @@
  * /
  */
 
-package io.visual.maps;
+package io.visual.map;
 
 import structural.identifiers.Coordinate;
 
@@ -118,6 +118,9 @@ public abstract class PixelTranslator {
     public Coordinate getImageDims() {
         return imageDims;
     }
+
+    @Override
+    public abstract boolean equals(Object obj);
 
     public abstract Polygon makePolygon(Coordinate c);
 }

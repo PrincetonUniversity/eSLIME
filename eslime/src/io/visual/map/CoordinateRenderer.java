@@ -19,8 +19,9 @@
  * /
  */
 
-package io.visual.maps;
+package io.visual.map;
 
+import io.visual.highlight.HighlightManager;
 import layers.SystemState;
 import structural.identifiers.Coordinate;
 
@@ -69,7 +70,8 @@ public class CoordinateRenderer {
     }
 
     private void renderHighlights(Coordinate toRender, SystemState systemState) {
-        // Right now, highlights are being ignored
+        HighlightManager highlightManager = mapState.getHighlightManager();
+        highlightManager.render(toRender, systemState);
     }
 
 }

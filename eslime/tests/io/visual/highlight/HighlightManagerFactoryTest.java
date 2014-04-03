@@ -28,20 +28,20 @@ import test.EslimeTestCase;
 /**
  * Created by dbborens on 4/3/14.
  */
-public class HighlightFactoryTest extends EslimeTestCase {
+public class HighlightManagerFactoryTest extends EslimeTestCase {
     private Element root;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        root = readXmlFile("HighlightFactoryTest.xml");
+        root = readXmlFile("HighlightManagerFactoryTest.xml");
     }
 
     public void testPopulate() throws Exception {
         Element highlights = root.element("highlights");
 
         HighlightManager expected = buildExpected();
-        HighlightManager actual = HighlightFactory.instantiate(highlights);
+        HighlightManager actual = HighlightManagerFactory.instantiate(highlights);
 
         assertEquals(expected, actual);
     }

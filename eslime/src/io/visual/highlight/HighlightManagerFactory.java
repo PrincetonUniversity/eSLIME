@@ -29,7 +29,7 @@ import org.dom4j.Element;
 /**
  * Created by dbborens on 4/3/14.
  */
-public abstract class HighlightFactory {
+public abstract class HighlightManagerFactory {
     public static HighlightManager instantiate(Element highlightRoot) {
         HighlightManager renderer = new HighlightManager();
         for (Object o : highlightRoot.elements()) {

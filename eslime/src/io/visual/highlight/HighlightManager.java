@@ -49,7 +49,7 @@ public class HighlightManager {
         }
     }
 
-    public void overlayGlyphs(Coordinate c, SystemState systemState) {
+    public void render(Coordinate c, SystemState systemState) {
         for (int channel : glyphMap.keySet()) {
             if (systemState.isHighlighted(channel, c)) {
                 Glyph glyph = glyphMap.get(channel);

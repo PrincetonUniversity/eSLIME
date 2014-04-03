@@ -19,7 +19,7 @@
  * /
  */
 
-package io.visual.maps;
+package io.visual.map;
 
 /**
  * Created by dbborens on 4/1/14.

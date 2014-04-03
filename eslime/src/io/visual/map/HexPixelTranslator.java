@@ -19,7 +19,7 @@
  * /
  */
 
-package io.visual.maps;
+package io.visual.map;
 
 import structural.identifiers.Coordinate;
 
@@ -29,6 +29,11 @@ import java.awt.*;
  * Created by dbborens on 4/1/14.
  */
 public class HexPixelTranslator extends PixelTranslator {
+
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof HexPixelTranslator);
+    }
 
     @Override
     protected void calcLimits(int[] extrema) {

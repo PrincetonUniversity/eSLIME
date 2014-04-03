@@ -19,7 +19,7 @@
  * /
  */
 
-package io.visual.maps;
+package io.visual.map;
 
 import geometry.Geometry;
 import io.visual.Visualization;
@@ -36,15 +36,15 @@ public class MapVisualization implements Visualization {
     protected MapState members;
     protected PixelTranslator translator;
 
-    public MapVisualization(MapState members, PixelTranslator translator) {
+    public MapVisualization(MapState members) {
         this.members = members;
-        this.translator = translator;
     }
 
     @Override
     public BufferedImage render(SystemState systemState) {
         Coordinate pDims = translator.getImageDims();
         BufferedImage img = new BufferedImage(pDims.x(), pDims.y(), BufferedImage.TYPE_BYTE_INDEXED);
+        members.getHighlightManager().setImage(img);
         CoordinateRenderer renderer = new CoordinateRenderer(img, translator, members);
         for (Coordinate c : members.getCoordinates()) {
             renderer.render(c, systemState);
@@ -73,6 +73,26 @@ public class MapVisualization implements Visualization {
     public void init(Geometry geometry) {
         Coordinate[] coordinates = geometry.getCanonicalSites();
         members.setCoordinates(coordinates);
+        translator = PixelTranslatorFactory.instantiate(geometry);
         translator.init(members);
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MapVisualization)) {
+            return false;
+        }
+
+        MapVisualization other = (MapVisualization) obj;
+
+        if (!members.equals(other.members)) {
+            return false;
+        }
+
+        if (!translator.equals(other.translator)) {
+            return false;
+        }
+
+        return true;
     }
 }

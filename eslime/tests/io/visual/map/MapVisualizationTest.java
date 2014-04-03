@@ -19,7 +19,7 @@
  * /
  */
 
-package io.visual.maps;
+package io.visual.map;
 
 import junit.framework.TestCase;
 

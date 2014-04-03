@@ -56,10 +56,25 @@ public abstract class XmlUtil {
         if (valueElement == null) {
             return defaultValue;
         }
+        return doGetDouble(valueElement);
+    }
 
-        String valueText = valueElement.getTextTrim();
+    public static double getDouble(Element e, String name) {
+        Element valueElement = e.element(name);
+        if (valueElement == null) {
+            String parentName = e.getQualifiedName();
+            throw new IllegalArgumentException("Expected argument " + name +
+                    " in element " + parentName);
+        }
+
+        return doGetDouble(valueElement);
+    }
+
+    private static double doGetDouble(Element e) {
+        String valueText = e.getTextTrim();
         double ret = Double.valueOf(valueText);
         return ret;
+
     }
 
     public static int getInteger(Element e, String name, int defaultValue) {

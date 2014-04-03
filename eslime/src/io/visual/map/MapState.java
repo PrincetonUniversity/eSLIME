@@ -19,10 +19,14 @@
  * /
  */
 
-package io.visual.maps;
+package io.visual.map;
 
 import io.visual.color.ColorManager;
+import io.visual.highlight.HighlightManager;
 import structural.identifiers.Coordinate;
+import structural.utilities.EpsilonUtil;
+
+import java.util.Arrays;
 
 /**
  * Container for all state members associated with a map visualization.
@@ -37,6 +41,8 @@ public class MapState {
     // Helper object for setting colors.
     private ColorManager colorManager;
 
+    // Imposes highlights on the map
+    private HighlightManager highlightManager;
 
     // How long each edge should be. Sets visual scale.
     private double edge;
@@ -44,6 +50,41 @@ public class MapState {
     public MapState(ColorManager colorManager, double edge) {
         this.colorManager = colorManager;
         this.edge = edge;
+    }
+
+    public HighlightManager getHighlightManager() {
+        return highlightManager;
+    }
+
+    public void setHighlightManager(HighlightManager highlightManager) {
+        this.highlightManager = highlightManager;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MapState)) {
+            return false;
+        }
+
+        MapState other = (MapState) obj;
+
+        if (!Arrays.equals(coordinates, other.coordinates)) {
+            return false;
+        }
+
+        if (!colorManager.equals(other.colorManager)) {
+            return false;
+        }
+
+        if (!highlightManager.equals(other.highlightManager)) {
+            return false;
+        }
+
+        if (!EpsilonUtil.epsilonEquals(edge, other.edge)) {
+            return false;
+        }
+
+        return true;
     }
 
     public Coordinate[] getCoordinates() {
