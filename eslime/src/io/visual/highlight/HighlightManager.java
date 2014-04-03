@@ -19,8 +19,9 @@
  * /
  */
 
-package io.visual.glyph;
+package io.visual.highlight;
 
+import io.visual.glyph.Glyph;
 import layers.SystemState;
 import structural.identifiers.Coordinate;
 
@@ -31,10 +32,10 @@ import java.util.Map;
 /**
  * Created by dbborens on 4/2/14.
  */
-public class HighlightRenderer {
+public class HighlightManager {
     private Map<Integer, Glyph> glyphMap;
 
-    public HighlightRenderer() {
+    public HighlightManager() {
         glyphMap = new HashMap<>();
     }
 
@@ -55,5 +56,32 @@ public class HighlightRenderer {
                 glyph.overlay(c);
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof HighlightManager)) {
+            return false;
+        }
+
+        HighlightManager other = (HighlightManager) obj;
+
+        if (other.glyphMap.size() != glyphMap.size()) {
+            return false;
+        }
+
+        for (Integer key : glyphMap.keySet()) {
+            if (!other.glyphMap.containsKey(key)) {
+                return false;
+            }
+
+            Glyph p = glyphMap.get(key);
+            Glyph q = other.glyphMap.get(key);
+            if (!p.equals(q)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

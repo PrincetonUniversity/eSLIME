@@ -21,6 +21,7 @@
 
 package io.visual.glyph;
 
+import io.visual.highlight.HighlightManager;
 import layers.MockSystemState;
 import test.EslimeLatticeTestCase;
 
@@ -29,16 +30,16 @@ import java.awt.image.BufferedImage;
 /**
  * Created by dbborens on 4/2/14.
  */
-public class HighlightRendererTest extends EslimeLatticeTestCase {
+public class HighlightManagerTest extends EslimeLatticeTestCase {
 
     MockGlyph glyph;
-    HighlightRenderer query;
+    HighlightManager query;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         glyph = new MockGlyph();
-        query = new HighlightRenderer();
+        query = new HighlightManager();
         query.setGlyph(0, glyph);
     }
 

@@ -56,4 +56,6 @@ public abstract class Glyph {
 
     public abstract void overlay(Coordinate c);
 
+    @Override
+    public abstract boolean equals(Object obj);
 }

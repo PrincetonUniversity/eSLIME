@@ -21,42 +21,26 @@
 
 package io.visual.glyph;
 
-import structural.identifiers.Coordinate;
-
-import java.awt.image.BufferedImage;
+import org.dom4j.Element;
 
 /**
- * Created by dbborens on 4/2/14.
+ * Created by dbborens on 4/3/14.
  */
-public class MockGlyph extends Glyph {
-    private BufferedImage image;
-    private Coordinate lastOverlaid;
+public abstract class GlyphFactory {
 
-    public MockGlyph() {
-        super(null);
-        lastOverlaid = null;
+    public static Glyph instantiate(Element glyphRoot) {
+        String className = getClassName(glyphRoot);
+        if (className.equalsIgnoreCase("mock")) {
+            return new MockGlyph();
+        } else {
+            throw new IllegalArgumentException("Unrecognized glyph class '" +
+                    className + "'");
+        }
     }
 
-    public Coordinate getLastOverlaid() {
-        return lastOverlaid;
-    }
-
-    @Override
-    public void overlay(Coordinate c) {
-        this.lastOverlaid = c;
-    }
-
-    public BufferedImage getImage() {
-        return image;
-    }
-
-    @Override
-    public void setImage(BufferedImage image) {
-        this.image = image;
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        return (obj instanceof MockGlyph);
+    private static String getClassName(Element glyphRoot) {
+        Element cnElem = glyphRoot.element("class");
+        String className = cnElem.getTextTrim();
+        return className;
     }
 }
