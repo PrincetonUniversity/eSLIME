@@ -108,7 +108,7 @@ public abstract class PixelTranslator {
 
     /**
      * Convert coordinate (in the cell-based coordinate system of the model)
-     * to a pixel coordinate (ie, in the natural units of the display).
+     * to the pixel coordinate of the center of the coordinate.
      *
      * @param c the coordinate to be converted.
      * @return
@@ -123,4 +123,19 @@ public abstract class PixelTranslator {
     public abstract boolean equals(Object obj);
 
     public abstract Polygon makePolygon(Coordinate c);
+
+    /**
+     * Return the length of the diagonal of a polygon, based on the geometry
+     * of the lattice and the length of the edges.
+     */
+    public abstract double getDiagonal();
+
+//    /**
+//     * Convert coordinate (in the cell-based coordinate system of the model)
+//     * to the pixel coordinate of the center of the hexagon.
+//     *
+//     * @param c the coordinate to be converted.
+//     * @return
+//     */
+//    public abstract Coordinate indexToCenterPixels(Coordinate c);
 }

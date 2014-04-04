@@ -29,6 +29,10 @@ import java.awt.*;
  * Created by dbborens on 4/1/14.
  */
 public class HexPixelTranslator extends PixelTranslator {
+    @Override
+    public double getDiagonal() {
+        return 2 * edge;
+    }
 
     @Override
     public boolean equals(Object obj) {
@@ -101,4 +105,21 @@ public class HexPixelTranslator extends PixelTranslator {
 
         return p;
     }
+
+//    @Override
+//    public Coordinate indexToCenterPixels(Coordinate c) {
+//        // First, get coordinate of lower left hand corner.
+//        Coordinate corner = indexToPixels(c);
+//
+//        // x distance to center = edge length.
+//        int dx = (int) Math.round(edge);
+//
+//        // y distance to center = sqrt(3)/2 * edge length.
+//        int dy = (int) Math.round((Math.sqrt(3.0) / 2.0) * edge);
+//
+//        int x = corner.x() + dx;
+//        int y = corner.y() + dy;
+//
+//        return new Coordinate(x + dx, y + dy, 0);
+//    }
 }

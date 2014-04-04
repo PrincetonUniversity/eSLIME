@@ -33,8 +33,11 @@ public class MockGlyph extends Glyph {
     private Coordinate lastOverlaid;
 
     public MockGlyph() {
-        super(null);
         lastOverlaid = null;
+    }
+
+    @Override
+    protected void internalInit() {
     }
 
     public Coordinate getLastOverlaid() {

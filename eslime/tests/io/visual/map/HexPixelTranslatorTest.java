@@ -42,4 +42,9 @@ public class HexPixelTranslatorTest extends TestCase {
     public void testMakePolygon() throws Exception {
         fail("Not yet implemented");
     }
+
+    public void testGetDiagonal() throws Exception {
+        fail("Not yet implemented");
+    }
+
 }

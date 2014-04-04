@@ -41,8 +41,9 @@ public abstract class Glyph {
 
     protected BufferedImage image;
 
-    public Glyph(PixelTranslator translator) {
+    public void init(PixelTranslator translator) {
         this.translator = translator;
+        internalInit();
     }
 
     /**
@@ -54,8 +55,16 @@ public abstract class Glyph {
         this.image = image;
     }
 
+    /**
+     * Draw the glyph at the specified site.
+     *
+     * @param c Coordinate (in units of cells) of the site to be overlaid
+     *          with the image.
+     */
     public abstract void overlay(Coordinate c);
 
     @Override
     public abstract boolean equals(Object obj);
+
+    protected abstract void internalInit();
 }

@@ -22,20 +22,53 @@
 package io.visual.glyph;
 
 import org.dom4j.Element;
+import structural.utilities.XmlUtil;
+
+import java.awt.*;
 
 /**
  * Created by dbborens on 4/3/14.
  */
 public abstract class GlyphFactory {
 
+    public static final Color DEFAULT_COLOR = Color.WHITE;
+    public static final double DEFAULT_SIZE = 0.1;
+
     public static Glyph instantiate(Element glyphRoot) {
         String className = getClassName(glyphRoot);
         if (className.equalsIgnoreCase("mock")) {
             return new MockGlyph();
+        } else if (className.equalsIgnoreCase("dot")) {
+            return dotGlyph(glyphRoot);
         } else {
             throw new IllegalArgumentException("Unrecognized glyph class '" +
                     className + "'");
         }
+    }
+
+    private static Glyph dotGlyph(Element glyphRoot) {
+        Color color = getColor(glyphRoot, "color");
+        double size = XmlUtil.getDouble(glyphRoot, "size", DEFAULT_SIZE);
+
+        return new DotGlyph(color, size);
+    }
+
+    public static Color getColor(Element glyphRoot, String colorRoot) {
+        Element colorElement = glyphRoot.element(colorRoot);
+        if (colorElement == null) {
+            return DEFAULT_COLOR;
+        }
+
+        // For the moment, we only support hex color encoding.
+        Element hexElement = colorElement.element("hex");
+
+        if (hexElement == null) {
+            throw new IllegalArgumentException("You must specify the hex code for the color you want.");
+        }
+
+        String hex = "0x" + hexElement.getTextTrim();
+        Color color = Color.decode(hex);
+        return color;
     }
 
     private static String getClassName(Element glyphRoot) {

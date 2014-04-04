@@ -66,7 +66,7 @@ public class CoordinateRenderer {
 
         // Flood region with background color
         g.setColor(color);
-        g.fillPolygon(p);
+        g.drawPolygon(p);
     }
 
     private void renderHighlights(Coordinate toRender, SystemState systemState) {

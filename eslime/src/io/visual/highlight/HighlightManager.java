@@ -22,6 +22,7 @@
 package io.visual.highlight;
 
 import io.visual.glyph.Glyph;
+import io.visual.map.PixelTranslator;
 import layers.SystemState;
 import structural.identifiers.Coordinate;
 
@@ -83,5 +84,11 @@ public class HighlightManager {
         }
 
         return true;
+    }
+
+    public void init(PixelTranslator translator) {
+        for (Glyph glyph : glyphMap.values()) {
+            glyph.init(translator);
+        }
     }
 }

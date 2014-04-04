@@ -23,9 +23,11 @@ package io.visual.map;
 
 import geometry.Geometry;
 import io.visual.Visualization;
+import io.visual.highlight.HighlightManager;
 import layers.SystemState;
 import structural.identifiers.Coordinate;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -43,8 +45,13 @@ public class MapVisualization implements Visualization {
     @Override
     public BufferedImage render(SystemState systemState) {
         Coordinate pDims = translator.getImageDims();
-        BufferedImage img = new BufferedImage(pDims.x(), pDims.y(), BufferedImage.TYPE_BYTE_INDEXED);
+        BufferedImage img = new BufferedImage(pDims.x(), pDims.y(), BufferedImage.TYPE_INT_ARGB);
+
+        Graphics2D g = (Graphics2D) img.getGraphics();
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
         members.getHighlightManager().setImage(img);
+
         CoordinateRenderer renderer = new CoordinateRenderer(img, translator, members);
         for (Coordinate c : members.getCoordinates()) {
             renderer.render(c, systemState);
@@ -75,6 +82,8 @@ public class MapVisualization implements Visualization {
         members.setCoordinates(coordinates);
         translator = PixelTranslatorFactory.instantiate(geometry);
         translator.init(members);
+        HighlightManager highlightManager = members.getHighlightManager();
+        highlightManager.init(translator);
     }
 
     @Override
