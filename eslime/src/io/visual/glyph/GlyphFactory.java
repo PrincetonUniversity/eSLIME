@@ -31,7 +31,6 @@ import java.awt.*;
  */
 public abstract class GlyphFactory {
 
-    public static final Color DEFAULT_COLOR = Color.WHITE;
     public static final double DEFAULT_SIZE = 0.1;
 
     public static Glyph instantiate(Element glyphRoot) {
@@ -53,22 +52,10 @@ public abstract class GlyphFactory {
         return new DotGlyph(color, size);
     }
 
-    public static Color getColor(Element glyphRoot, String colorRoot) {
+    private static Color getColor(Element glyphRoot, String colorRoot) {
         Element colorElement = glyphRoot.element(colorRoot);
-        if (colorElement == null) {
-            return DEFAULT_COLOR;
-        }
+        return ColorFactory.instantiate(colorElement);
 
-        // For the moment, we only support hex color encoding.
-        Element hexElement = colorElement.element("hex");
-
-        if (hexElement == null) {
-            throw new IllegalArgumentException("You must specify the hex code for the color you want.");
-        }
-
-        String hex = "0x" + hexElement.getTextTrim();
-        Color color = Color.decode(hex);
-        return color;
     }
 
     private static String getClassName(Element glyphRoot) {

@@ -29,42 +29,29 @@ import java.awt.*;
 /**
  * Created by dbborens on 4/4/14.
  */
-public class GlyphFactoryTest extends EslimeTestCase {
-    private Element root;
+public class ColorFactoryTest extends EslimeTestCase {
+
+    Element root;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        root = readXmlFile("factories/GlyphFactoryTest.xml");
+
+        root = readXmlFile("factories/ColorFactoryTest.xml");
     }
 
-    public void testMockCase() throws Exception {
-        Element e = root.element("mock-case");
-        Glyph actual = GlyphFactory.instantiate(e);
-        Glyph expected = new MockGlyph();
-
+    public void testDefaultCase() throws Exception {
+        Element e = null;
+        Color actual = ColorFactory.instantiate(e);
+        Color expected = ColorFactory.DEFAULT_COLOR;
         assertEquals(expected, actual);
     }
 
-    public void testDotCompleteCase() throws Exception {
-        Element e = root.element("dot-case-complete");
-        Glyph actual = GlyphFactory.instantiate(e);
-
-        Color color = Color.decode("0xFF00AA");
-        double size = 0.4;
-        Glyph expected = new DotGlyph(color, size);
-
-        assertEquals(expected, actual);
-    }
-
-    // We test one class of glyph for default handling
-    public void testDotDefaultCase() throws Exception {
-        Element e = root.element("dot-case-default");
-        Glyph actual = GlyphFactory.instantiate(e);
-
-        Glyph expected = new DotGlyph(ColorFactory.DEFAULT_COLOR,
-                GlyphFactory.DEFAULT_SIZE);
-
+    public void testHexCase() throws Exception {
+        Element e = root.element("hex-case");
+        Color actual = ColorFactory.instantiate(e);
+        Color expected = Color.decode("0xAABBCC");
         assertEquals(expected, actual);
     }
 }
+
