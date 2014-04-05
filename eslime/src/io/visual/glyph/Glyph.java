@@ -65,4 +65,12 @@ public abstract class Glyph {
     public abstract boolean equals(Object obj);
 
     protected abstract void internalInit();
+
+    protected int calcProportionalSize(double size) {
+        // The length of a diagonal of the cell polygon.
+        double diagonal = translator.getDiagonal();
+
+        double scaled = diagonal * size / 2.0;
+        return (int) scaled;
+    }
 }

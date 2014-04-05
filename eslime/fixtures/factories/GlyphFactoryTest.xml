@@ -48,4 +48,16 @@
         <size>0.3</size>
     </bullseye-case>
 
+    <crosshairs-case>
+        <class>crosshairs</class>
+        <color>
+            <hex>AABBCC</hex>
+        </color>
+        <circle>
+            0.2
+        </circle>
+        <cross>
+            2.0
+        </cross>
+    </crosshairs-case>
 </fixture>

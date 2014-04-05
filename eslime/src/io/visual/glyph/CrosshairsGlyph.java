@@ -28,24 +28,29 @@ import java.awt.*;
 /**
  * Created by dbborens on 4/3/14.
  */
-public class DotGlyph extends Glyph {
+public class CrosshairsGlyph extends Glyph {
 
     private int radius;
+    private int cross;
     private Color color;
-    private double size;
+    private double circleSize;
+    private double crossSize;
 
     /**
-     * @param color The color of the dot.
-     * @param size  The relative size of the dot, specified as a multiple of the edge size.
+     * @param color      The color of the crosshairs.
+     * @param circleSize The relative size of the circle, specified as a multiple of the edge size.
+     * @param crossSize  The relative size of the cross, specified as a multiple of the edge size.
      */
-    public DotGlyph(Color color, double size) {
+    public CrosshairsGlyph(Color color, double circleSize, double crossSize) {
         this.color = color;
-        this.size = size;
+        this.circleSize = circleSize;
+        this.crossSize = crossSize;
     }
 
     @Override
     protected void internalInit() {
-        radius = calcProportionalSize(size);
+        radius = calcProportionalSize(circleSize);
+        cross = calcProportionalSize(circleSize * crossSize * 2);
     }
 
     @Override
@@ -53,20 +58,41 @@ public class DotGlyph extends Glyph {
         // First, get the center of the cell (in pixels).
         Coordinate center = translator.indexToPixels(target);
 
+        graphics.setColor(color);
+
+        drawCircle(center);
+        drawHorizontalLine(center);
+        drawVerticalLine(center);
+    }
+
+    private void drawHorizontalLine(Coordinate center) {
+        int x = center.x() - (cross / 2);
+        int y = center.y();
+
+        graphics.drawLine(x, y, x + cross, y);
+    }
+
+    private void drawVerticalLine(Coordinate center) {
+        int y = center.y() - (cross / 2);
+        int x = center.x();
+
+        graphics.drawLine(x, y, x, y + cross);
+    }
+
+    private void drawCircle(Coordinate center) {
         int x = center.x() - radius;
         int y = center.y() - radius;
 
-        graphics.setColor(color);
-        graphics.fillOval(x, y, radius * 2, radius * 2);
+        graphics.drawOval(x, y, radius * 2, radius * 2);
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof DotGlyph)) {
+        if (!(obj instanceof CrosshairsGlyph)) {
             return false;
         }
 
-        DotGlyph other = (DotGlyph) obj;
+        CrosshairsGlyph other = (CrosshairsGlyph) obj;
         if (radius != other.radius) {
             return false;
         }
@@ -78,3 +104,4 @@ public class DotGlyph extends Glyph {
         return true;
     }
 }
+

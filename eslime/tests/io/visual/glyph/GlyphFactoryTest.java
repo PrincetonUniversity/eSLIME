@@ -64,8 +64,8 @@ public class GlyphFactoryTest extends EslimeTestCase {
         Element e = root.element("dot-case-default");
         Glyph actual = GlyphFactory.instantiate(e);
 
-        Glyph expected = new DotGlyph(ColorFactory.DEFAULT_COLOR,
-                GlyphFactory.DEFAULT_SIZE);
+        Glyph expected = new DotGlyph(Color.WHITE,
+                0.1);
 
         assertEquals(expected, actual);
     }
@@ -79,6 +79,17 @@ public class GlyphFactoryTest extends EslimeTestCase {
         Color secondary = Color.decode("0x334455");
         Glyph expected = new BullseyeGlyph(primary,
                 secondary, 0.3);
+
+        assertEquals(expected, actual);
+    }
+
+    public void testCrosshairsCase() throws Exception {
+        Element e = root.element("crosshairs-case");
+
+        Glyph actual = GlyphFactory.instantiate(e);
+
+        Color color = Color.decode("0xAABBCC");
+        Glyph expected = new CrosshairsGlyph(color, 0.2, 2.0);
 
         assertEquals(expected, actual);
     }

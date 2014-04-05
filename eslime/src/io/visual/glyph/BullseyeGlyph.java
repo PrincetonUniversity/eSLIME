@@ -47,7 +47,7 @@ public class BullseyeGlyph extends Glyph {
 
     @Override
     protected void internalInit() {
-        double radius = calcRadius(size);
+        double radius = calcProportionalSize(size);
 
         int outer = (int) Math.round(radius);
         int middle = (int) Math.round(radius * .67);
@@ -56,13 +56,6 @@ public class BullseyeGlyph extends Glyph {
         radii = new int[]{outer, middle, inner};
     }
 
-    private double calcRadius(double size) {
-        // The length of a diagonal of the cell polygon.
-        double diagonal = translator.getDiagonal();
-
-        double scaled = diagonal * size / 2.0;
-        return scaled;
-    }
 
     @Override
     public void overlay(Coordinate target) {

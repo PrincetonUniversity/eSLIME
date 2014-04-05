@@ -21,29 +21,22 @@
 
 package io.visual.glyph;
 
-import org.dom4j.Element;
-
 import java.awt.*;
 
 /**
- * Created by dbborens on 4/4/14.
+ * Integration test of the dot glyph (a filled dot at the center of the cell).
+ * <p/>
+ * Created by dbborens on 4/3/14.
  */
-public abstract class ColorFactory {
+public class CrosshairsGlyphTest extends GlyphTest {
 
-    public static Color instantiate(Element root, Color defaultColor) {
-        if (root == null) {
-            return defaultColor;
-        }
+    @Override
+    protected Glyph makeGlyph() {
+        return new CrosshairsGlyph(Color.decode("4742424"), 0.15, 1.5);
+    }
 
-        // For the moment, we only support hex color encoding.
-        Element hexElement = root.element("hex");
-
-        if (hexElement == null) {
-            throw new IllegalArgumentException("You must specify the hex code for the color you want.");
-        }
-
-        String hex = "0x" + hexElement.getTextTrim();
-        Color color = Color.decode(hex);
-        return color;
+    @Override
+    protected String getFileName() {
+        return "crosshairsGlyph.png";
     }
 }

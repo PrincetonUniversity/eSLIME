@@ -42,14 +42,14 @@ public class ColorFactoryTest extends EslimeTestCase {
 
     public void testDefaultCase() throws Exception {
         Element e = null;
-        Color actual = ColorFactory.instantiate(e);
-        Color expected = ColorFactory.DEFAULT_COLOR;
+        Color actual = ColorFactory.instantiate(e, Color.WHITE);
+        Color expected = Color.WHITE;
         assertEquals(expected, actual);
     }
 
     public void testHexCase() throws Exception {
         Element e = root.element("hex-case");
-        Color actual = ColorFactory.instantiate(e);
+        Color actual = ColorFactory.instantiate(e, null);
         Color expected = Color.decode("0xAABBCC");
         assertEquals(expected, actual);
     }
