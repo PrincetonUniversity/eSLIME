@@ -57,13 +57,28 @@ public class GlyphFactoryTest extends EslimeTestCase {
         assertEquals(expected, actual);
     }
 
-    // We test one class of glyph for default handling
+    /**
+     * We test one class of glyph for default handling
+     */
     public void testDotDefaultCase() throws Exception {
         Element e = root.element("dot-case-default");
         Glyph actual = GlyphFactory.instantiate(e);
 
         Glyph expected = new DotGlyph(ColorFactory.DEFAULT_COLOR,
                 GlyphFactory.DEFAULT_SIZE);
+
+        assertEquals(expected, actual);
+    }
+
+    public void testBullseyeGlyphCase() throws Exception {
+        Element e = root.element("bullseye-case");
+
+        Glyph actual = GlyphFactory.instantiate(e);
+
+        Color primary = Color.decode("0x001122");
+        Color secondary = Color.decode("0x334455");
+        Glyph expected = new BullseyeGlyph(primary,
+                secondary, 0.3);
 
         assertEquals(expected, actual);
     }

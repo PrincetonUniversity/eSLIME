@@ -39,10 +39,20 @@ public abstract class GlyphFactory {
             return new MockGlyph();
         } else if (className.equalsIgnoreCase("dot")) {
             return dotGlyph(glyphRoot);
+        } else if (className.equalsIgnoreCase("bullseye")) {
+            return bullseyeGlyph(glyphRoot);
         } else {
             throw new IllegalArgumentException("Unrecognized glyph class '" +
                     className + "'");
         }
+    }
+
+    private static Glyph bullseyeGlyph(Element glyphRoot) {
+        Color primary = getColor(glyphRoot, "primary-color", Color.RED);
+        Color secondary = getColor(glyphRoot, "secondary-color", Color.WHITE);
+        double size = XmlUtil.getDouble(glyphRoot, "size", DEFAULT_SIZE);
+
+        return new BullseyeGlyph(primary, secondary, size);
     }
 
     private static Glyph dotGlyph(Element glyphRoot) {
@@ -58,6 +68,12 @@ public abstract class GlyphFactory {
 
     }
 
+    private static Color getColor(Element glyphRoot, String colorRoot,
+                                  Color defaultColor) {
+        Element colorElement = glyphRoot.element(colorRoot);
+        return ColorFactory.instantiate(colorElement, defaultColor);
+
+    }
     private static String getClassName(Element glyphRoot) {
         Element cnElem = glyphRoot.element("class");
         String className = cnElem.getTextTrim();

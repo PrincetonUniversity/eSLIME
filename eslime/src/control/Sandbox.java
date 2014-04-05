@@ -19,15 +19,20 @@
 
 package control;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+
 public class Sandbox {
 
-    public static void main(String[] args) {
-        int a = 1;
-        int b = 2;
-
-        double c = 3.0 * ((double) a / b);
-
-        System.out.println(c);
+    public static void main(String[] args) throws Exception {
+        BufferedImage img = new BufferedImage(100, 100, BufferedImage.TYPE_INT_ARGB);
+        Graphics2D g = (Graphics2D) img.getGraphics();
+        g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        g.setColor(Color.YELLOW);
+        g.fillOval(50, 50, 10, 10);
+        ImageIO.write(img, "png", new File("jaggies.png"));
     }
 
 }

@@ -31,9 +31,32 @@ import java.awt.*;
 public abstract class ColorFactory {
     public static final Color DEFAULT_COLOR = Color.WHITE;
 
+    /**
+     * Color instantiator that uses system-wide default color.
+     */
     public static Color instantiate(Element root) {
         if (root == null) {
             return DEFAULT_COLOR;
+        }
+
+        // For the moment, we only support hex color encoding.
+        Element hexElement = root.element("hex");
+
+        if (hexElement == null) {
+            throw new IllegalArgumentException("You must specify the hex code for the color you want.");
+        }
+
+        String hex = "0x" + hexElement.getTextTrim();
+        Color color = Color.decode(hex);
+        return color;
+    }
+
+    /**
+     * Color instantiator that allows for an alternate default color.
+     */
+    public static Color instantiate(Element root, Color defaultColor) {
+        if (root == null) {
+            return defaultColor;
         }
 
         // For the moment, we only support hex color encoding.

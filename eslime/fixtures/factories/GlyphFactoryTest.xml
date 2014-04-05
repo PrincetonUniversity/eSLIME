@@ -36,4 +36,16 @@
     <dot-case-default>
         <class>dot</class>
     </dot-case-default>
+
+    <bullseye-case>
+        <class>bullseye</class>
+        <primary-color>
+            <hex>001122</hex>
+        </primary-color>
+        <secondary-color>
+            <hex>334455</hex>
+        </secondary-color>
+        <size>0.3</size>
+    </bullseye-case>
+
 </fixture>
