@@ -50,9 +50,9 @@ public class MapVisualization implements Visualization {
         Graphics2D g = (Graphics2D) img.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 
-        members.getHighlightManager().setImage(img);
+        members.getHighlightManager().setGraphics(g);
 
-        CoordinateRenderer renderer = new CoordinateRenderer(img, translator, members);
+        CoordinateRenderer renderer = new CoordinateRenderer(g, translator, members);
         for (Coordinate c : members.getCoordinates()) {
             renderer.render(c, systemState);
         }

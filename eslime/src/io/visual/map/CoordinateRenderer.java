@@ -26,19 +26,18 @@ import layers.SystemState;
 import structural.identifiers.Coordinate;
 
 import java.awt.*;
-import java.awt.image.BufferedImage;
 
 /**
  * Created by dbborens on 4/1/14.
  */
 public class CoordinateRenderer {
 
-    private BufferedImage image;
+    private Graphics2D graphics;
     private PixelTranslator translator;
     private MapState mapState;
 
-    public CoordinateRenderer(BufferedImage image, PixelTranslator translator, MapState mapState) {
-        this.image = image;
+    public CoordinateRenderer(Graphics2D graphics, PixelTranslator translator, MapState mapState) {
+        this.graphics = graphics;
         this.translator = translator;
         this.mapState = mapState;
     }
@@ -50,23 +49,21 @@ public class CoordinateRenderer {
     }
 
     private void renderFill(Coordinate toRender, SystemState systemState) {
-        Graphics g = image.getGraphics();
         Color color = mapState.getColorManager().getColor(toRender, systemState);
         Polygon p = translator.makePolygon(toRender);
 
         // Flood region with background color
-        g.setColor(color);
-        g.fillPolygon(p);
+        graphics.setColor(color);
+        graphics.fillPolygon(p);
     }
 
     private void renderOutline(Coordinate toRender, SystemState systemState) {
-        Graphics g = image.getGraphics();
         Color color = mapState.getColorManager().getBorderColor();
         Polygon p = translator.makePolygon(toRender);
 
         // Flood region with background color
-        g.setColor(color);
-        g.drawPolygon(p);
+        graphics.setColor(color);
+        graphics.drawPolygon(p);
     }
 
     private void renderHighlights(Coordinate toRender, SystemState systemState) {

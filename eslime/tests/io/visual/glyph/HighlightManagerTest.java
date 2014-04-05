@@ -25,6 +25,7 @@ import io.visual.highlight.HighlightManager;
 import layers.MockSystemState;
 import test.EslimeLatticeTestCase;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -45,8 +46,9 @@ public class HighlightManagerTest extends EslimeLatticeTestCase {
 
     public void testSetImage() throws Exception {
         BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-        query.setImage(image);
-        assertEquals(image, glyph.getImage());
+
+        query.setGraphics((Graphics2D) image.getGraphics());
+        assertEquals(image, glyph.getGraphics());
     }
 
 

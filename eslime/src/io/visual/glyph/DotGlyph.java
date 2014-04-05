@@ -64,9 +64,8 @@ public class DotGlyph extends Glyph {
         int x = center.x() - radius;
         int y = center.y() - radius;
 
-        Graphics g = image.getGraphics();
-        g.setColor(color);
-        g.fillOval(x, y, radius * 2, radius * 2);
+        graphics.setColor(color);
+        graphics.fillOval(x, y, radius * 2, radius * 2);
     }
 
     @Override

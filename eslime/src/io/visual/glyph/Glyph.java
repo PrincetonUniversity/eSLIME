@@ -24,7 +24,7 @@ package io.visual.glyph;
 import io.visual.map.PixelTranslator;
 import structural.identifiers.Coordinate;
 
-import java.awt.image.BufferedImage;
+import java.awt.*;
 
 /**
  * A glyph is an overlay onto a lattice cell. It is used for highlighting in
@@ -39,7 +39,7 @@ public abstract class Glyph {
     // The pixel translator converts coordinates to pixels.
     protected PixelTranslator translator;
 
-    protected BufferedImage image;
+    protected Graphics2D graphics;
 
     public void init(PixelTranslator translator) {
         this.translator = translator;
@@ -47,12 +47,10 @@ public abstract class Glyph {
     }
 
     /**
-     * Set the image to which the glyphs should be written.
-     *
-     * @param image
+     * Set the Graphics object to which the glyphs should be written.
      */
-    public void setImage(BufferedImage image) {
-        this.image = image;
+    public void setGraphics(Graphics2D graphics) {
+        this.graphics = graphics;
     }
 
     /**

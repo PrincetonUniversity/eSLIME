@@ -26,7 +26,7 @@ import io.visual.map.PixelTranslator;
 import layers.SystemState;
 import structural.identifiers.Coordinate;
 
-import java.awt.image.BufferedImage;
+import java.awt.*;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -44,9 +44,9 @@ public class HighlightManager {
         glyphMap.put(channel, glyph);
     }
 
-    public void setImage(BufferedImage image) {
+    public void setGraphics(Graphics2D graphics) {
         for (Glyph glyph : glyphMap.values()) {
-            glyph.setImage(image);
+            glyph.setGraphics(graphics);
         }
     }
 

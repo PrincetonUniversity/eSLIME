@@ -76,10 +76,11 @@ public class BullseyeGlyph extends Glyph {
             int y = center.y() - radius;
 
             // Outermost circle.
-            Graphics g = image.getGraphics();
-            g.setColor(color);
 
-            g.fillOval(x, y, radius * 2, radius * 2);
+            // Not sure why I have to set this again, but oh well. Anything to avoid jaggies!
+//            graphics.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+            graphics.setColor(color);
+            graphics.fillOval(x, y, radius * 2, radius * 2);
         }
     }
 

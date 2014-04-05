@@ -23,17 +23,25 @@ package io.visual.glyph;
 
 import structural.identifiers.Coordinate;
 
-import java.awt.image.BufferedImage;
+import java.awt.*;
 
 /**
  * Created by dbborens on 4/2/14.
  */
 public class MockGlyph extends Glyph {
-    private BufferedImage image;
+    private Graphics2D graphics;
     private Coordinate lastOverlaid;
 
     public MockGlyph() {
         lastOverlaid = null;
+    }
+
+    public Graphics2D getGraphics() {
+        return graphics;
+    }
+
+    public void setGraphics(Graphics2D graphics) {
+        this.graphics = graphics;
     }
 
     @Override
@@ -49,14 +57,6 @@ public class MockGlyph extends Glyph {
         this.lastOverlaid = c;
     }
 
-    public BufferedImage getImage() {
-        return image;
-    }
-
-    @Override
-    public void setImage(BufferedImage image) {
-        this.image = image;
-    }
 
     @Override
     public boolean equals(Object obj) {
