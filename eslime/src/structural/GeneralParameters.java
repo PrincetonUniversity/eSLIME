@@ -19,7 +19,7 @@
 
 package structural;
 
-import io.project.ProjectLoader;
+import io.loader.ProjectLoader;
 import org.dom4j.*;
 import structural.utilities.XmlUtil;
 

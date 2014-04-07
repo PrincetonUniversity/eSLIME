@@ -20,7 +20,7 @@
 package layers;
 
 import geometry.Geometry;
-import io.project.GeometryManager;
+import io.factory.GeometryFactory;
 import layers.cell.CellLayer;
 import layers.solute.SoluteLayer;
 import layers.solute.SoluteLayerFactory;
@@ -42,7 +42,7 @@ public class LayerManager {
         // Null default constructor, used in mock testing
     }
 
-    public LayerManager(Element layerRoot, GeometryManager factory) {
+    public LayerManager(Element layerRoot, GeometryFactory factory) {
         // Build the Cell layer, if present
         if (hasCellElement(layerRoot)) {
             cellLayer = buildCellLayer(layerRoot, factory);
@@ -59,7 +59,7 @@ public class LayerManager {
         }
     }
 
-    private void initSoluteLayer(Element e, GeometryManager factory) {
+    private void initSoluteLayer(Element e, GeometryFactory factory) {
         String id = e.element("id").getTextTrim();
         SoluteLayer layer = SoluteLayerFactory.instantiate(e, factory, this);
         soluteLayers.put(id, layer);
@@ -70,7 +70,7 @@ public class LayerManager {
         return (elems.size() > 0);
     }
 
-    private CellLayer buildCellLayer(Element layerRoot, GeometryManager factory) {
+    private CellLayer buildCellLayer(Element layerRoot, GeometryFactory factory) {
         Element e = layerRoot.element("cell-layer");
         Geometry geometry = factory.make(e);
         CellLayer layer = new CellLayer(geometry, GEOMETRY_ID);

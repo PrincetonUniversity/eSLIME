@@ -19,8 +19,8 @@
 
 package processes.gillespie;
 
-import io.project.ProcessFactory;
-import io.project.ProcessLoader;
+import io.factory.ProcessFactory;
+import io.loader.ProcessLoader;
 import layers.LayerManager;
 import org.dom4j.Element;
 import processes.Process;

@@ -19,10 +19,10 @@
 
 package control;
 
-import io.project.GeometryManager;
-import io.project.ProcessFactory;
-import io.project.ProcessLoader;
-import io.project.ProjectLoader;
+import io.factory.GeometryFactory;
+import io.factory.ProcessFactory;
+import io.loader.ProcessLoader;
+import io.loader.ProjectLoader;
 import io.serialize.SerializationManager;
 import layers.LayerManager;
 import org.dom4j.Element;
@@ -49,7 +49,7 @@ public class Runner implements Runnable {
         // mostly invoked once in a hierarchical build process.
         // Is there a good pattern for this?
         GeneralParameters p;
-        GeometryManager gm;
+        GeometryFactory gm;
         ProjectLoader pp;
         ProcessLoader loader;
         LayerManager lm;
@@ -62,7 +62,7 @@ public class Runner implements Runnable {
             Element processRoot = pp.getElement("cell-processes");
             loader = new ProcessLoader(processRoot);
             p = new GeneralParameters(pp);
-            gm = new GeometryManager(pp.getElement("geometry"));
+            gm = new GeometryFactory(pp.getElement("geometry"));
             lm = new LayerManager(pp.getElement("layers"), gm);
             factory = new ProcessFactory(loader, lm, p);
             pm = new ProcessManager(factory, p);

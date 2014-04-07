@@ -22,7 +22,7 @@ package layers.solute;
 import continuum.solvers.EquilibriumSolver;
 import continuum.solvers.SolverFactory;
 import geometry.Geometry;
-import io.project.GeometryManager;
+import io.factory.GeometryFactory;
 import layers.LayerManager;
 import org.dom4j.Element;
 
@@ -46,9 +46,9 @@ public abstract class SoluteLayerFactory {
             // No finite time solvers yet
     };
 
-    public static SoluteLayer instantiate(Element layerRoot, GeometryManager geometryManager, LayerManager layerManager) {
+    public static SoluteLayer instantiate(Element layerRoot, GeometryFactory geometryFactory, LayerManager layerManager) {
         String layerClass = layerRoot.element("class").getTextTrim();
-        Geometry geometry = geometryManager.make(layerRoot);
+        Geometry geometry = geometryFactory.make(layerRoot);
         if (layerClass.equalsIgnoreCase("equilibrium")) {
             return equilibriumLayer(layerRoot, geometry, layerManager);
         } else if (layerClass.equalsIgnoreCase("integration")) {

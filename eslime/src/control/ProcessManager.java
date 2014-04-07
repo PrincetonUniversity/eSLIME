@@ -19,7 +19,7 @@
 
 package control;
 
-import io.project.ProcessFactory;
+import io.factory.ProcessFactory;
 import processes.Process;
 import processes.StepState;
 import structural.GeneralParameters;

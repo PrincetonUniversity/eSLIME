@@ -21,6 +21,7 @@
 
 package io.visual.glyph;
 
+import io.factory.GlyphFactory;
 import org.dom4j.Element;
 import test.EslimeTestCase;
 

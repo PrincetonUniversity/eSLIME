@@ -19,7 +19,7 @@
 
 package control;
 
-import io.project.MockProcessFactory;
+import io.factory.MockProcessFactory;
 import junit.framework.TestCase;
 import processes.MockProcess;
 import processes.Process;

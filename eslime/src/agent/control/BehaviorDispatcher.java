@@ -21,7 +21,7 @@ package agent.control;
 
 import agent.Behavior;
 import cells.BehaviorCell;
-import io.project.BehaviorLoader;
+import io.loader.BehaviorLoader;
 import layers.LayerManager;
 import org.dom4j.Element;
 import structural.GeneralParameters;

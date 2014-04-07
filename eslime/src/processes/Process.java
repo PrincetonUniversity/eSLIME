@@ -20,9 +20,9 @@
 package processes;
 
 import geometry.Geometry;
-import io.project.CellFactory;
-import io.project.CoordinateFactory;
-import io.project.ProcessLoader;
+import io.factory.CellFactory;
+import io.factory.CoordinateFactory;
+import io.loader.ProcessLoader;
 import layers.LayerManager;
 import org.dom4j.Element;
 import processes.gillespie.GillespieState;

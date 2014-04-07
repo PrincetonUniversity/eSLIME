@@ -22,9 +22,9 @@
 package io.visual.map;
 
 import io.visual.color.ColorManager;
-import io.visual.color.ColorManagerFactory;
+import io.factory.ColorManagerFactory;
 import io.visual.highlight.HighlightManager;
-import io.visual.highlight.HighlightManagerFactory;
+import io.factory.HighlightManagerFactory;
 import org.dom4j.Element;
 import structural.utilities.XmlUtil;
 

@@ -21,6 +21,7 @@
 
 package io.visual.color;
 
+import io.factory.ColorManagerFactory;
 import org.dom4j.Element;
 import test.EslimeTestCase;
 

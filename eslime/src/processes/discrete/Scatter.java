@@ -20,8 +20,8 @@
 package processes.discrete;
 
 import cells.Cell;
-import io.project.CellFactory;
-import io.project.ProcessLoader;
+import io.factory.CellFactory;
+import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
 import processes.gillespie.GillespieState;

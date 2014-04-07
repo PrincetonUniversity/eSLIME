@@ -21,7 +21,7 @@ package processes.discrete;
 
 import cells.Cell;
 import geometry.Geometry;
-import io.project.ProcessLoader;
+import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.MaxTargetHelper;
 import processes.StepState;

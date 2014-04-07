@@ -20,7 +20,7 @@
 package processes.discrete;
 
 import cells.Cell;
-import io.project.ProcessLoader;
+import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
 import processes.gillespie.GillespieState;

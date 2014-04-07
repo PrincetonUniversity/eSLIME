@@ -19,7 +19,7 @@
 
 package processes.continuum;
 
-import io.project.ProcessLoader;
+import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.Process;
 import processes.gillespie.GillespieState;

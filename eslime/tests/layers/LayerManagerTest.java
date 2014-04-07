@@ -19,7 +19,7 @@
 
 package layers;
 
-import io.project.GeometryManager;
+import io.factory.GeometryFactory;
 import layers.solute.SoluteLayer;
 import org.dom4j.Element;
 import test.EslimeTestCase;
@@ -39,7 +39,7 @@ public class LayerManagerTest extends EslimeTestCase {
 
         // Construct geometry manager
         Element geomElem = root.element("geometry");
-        GeometryManager gm = new GeometryManager(geomElem);
+        GeometryFactory gm = new GeometryFactory(geomElem);
 
         // Construct layer manager instances
         Element lr1 = root.element("first-case");

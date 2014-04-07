@@ -21,7 +21,7 @@ package processes.continuum;
 
 import cells.MockCell;
 import geometry.MockGeometry;
-import io.project.ProcessLoader;
+import io.loader.ProcessLoader;
 import layers.LayerManager;
 import layers.MockLayerManager;
 import layers.MockSoluteLayer;

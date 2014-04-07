@@ -20,7 +20,7 @@
 package layers.solute;
 
 import geometry.MockGeometry;
-import geometry.MockGeometryManager;
+import geometry.MockGeometryFactory;
 import junit.framework.TestCase;
 import layers.MockLayerManager;
 import org.dom4j.Element;
@@ -53,7 +53,7 @@ public class SoluteLayerFactoryTest extends TestCase {
         id.setText("testLayer");
         layerRoot.add(id);
 
-        MockGeometryManager gm = new MockGeometryManager();
+        MockGeometryFactory gm = new MockGeometryFactory();
         MockGeometry geom = new MockGeometry();
         gm.setGeometry(geom);
 

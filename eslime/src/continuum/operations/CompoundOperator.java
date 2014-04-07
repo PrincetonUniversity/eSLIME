@@ -20,7 +20,7 @@
 package continuum.operations;
 
 import geometry.Geometry;
-import io.project.OperatorLoader;
+import io.loader.OperatorLoader;
 import org.dom4j.Element;
 import structural.utilities.EpsilonUtil;
 
