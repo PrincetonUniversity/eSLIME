@@ -65,9 +65,9 @@ public abstract class DoubleArgumentFactory {
         String className = stochastic.getName();
 
         if (className.equalsIgnoreCase("constant")) {
-            return getConstant(valueElement);
+            return getConstant(stochastic);
         } else if (className.equalsIgnoreCase("uniform")) {
-            return getUniformDouble(valueElement, random);
+            return getUniformDouble(stochastic, random);
         } else {
             throw new IllegalArgumentException("Unrecognized argument type '" + className + "'");
         }
@@ -75,7 +75,7 @@ public abstract class DoubleArgumentFactory {
 
     private static Argument<Double> getUniformDouble(Element valueElement, Random random) {
         double min = instantiate(valueElement, "min", random).next();
-        double max = instantiate(valueElement, "min", random).next();
+        double max = instantiate(valueElement, "max", random).next();
 
         Argument<Double> ret = new UniformDouble(min, max, random);
         return ret;

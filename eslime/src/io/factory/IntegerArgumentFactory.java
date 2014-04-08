@@ -65,9 +65,9 @@ public abstract class IntegerArgumentFactory {
         String className = stochastic.getName();
 
         if (className.equalsIgnoreCase("constant")) {
-            return getConstant(valueElement);
+            return getConstant(stochastic);
         } else if (className.equalsIgnoreCase("uniform")) {
-            return getUniformInteger(valueElement, random);
+            return getUniformInteger(stochastic, random);
         } else {
             throw new IllegalArgumentException("Unrecognized argument type '" + className + "'");
         }
@@ -75,7 +75,7 @@ public abstract class IntegerArgumentFactory {
 
     private static Argument<Integer> getUniformInteger(Element valueElement, Random random) {
         int min = instantiate(valueElement, "min", random).next();
-        int max = instantiate(valueElement, "min", random).next();
+        int max = instantiate(valueElement, "max", random).next();
 
         Argument<Integer> ret = new UniformInteger(min, max, random);
         return ret;
