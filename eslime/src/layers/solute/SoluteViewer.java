@@ -19,8 +19,8 @@
 
 package layers.solute;
 
+import control.identifiers.Coordinate;
 import geometry.Geometry;
-import structural.identifiers.Coordinate;
 import structural.postprocess.SolutionViewer;
 
 public class SoluteViewer {

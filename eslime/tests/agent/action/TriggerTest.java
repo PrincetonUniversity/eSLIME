@@ -23,11 +23,11 @@ import agent.targets.MockTargetRule;
 import agent.targets.TargetOccupiedNeighbors;
 import agent.targets.TargetRule;
 import cells.MockCell;
+import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import layers.cell.CellUpdateManager;
-import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 import java.util.Random;

@@ -22,11 +22,11 @@ package layers;
 import cells.Cell;
 import cells.FissionCell;
 import cells.SimpleCell;
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.MockGeometry;
 import layers.cell.CellLayerContent;
 import layers.cell.MockCellLayerIndices;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 public class CellLayerContentTest extends EslimeTestCase {

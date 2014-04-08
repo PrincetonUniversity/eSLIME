@@ -19,11 +19,11 @@
 
 package control;
 
+import control.halt.HaltCondition;
+import control.halt.StepMaxReachedEvent;
 import io.serialize.MockSerializationManager;
 import junit.framework.TestCase;
 import structural.MockGeneralParameters;
-import structural.halt.HaltCondition;
-import structural.halt.StepMaxReachedEvent;
 
 /**
  * Created by David B Borenstein on 1/7/14.

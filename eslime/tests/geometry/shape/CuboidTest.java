@@ -19,10 +19,10 @@
 
 package geometry.shape;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.lattice.CubicLattice;
 import geometry.lattice.Lattice;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 public class CuboidTest extends EslimeTestCase {

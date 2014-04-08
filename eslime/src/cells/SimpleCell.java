@@ -19,7 +19,7 @@
 
 package cells;
 
-import structural.identifiers.Coordinate;
+import control.identifiers.Coordinate;
 
 /**
  * class SimpleCell

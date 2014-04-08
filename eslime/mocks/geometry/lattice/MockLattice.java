@@ -19,7 +19,7 @@
 
 package geometry.lattice;
 
-import structural.identifiers.Coordinate;
+import control.identifiers.Coordinate;
 
 public class MockLattice extends Lattice {
 

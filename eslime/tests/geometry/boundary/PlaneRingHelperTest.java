@@ -19,11 +19,11 @@
 
 package geometry.boundary;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.boundaries.PlaneRingHelper;
 import geometry.lattice.Lattice;
 import geometry.lattice.RectangularLattice;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 public class PlaneRingHelperTest extends EslimeTestCase {

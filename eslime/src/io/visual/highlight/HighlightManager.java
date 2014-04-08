@@ -21,10 +21,10 @@
 
 package io.visual.highlight;
 
+import control.identifiers.Coordinate;
 import io.visual.glyph.Glyph;
 import io.visual.map.PixelTranslator;
 import layers.SystemState;
-import structural.identifiers.Coordinate;
 
 import java.awt.*;
 import java.util.HashMap;

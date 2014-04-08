@@ -19,10 +19,10 @@
 
 package io.serialize;
 
+import control.GeneralParameters;
+import control.halt.HaltCondition;
+import control.identifiers.Coordinate;
 import layers.LayerManager;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
-import structural.identifiers.Coordinate;
 
 import java.io.BufferedWriter;
 import java.io.File;

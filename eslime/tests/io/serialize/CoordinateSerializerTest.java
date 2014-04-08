@@ -19,9 +19,9 @@
 
 package io.serialize;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import org.dom4j.Element;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 import structural.utilities.CoordinateSerializer;
 import test.EslimeTestCase;
 

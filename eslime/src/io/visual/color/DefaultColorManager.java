@@ -21,8 +21,8 @@
 
 package io.visual.color;
 
+import control.identifiers.Coordinate;
 import layers.SystemState;
-import structural.identifiers.Coordinate;
 
 import java.awt.*;
 

@@ -21,9 +21,9 @@
 
 package io.visual.color;
 
+import control.identifiers.Coordinate;
 import junit.framework.TestCase;
 import layers.MockSystemState;
-import structural.identifiers.Coordinate;
 
 import java.awt.*;
 

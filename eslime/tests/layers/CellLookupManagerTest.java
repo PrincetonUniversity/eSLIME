@@ -21,11 +21,11 @@ package layers;
 
 import cells.Cell;
 import cells.SimpleCell;
+import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import junit.framework.TestCase;
 import layers.cell.CellLookupManager;
 import layers.cell.MockCellLayerContent;
-import structural.identifiers.Coordinate;
 
 public class CellLookupManagerTest extends TestCase {
 

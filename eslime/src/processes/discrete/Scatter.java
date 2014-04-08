@@ -20,15 +20,15 @@
 package processes.discrete;
 
 import cells.Cell;
+import control.GeneralParameters;
+import control.halt.HaltCondition;
+import control.halt.LatticeFullEvent;
+import control.identifiers.Coordinate;
 import io.factory.CellFactory;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
 import processes.gillespie.GillespieState;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
-import structural.halt.LatticeFullEvent;
-import structural.identifiers.Coordinate;
 
 import java.util.HashSet;
 import java.util.Random;

@@ -21,8 +21,8 @@
 
 package io.serialize.binary;
 
+import control.identifiers.Coordinate;
 import structural.MockGeneralParameters;
-import structural.identifiers.Coordinate;
 import structural.utilities.FileConventions;
 import test.EslimeLatticeTestCase;
 

@@ -19,10 +19,10 @@
 
 package io.factory;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.Geometry;
 import org.dom4j.Element;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 
 /**
  * @author dbborens

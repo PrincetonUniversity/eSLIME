@@ -21,10 +21,10 @@ package io.factory;
 
 import agent.action.Action;
 import cells.BehaviorCell;
+import control.GeneralParameters;
 import layers.LayerManager;
 import org.dom4j.Attribute;
 import org.dom4j.Element;
-import structural.GeneralParameters;
 import structural.RangeMap;
 
 import java.util.List;
@@ -34,14 +34,14 @@ import java.util.List;
  * object. Each choice has a weighting and one or more actions to be executed in
  * sequence. If more than one action is specified, the actions are executed in
  * the order specified whenever the option is chosen.
- *
+ * <p/>
  * For examples, see
  * Created by dbborens on 3/6/14.
  */
 public abstract class ActionChooserFactory {
 
     public static RangeMap<Action> instantiate(Element base, BehaviorCell callback, LayerManager layerManager,
-                                              GeneralParameters p) {
+                                               GeneralParameters p) {
 
         RangeMap<Action> chooser = new RangeMap<>();
         // Iterate through all enumerated options.

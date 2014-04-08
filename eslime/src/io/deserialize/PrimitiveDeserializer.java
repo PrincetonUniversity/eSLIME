@@ -21,7 +21,7 @@
 
 package io.deserialize;
 
-import structural.identifiers.Coordinate;
+import control.identifiers.Coordinate;
 
 import java.io.DataInputStream;
 import java.io.IOException;

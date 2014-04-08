@@ -22,6 +22,7 @@
 package io.deserialize;
 
 import cells.MockCell;
+import control.identifiers.Coordinate;
 import io.serialize.Serializer;
 import io.serialize.binary.ContinuumStateWriter;
 import io.serialize.binary.HighlightWriter;
@@ -32,7 +33,6 @@ import layers.LightweightSystemState;
 import layers.MockSoluteLayer;
 import no.uib.cipr.matrix.DenseVector;
 import structural.MockGeneralParameters;
-import structural.identifiers.Coordinate;
 import structural.postprocess.SolutionViewer;
 import test.EslimeLatticeTestCase;
 

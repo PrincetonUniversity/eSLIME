@@ -19,7 +19,7 @@
 
 package layers.cell;
 
-import structural.identifiers.Coordinate;
+import control.identifiers.Coordinate;
 
 import java.util.*;
 

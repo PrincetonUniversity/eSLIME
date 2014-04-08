@@ -20,7 +20,7 @@
 package layers.cell;
 
 import cells.Cell;
-import structural.identifiers.Coordinate;
+import control.identifiers.Coordinate;
 
 public class MockCellLayerIndices extends CellLayerIndices {
 

@@ -21,8 +21,8 @@
 
 package io.deserialize;
 
+import control.identifiers.Coordinate;
 import geometry.MockGeometry;
-import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 import java.io.BufferedInputStream;

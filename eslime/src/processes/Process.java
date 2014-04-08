@@ -19,6 +19,10 @@
 
 package processes;
 
+import control.GeneralParameters;
+import control.halt.HaltCondition;
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.Geometry;
 import io.factory.CellFactory;
 import io.factory.CoordinateFactory;
@@ -26,10 +30,6 @@ import io.loader.ProcessLoader;
 import layers.LayerManager;
 import org.dom4j.Element;
 import processes.gillespie.GillespieState;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 
 import java.util.ArrayList;
 

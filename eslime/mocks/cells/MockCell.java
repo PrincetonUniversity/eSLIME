@@ -19,7 +19,7 @@
 
 package cells;
 
-import structural.identifiers.Coordinate;
+import control.identifiers.Coordinate;
 
 /**
  * Mock cell class used for testing. We make it extend from BehaviorCell

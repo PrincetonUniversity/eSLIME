@@ -19,6 +19,8 @@
 
 package geometry.geometry;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.Geometry;
 import geometry.MockGeometry;
 import geometry.boundaries.Boundary;
@@ -28,8 +30,6 @@ import geometry.lattice.RectangularLattice;
 import geometry.shape.MockShape;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 /**

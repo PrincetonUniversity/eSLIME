@@ -21,9 +21,9 @@ package layers;
 
 import cells.Cell;
 import cells.SimpleCell;
+import control.identifiers.Coordinate;
 import junit.framework.TestCase;
 import layers.cell.CellLayerIndices;
-import structural.identifiers.Coordinate;
 
 public class CellLayerIndicesTest extends TestCase {
 

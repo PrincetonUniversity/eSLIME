@@ -21,9 +21,9 @@
 
 package io.visual.map;
 
+import control.identifiers.Coordinate;
 import io.visual.highlight.HighlightManager;
 import layers.SystemState;
-import structural.identifiers.Coordinate;
 
 import java.awt.*;
 

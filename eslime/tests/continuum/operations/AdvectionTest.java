@@ -19,6 +19,8 @@
 
 package continuum.operations;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.*;
 import geometry.boundaries.Boundary;
 import geometry.boundaries.PlaneRingReflecting;
@@ -26,8 +28,6 @@ import geometry.lattice.Lattice;
 import geometry.lattice.RectangularLattice;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 public class AdvectionTest extends EslimeTestCase {

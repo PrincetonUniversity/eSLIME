@@ -19,10 +19,10 @@
 
 package geometry.boundaries;
 
+import control.identifiers.Coordinate;
 import geometry.lattice.Lattice;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
-import structural.identifiers.Coordinate;
 
 public class PlaneRingReflecting extends Boundary {
 

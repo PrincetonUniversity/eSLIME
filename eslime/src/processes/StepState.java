@@ -19,7 +19,7 @@
 
 package processes;
 
-import structural.identifiers.Coordinate;
+import control.identifiers.Coordinate;
 
 import java.util.HashSet;
 import java.util.Set;

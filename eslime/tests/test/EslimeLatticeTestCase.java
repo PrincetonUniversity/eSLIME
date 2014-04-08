@@ -19,10 +19,10 @@
 
 package test;
 
+import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
-import structural.identifiers.Coordinate;
 
 /**
  * Convenience class providing automatic mock infrastructure

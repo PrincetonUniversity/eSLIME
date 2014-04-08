@@ -21,11 +21,11 @@
 
 package io.visual.map;
 
+import control.identifiers.Coordinate;
 import geometry.Geometry;
 import io.visual.Visualization;
 import io.visual.highlight.HighlightManager;
 import layers.SystemState;
-import structural.identifiers.Coordinate;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

@@ -19,7 +19,7 @@
 
 package io.serialize.text;
 
-import structural.identifiers.Extrema;
+import control.identifiers.Extrema;
 
 import java.io.IOException;
 import java.io.Writer;

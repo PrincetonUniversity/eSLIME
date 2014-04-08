@@ -20,15 +20,15 @@
 package processes.discrete;
 
 import cells.Cell;
+import control.GeneralParameters;
+import control.halt.HaltCondition;
+import control.identifiers.Coordinate;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import org.dom4j.Element;
 import processes.MaxTargetHelper;
 import processes.StepState;
 import processes.gillespie.GillespieState;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
-import structural.identifiers.Coordinate;
 import structural.utilities.XmlUtil;
 
 import java.util.ArrayList;

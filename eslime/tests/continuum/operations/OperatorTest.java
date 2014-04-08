@@ -19,9 +19,9 @@
 
 package continuum.operations;
 
+import control.identifiers.Coordinate;
 import geometry.Geometry;
 import geometry.MockGeometry;
-import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 public class OperatorTest extends EslimeTestCase {

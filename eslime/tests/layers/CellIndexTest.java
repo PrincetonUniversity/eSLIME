@@ -19,9 +19,9 @@
 
 package layers;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import layers.cell.CellIndex;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 public class CellIndexTest extends EslimeTestCase {

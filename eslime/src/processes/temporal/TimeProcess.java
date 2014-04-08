@@ -19,11 +19,11 @@
 
 package processes.temporal;
 
+import control.GeneralParameters;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.Process;
 import processes.gillespie.GillespieState;
-import structural.GeneralParameters;
 
 /**
  * Convenience superclass for time-specific processes,

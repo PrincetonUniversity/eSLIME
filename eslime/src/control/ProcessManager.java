@@ -19,11 +19,10 @@
 
 package control;
 
+import control.halt.HaltCondition;
 import io.factory.ProcessFactory;
 import processes.Process;
 import processes.StepState;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
 
 import java.util.ArrayList;
 

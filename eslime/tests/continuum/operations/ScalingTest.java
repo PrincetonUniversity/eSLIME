@@ -19,8 +19,8 @@
 
 package continuum.operations;
 
+import control.identifiers.Coordinate;
 import geometry.*;
-import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 public class ScalingTest extends EslimeTestCase {

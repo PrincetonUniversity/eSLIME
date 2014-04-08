@@ -19,10 +19,10 @@
 
 package structural.postprocess;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.Geometry;
 import no.uib.cipr.matrix.DenseVector;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 
 /**
  * Read-only wrapper for solutions to continuum processes.

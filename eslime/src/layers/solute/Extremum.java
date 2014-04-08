@@ -19,7 +19,7 @@
 
 package layers.solute;
 
-import structural.identifiers.Coordinate;
+import control.identifiers.Coordinate;
 
 /**
  * TODO this is redundant with Extrema

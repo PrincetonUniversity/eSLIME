@@ -19,14 +19,14 @@
 
 package processes.discrete;
 
+import control.GeneralParameters;
+import control.halt.HaltCondition;
+import control.identifiers.Coordinate;
 import geometry.Geometry;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
 import processes.gillespie.GillespieState;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
-import structural.identifiers.Coordinate;
 
 import java.util.ArrayList;
 import java.util.List;

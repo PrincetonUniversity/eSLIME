@@ -22,6 +22,7 @@ package layers;
 import cells.Cell;
 import cells.FissionCell;
 import cells.SimpleCell;
+import control.identifiers.Coordinate;
 import geometry.Geometry;
 import geometry.boundaries.Boundary;
 import geometry.boundaries.PlaneRingHard;
@@ -31,7 +32,6 @@ import geometry.shape.Rectangle;
 import geometry.shape.Shape;
 import layers.cell.CellLayer;
 import layers.cell.StateMapViewer;
-import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 import java.util.HashSet;

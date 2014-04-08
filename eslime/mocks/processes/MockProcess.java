@@ -19,11 +19,11 @@
 
 package processes;
 
+import control.GeneralParameters;
+import control.halt.HaltCondition;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.gillespie.GillespieState;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
 
 /**
  * Dummy process that does nothing except report that it

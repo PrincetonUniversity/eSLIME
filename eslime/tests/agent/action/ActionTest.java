@@ -21,10 +21,10 @@ package agent.action;
 
 import cells.BehaviorCell;
 import cells.Cell;
+import control.identifiers.Coordinate;
 import junit.framework.TestCase;
 import layers.LayerManager;
 import layers.MockLayerManager;
-import structural.identifiers.Coordinate;
 
 /**
  * Created by David B Borenstein on 1/23/14.

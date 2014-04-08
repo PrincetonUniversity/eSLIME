@@ -20,9 +20,9 @@
 package layers.cell;
 
 import cells.Cell;
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.Geometry;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 
 import java.util.ArrayList;
 import java.util.HashSet;

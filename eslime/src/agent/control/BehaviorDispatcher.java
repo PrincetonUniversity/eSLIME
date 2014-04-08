@@ -21,11 +21,11 @@ package agent.control;
 
 import agent.Behavior;
 import cells.BehaviorCell;
+import control.GeneralParameters;
+import control.identifiers.Coordinate;
 import io.loader.BehaviorLoader;
 import layers.LayerManager;
 import org.dom4j.Element;
-import structural.GeneralParameters;
-import structural.identifiers.Coordinate;
 
 import java.util.HashMap;
 

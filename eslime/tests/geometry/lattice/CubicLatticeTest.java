@@ -19,8 +19,8 @@
 
 package geometry.lattice;
 
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import test.EslimeTestCase;
 
 public class CubicLatticeTest extends EslimeTestCase {

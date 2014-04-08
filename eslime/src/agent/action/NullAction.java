@@ -20,7 +20,7 @@
 package agent.action;
 
 import cells.BehaviorCell;
-import structural.identifiers.Coordinate;
+import control.identifiers.Coordinate;
 
 /**
  * Created by dbborens on 3/6/14.

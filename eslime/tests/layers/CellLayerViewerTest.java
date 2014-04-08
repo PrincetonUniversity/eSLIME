@@ -22,9 +22,9 @@ package layers;
 import cells.Cell;
 import cells.MockCell;
 import cells.SimpleCell;
+import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import layers.cell.*;
-import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 public class CellLayerViewerTest extends EslimeTestCase {

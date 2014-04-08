@@ -19,11 +19,11 @@
 
 package io.serialize;
 
+import control.GeneralParameters;
+import control.halt.HaltCondition;
+import control.identifiers.Coordinate;
 import layers.LayerManager;
 import org.dom4j.Element;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
-import structural.identifiers.Coordinate;
 import structural.postprocess.ImageSequence;
 
 import java.util.HashSet;

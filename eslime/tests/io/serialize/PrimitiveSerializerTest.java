@@ -21,8 +21,8 @@
 
 package io.serialize;
 
+import control.identifiers.Coordinate;
 import geometry.MockGeometry;
-import structural.identifiers.Coordinate;
 import structural.utilities.PrimitiveSerializer;
 import test.EslimeTestCase;
 

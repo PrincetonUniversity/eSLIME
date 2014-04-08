@@ -19,13 +19,13 @@
 
 package processes.discrete;
 
+import control.GeneralParameters;
+import control.halt.ExtinctionEvent;
+import control.halt.HaltCondition;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
 import processes.gillespie.GillespieState;
-import structural.GeneralParameters;
-import structural.halt.ExtinctionEvent;
-import structural.halt.HaltCondition;
 
 /**
  * Checks for extinction or fixation events.

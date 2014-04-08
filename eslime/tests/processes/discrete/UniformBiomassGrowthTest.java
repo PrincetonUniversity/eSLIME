@@ -21,6 +21,8 @@ package processes.discrete;
 
 import cells.Cell;
 import cells.FissionCell;
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.Geometry;
 import geometry.boundaries.Boundary;
 import geometry.boundaries.PlaneRingHard;
@@ -31,8 +33,6 @@ import geometry.shape.Shape;
 import junit.framework.TestCase;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 
 public class UniformBiomassGrowthTest extends TestCase {
 

@@ -21,6 +21,7 @@
 
 package io.visual.glyph;
 
+import control.identifiers.Coordinate;
 import geometry.Geometry;
 import geometry.boundaries.Absorbing;
 import geometry.boundaries.Boundary;
@@ -36,7 +37,6 @@ import io.visual.map.MapState;
 import io.visual.map.MapVisualization;
 import layers.LightweightSystemState;
 import layers.SystemState;
-import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 import javax.imageio.ImageIO;

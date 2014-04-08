@@ -22,10 +22,10 @@ package agent.action;
 import agent.targets.TargetRule;
 import cells.BehaviorCell;
 import cells.Cell;
+import control.identifiers.Coordinate;
 import layers.LayerManager;
 import layers.cell.CellLayerViewer;
 import layers.cell.CellLookupManager;
-import structural.identifiers.Coordinate;
 
 /**
  * Created by dbborens on 2/11/14.

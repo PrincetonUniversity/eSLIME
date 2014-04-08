@@ -19,12 +19,12 @@
 
 package io.serialize.text;
 
+import control.GeneralParameters;
+import control.halt.FixationEvent;
+import control.halt.HaltCondition;
+import control.halt.StepMaxReachedEvent;
+import control.identifiers.Coordinate;
 import io.serialize.Serializer;
-import structural.GeneralParameters;
-import structural.halt.FixationEvent;
-import structural.halt.HaltCondition;
-import structural.halt.StepMaxReachedEvent;
-import structural.identifiers.Coordinate;
 
 import java.io.BufferedWriter;
 

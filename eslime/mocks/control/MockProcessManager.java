@@ -19,8 +19,8 @@
 
 package control;
 
+import control.halt.HaltCondition;
 import processes.StepState;
-import structural.halt.HaltCondition;
 
 /**
  * Created by dbborens on 1/13/14.

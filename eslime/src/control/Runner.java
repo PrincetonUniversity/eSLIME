@@ -19,6 +19,7 @@
 
 package control;
 
+import control.halt.HaltCondition;
 import io.factory.GeometryFactory;
 import io.factory.ProcessFactory;
 import io.loader.ProcessLoader;
@@ -26,8 +27,6 @@ import io.loader.ProjectLoader;
 import io.serialize.SerializationManager;
 import layers.LayerManager;
 import org.dom4j.Element;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
 
 import java.io.File;
 

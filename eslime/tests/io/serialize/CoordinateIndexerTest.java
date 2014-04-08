@@ -19,12 +19,12 @@
 
 package io.serialize;
 
+import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import io.serialize.text.CoordinateIndexer;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import structural.MockGeneralParameters;
-import structural.identifiers.Coordinate;
 import structural.utilities.FileConventions;
 import test.EslimeTestCase;
 

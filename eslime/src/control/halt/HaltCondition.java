@@ -17,13 +17,17 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package structural.halt;
+package control.halt;
 
+public class HaltCondition extends Exception {
 
-public class StepMaxReachedEvent extends HaltCondition {
+    private double gillespie;
 
-    public StepMaxReachedEvent(double gillespie) {
-        super(gillespie);
+    public HaltCondition(double gillespie) {
+        this.gillespie = gillespie;
     }
 
+    public double getGillespie() {
+        return gillespie;
+    }
 }

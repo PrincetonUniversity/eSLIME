@@ -19,10 +19,10 @@
 
 package cells;
 
+import control.identifiers.Coordinate;
 import layers.LayerManager;
 import layers.cell.CellLayer;
 import layers.cell.CellLookupManager;
-import structural.identifiers.Coordinate;
 
 /**
  * A helper class for cells that triggers

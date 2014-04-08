@@ -19,6 +19,7 @@
 
 package continuum.operations;
 
+import control.identifiers.Coordinate;
 import geometry.*;
 import geometry.boundaries.Boundary;
 import geometry.boundaries.PlaneRingReflecting;
@@ -26,7 +27,6 @@ import geometry.lattice.Lattice;
 import geometry.lattice.RectangularLattice;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
-import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 public class DiffusionTest extends EslimeTestCase {

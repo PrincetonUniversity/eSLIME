@@ -20,9 +20,9 @@
 package io.factory;
 
 import continuum.operations.*;
+import control.identifiers.Coordinate;
 import geometry.Geometry;
 import org.dom4j.Element;
-import structural.identifiers.Coordinate;
 
 /**
  * @author dbborens

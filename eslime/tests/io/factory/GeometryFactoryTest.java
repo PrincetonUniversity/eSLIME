@@ -19,10 +19,10 @@
 
 package io.factory;
 
+import control.identifiers.Coordinate;
 import geometry.Geometry;
 import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;
-import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 /**

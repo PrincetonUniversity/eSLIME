@@ -17,14 +17,19 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package structural.halt;
+package control.halt;
 
-/**
- * Created by dbborens on 3/5/14.
- */
-public class ExtinctionEvent extends HaltCondition {
 
-    public ExtinctionEvent(double time) {
+public class FixationEvent extends HaltCondition {
+
+    private int fixationState;
+
+    public FixationEvent(double time, int fixationState) {
         super(time);
+        this.fixationState = fixationState;
+    }
+
+    public int getFixationState() {
+        return fixationState;
     }
 }

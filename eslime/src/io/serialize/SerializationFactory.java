@@ -19,11 +19,11 @@
 
 package io.serialize;
 
+import control.GeneralParameters;
 import io.serialize.binary.ContinuumStateWriter;
 import io.serialize.interactive.ProgressReporter;
 import io.serialize.text.*;
 import org.dom4j.Element;
-import structural.GeneralParameters;
 
 /**
  * Created by dbborens on 1/17/14.

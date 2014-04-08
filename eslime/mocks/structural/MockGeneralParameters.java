@@ -19,6 +19,8 @@
 
 package structural;
 
+import control.GeneralParameters;
+
 import java.util.Random;
 
 /**

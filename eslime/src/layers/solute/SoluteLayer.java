@@ -20,11 +20,11 @@
 package layers.solute;
 
 import continuum.solvers.Solver;
+import control.identifiers.Coordinate;
 import geometry.Geometry;
 import layers.Layer;
 import layers.LayerManager;
 import no.uib.cipr.matrix.DenseVector;
-import structural.identifiers.Coordinate;
 import structural.postprocess.SolutionViewer;
 
 import java.util.HashMap;

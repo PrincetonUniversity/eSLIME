@@ -19,11 +19,11 @@
 
 package structural.postprocess;
 
+import control.GeneralParameters;
 import geometry.Geometry;
 import io.deserialize.ConditionViewer;
 import io.deserialize.LegacyCellStateReader;
 import io.visual.legacy.HexMapWriter;
-import structural.GeneralParameters;
 
 public class ImageSequence {
 

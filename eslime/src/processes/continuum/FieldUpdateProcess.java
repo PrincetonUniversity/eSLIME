@@ -19,6 +19,9 @@
 
 package processes.continuum;
 
+import control.GeneralParameters;
+import control.halt.HaltCondition;
+import control.identifiers.Coordinate;
 import geometry.Geometry;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
@@ -26,9 +29,6 @@ import layers.cell.CellLayer;
 import layers.solute.SoluteLayer;
 import no.uib.cipr.matrix.DenseVector;
 import processes.StepState;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
-import structural.identifiers.Coordinate;
 
 import java.util.Set;
 

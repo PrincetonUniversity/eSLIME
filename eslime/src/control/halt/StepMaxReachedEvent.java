@@ -17,19 +17,13 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package structural.halt;
+package control.halt;
 
 
-public class FixationEvent extends HaltCondition {
+public class StepMaxReachedEvent extends HaltCondition {
 
-    private int fixationState;
-
-    public FixationEvent(double time, int fixationState) {
-        super(time);
-        this.fixationState = fixationState;
+    public StepMaxReachedEvent(double gillespie) {
+        super(gillespie);
     }
 
-    public int getFixationState() {
-        return fixationState;
-    }
 }

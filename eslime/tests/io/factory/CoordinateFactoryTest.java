@@ -19,13 +19,13 @@
 
 package io.factory;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.CubicMockGeometry;
 import geometry.MockGeometry;
 import geometry.SquareMockGeometry;
 import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 public class CoordinateFactoryTest extends EslimeTestCase {

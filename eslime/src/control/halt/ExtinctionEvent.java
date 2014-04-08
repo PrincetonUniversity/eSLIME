@@ -17,17 +17,14 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package structural.halt;
+package control.halt;
 
-public class HaltCondition extends Exception {
+/**
+ * Created by dbborens on 3/5/14.
+ */
+public class ExtinctionEvent extends HaltCondition {
 
-    private double gillespie;
-
-    public HaltCondition(double gillespie) {
-        this.gillespie = gillespie;
-    }
-
-    public double getGillespie() {
-        return gillespie;
+    public ExtinctionEvent(double time) {
+        super(time);
     }
 }

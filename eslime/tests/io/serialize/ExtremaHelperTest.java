@@ -19,9 +19,9 @@
 
 package io.serialize;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Extrema;
 import io.serialize.text.ExtremaHelper;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Extrema;
 import test.EslimeTestCase;
 
 import java.io.StringWriter;

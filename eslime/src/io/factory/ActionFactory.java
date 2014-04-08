@@ -22,9 +22,9 @@ package io.factory;
 import agent.action.*;
 import agent.targets.TargetRule;
 import cells.BehaviorCell;
+import control.GeneralParameters;
 import layers.LayerManager;
 import org.dom4j.Element;
-import structural.GeneralParameters;
 import structural.RangeMap;
 
 import java.util.Random;

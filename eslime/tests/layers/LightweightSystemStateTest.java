@@ -21,10 +21,10 @@
 
 package layers;
 
+import control.identifiers.Coordinate;
 import geometry.Geometry;
 import io.deserialize.MockCoordinateDeindexer;
 import no.uib.cipr.matrix.DenseVector;
-import structural.identifiers.Coordinate;
 
 import java.util.HashMap;
 import java.util.HashSet;

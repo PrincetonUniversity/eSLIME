@@ -19,8 +19,8 @@
 
 package geometry.shape;
 
+import control.identifiers.Coordinate;
 import geometry.lattice.Lattice;
-import structural.identifiers.Coordinate;
 
 public class MockShape extends Shape {
 

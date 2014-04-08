@@ -19,7 +19,7 @@
 
 package io.deserialize;
 
-import structural.identifiers.Coordinate;
+import control.identifiers.Coordinate;
 import structural.utilities.VectorViewer;
 
 import java.util.HashSet;

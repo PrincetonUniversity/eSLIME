@@ -21,12 +21,9 @@ package io.factory;
 
 import agent.Behavior;
 import agent.MockBehavior;
-import agent.control.BehaviorDispatcher;
 import agent.control.MockBehaviorDispatcher;
-import cells.BehaviorCell;
 import cells.MockCell;
 import io.loader.BehaviorLoader;
-import layers.LayerManager;
 import layers.MockLayerManager;
 import org.dom4j.Element;
 import structural.MockGeneralParameters;
@@ -72,17 +69,5 @@ public class BehaviorLoaderTest extends EslimeTestCase {
         query.loadBehavior(firstBehavior);
         assertEquals(1, dispatcher.getMappedBehaviors().size());
         assertEquals("first-behavior", dispatcher.getLastMappedName());
-    }
-
-    private class ExposedBehaviorLoader extends BehaviorLoader {
-
-        @Override
-        public void loadBehavior(Object o) {
-            super.loadBehavior(o);
-        }
-
-        public ExposedBehaviorLoader(BehaviorDispatcher behaviorDispatcher, BehaviorCell callback, LayerManager layerManager) {
-            super(behaviorDispatcher, callback, layerManager, null);
-        }
     }
 }

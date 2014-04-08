@@ -19,9 +19,9 @@
 
 package structural;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import junit.framework.TestCase;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 
 import java.util.HashSet;
 

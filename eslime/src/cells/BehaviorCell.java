@@ -20,8 +20,8 @@
 package cells;
 
 import agent.control.BehaviorDispatcher;
+import control.identifiers.Coordinate;
 import layers.LayerManager;
-import structural.identifiers.Coordinate;
 import structural.utilities.EpsilonUtil;
 
 /**

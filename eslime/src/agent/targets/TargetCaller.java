@@ -20,8 +20,8 @@
 package agent.targets;
 
 import cells.BehaviorCell;
+import control.identifiers.Coordinate;
 import layers.LayerManager;
-import structural.identifiers.Coordinate;
 
 import java.util.Random;
 

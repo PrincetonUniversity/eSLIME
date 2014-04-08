@@ -24,10 +24,10 @@ import cells.BehaviorCell;
 import cells.Cell;
 import cells.FissionCell;
 import cells.SimpleCell;
+import control.GeneralParameters;
 import layers.LayerManager;
 import layers.cell.CellLayer;
 import org.dom4j.Element;
-import structural.GeneralParameters;
 
 /**
  * Instantiates a cell based on specifications from a cell descriptor

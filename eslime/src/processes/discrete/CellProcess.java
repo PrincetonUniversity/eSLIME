@@ -19,12 +19,12 @@
 
 package processes.discrete;
 
+import control.GeneralParameters;
+import control.identifiers.Coordinate;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import layers.cell.CellLayer;
 import processes.Process;
-import structural.GeneralParameters;
-import structural.identifiers.Coordinate;
 
 public abstract class CellProcess extends Process {
     protected GeneralParameters p;

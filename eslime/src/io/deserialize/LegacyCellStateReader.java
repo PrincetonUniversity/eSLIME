@@ -20,12 +20,12 @@
 package io.deserialize;
 
 
+import control.identifiers.Coordinate;
+import control.identifiers.Extrema;
 import geometry.Geometry;
 import layers.LightweightSystemState;
 import no.uib.cipr.matrix.DenseVector;
 import no.uib.cipr.matrix.Vector;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Extrema;
 import structural.utilities.VectorViewer;
 
 import java.io.BufferedReader;

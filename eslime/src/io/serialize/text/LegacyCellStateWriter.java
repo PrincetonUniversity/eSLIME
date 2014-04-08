@@ -19,14 +19,14 @@
 
 package io.serialize.text;
 
+import control.GeneralParameters;
+import control.halt.HaltCondition;
+import control.identifiers.Coordinate;
+import control.identifiers.Extrema;
 import geometry.Geometry;
 import io.serialize.Serializer;
 import layers.LayerManager;
 import layers.cell.CellLayer;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Extrema;
 
 import java.io.BufferedWriter;
 import java.io.File;

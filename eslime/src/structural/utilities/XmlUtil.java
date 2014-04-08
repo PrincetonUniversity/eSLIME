@@ -79,6 +79,8 @@ public abstract class XmlUtil {
 
     public static int getInteger(Element e, String name, int defaultValue) {
         Element valueElement = e.element(name);
+
+        // No element --> use default
         if (valueElement == null) {
             return defaultValue;
         }
@@ -87,4 +89,5 @@ public abstract class XmlUtil {
         Integer ret = Integer.valueOf(valueText);
         return ret;
     }
+
 }

@@ -19,14 +19,14 @@
 
 package io.serialize.binary;
 
+import control.GeneralParameters;
+import control.halt.HaltCondition;
+import control.identifiers.Coordinate;
+import control.identifiers.Extrema;
 import io.serialize.Serializer;
 import layers.LayerManager;
 import layers.solute.SoluteLayer;
 import no.uib.cipr.matrix.DenseVector;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Extrema;
 import structural.utilities.FileConventions;
 import structural.utilities.PrimitiveSerializer;
 

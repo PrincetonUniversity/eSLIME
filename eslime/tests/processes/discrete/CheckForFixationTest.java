@@ -20,21 +20,21 @@
 package processes.discrete;
 
 import cells.MockCell;
+import control.halt.FixationEvent;
+import control.halt.HaltCondition;
+import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import processes.StepState;
 import processes.gillespie.GillespieState;
-import structural.halt.FixationEvent;
-import structural.halt.HaltCondition;
-import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 /**
  * Fixation is defined as only one cell type existing in the system. The
  * CheckForFixation process should throw a HaltCondition if and only if this
  * definition is met.
- *
+ * <p/>
  * Created by dbborens on 1/13/14.
  */
 public class CheckForFixationTest extends EslimeTestCase {

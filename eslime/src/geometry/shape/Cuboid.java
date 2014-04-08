@@ -19,10 +19,10 @@
 
 package geometry.shape;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.lattice.Lattice;
 import org.dom4j.Element;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -21,8 +21,8 @@ package layers.cell;
 
 import cells.Cell;
 import cells.MockCell;
+import control.identifiers.Coordinate;
 import junit.framework.TestCase;
-import structural.identifiers.Coordinate;
 
 import java.util.IdentityHashMap;
 

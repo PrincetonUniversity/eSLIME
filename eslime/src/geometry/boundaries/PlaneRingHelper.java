@@ -19,9 +19,9 @@
 
 package geometry.boundaries;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.lattice.Lattice;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 
 /**
  * Wraps coordinates in the X direction, honoring any features of the

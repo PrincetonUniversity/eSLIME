@@ -22,8 +22,8 @@ package agent.control;
 import agent.Behavior;
 import agent.MockBehavior;
 import cells.BehaviorCell;
+import control.identifiers.Coordinate;
 import junit.framework.TestCase;
-import structural.identifiers.Coordinate;
 
 /**
  * Created by David B Borenstein on 1/21/14.

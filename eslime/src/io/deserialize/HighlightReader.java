@@ -21,8 +21,8 @@
 
 package io.deserialize;
 
+import control.identifiers.Coordinate;
 import layers.LightweightSystemState;
-import structural.identifiers.Coordinate;
 import structural.utilities.FileConventions;
 
 import java.io.DataInputStream;

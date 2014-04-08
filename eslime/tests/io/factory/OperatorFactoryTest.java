@@ -20,13 +20,13 @@
 package io.factory;
 
 import continuum.operations.*;
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.CubicMockGeometry;
 import geometry.LinearMockGeometry;
 import no.uib.cipr.matrix.Matrix;
 import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 import structural.utilities.CoordinateSerializer;
 import test.EslimeTestCase;
 

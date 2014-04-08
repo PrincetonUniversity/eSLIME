@@ -19,10 +19,10 @@
 
 package geometry.boundaries;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.lattice.Lattice;
 import geometry.shape.Shape;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 
 /**
  * All boundaries are treated as infinite. However, going beyond

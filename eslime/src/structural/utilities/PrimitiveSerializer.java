@@ -21,8 +21,8 @@
 
 package structural.utilities;
 
+import control.identifiers.Coordinate;
 import geometry.Geometry;
-import structural.identifiers.Coordinate;
 
 import java.io.DataOutputStream;
 import java.io.IOException;

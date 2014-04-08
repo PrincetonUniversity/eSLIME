@@ -19,6 +19,7 @@
 
 package io.factory;
 
+import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import junit.framework.TestCase;
 import layers.MockLayerManager;
@@ -37,7 +38,6 @@ import processes.gillespie.GillespieProcess;
 import processes.temporal.ExponentialInverse;
 import processes.temporal.Tick;
 import structural.MockGeneralParameters;
-import structural.identifiers.Coordinate;
 
 /**
  * Created by David B Borenstein on 1/7/14.

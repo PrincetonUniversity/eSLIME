@@ -19,11 +19,11 @@
 
 package structural.postprocess;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.MockGeometry;
 import junit.framework.TestCase;
 import no.uib.cipr.matrix.DenseVector;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 import structural.utilities.EpsilonUtil;
 
 /**

@@ -20,6 +20,7 @@
 package processes.continuum;
 
 import cells.MockCell;
+import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
@@ -29,7 +30,6 @@ import layers.cell.CellLayer;
 import no.uib.cipr.matrix.DenseVector;
 import processes.StepState;
 import processes.gillespie.GillespieState;
-import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 /**

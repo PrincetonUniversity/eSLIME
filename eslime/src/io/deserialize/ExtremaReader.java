@@ -19,8 +19,8 @@
 
 package io.deserialize;
 
-import structural.identifiers.Extrema;
-import structural.identifiers.TemporalCoordinate;
+import control.identifiers.Extrema;
+import control.identifiers.TemporalCoordinate;
 
 import java.io.BufferedReader;
 import java.io.File;

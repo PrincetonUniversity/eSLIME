@@ -21,11 +21,11 @@
 
 package io.serialize.binary;
 
+import control.GeneralParameters;
+import control.halt.HaltCondition;
+import control.identifiers.Coordinate;
 import io.serialize.Serializer;
 import layers.LayerManager;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
-import structural.identifiers.Coordinate;
 import structural.utilities.FileConventions;
 
 import java.io.DataOutputStream;

@@ -21,7 +21,7 @@
 
 package io.visual.glyph;
 
-import structural.identifiers.Coordinate;
+import control.identifiers.Coordinate;
 
 import java.awt.*;
 

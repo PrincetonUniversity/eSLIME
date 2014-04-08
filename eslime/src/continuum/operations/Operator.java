@@ -19,9 +19,9 @@
 
 package continuum.operations;
 
+import control.identifiers.Coordinate;
 import geometry.Geometry;
 import no.uib.cipr.matrix.sparse.CompDiagMatrix;
-import structural.identifiers.Coordinate;
 import structural.utilities.EpsilonUtil;
 import structural.utilities.MatrixUtils;
 

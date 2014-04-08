@@ -21,9 +21,9 @@
 
 package layers;
 
+import control.identifiers.Coordinate;
 import io.deserialize.CoordinateDeindexer;
 import no.uib.cipr.matrix.DenseVector;
-import structural.identifiers.Coordinate;
 
 import java.util.HashMap;
 import java.util.Map;

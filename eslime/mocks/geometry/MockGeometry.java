@@ -19,8 +19,8 @@
 
 package geometry;
 
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 
 import java.util.ArrayList;
 import java.util.HashMap;

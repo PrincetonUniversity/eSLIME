@@ -20,10 +20,10 @@
 package agent.targets;
 
 import cells.MockCell;
+import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
-import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 import java.util.Random;

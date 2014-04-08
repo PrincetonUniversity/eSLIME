@@ -19,8 +19,8 @@
 
 package io.deserialize;
 
-import structural.identifiers.Coordinate;
-import structural.identifiers.Extrema;
+import control.identifiers.Coordinate;
+import control.identifiers.Extrema;
 import test.EslimeTestCase;
 
 import java.io.File;

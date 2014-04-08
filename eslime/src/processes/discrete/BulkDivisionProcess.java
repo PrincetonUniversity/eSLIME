@@ -20,16 +20,16 @@
 package processes.discrete;
 
 import cells.Cell;
+import control.GeneralParameters;
+import control.halt.HaltCondition;
+import control.halt.LatticeFullEvent;
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.Geometry;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.MaxTargetHelper;
 import processes.StepState;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
-import structural.halt.LatticeFullEvent;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -151,7 +151,9 @@ public abstract class BulkDivisionProcess extends CellProcess {
             dNext = new int[]{d.x(), d.y(), d.z()};
 
             // Initialize rel vector
-            for (int i = 0; i < 3; i++) {rel[i] = 0;}
+            for (int i = 0; i < 3; i++) {
+                rel[i] = 0;
+            }
 
             // Decrement the displacement vector by one unit in a randomly chosen
             // direction, weighted so that the path is, on average, straight.

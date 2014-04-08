@@ -20,14 +20,14 @@
 package processes.discrete;
 
 import cells.MockCell;
+import control.halt.ExtinctionEvent;
+import control.halt.HaltCondition;
+import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import junit.framework.TestCase;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import processes.StepState;
-import structural.halt.ExtinctionEvent;
-import structural.halt.HaltCondition;
-import structural.identifiers.Coordinate;
 
 /**
  * Created by dbborens on 3/5/14.

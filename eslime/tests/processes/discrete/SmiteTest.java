@@ -20,11 +20,11 @@
 package processes.discrete;
 
 import cells.SimpleCell;
+import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import processes.gillespie.GillespieState;
-import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 /**

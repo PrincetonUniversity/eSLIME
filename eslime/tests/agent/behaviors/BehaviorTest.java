@@ -25,9 +25,9 @@ import agent.action.MockAction;
 import cells.BehaviorCell;
 import cells.Cell;
 import cells.MockCell;
+import control.identifiers.Coordinate;
 import layers.LayerManager;
 import layers.MockLayerManager;
-import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 /**

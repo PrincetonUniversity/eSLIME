@@ -17,7 +17,7 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package structural.identifiers;
+package control.identifiers;
 
 
 public class NonZeroExtrema extends Extrema {

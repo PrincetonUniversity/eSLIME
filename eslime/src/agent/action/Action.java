@@ -20,8 +20,8 @@
 package agent.action;
 
 import cells.BehaviorCell;
+import control.identifiers.Coordinate;
 import layers.LayerManager;
-import structural.identifiers.Coordinate;
 
 /**
  * Actions are the consituent members of Behaviors. They

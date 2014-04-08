@@ -21,8 +21,8 @@
 
 package io.visual.glyph;
 
+import control.identifiers.Coordinate;
 import io.visual.map.PixelTranslator;
-import structural.identifiers.Coordinate;
 
 import java.awt.*;
 

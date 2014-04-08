@@ -20,6 +20,7 @@
 package processes.discrete;
 
 import cells.MockCell;
+import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import io.factory.MockProcessLoader;
 import layers.MockLayerManager;
@@ -28,7 +29,6 @@ import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;
 import processes.gillespie.GillespieState;
 import structural.MockGeneralParameters;
-import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 /**
@@ -36,7 +36,7 @@ import test.EslimeTestCase;
  * that triggers behaviors in cells. It should not be confused with the Trigger
  * action, which is an action that individual cells can execute as part of a
  * behavior.
- *
+ * <p/>
  * Created by David B Borenstein on 2/18/14.
  */
 public class TriggerProcessTest extends EslimeTestCase {
@@ -45,6 +45,7 @@ public class TriggerProcessTest extends EslimeTestCase {
     private CellLayer layer;
     private MockLayerManager layerManager;
     private MockGeneralParameters p;
+
     @Override
     protected void setUp() throws Exception {
         MockGeometry geom = buildMockGeometry();
@@ -118,7 +119,7 @@ public class TriggerProcessTest extends EslimeTestCase {
         // Set up two neighboring cells and one isolated cell.
         MockCell neighbor1 = new MockCell();
         MockCell neighbor2 = new MockCell();
-        MockCell isolated  = new MockCell();
+        MockCell isolated = new MockCell();
         setUpNeighborhoodTestCase(neighbor1, neighbor2, isolated);
 
 
@@ -143,14 +144,14 @@ public class TriggerProcessTest extends EslimeTestCase {
         layer.getUpdateManager().place(neighbor2, nc2);
 
         // 0, 1, 1
-        Coordinate ni  = geom.getCanonicalSites()[3];
+        Coordinate ni = geom.getCanonicalSites()[3];
         layer.getUpdateManager().place(isolated, ni);
 
         // Since we're using a mock geometry, we have to manually define
         // the neighborhoods.
-        geom.setCellNeighbors(nc1, new Coordinate[] {nc2});
-        geom.setCellNeighbors(nc2, new Coordinate[] {nc1});
-        geom.setCellNeighbors(ni, new Coordinate[] {});
+        geom.setCellNeighbors(nc1, new Coordinate[]{nc2});
+        geom.setCellNeighbors(nc2, new Coordinate[]{nc1});
+        geom.setCellNeighbors(ni, new Coordinate[]{});
 
     }
 

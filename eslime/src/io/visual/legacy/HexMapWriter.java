@@ -19,10 +19,10 @@
 
 package io.visual.legacy;
 
+import control.GeneralParameters;
+import control.identifiers.Coordinate;
 import geometry.Geometry;
 import io.deserialize.ConditionViewer;
-import structural.GeneralParameters;
-import structural.identifiers.Coordinate;
 
 import javax.imageio.ImageIO;
 import java.awt.*;

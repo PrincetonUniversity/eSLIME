@@ -19,11 +19,11 @@
 
 package geometry;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.boundaries.Boundary;
 import geometry.lattice.Lattice;
 import geometry.shape.Shape;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 
 import java.util.ArrayList;
 import java.util.HashMap;

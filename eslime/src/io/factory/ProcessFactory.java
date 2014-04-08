@@ -19,6 +19,7 @@
 
 package io.factory;
 
+import control.GeneralParameters;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import org.dom4j.Element;
@@ -29,7 +30,6 @@ import processes.discrete.*;
 import processes.gillespie.GillespieProcess;
 import processes.temporal.ExponentialInverse;
 import processes.temporal.Tick;
-import structural.GeneralParameters;
 import structural.utilities.XmlUtil;
 
 /**

@@ -19,6 +19,8 @@
 
 package processes.gillespie;
 
+import control.GeneralParameters;
+import control.halt.HaltCondition;
 import io.factory.ProcessFactory;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
@@ -26,8 +28,6 @@ import org.dom4j.Element;
 import processes.Process;
 import processes.StepState;
 import processes.discrete.CellProcess;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
 
 import java.util.HashMap;
 

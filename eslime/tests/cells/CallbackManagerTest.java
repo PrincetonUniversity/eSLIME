@@ -19,12 +19,12 @@
 
 package cells;
 
+import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import junit.framework.TestCase;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import layers.cell.CellLayerViewer;
-import structural.identifiers.Coordinate;
 
 /**
  * Created by dbborens on 2/21/14.

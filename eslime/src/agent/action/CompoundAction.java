@@ -20,8 +20,8 @@
 package agent.action;
 
 import cells.BehaviorCell;
+import control.identifiers.Coordinate;
 import layers.LayerManager;
-import structural.identifiers.Coordinate;
 
 /**
  * An action that calls other actions on run.

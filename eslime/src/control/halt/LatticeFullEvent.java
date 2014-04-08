@@ -17,7 +17,7 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package structural.halt;
+package control.halt;
 
 
 public class LatticeFullEvent extends HaltCondition {

@@ -17,7 +17,7 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package structural;
+package control;
 
 import io.loader.ProjectLoader;
 import org.dom4j.*;
@@ -299,7 +299,7 @@ public class GeneralParameters {
      * @return
      */
     /*public int H() {
-		return height;
+        return height;
 	}*/
 
     /**

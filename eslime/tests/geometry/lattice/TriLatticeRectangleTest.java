@@ -19,10 +19,10 @@
 
 package geometry.lattice;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 /**

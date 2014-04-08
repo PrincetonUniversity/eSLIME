@@ -22,10 +22,10 @@ package io.loader;
 import agent.Behavior;
 import agent.control.BehaviorDispatcher;
 import cells.BehaviorCell;
+import control.GeneralParameters;
 import io.factory.BehaviorFactory;
 import layers.LayerManager;
 import org.dom4j.Element;
-import structural.GeneralParameters;
 
 /**
  * The BehaviorLoader is used to load behaviors and their names into a
@@ -64,7 +64,7 @@ public class BehaviorLoader {
         }
     }
 
-    protected void loadBehavior(Object o) {
+    public void loadBehavior(Object o) {
         Element e = (Element) o;
         String name = e.getName();
         Behavior behavior = BehaviorFactory.instantiate(e, callback, layerManager, p);

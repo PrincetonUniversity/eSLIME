@@ -20,7 +20,7 @@
 package cells;
 
 import agent.control.MockBehaviorDispatcher;
-import structural.identifiers.Coordinate;
+import control.identifiers.Coordinate;
 import test.EslimeLatticeTestCase;
 
 /**

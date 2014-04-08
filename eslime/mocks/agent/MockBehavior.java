@@ -21,7 +21,7 @@ package agent;
 
 import agent.action.Action;
 import cells.BehaviorCell;
-import structural.identifiers.Coordinate;
+import control.identifiers.Coordinate;
 
 import java.util.HashMap;
 

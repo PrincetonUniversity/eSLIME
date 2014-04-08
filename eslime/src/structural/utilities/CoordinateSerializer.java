@@ -19,10 +19,10 @@
 
 package structural.utilities;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 
 /**
  * @author dbborens

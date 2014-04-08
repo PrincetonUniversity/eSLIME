@@ -21,9 +21,9 @@
 
 package io.visual.map;
 
+import control.identifiers.Coordinate;
 import io.visual.color.ColorManager;
 import io.visual.highlight.HighlightManager;
-import structural.identifiers.Coordinate;
 import structural.utilities.EpsilonUtil;
 
 import java.util.Arrays;

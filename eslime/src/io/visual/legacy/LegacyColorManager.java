@@ -19,7 +19,7 @@
 
 package io.visual.legacy;
 
-import structural.GeneralParameters;
+import control.GeneralParameters;
 
 import java.awt.*;
 import java.util.HashMap;

@@ -19,11 +19,11 @@
 
 package io.serialize.text;
 
+import control.GeneralParameters;
+import control.halt.HaltCondition;
+import control.identifiers.Coordinate;
 import io.serialize.Serializer;
 import layers.LayerManager;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
-import structural.identifiers.Coordinate;
 
 import java.io.BufferedWriter;
 import java.io.File;

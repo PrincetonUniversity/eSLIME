@@ -19,11 +19,10 @@
 
 package control;
 
+import control.halt.HaltCondition;
+import control.halt.StepMaxReachedEvent;
 import io.serialize.SerializationManager;
 import processes.StepState;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
-import structural.halt.StepMaxReachedEvent;
 
 public class Integrator {
 

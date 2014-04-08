@@ -19,8 +19,8 @@
 
 package continuum.operations;
 
+import control.identifiers.Coordinate;
 import geometry.Geometry;
-import structural.identifiers.Coordinate;
 
 public class Diffusion extends Operator {
 

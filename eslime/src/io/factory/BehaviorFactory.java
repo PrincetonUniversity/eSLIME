@@ -23,9 +23,9 @@ import agent.Behavior;
 import agent.action.Action;
 import agent.action.CompoundAction;
 import cells.BehaviorCell;
+import control.GeneralParameters;
 import layers.LayerManager;
 import org.dom4j.Element;
-import structural.GeneralParameters;
 
 import java.util.ArrayList;
 

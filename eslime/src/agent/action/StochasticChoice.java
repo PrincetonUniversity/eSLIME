@@ -20,9 +20,9 @@
 package agent.action;
 
 import cells.BehaviorCell;
+import control.identifiers.Coordinate;
 import layers.LayerManager;
 import structural.RangeMap;
-import structural.identifiers.Coordinate;
 
 import java.util.Random;
 
@@ -70,7 +70,7 @@ public class StochasticChoice extends Action {
 
     @Override
     public Action clone(BehaviorCell child) {
-        RangeMap<Action> clonedChooser= chooser.clone();
+        RangeMap<Action> clonedChooser = chooser.clone();
         StochasticChoice cloned = new StochasticChoice(child, getLayerManager(), clonedChooser, random);
         return cloned;
     }

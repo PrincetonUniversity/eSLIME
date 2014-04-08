@@ -21,11 +21,11 @@ package layers;
 
 import cells.Cell;
 import cells.SimpleCell;
+import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import layers.cell.CellUpdateManager;
 import layers.cell.MockCellLayerContent;
 import layers.cell.MockCellLayerIndices;
-import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 public class CellUpdateManagerTest extends EslimeTestCase {

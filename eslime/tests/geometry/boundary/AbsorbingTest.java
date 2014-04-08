@@ -19,6 +19,7 @@
 
 package geometry.boundary;
 
+import control.identifiers.Coordinate;
 import geometry.boundaries.Absorbing;
 import geometry.boundaries.Boundary;
 import geometry.lattice.Lattice;
@@ -26,7 +27,6 @@ import geometry.lattice.RectangularLattice;
 import geometry.lattice.TriangularLattice;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
-import structural.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 public class AbsorbingTest extends EslimeTestCase {

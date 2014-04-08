@@ -21,7 +21,7 @@
 
 package layers;
 
-import structural.identifiers.Coordinate;
+import control.identifiers.Coordinate;
 
 /**
  * Parent class for objects that can report read-only information on a system

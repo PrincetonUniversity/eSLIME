@@ -19,6 +19,8 @@
 
 package geometry.boundary;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.Geometry;
 import geometry.boundaries.Boundary;
 import geometry.boundaries.PlaneRingReflecting;
@@ -27,8 +29,6 @@ import geometry.lattice.RectangularLattice;
 import geometry.lattice.TriangularLattice;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 public class PlaneRingReflectingTest extends EslimeTestCase {

@@ -19,11 +19,11 @@
 
 package processes.temporal;
 
+import control.GeneralParameters;
+import control.halt.HaltCondition;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
 
 /**
  * Simple stochastic process for time scaling. Assumes all cells

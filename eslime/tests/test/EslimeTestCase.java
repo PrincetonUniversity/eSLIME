@@ -19,6 +19,7 @@
 
 package test;
 
+import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import junit.framework.TestCase;
 import junitx.framework.FileAssert;
@@ -28,7 +29,6 @@ import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.dom4j.tree.BaseElement;
 import structural.MockGeneralParameters;
-import structural.identifiers.Coordinate;
 
 import java.io.File;
 import java.io.IOException;

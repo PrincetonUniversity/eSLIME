@@ -21,13 +21,13 @@
 
 package io.serialize.binary;
 
+import control.GeneralParameters;
+import control.halt.HaltCondition;
+import control.identifiers.Coordinate;
 import io.deserialize.SystemStateReader;
 import io.serialize.Serializer;
 import io.visual.Visualization;
 import layers.SystemState;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
-import structural.identifiers.Coordinate;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;

@@ -19,11 +19,11 @@
 
 package processes.continuum;
 
+import control.GeneralParameters;
+import control.halt.HaltCondition;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
-import structural.GeneralParameters;
-import structural.halt.HaltCondition;
 
 /**
  * Created by David B Borenstein on 1/7/14.

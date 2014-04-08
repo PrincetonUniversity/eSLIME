@@ -20,10 +20,10 @@
 package agent.targets;
 
 import cells.BehaviorCell;
+import control.identifiers.Coordinate;
 import geometry.Geometry;
 import layers.LayerManager;
 import layers.cell.CellLayerViewer;
-import structural.identifiers.Coordinate;
 
 import java.util.ArrayList;
 import java.util.Random;

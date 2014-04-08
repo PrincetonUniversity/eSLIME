@@ -22,7 +22,7 @@
 package io.deserialize;
 
 
-import structural.identifiers.Coordinate;
+import control.identifiers.Coordinate;
 
 import java.util.HashMap;
 

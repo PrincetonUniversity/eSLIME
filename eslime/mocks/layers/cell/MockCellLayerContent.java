@@ -20,8 +20,8 @@
 package layers.cell;
 
 import cells.Cell;
+import control.identifiers.Coordinate;
 import geometry.Geometry;
-import structural.identifiers.Coordinate;
 
 public class MockCellLayerContent extends CellLayerContent {
 

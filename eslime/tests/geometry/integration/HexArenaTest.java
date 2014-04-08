@@ -19,6 +19,8 @@
 
 package geometry.integration;
 
+import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.Geometry;
 import geometry.boundaries.Arena;
 import geometry.boundaries.Boundary;
@@ -26,8 +28,6 @@ import geometry.lattice.Lattice;
 import geometry.lattice.TriangularLattice;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
-import structural.identifiers.Coordinate;
-import structural.identifiers.Flags;
 import test.EslimeTestCase;
 
 import java.util.HashSet;
