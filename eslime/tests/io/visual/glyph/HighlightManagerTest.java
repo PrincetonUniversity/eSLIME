@@ -44,11 +44,11 @@ public class HighlightManagerTest extends EslimeLatticeTestCase {
         query.setGlyph(0, glyph);
     }
 
-    public void testSetImage() throws Exception {
+    public void testSetGraphics() throws Exception {
         BufferedImage image = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB);
-
-        query.setGraphics((Graphics2D) image.getGraphics());
-        assertEquals(image, glyph.getGraphics());
+        Graphics2D graphics = (Graphics2D) image.getGraphics();
+        query.setGraphics(graphics);
+        assertEquals(graphics, glyph.getGraphics());
     }
 
 
