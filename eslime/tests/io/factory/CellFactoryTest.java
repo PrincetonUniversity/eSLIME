@@ -31,6 +31,7 @@ import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import org.dom4j.Element;
 import structural.MockGeneralParameters;
+import structural.utilities.EpsilonUtil;
 import test.EslimeTestCase;
 
 /**
@@ -49,7 +50,7 @@ public class CellFactoryTest extends EslimeTestCase {
         MockGeometry geom = buildMockGeometry();
         CellLayer layer = new CellLayer(geom, 0);
         layerManager.setCellLayer(layer);
-
+        p.initializeRandom(RANDOM_SEED);
     }
 
     public void testSimpleCell() {
@@ -75,5 +76,49 @@ public class CellFactoryTest extends EslimeTestCase {
         expected.setDispatcher(expectedDispatcher);
 
         assertEquals(expected, actual);
+    }
+
+    /**
+     * Integration test to verify that stochastic behavior works alright.
+     */
+    public void testStochastic() {
+        Element fixture = fixtureRoot.element("cell-stochastic");
+        CellFactory query = new CellFactory(layerManager, fixture, p);
+
+        double[] results = new double[10];
+        for (int i = 0; i < 10; i++) {
+            Cell actual = query.instantiate();
+            results[i] = actual.getFitness();
+        }
+
+        assertFalse(EpsilonUtil.epsilonEquals(0.0, var(results)));
+    }
+
+    // Statistics impl copied from http://introcs.cs.princeton.edu/java/stdlib/StdStats.java.html
+    // I should really set up Apache commons math, but to do that I have to figure out Maven, which
+    // I'm putting off.
+    /**
+     * Returns the average value in the array a[], NaN if no such value.
+     */
+    protected static double mean(double[] a) {
+        if (a.length == 0) return Double.NaN;
+        double sum = 0.0;
+        for (int i = 0; i < a.length; i++) {
+            sum = sum + a[i];
+        }
+        return sum / a.length;
+    }
+
+    /**
+     * Returns the sample variance in the array a[], NaN if no such value.
+     */
+    protected static double var(double[] a) {
+        if (a.length == 0) return Double.NaN;
+        double avg = mean(a);
+        double sum = 0.0;
+        for (int i = 0; i < a.length; i++) {
+            sum += (a[i] - avg) * (a[i] - avg);
+        }
+        return sum / (a.length - 1);
     }
 }

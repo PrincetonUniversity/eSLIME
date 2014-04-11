@@ -19,10 +19,19 @@
  * /
  */
 
-package io.visual.map;
+package structural;
+
+import junit.framework.TestCase;
 
 /**
- * Created by dbborens on 4/1/14.
+ * Created by David B Borenstein on 4/11/14.
  */
-public class MapVisualizationFactory {
+public class CanonicalCellMapTest extends TestCase {
+    public void testGet() throws Exception {
+        fail("Not yet implemented");
+    }
+
+    public void testPut() throws Exception {
+        fail("Not yet implemented");
+    }
 }

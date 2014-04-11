@@ -17,12 +17,17 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package io.serialize;
+package io.factory;
 
 import control.GeneralParameters;
+import io.serialize.Serializer;
 import io.serialize.binary.ContinuumStateWriter;
+import io.serialize.binary.HighlightWriter;
+import io.serialize.binary.TimeWriter;
+import io.serialize.binary.VisualizationSerializer;
 import io.serialize.interactive.ProgressReporter;
 import io.serialize.text.*;
+import io.visual.Visualization;
 import org.dom4j.Element;
 
 /**
@@ -61,9 +66,42 @@ public abstract class SerializationFactory {
         } else if (writerClass.equalsIgnoreCase("continuum-state-writer")) {
             ContinuumStateWriter csw = new ContinuumStateWriter(p);
             return csw;
+        } else if (writerClass.equalsIgnoreCase("time-writer")) {
+            TimeWriter tw = new TimeWriter(p);
+            return tw;
+        } else if (writerClass.equalsIgnoreCase("highlight-writer")) {
+            HighlightWriter hw = new HighlightWriter(p);
+            return hw;
+        } else if (writerClass.equalsIgnoreCase("visualization-serializer")) {
+            VisualizationSerializer vs = visualizationSerializer(e, p);
+            return vs;
         } else {
             throw new IllegalArgumentException("Unrecognized serialization '" + writerClass + "'");
         }
+    }
 
+    private static VisualizationSerializer visualizationSerializer(Element e,
+                                                          GeneralParameters p) {
+
+        String prefix;
+        Element prefixElement = e.element("prefix");
+        if (prefixElement == null) {
+            prefix = "frame";
+        } else {
+            prefix = prefixElement.getTextTrim();
+        }
+
+        String mode;
+        Element modeElement = e.element("mode");
+        if (modeElement == null) {
+            mode = "png";
+        } else {
+            mode = modeElement.getTextTrim();
+        }
+
+        Element visElement = e.element("visualization");
+        Visualization visualization = VisualizationFactory.instantiate(visElement);
+
+        return new VisualizationSerializer(p, visualization, prefix, mode);
     }
 }

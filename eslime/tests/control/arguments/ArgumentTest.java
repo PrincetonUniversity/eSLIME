@@ -31,7 +31,8 @@ public abstract class ArgumentTest extends EslimeTestCase {
     protected final static int NUM_ITERATES = 100;
 
     // Statistics impl copied from http://introcs.cs.princeton.edu/java/stdlib/StdStats.java.html
-
+    // I should really set up Apache commons math, but to do that I have to figure out Maven, which
+    // I'm putting off.
     /**
      * Returns the average value in the array a[], NaN if no such value.
      */

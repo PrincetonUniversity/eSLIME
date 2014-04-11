@@ -45,10 +45,10 @@ public class AdjustFitness extends Action {
         double adjFitness = curFitness + delta;
         cell.setFitness(adjFitness);
 
-        // DEBUG CODE
-        Coordinate self = getLayerManager().getCellLayer().getLookupManager().getCellLocation(cell);
-        System.out.println("Adjusted cell at " + self + " from " + curFitness + " to " + adjFitness);
-        System.out.println("   Is this cell now divisible? " + cell.isDivisible());
+//        // DEBUG CODE
+//        Coordinate self = getLayerManager().getCellLayer().getLookupManager().getCellLocation(cell);
+//        System.out.println("Adjusted cell at " + self + " from " + curFitness + " to " + adjFitness);
+//        System.out.println("   Is this cell now divisible? " + cell.isDivisible());
     }
 
     @Override

@@ -21,8 +21,8 @@
 
 package io.factory;
 
+import io.visual.MockVisualization;
 import io.visual.Visualization;
-import io.visual.map.MapFactory;
 import org.dom4j.Element;
 
 /**
@@ -34,7 +34,9 @@ public abstract class VisualizationFactory {
         String className = getClassName(root);
 
         if (className.equalsIgnoreCase("map")) {
-            return MapFactory.instantiate(root);
+            return MapVisualizationFactory.instantiate(root);
+        } else if (className.equalsIgnoreCase("mock")) {
+            return new MockVisualization();
         } else {
             throw new IllegalArgumentException("Unrecognized visualization " +
                     "class '" + className + "'");
@@ -43,6 +45,9 @@ public abstract class VisualizationFactory {
 
     public static String getClassName(Element root) {
         Element cnNode = root.element("class");
+        if (cnNode == null) {
+            throw new IllegalArgumentException("Missing required argument 'visualization' in 'visualization-serializer' tag");
+        }
         String className = cnNode.getTextTrim();
         return className;
     }

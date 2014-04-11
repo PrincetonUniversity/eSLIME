@@ -1,0 +1,145 @@
+<!--
+  ~ /*
+  ~ * Copyright (c) 2014, David Bruce Borenstein and the Trustees of
+  ~ * Princeton University.
+  ~ *
+  ~ * Except where otherwise noted, this work is subject to a Creative Commons
+  ~ * Attribution (CC BY 4.0) license.
+  ~ *
+  ~ * Attribute (BY): You must attribute the work in the manner specified
+  ~ * by the author or licensor (but not in any way that suggests that they
+  ~ * endorse you or your use of the work).
+  ~ *
+  ~ * The Licensor offers the Licensed Material as-is and as-available, and
+  ~ * makes no representations or warranties of any kind concerning the
+  ~ * Licensed Material, whether express, implied, statutory, or other.
+  ~ *
+  ~ * For the full license, please visit:
+  ~ * http://creativecommons.org/licenses/by/4.0/legalcode
+  ~ */
+  -->
+
+<simulation>
+    <version>0.5.0</version>
+
+    <!-- Declare general simulation properties -->
+    <general>
+        <random-seed>1397079448420</random-seed>
+        <instances>1</instances>
+        <path>/Users/dbborens/projects/T6SS/</path>
+        <date-stamp>true</date-stamp>
+        <max-step>1000000</max-step>
+        <output-frames>
+            <auto mode="all"/>
+        </output-frames>
+    </general>
+
+    <!-- Declare geometry properties -->
+    <geometry>
+        <shape>
+            <class>Rectangle</class>
+            <width>32</width>
+            <height>32</height>
+        </shape>
+        <lattice>
+            <class>Triangular</class>
+        </lattice>
+    </geometry>
+
+    <layers>
+        <cell-layer>
+            <boundary>
+                <class>Arena</class>
+            </boundary>
+        </cell-layer>
+    </layers>
+
+
+    <!-- Declare simulation events, and when they should occur -->
+    <cell-processes>
+
+        <!-- Each time step should advance the integrator clock by 1 unit of time. -->
+        <tick>
+            <dt>1.0</dt>
+        </tick>
+
+        <scatter>
+
+            <!-- "types" specifies the number of lineages to create. They will all have the same
+                 phenotype. "tokens" specifies the number of individuals of each phenotype to
+                 place. -->
+
+            <types>1</types>
+            <tokens>32</tokens>
+
+            <cell-descriptor>
+                <class>BehaviorCell</class>
+                <state>1</state>
+                <initial-fitness>
+                    <uniform>
+                        <min>0.25</min>
+                        <max>0.5</max>
+                    </uniform>
+                </initial-fitness>
+                <threshold>1.0</threshold>
+            </cell-descriptor>
+
+            <!-- Do this once at t=0. -->
+            <period>0</period>
+            <start>0</start>
+        </scatter>
+
+
+        <fill>
+            <skip-filled-sites />
+
+            <cell-descriptor>
+                <class>BehaviorCell</class>
+                <state>2</state>
+                <initial-fitness>
+                    <uniform>
+                        <min>0.25</min>
+                        <max>0.5</max>
+                    </uniform>
+                </initial-fitness>
+                <threshold>1.0</threshold>
+            </cell-descriptor>
+
+            <!-- Do this once at t=0. -->
+            <period>0</period>
+            <start>0</start>
+        </fill>
+
+        <!-- During each cycle, let everyone grow. -->
+        <uniform-biomass-growth>
+            <delta>0.1</delta>
+        </uniform-biomass-growth>
+
+        <!-- Remove the cells that have died. -->
+        <cull/>
+
+        <!-- Allow cells that are big enough to divide. -->
+        <divide-anywhere/>
+
+        <!-- End the simulation if no living cells are present -->
+        <check-for-extinction/>
+
+        <!-- End the simulation if one cell type has fixed -->
+        <check-for-fixation/>
+
+    </cell-processes>
+
+    <writers>
+        <progress-reporter/>
+        <coordinate-indexer/>
+        <cell-state-writer/>
+        <time-writer />
+        <visualization-serializer >
+            <visualization>
+                <class>map</class>
+            </visualization>
+            <prefix>cellState</prefix>
+        </visualization-serializer>
+    </writers>
+
+</simulation>

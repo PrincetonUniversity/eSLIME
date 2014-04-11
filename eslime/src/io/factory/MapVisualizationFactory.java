@@ -19,19 +19,21 @@
  * /
  */
 
-package io.visual.map;
+package io.factory;
 
 import io.visual.color.ColorManager;
 import io.factory.ColorManagerFactory;
 import io.visual.highlight.HighlightManager;
 import io.factory.HighlightManagerFactory;
+import io.visual.map.MapState;
+import io.visual.map.MapVisualization;
 import org.dom4j.Element;
 import structural.utilities.XmlUtil;
 
 /**
  * Created by dbborens on 4/3/14.
  */
-public abstract class MapFactory {
+public abstract class MapVisualizationFactory {
 
     public static final double DEFAULT_EDGE = 10.0;
 

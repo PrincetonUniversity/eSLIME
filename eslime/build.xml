@@ -57,7 +57,7 @@
         </manifestclasspath>
         <jar destfile="build/jeSLIME.jar" basedir="build/classes">
             <manifest>
-                <attribute name="Main-Class" value="control.ConsoleLauncher"/>
+                <attribute name="Main-Class" value="control.run.ConsoleLauncher"/>
                 <attribute name="Class-Path" value="${lib.list}"/>
             </manifest>
         </jar>

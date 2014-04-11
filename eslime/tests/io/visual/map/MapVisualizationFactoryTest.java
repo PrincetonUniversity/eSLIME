@@ -21,6 +21,7 @@
 
 package io.visual.map;
 
+import io.factory.MapVisualizationFactory;
 import io.visual.color.ColorManager;
 import io.visual.color.DefaultColorManager;
 import io.visual.glyph.MockGlyph;
@@ -31,14 +32,14 @@ import test.EslimeLatticeTestCase;
 /**
  * Created by dbborens on 4/3/14.
  */
-public class MapFactoryTest extends EslimeLatticeTestCase {
+public class MapVisualizationFactoryTest extends EslimeLatticeTestCase {
     private Element root;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         setUpGeometry();
-        root = readXmlFile("MapFactoryTest.xml");
+        root = readXmlFile("factories/MapVisualizationFactoryTest.xml");
     }
 
     private void setUpGeometry() {
@@ -48,7 +49,7 @@ public class MapFactoryTest extends EslimeLatticeTestCase {
 
     public void testTypicalCase() throws Exception {
         Element typicalCase = root.element("typical-case");
-        MapVisualization actual = MapFactory.instantiate(typicalCase);
+        MapVisualization actual = MapVisualizationFactory.instantiate(typicalCase);
         actual.init(geom);
 
         MapVisualization expected = makeTypicalCase();
@@ -57,7 +58,7 @@ public class MapFactoryTest extends EslimeLatticeTestCase {
 
     public void testMinimalCase() throws Exception {
         Element minimalCase = root.element("minimal-case");
-        MapVisualization actual = MapFactory.instantiate(minimalCase);
+        MapVisualization actual = MapVisualizationFactory.instantiate(minimalCase);
         actual.init(geom);
 
         MapVisualization expected = makeMinimalCase();

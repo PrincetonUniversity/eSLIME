@@ -22,11 +22,14 @@ package io.serialize;
 import control.GeneralParameters;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
+import io.factory.SerializationFactory;
 import layers.LayerManager;
 import org.dom4j.Element;
 import structural.postprocess.ImageSequence;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -34,7 +37,7 @@ import java.util.Set;
  */
 public class SerializationManager {
 
-    private Set<Serializer> writers;
+    private List<Serializer> writers;
     private GeneralParameters p;
     private LayerManager lm;
 
@@ -43,7 +46,7 @@ public class SerializationManager {
         this.lm = lm;
 
 
-        writers = new HashSet<>();
+        writers = new ArrayList<>();
 
         for (Object o : we.elements()) {
             Element e = (Element) o;

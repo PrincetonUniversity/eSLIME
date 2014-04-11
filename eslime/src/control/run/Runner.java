@@ -17,8 +17,11 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package control;
+package control.run;
 
+import control.GeneralParameters;
+import control.Integrator;
+import control.ProcessManager;
 import control.halt.HaltCondition;
 import io.factory.GeometryFactory;
 import io.factory.ProcessFactory;
@@ -61,6 +64,7 @@ public class Runner implements Runnable {
             Element processRoot = pp.getElement("cell-processes");
             loader = new ProcessLoader(processRoot);
             p = new GeneralParameters(pp);
+            System.err.println("RANDOM SEED " + p.getRandomSeed());
             gm = new GeometryFactory(pp.getElement("geometry"));
             lm = new LayerManager(pp.getElement("layers"), gm);
             factory = new ProcessFactory(loader, lm, p);
@@ -97,6 +101,5 @@ public class Runner implements Runnable {
         }
 
         mgr.close();
-
     }
 }

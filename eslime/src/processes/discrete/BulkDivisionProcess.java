@@ -28,11 +28,15 @@ import control.identifiers.Flags;
 import geometry.Geometry;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
+import layers.cell.CellLayerViewer;
+import layers.cell.CellLookupManager;
+import layers.cell.CellUpdateManager;
 import processes.MaxTargetHelper;
 import processes.StepState;
 
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 public abstract class BulkDivisionProcess extends CellProcess {
 
@@ -42,6 +46,7 @@ public abstract class BulkDivisionProcess extends CellProcess {
     private Geometry geom;
     private int maxTargets;
 
+//    private int debug = 0;
     public BulkDivisionProcess(ProcessLoader loader, LayerManager layerManager, int id,
                                GeneralParameters p, int maxTargets) {
         super(loader, layerManager, id, p);
@@ -53,10 +58,21 @@ public abstract class BulkDivisionProcess extends CellProcess {
     protected void execute(StepState state, Coordinate[] candidates) throws HaltCondition {
         Coordinate[] chosen = MaxTargetHelper.respectMaxTargets(candidates, maxTargets, p.getRandom());
         Cell[] chosenCells = toCellArray(chosen);
-        for (Cell cell : chosenCells) {
-            Coordinate currentLocation = layer.getLookupManager().getCellLocation(cell);
+        for (int i = 0; i < chosenCells.length; i++) {
+            Cell cell = chosenCells[i];
+            CellLookupManager lm = layer.getLookupManager();
+            Coordinate currentLocation = lm.getCellLocation(cell);
             doDivision(state, currentLocation);
         }
+
+        // The shoving process complete, look for cells that have gotten pushed
+        // out of bounds and remove them. If such a situation is not permitted
+        // in this geometry, this loop merely iterates over an empty set.
+        Set<Coordinate> imaginarySites = layer.getViewer().getImaginarySites();
+        for (Coordinate c : imaginarySites) {
+            layer.getUpdateManager().banish(c);
+        }
+
     }
 
     private Cell[] toCellArray(Coordinate[] chosen) {
@@ -72,14 +88,22 @@ public abstract class BulkDivisionProcess extends CellProcess {
     }
 
 
-    protected void doDivision(StepState state, Coordinate origin) throws HaltCondition {
-        HashSet<Coordinate> preliminary = new HashSet<Coordinate>();
-
+    private Coordinate getTarget(StepState state, Coordinate origin) throws HaltCondition {
+//        if (origin.equals(new Coordinate(5, 7, 1))) {
+//            System.out.println("Breakpoint");
+//        }
         Coordinate target;
-
         // Get nearest vacancies to the cell
         Coordinate[] targets = layer.getLookupManager().getNearestVacancies(origin, -1);
 
+//        System.out.println("DEBUG");
+//        for (Coordinate t : targets) {
+//            CellLayerViewer viewer = layer.getViewer();
+//            Cell res = viewer.getCell(t);
+//            if (res != null) {
+//                throw new IllegalStateException(origin.toString());
+//            }
+//        }
         if (targets.length == 0) {
             throw new LatticeFullEvent(state.getTime());
         } else {
@@ -87,27 +111,29 @@ public abstract class BulkDivisionProcess extends CellProcess {
             target = targets[i];
         }
 
-        // Get child cell
-        Cell child = layer.getUpdateManager().divide(origin);
+        return target;
+    }
+
+    protected Coordinate getDisplacement(StepState state, Coordinate origin) throws HaltCondition {
+        Coordinate target = getTarget(state, origin);
 
         // Move parent cell to the chosen vacancy, if necessary by shoving the
         // parent and a line of interior cells toward the surface
         Coordinate displacement = geom.getDisplacement(origin, target, Geometry.APPLY_BOUNDARIES);
 
-        if (!layer.getViewer().isOccupied(origin)) {
-            throw new IllegalStateException();
-        }
+        return displacement;
+    }
 
+    protected void doDivision(StepState state, Coordinate origin) throws HaltCondition {
+        HashSet<Coordinate> affectedSites = new HashSet<>();
 
-        shove(origin, displacement, preliminary);
+        // Get child cell
+        CellUpdateManager um = layer.getUpdateManager();
+        Cell child = um.divide(origin);
 
-        if (layer.getViewer().isOccupied(origin)) {
-            throw new IllegalStateException();
-        }
+        Coordinate displacement = getDisplacement(state, origin);
 
-        for (Coordinate c : layer.getViewer().getImaginarySites()) {
-            layer.getUpdateManager().banish(c);
-        }
+        shove(origin, displacement, affectedSites);
 
         // Divide the child cell into the vacancy left by the parent
         layer.getUpdateManager().place(child, origin);
@@ -115,16 +141,18 @@ public abstract class BulkDivisionProcess extends CellProcess {
 
 
     /**
-     * @param curLoc: starting location. the child will be placed in this
+     * @param currentLocation: starting location. the child will be placed in this
      *                position after the parent is shoved.
      * @param d:      displacement vector to target, in natural basis of lattice.
      * @param sites:  list of affected sites (for highlighting)
      *                <p/>
      *                TODO: This is so cloodgy and terrible.
      */
-    private void shove(Coordinate curLoc, Coordinate d, HashSet<Coordinate> sites) {
-        System.out.println("Shoving: curLoc=" + curLoc + "; d=" + d);
+    private void shove(Coordinate currentLocation, Coordinate d, HashSet<Coordinate> sites) {
 
+//        if (currentLocation.equals(new Coordinate(5, 2, 1))) {
+//            System.out.println("Breakpoint");
+//        }
         // Base case 0: we've reached the target
         if (d.norm() == 0) {
             return;
@@ -135,58 +163,64 @@ public abstract class BulkDivisionProcess extends CellProcess {
         int nv = d.norm();
 
         // Take a step in the chosen direction.
-        int[] dNext;                // Displacement vector, one step closer
-        Coordinate nextLoc;
+        int[] nextDisplacement;                // Displacement vector, one step closer
+        Coordinate nextLocation;
 
         int[] rel = new int[3];            // Will contain a unit vector specifying
-        // step direction
+                                           // step direction
 
         // Loop if the move is illegal.
         do {
-            int n = random.nextInt(nv);
 
-            dNext = new int[]{d.x(), d.y(), d.z()};
+            nextDisplacement = new int[]{d.x(), d.y(), d.z()};
 
-            // Initialize rel vector
-            for (int i = 0; i < 3; i++) {
-                rel[i] = 0;
-            }
+            nextLocation = getNextLocation(currentLocation, d, nv, nextDisplacement, rel);
 
-            // Decrement the displacement vector by one unit in a randomly chosen
-            // direction, weighted so that the path is, on average, straight.
-            if (n < Math.abs(d.x())) {
-                dNext[0] -= (int) Math.signum(d.x());
-                rel[0] += (int) Math.signum(d.x());
-            } else if (n < (Math.abs(d.x()) + Math.abs(d.y()))) {
-                dNext[1] -= (int) Math.signum(d.y());
-                rel[1] += (int) Math.signum(d.y());
-            } else {
-                dNext[2] -= (int) Math.signum(d.z());
-                rel[2] += (int) Math.signum(d.z());
-            }
-
-            Coordinate disp = new Coordinate(rel, d.flags());
-
-            nextLoc = geom.rel2abs(curLoc, disp, Geometry.APPLY_BOUNDARIES);
-
-            if (nextLoc == null) {
+            if (nextLocation == null) {
                 continue;
-            } else if (nextLoc.hasFlag(Flags.BEYOND_BOUNDS) && nv == 1) {
+            } else if (nextLocation.hasFlag(Flags.BEYOND_BOUNDS) && nv == 1) {
                 throw new IllegalStateException("There's only one place to push cells and it's illegal!");
-            } else if (!nextLoc.hasFlag(Flags.BEYOND_BOUNDS)) {
+            } else if (!nextLocation.hasFlag(Flags.BEYOND_BOUNDS)) {
                 break;
             }
         } while (true);
 
-        Coordinate du = new Coordinate(dNext, d.flags());
-        shove(nextLoc, du, sites);
+        Coordinate du = new Coordinate(nextDisplacement, d.flags());
+        shove(nextLocation, du, sites);
 
-        if (nextLoc.equals(new Coordinate(12, 5, 1))) {
-            throw new RuntimeException("WTF?");
+        layer.getUpdateManager().swap(currentLocation, nextLocation);
+
+        sites.add(nextLocation);
+    }
+
+    private Coordinate getNextLocation(Coordinate curLoc, Coordinate d, int nv, int[] dNext, int[] rel) {
+        Coordinate nextLoc;
+        int n = random.nextInt(nv);
+        Coordinate disp = calcDisp(d, dNext, rel, n);
+        nextLoc = geom.rel2abs(curLoc, disp, Geometry.APPLY_BOUNDARIES);
+        return nextLoc;
+    }
+
+    private Coordinate calcDisp(Coordinate d, int[] dNext, int[] rel, int n) {
+        // Initialize rel vector
+        for (int i = 0; i < 3; i++) {
+            rel[i] = 0;
         }
-        layer.getUpdateManager().swap(curLoc, nextLoc);
 
-        sites.add(nextLoc);
+        // Decrement the displacement vector by one unit in a randomly chosen
+        // direction, weighted so that the path is, on average, straight.
+        if (n < Math.abs(d.x())) {
+            dNext[0] -= (int) Math.signum(d.x());
+            rel[0] += (int) Math.signum(d.x());
+        } else if (n < (Math.abs(d.x()) + Math.abs(d.y()))) {
+            dNext[1] -= (int) Math.signum(d.y());
+            rel[1] += (int) Math.signum(d.y());
+        } else {
+            dNext[2] -= (int) Math.signum(d.z());
+            rel[2] += (int) Math.signum(d.z());
+        }
+
+        return new Coordinate(rel, d.flags());
     }
 
 }

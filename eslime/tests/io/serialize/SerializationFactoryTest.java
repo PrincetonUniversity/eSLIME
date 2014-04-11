@@ -19,9 +19,14 @@
 
 package io.serialize;
 
+import io.factory.SerializationFactory;
 import io.serialize.binary.ContinuumStateWriter;
+import io.serialize.binary.HighlightWriter;
+import io.serialize.binary.TimeWriter;
+import io.serialize.binary.VisualizationSerializer;
 import io.serialize.interactive.ProgressReporter;
 import io.serialize.text.*;
+import io.visual.Visualization;
 import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;
 import structural.MockGeneralParameters;
@@ -60,20 +65,44 @@ public class SerializationFactoryTest extends EslimeTestCase {
         doTest("parameter-writer", ParameterWriter.class);
     }
 
-    public void testFrequencyWriter() {
+    public void testProgressReporter() {
         doTest("progress-reporter", ProgressReporter.class);
     }
 
-    public void testIntervalWriter() {
+    public void testFrequencyWriter() {
         doTest("frequency-writer", FrequencyWriter.class);
 
     }
 
-    public void testCoordinateIndexer() {
+    public void testIntervalWriter() {
         doTest("interval-writer", IntervalWriter.class);
     }
 
     public void testContinuumStateWriter() {
         doTest("continuum-state-writer", ContinuumStateWriter.class);
+    }
+
+    public void testTimeWriter() {
+        doTest("time-writer", TimeWriter.class);
+    }
+
+    public void testCoordinateIndexer() {
+        doTest("coordinate-indexer", CoordinateIndexer.class);
+    }
+
+    public void testHighlightWriter() {
+        doTest("highlight-writer", HighlightWriter.class);
+    }
+
+    public void testVisualizationSerializer() {
+        Element e = new BaseElement("visualization-serializer");
+        Element vp = new BaseElement("visualization");
+        Element m = new BaseElement("class");
+        m.setText("mock");
+        vp.add(m);
+        e.add(vp);
+        Serializer result = SerializationFactory.instantiate(e, p);
+        Class actual = result.getClass();
+        assertEquals(VisualizationSerializer.class, actual);
     }
 }

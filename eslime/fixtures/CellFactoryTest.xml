@@ -33,4 +33,20 @@
             </test-behavior>
         </behaviors>
     </cell-b>
+    <cell-stochastic>
+        <class>BehaviorCell</class>
+        <initial-fitness>
+            <uniform>
+                <min>0.5</min>
+                <max>1.0</max>
+            </uniform>
+        </initial-fitness>
+        <threshold>1.0</threshold>
+        <state>2</state>
+        <behaviors>
+            <test-behavior>
+                <null/>
+            </test-behavior>
+        </behaviors>
+    </cell-stochastic>
 </fixture>

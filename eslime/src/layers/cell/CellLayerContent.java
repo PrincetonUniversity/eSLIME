@@ -22,6 +22,7 @@ package layers.cell;
 import cells.Cell;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
+import structural.CanonicalCellMap;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -34,7 +35,7 @@ import java.util.Set;
 public abstract class CellLayerContent {
 
     // Mapping of sites to cell pointers -- the lattice itself.
-    protected HashMap<Coordinate, Cell> map;
+    protected CanonicalCellMap map;
 
     // All sites (basically the keyset for the lattice map).
     protected Set<Coordinate> canonicalSites;
@@ -53,7 +54,7 @@ public abstract class CellLayerContent {
 
         Coordinate[] cc = geom.getCanonicalSites();
         // Initialize map.
-        map = new HashMap<>();
+        map = new CanonicalCellMap();
         for (int i = 0; i < cc.length; i++) {
             Coordinate coord = cc[i];
 
@@ -74,7 +75,7 @@ public abstract class CellLayerContent {
     public Cell get(Coordinate coord) {
 
         // Get pointer to cell and return it
-        Cell res = map.get(coord.canonicalize());
+        Cell res = map.get(coord);
 
         return res;
     }

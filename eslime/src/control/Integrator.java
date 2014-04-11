@@ -63,7 +63,7 @@ public class Integrator {
             state.close();
 
             // Send the results to the serialization manager.
-            mgr.step(state.getHighlights(), state.getDt(), n);
+            mgr.step(state.getHighlights(), time, n);
             time += state.getDt();
         }
 

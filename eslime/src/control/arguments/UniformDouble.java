@@ -47,7 +47,7 @@ public class UniformDouble extends Argument<Double> {
     @Override
     public Double next() {
         double o = random.nextDouble();
-        return (o * range) - offset;
+        return (o * range) + offset;
     }
 
     @Override

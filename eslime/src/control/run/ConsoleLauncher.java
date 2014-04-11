@@ -17,7 +17,7 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package control;
+package control.run;
 
 /**
  * The manual runner specifies a hard-coded parameters file to be loaded.

@@ -28,7 +28,7 @@ import java.util.Random;
  */
 public class UniformIntegerTest extends ArgumentTest {
 
-    private int min = -10;
+    private int min = 0;
     private int max = 10;
 
     protected double[] results;
@@ -46,7 +46,7 @@ public class UniformIntegerTest extends ArgumentTest {
     }
 
     public void testMean() throws Exception {
-        double expected = 0.0;
+        double expected = 5.0;
         double actual = mean(results);
 
         double var = (1.0 / 12.0) * Math.pow(max - min, 2.0);

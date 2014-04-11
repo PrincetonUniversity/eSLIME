@@ -102,6 +102,10 @@ public class CellUpdateManager {
         // Divide parent
         Cell parent = content.get(pCoord);
 
+        if (parent == null) {
+            throw new IllegalStateException("Coordinate " + pCoord + " is null");
+        }
+
         // Remove the parent from the map. After it divides, we will place
         // it again. This will update the indices.
         content.remove(pCoord);
@@ -180,6 +184,7 @@ public class CellUpdateManager {
      * @param qCoord
      */
     public void swap(Coordinate pCoord, Coordinate qCoord) {
+
         content.sanityCheck(pCoord);
         content.sanityCheck(qCoord);
 

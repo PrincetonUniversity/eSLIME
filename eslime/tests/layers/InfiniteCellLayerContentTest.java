@@ -53,6 +53,7 @@ public class InfiniteCellLayerContentTest extends CellLayerContentTest {
 
         assertEquals(1, result.size());
         assertTrue(result.contains(imaginary));
+        assertFalse(result.contains(real));
     }
 
     @Override

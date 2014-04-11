@@ -31,7 +31,16 @@ import java.util.*;
  */
 public class CellIndex implements Set<Coordinate> {
 
-    private HashSet<Coordinate> contents = new HashSet<Coordinate>();
+    private Set<Coordinate> contents = new HashSet<Coordinate>();
+
+    public CellIndex() {
+    }
+
+    public CellIndex(Set<Coordinate> contents) {
+        for (Coordinate c : contents) {
+            add(c);
+        }
+    }
 
     @Override
     public boolean add(Coordinate e) {
@@ -41,7 +50,7 @@ public class CellIndex implements Set<Coordinate> {
 
     @Override
     public boolean addAll(Collection<? extends Coordinate> toAdd) {
-        ArrayList<Coordinate> canonical = new ArrayList<Coordinate>(toAdd.size());
+        ArrayList<Coordinate> canonical = new ArrayList<>(toAdd.size());
 
         for (Coordinate c : toAdd) {
             canonical.add(c.canonicalize());
@@ -93,8 +102,8 @@ public class CellIndex implements Set<Coordinate> {
         return contents.iterator();
     }
 
-    public Set<Coordinate> set() {
-        HashSet<Coordinate> copy = new HashSet<>(contents);
+    public CellIndex set() {
+        CellIndex copy = new CellIndex(contents);
         return copy;
     }
 

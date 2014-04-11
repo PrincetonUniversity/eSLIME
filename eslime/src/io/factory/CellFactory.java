@@ -25,6 +25,8 @@ import cells.Cell;
 import cells.FissionCell;
 import cells.SimpleCell;
 import control.GeneralParameters;
+import control.arguments.Argument;
+import control.arguments.ConstantInteger;
 import layers.LayerManager;
 import layers.cell.CellLayer;
 import org.dom4j.Element;
@@ -43,33 +45,51 @@ public class CellFactory {
     private LayerManager layerManager;
     private Element cellDescriptor;
     private GeneralParameters p;
-    private int state;
+
+    private Argument<Integer> cellState;
+    private Argument<Double> threshold;
+    private Argument<Double> initialHealth;
 
     /**
      * @param cellDescriptor
      */
     public CellFactory(LayerManager layerManager, Element cellDescriptor, GeneralParameters p) {
+        if (cellDescriptor == null) {
+            throw new IllegalArgumentException("A <cell-descriptor> tag was missing where it was expected.");
+        }
+
         this.layerManager = layerManager;
         this.cellDescriptor = cellDescriptor;
         this.p = p;
-        String stateText = cellDescriptor.element("state").getTextTrim();
 
-        // State should be consistent across all cells instantiated by
-        // this factory, even if using a sequential state.
-        state = getState(stateText);
+        cellState = getCellState(cellDescriptor);
+        threshold = DoubleArgumentFactory.instantiate(cellDescriptor, "threshold", 2.0, p.getRandom());
+        initialHealth = DoubleArgumentFactory.instantiate(cellDescriptor, "initial-fitness", 1.0, p.getRandom());
+    }
+
+    private Argument<Integer> getCellState(Element cellDescriptor) {
+
+        // Check for "sequential" mode
+        Element stateElem = cellDescriptor.element("state");
+        if (stateElem != null && stateElem.getTextTrim().equalsIgnoreCase("sequential")) {
+            int nextState = getNextState();
+            return new ConstantInteger(nextState);
+        }
+
+        return IntegerArgumentFactory.instantiate(cellDescriptor, "state", p.getRandom());
     }
 
     public Cell instantiate() {
         String className = cellDescriptor.element("class").getTextTrim();
 
         if (className.equalsIgnoreCase("SimpleCell")) {
-            return simpleCell(cellDescriptor, state);
+            return simpleCell();
 
         } else if (className.equalsIgnoreCase("FissionCell")) {
-            return fissionCell(cellDescriptor, state);
+            return fissionCell();
 
         } else if (className.equalsIgnoreCase("BehaviorCell")) {
-            return behaviorCell(cellDescriptor, state);
+            return behaviorCell();
         } else {
 
             String msg = "Unrecognized cell class '" +
@@ -79,13 +99,14 @@ public class CellFactory {
         }
     }
 
-    private Cell behaviorCell(Element cellDescriptor, int state) {
+    private Cell behaviorCell() {
         // Load cell properties
-        double initialFitness = Double.valueOf(cellDescriptor.element("initial-fitness").getText());
-        double threshold = Double.valueOf(cellDescriptor.element("threshold").getText());
+        double initialFitnessValue = initialHealth.next();
+        double thresholdValue = threshold.next();
+        int stateValue = cellState.next();
 
         // Construct cell
-        BehaviorCell cell = new BehaviorCell(layerManager, state, initialFitness, threshold);
+        BehaviorCell cell = new BehaviorCell(layerManager, stateValue, initialFitnessValue, thresholdValue);
 
         // Load behaviors
         Element behaviorRoot = cellDescriptor.element("behaviors");
@@ -96,27 +117,22 @@ public class CellFactory {
         return cell;
     }
 
-    private Cell fissionCell(Element cellDescriptor, int state) {
-        double initialFitness = Double.valueOf(cellDescriptor.element("initial-fitness").getText());
-        double threshold = Double.valueOf(cellDescriptor.element("threshold").getText());
+    private Cell fissionCell() {
+        double initialFitnessValue = initialHealth.next();
+        double thresholdValue = threshold.next();
+        int stateValue = cellState.next();
 
-        Cell cell = new FissionCell(state, initialFitness, threshold);
+        Cell cell = new FissionCell(stateValue, initialFitnessValue, thresholdValue);
 
         return cell;
     }
 
-    private Cell simpleCell(Element cellDescriptor, int state) {
-        Cell cell = new SimpleCell(state);
+    private Cell simpleCell() {
+        int stateValue = cellState.next();
+        Cell cell = new SimpleCell(stateValue);
         return cell;
     }
 
-    private int getState(String stateText) {
-        if (stateText.equalsIgnoreCase("sequential")) {
-            return getNextState();
-        } else {
-            return Integer.valueOf(stateText);
-        }
-    }
 
     private int getNextState() {
         CellLayer layer = layerManager.getCellLayer();

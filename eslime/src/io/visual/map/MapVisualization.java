@@ -73,7 +73,7 @@ public class MapVisualization implements Visualization {
     @Override
     public int[] getHighlightChannels() {
         // At the moment, only highlight channel 0 is supported.
-        return new int[]{0};
+        return new int[]{};
     }
 
     @Override

@@ -55,12 +55,11 @@ public class CoordinateDeindexer {
         try {
             deindex();
         } catch (FileNotFoundException e) {
-            String msg = "eSLIME attempted to build a coordinate de-indexer, "
-                    + "but was unable to find a coordinate index file. This usually "
-                    + "happens when a post-processing step, such as a visualization, "
-                    + "requires an index but the user did not include a "
-                    + "<coordinate-indexer /> argument in the <serializers> section "
-                    + "of the script.";
+            String msg = "Coordinate index file not found in output directory "
+                    + path + ". Note that any serializers that depend on " +
+                    "coordinate indices (such as visualizations) need to be " +
+                    "specified after a <coordinate-indexer> tag in the " +
+                    "<serializers> section.";
 
             throw new IllegalArgumentException(msg);
         } catch (IOException e) {

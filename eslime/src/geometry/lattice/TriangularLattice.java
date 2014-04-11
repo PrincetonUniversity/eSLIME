@@ -199,7 +199,7 @@ public class TriangularLattice extends Lattice {
     @Override
     public Coordinate rel2abs(Coordinate coord, Coordinate displacement) {
         if (displacement.hasFlag(Flags.PLANAR)) {
-            throw new IllegalArgumentException("Expected three arguments to HexArena::rel2abs(...)");
+            throw new IllegalArgumentException("Expected planar coordinate.");
         }
 
         int x = coord.x();

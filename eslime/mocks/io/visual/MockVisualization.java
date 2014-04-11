@@ -19,36 +19,44 @@
  * /
  */
 
-package layers.cell;
+package io.visual;
 
-import control.identifiers.Coordinate;
 import geometry.Geometry;
+import layers.SystemState;
 
-import java.util.HashSet;
-import java.util.Set;
+import java.awt.image.BufferedImage;
 
 /**
- * Created by David B Borenstein on 4/10/14.
+ * Created by David B Borenstein on 4/9/14.
  */
-public class InfiniteCellLayerContent extends CellLayerContent {
+public class MockVisualization implements Visualization {
+    @Override
+    public void init(Geometry geometry) {
 
-    public InfiniteCellLayerContent(Geometry geom, CellLayerIndices indices) {
-        super(geom, indices);
     }
 
     @Override
-    public void sanityCheck(Coordinate coord) {
+    public BufferedImage render(SystemState systemState) {
+        return null;
     }
 
     @Override
-    public Set<Coordinate> getImaginarySites() {
-        HashSet<Coordinate> ret = new HashSet<>(getOccupiedSites().size());
+    public void conclude() {
 
-        for (Coordinate c : getOccupiedSites()) {
-            if (!hasCanonicalForm(c)) {
-                ret.add(c);
-            }
-        }
-        return ret;
+    }
+
+    @Override
+    public String[] getSoluteIds() {
+        return new String[0];
+    }
+
+    @Override
+    public int[] getHighlightChannels() {
+        return new int[0];
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof MockVisualization);
     }
 }

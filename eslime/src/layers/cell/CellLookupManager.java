@@ -112,7 +112,6 @@ public class CellLookupManager {
                     continue;
                 }
                 // Sanity check
-                content.sanityCheck(query);
 
                 if (!content.getOccupiedSites().contains(query) && !incl.contains(query)) {
 

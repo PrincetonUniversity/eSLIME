@@ -92,7 +92,7 @@ public class Scatter extends CellProcess {
 
                 Cell cell = factory.instantiate();
 
-                System.out.println("   Placing cell of type " + cell.getState() + " at location " + target);
+                //System.out.println("   Placing cell of type " + cell.getState() + " at location " + target);
                 layer.getUpdateManager().place(cell, target);
 
                 //state.highlight(target);

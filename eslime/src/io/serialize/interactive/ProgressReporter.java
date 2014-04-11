@@ -34,11 +34,13 @@ import layers.LayerManager;
  */
 public class ProgressReporter extends Serializer {
 
+    private long start;
     public ProgressReporter(GeneralParameters p) {
         super(p);
     }
 
     public void init(LayerManager lm) {
+        start = System.currentTimeMillis();
         System.out.println("Instance " + p.getInstance() + ": " + p.getInstancePath());
     }
 
@@ -59,6 +61,10 @@ public class ProgressReporter extends Serializer {
     public void close() {
         System.out.println(" " + p.getBasePath());
         System.out.println("Project concluded.");
+
+        long totalTime = (System.currentTimeMillis() - start) / 1000;
+
+        System.out.println("Total running time: " + totalTime + " seconds.");
     }
 
 }

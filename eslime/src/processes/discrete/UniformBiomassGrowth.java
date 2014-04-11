@@ -75,7 +75,7 @@ public class UniformBiomassGrowth extends CellProcess {
 
     @Override
     public void fire(StepState state) throws HaltCondition {
-        System.out.println("Executing uniform biomass growth.");
+//        System.out.println("Executing uniform biomass growth.");
         // Feed the cells.
         for (Coordinate site : activeSites) {
             if (layer.getViewer().isOccupied(site)) {
