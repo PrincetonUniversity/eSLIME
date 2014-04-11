@@ -23,10 +23,28 @@ import cells.Cell;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
 
+import java.util.Set;
+
 public class MockCellLayerContent extends CellLayerContent {
 
     public MockCellLayerContent(Geometry geom, CellLayerIndices indices) {
         super(geom, indices);
+    }
+
+    @Override
+    public void sanityCheck(Coordinate coord) {
+
+    }
+
+    private Set<Coordinate> imaginarySites;
+
+    private void setImaginarySites(Set<Coordinate> imaginarySites) {
+        this.imaginarySites = imaginarySites;
+    }
+
+    @Override
+    public Set<Coordinate> getImaginarySites() {
+        return imaginarySites;
     }
 
     public Cell get(Coordinate coord) {

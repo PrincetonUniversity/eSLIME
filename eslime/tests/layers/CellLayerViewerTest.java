@@ -21,126 +21,106 @@ package layers;
 
 import cells.Cell;
 import cells.MockCell;
-import cells.SimpleCell;
 import control.identifiers.Coordinate;
 import geometry.MockGeometry;
-import layers.cell.*;
+import layers.cell.CellIndex;
+import layers.cell.CellLayerViewer;
+import layers.cell.MockCellLayerContent;
+import layers.cell.MockCellLayerIndices;
 import test.EslimeTestCase;
 
 public class CellLayerViewerTest extends EslimeTestCase {
 
-    public void testGetOccupiedSites() {
-        MockCellLayerIndices indices = new MockCellLayerIndices();
-        CellIndex expected = new CellIndex();
+    CellLayerViewer query;
+    MockCellLayerContent content;
+    MockCellLayerIndices indices;
+    MockGeometry geom;
+    Coordinate c1, c2;
 
-        Coordinate c1 = new Coordinate(1, 0, 0);
-        Coordinate c2 = new Coordinate(5, 0, 0);
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        indices = new MockCellLayerIndices();
+
+        c1 = new Coordinate(1, 0, 0);
+        c2 = new Coordinate(5, 0, 0);
+
+        geom = new MockGeometry();
+        Coordinate[] cc = new Coordinate[]{c1, c2};
+        geom.setCanonicalSites(cc);
+        content = new MockCellLayerContent(geom, indices);
+
+        query = new CellLayerViewer(content);
+    }
+
+    public void testGetOccupiedSites() {
+        CellIndex expected = new CellIndex();
 
         expected.add(c1);
         expected.add(c2);
 
         indices.setOccupiedSites(expected);
 
-        CellLayerViewer viewer = new CellLayerViewer(null, null, indices);
-        assertEquals(viewer.getOccupiedSites().size(), expected.size());
-        assertTrue(viewer.getOccupiedSites().contains(c1));
-        assertTrue(viewer.getOccupiedSites().contains(c2));
+        assertEquals(query.getOccupiedSites().size(), expected.size());
+        assertTrue(query.getOccupiedSites().contains(c1));
+        assertTrue(query.getOccupiedSites().contains(c2));
     }
 
     public void testGetDivisibleSites() {
-        MockCellLayerIndices indices = new MockCellLayerIndices();
         CellIndex expected = new CellIndex();
-
-        Coordinate c1 = new Coordinate(1, 0, 0);
-        Coordinate c2 = new Coordinate(5, 0, 0);
 
         expected.add(c1);
         expected.add(c2);
 
         indices.setDivisibleSites(expected);
 
-        CellLayerViewer viewer = new CellLayerViewer(null, null, indices);
-        assertEquals(viewer.getDivisibleSites().size(), expected.size());
-        assertTrue(viewer.getDivisibleSites().contains(c1));
-        assertTrue(viewer.getDivisibleSites().contains(c2));
+        assertEquals(query.getDivisibleSites().size(), expected.size());
+        assertTrue(query.getDivisibleSites().contains(c1));
+        assertTrue(query.getDivisibleSites().contains(c2));
     }
 
-    public void testGetCell() {
-        MockGeometry geom = new MockGeometry();
-        Coordinate c = new Coordinate(1, 0, 0);
-        geom.setCanonicalSites(new Coordinate[]{c});
-        MockCellLayerContent content = new MockCellLayerContent(geom, null);
 
-        Cell cell = new SimpleCell(1);
-        content.put(c, cell);
-        CellLayerViewer viewer = new CellLayerViewer(null, content, null);
-        assertEquals(cell, viewer.getCell(c));
+    public void testGetCell() {
+
+        Cell cell = new MockCell();
+        content.put(c1, cell);
+        assertEquals(cell, query.getCell(c1));
     }
 
     public void testGetFitnessVector() {
-        MockGeometry geom = new MockGeometry();
-        Coordinate c = new Coordinate(1, 0, 0);
-        geom.setCanonicalSites(new Coordinate[]{c});
-        MockCellLayerContent content = new MockCellLayerContent(geom, null);
-
-        content.setFitnessVector(new double[]{0.1, 0.2, 0.3});
-        CellLayerViewer viewer = new CellLayerViewer(null, content, null);
-        assertEquals(viewer.getFitnessVector().length, 3);
-        assertEquals(viewer.getFitnessVector()[0], 0.1, epsilon);
+        double[] fitnesses = new double[]{0.1, 0.2};
+        content.setFitnessVector(fitnesses);
+        assertArraysEqual(fitnesses, query.getFitnessVector(), false);
     }
 
     public void testGetStateVector() {
-        MockGeometry geom = new MockGeometry();
-        Coordinate c = new Coordinate(1, 0, 0);
-        geom.setCanonicalSites(new Coordinate[]{c});
-        MockCellLayerContent content = new MockCellLayerContent(geom, null);
-
-        content.setStateVector(new int[]{1, 2, 3});
-        CellLayerViewer viewer = new CellLayerViewer(null, content, null);
-        assertEquals(viewer.getStateVector().length, 3);
-        assertEquals(viewer.getStateVector()[0], 1);
+        int[] states = new int[]{1, 2};
+        content.setStateVector(states);
+        assertArraysEqual(states, query.getStateVector(), false);
     }
 
-    // StateMapViewer gets its own tests, so omit here
-    //public void testGetStateMapViewer() {
-    //	fail();
-    //}
-
     public void testIsOccupied() {
-        MockCellLayerIndices indices = new MockCellLayerIndices();
-        CellIndex expected = new CellIndex();
+        CellIndex occupiedSites = new CellIndex();
         Coordinate c1 = new Coordinate(1, 0, 0);
         Coordinate c2 = new Coordinate(5, 0, 0);
 
-        expected.add(c1);
+        occupiedSites.add(c1);
 
-        indices.setOccupiedSites(expected);
-        CellLayerViewer viewer = new CellLayerViewer(null, null, indices);
-        assertTrue(viewer.isOccupied(c1));
-        assertFalse(viewer.isOccupied(c2));
+        indices.setOccupiedSites(occupiedSites);
+        assertTrue(query.isOccupied(c1));
+        assertFalse(query.isOccupied(c2));
     }
 
     public void testIsDivisible() {
-        MockCellLayerIndices indices = new MockCellLayerIndices();
-        CellIndex expected = new CellIndex();
+        CellIndex divisibleSites = new CellIndex();
         Coordinate c1 = new Coordinate(1, 0, 0);
         Coordinate c2 = new Coordinate(5, 0, 0);
 
-        expected.add(c1);
+        divisibleSites.add(c1);
 
-        indices.setDivisibleSites(expected);
-        CellLayerViewer viewer = new CellLayerViewer(null, null, indices);
-        assertTrue(viewer.isDivisible(c1));
-        assertFalse(viewer.isDivisible(c2));
+        indices.setDivisibleSites(divisibleSites);
+        assertTrue(query.isDivisible(c1));
+        assertFalse(query.isDivisible(c2));
     }
 
-    public void testExists() {
-        MockCellLayerIndices indices = new MockCellLayerIndices();
-        CellLocationIndex locationIndex = indices.getCellLocationIndex();
-        Cell cell = new MockCell();
-        assertFalse(locationIndex.isIndexed(cell));
-        Coordinate c = new Coordinate(0, 0, 0);
-        locationIndex.place(cell, c);
-        assertTrue(locationIndex.isIndexed(cell));
-    }
 }

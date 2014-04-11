@@ -21,20 +21,15 @@ package layers.cell;
 
 import cells.Cell;
 import control.identifiers.Coordinate;
-import control.identifiers.Flags;
 
 /**
  * @author David Bruce Borenstein
- * @test CellUpdaterManagerTest
  */
 public class CellUpdateManager {
-    private CellLayerContent content;
-    private CellLayerIndices indices;
+    protected CellLayerContent content;
 
-    public CellUpdateManager(CellLayerContent content, CellLayerIndices indices) {
+    public CellUpdateManager(CellLayerContent content) {
         this.content = content;
-        this.indices = indices;
-
     }
 
     /**
@@ -60,17 +55,12 @@ public class CellUpdateManager {
      * @param coord
      */
     public void apply(Coordinate coord) {
+        content.sanityCheck(coord);
         Cell cell = content.get(coord);
-
-        // Decrement CURRENT cell state count
-        indices.decrStateCount(cell);
+        content.remove(coord);
 
         cell.apply();
-
-        // Increment NEW cell state count, which may be the same as the old one
-        indices.incrStateCount(cell);
-
-        refreshDivisibility(coord);
+        content.put(coord, cell);
     }
 
     /**
@@ -91,7 +81,8 @@ public class CellUpdateManager {
      * @param cCoord
      */
     public void divideTo(Coordinate pCoord, Coordinate cCoord) {
-        content.checkExists(cCoord);
+        content.sanityCheck(pCoord);
+        content.sanityCheck(cCoord);
 
         // Note: divide(...) updates state index for parent
         Cell child = divide(pCoord);
@@ -100,31 +91,29 @@ public class CellUpdateManager {
         // Note: place(...) updates state index for child
         place(child, cCoord);
 
-        // Update divisibility index
-        refreshDivisibility(pCoord);
-        refreshDivisibility(cCoord);
     }
 
     // TODO: The exposure of this method is a bit of cloodge for the shoving
     // method. There's no obvious way around it as things stand, but it does
     // suggest that a refactor may soon be necessary.
     public Cell divide(Coordinate pCoord) {
-
-        content.checkExists(pCoord);
-
-        // Make sure cell is divisible
-        if (!indices.isDivisible(pCoord)) {
-            throw new IllegalStateException("Attempting to divide non-divisible cell.");
-        }
+        content.sanityCheck(pCoord);
 
         // Divide parent
         Cell parent = content.get(pCoord);
-        indices.decrStateCount(parent);
+
+        // Remove the parent from the map. After it divides, we will place
+        // it again. This will update the indices.
+        content.remove(pCoord);
+
+        // Perform the division.
         Cell child = parent.divide();
-        indices.incrStateCount(parent);
 
-        refreshDivisibility(pCoord);
+        // Place the parent, whose state may have changed as a result of the
+        // division event.
+        content.put(pCoord, parent);
 
+        // Return the child.
         return child;
     }
 
@@ -135,22 +124,15 @@ public class CellUpdateManager {
      * @param coord
      */
     public void place(Cell cell, Coordinate coord) {
-        content.checkExists(coord);
+        content.sanityCheck(coord);
 
-        if (indices.isOccupied(coord)) {
-            throw new IllegalStateException("Illegal state: Attempting to place a cell into an occupied site at " + coord.toString() + ".");
+        if (content.has(coord)) {
+            throw new IllegalStateException("Attempting to place a cell into " +
+                    "an occupied site at " + coord.toString() + ".");
         }
 
         // Place cell in cell lattice
         content.put(coord, cell);
-        indices.incrStateCount(cell);
-
-        // Update occupancy indices
-        indices.getOccupiedSites().add(coord);
-        indices.getCellLocationIndex().place(cell, coord);
-
-        // If cell is divisible, add to divisibility index
-        refreshDivisibility(coord);
     }
 
     /**
@@ -159,73 +141,13 @@ public class CellUpdateManager {
      * @param coord
      */
     public void banish(Coordinate coord) {
-        content.checkExists(coord);
-        Cell toRemove = content.get(coord);
+        content.sanityCheck(coord);
 
-        if ((!coord.hasFlag(Flags.END_OF_WORLD)) && (!indices.isOccupied(coord))) {
-            throw new IllegalStateException("Attempting to banish cell at empty site");
+        if (!content.has(coord)) {
+            throw new IllegalStateException("Tried to banish non-existent cell.");
         }
 
-        indices.decrStateCount(content.get(coord));
-
-        indices.getOccupiedSites().remove(coord);
-
-        content.put(coord, null);
-        indices.getCellLocationIndex().remove(toRemove);
-        refreshDivisibility(coord);
-    }
-
-    /**
-     * Swaps the contents of the two specified coordinates using either move
-     * or swap, as appropriate. If the two are both empty, nothing happens.
-     * This operation should always be successful, but has fewer checks.
-     *
-     * @param pCoord
-     * @param qCoord
-     */
-    public void f_swap(Coordinate pCoord, Coordinate qCoord) {
-
-        pCoord = pCoord.canonicalize();
-        qCoord = qCoord.canonicalize();
-
-        // When swapping a cell with itself, just return
-        if (pCoord.equals(qCoord)) {
-            return;
-        }
-
-        // If both sites are vacant, return
-
-        else if (!indices.isOccupied(pCoord) && !indices.isOccupied(qCoord)) {
-
-            return;
-        }
-
-        // If p is vacant and q is not, move q to p.
-        else if (!indices.isOccupied(pCoord) && indices.isOccupied(qCoord)) {
-
-            move(qCoord, pCoord);
-
-            return;
-        }
-
-        // If q is vacant and p is not, move p to q.
-        else if (indices.isOccupied(pCoord) && !indices.isOccupied(qCoord)) {
-
-            move(pCoord, qCoord);
-
-            return;
-        }
-
-        // If they are both occupied, swap.
-        else if (indices.isOccupied(pCoord) && indices.isOccupied(qCoord)) {
-
-            swap(pCoord, qCoord);
-
-            return;
-        }
-
-        // Should never get here.
-        throw new IllegalStateException("If you see this, you forgot a case in f_swap.");
+        content.remove(coord);
     }
 
     /**
@@ -237,34 +159,18 @@ public class CellUpdateManager {
      */
     public void move(Coordinate pCoord, Coordinate qCoord) {
 
-        // TODO Verify that there is no outstanding lock.
-        content.checkExists(pCoord);
-        content.checkExists(qCoord);
-
-        // Validate
-        if (!indices.isOccupied(pCoord)) {
-            throw new IllegalStateException("Attempting to move a vacant cell.");
+        if (content.has(qCoord)) {
+            throw new IllegalStateException("Attempted to move cell to an " +
+                    "occupied site. Origin: " + pCoord + "; destination: "
+                    + qCoord);
         }
-        if (indices.isOccupied(qCoord)) {
-            throw new IllegalStateException("Attempting to move cell to an occupied site.");
-        }
+        content.sanityCheck(pCoord);
+        content.sanityCheck(qCoord);
 
-        // Get cell
         Cell cell = content.get(pCoord);
 
-        // Remove cell from old location
-        content.put(pCoord, null);
-        indices.getOccupiedSites().remove(pCoord);
-
-        // Add it to its new location
+        content.remove(pCoord);
         content.put(qCoord, cell);
-        indices.getOccupiedSites().add(qCoord);
-
-        indices.getCellLocationIndex().move(cell, qCoord);
-
-        // Update divisibility indices
-        refreshDivisibility(pCoord);
-        refreshDivisibility(qCoord);
     }
 
     /**
@@ -274,48 +180,20 @@ public class CellUpdateManager {
      * @param qCoord
      */
     public void swap(Coordinate pCoord, Coordinate qCoord) {
-
-        content.checkExists(pCoord);
-        content.checkExists(qCoord);
-
-        // Validate
-        if (!indices.isOccupied(pCoord)) {
-            throw new IllegalStateException("Called swap on a vacant site. Use 'move' for this purpose.");
-        }
-        if (!indices.isOccupied(qCoord)) {
-            throw new IllegalStateException("Called swap on a vacant site. Use 'move' for this purpose.");
-        }
+        content.sanityCheck(pCoord);
+        content.sanityCheck(qCoord);
 
         // Identify cells
         Cell p = content.get(pCoord);
         Cell q = content.get(qCoord);
 
-        // Swap
+        // Clear both sites
+        content.remove(pCoord);
+        content.remove(qCoord);
+
+        // Place each cell in the other's site
         content.put(pCoord, q);
         content.put(qCoord, p);
-
-        // Update location index
-        indices.getCellLocationIndex().move(p, qCoord);
-        indices.getCellLocationIndex().move(q, pCoord);
-
-        // Update divisibility index
-        refreshDivisibility(pCoord);
-        refreshDivisibility(qCoord);
     }
 
-
-    public void refreshDivisibility(Coordinate coord) {
-        content.checkExists(coord);
-
-        boolean divisible = indices.isOccupied(coord) && content.get(coord).isDivisible();
-        CellIndex div = indices.getDivisibleSites();
-
-        if (div.contains(coord) && !divisible) {
-            div.remove(coord);
-        }
-
-        if (!div.contains(coord) && divisible) {
-            div.add(coord);
-        }
-    }
 }

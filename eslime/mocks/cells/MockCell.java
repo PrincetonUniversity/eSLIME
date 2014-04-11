@@ -20,6 +20,7 @@
 package cells;
 
 import control.identifiers.Coordinate;
+import structural.utilities.EpsilonUtil;
 
 /**
  * Mock cell class used for testing. We make it extend from BehaviorCell
@@ -33,8 +34,8 @@ public class MockCell extends BehaviorCell {
 
     private int considerCount;
     private Cell child;
-    private int state;
-    private double fitness;
+    private int state = 1;
+    private double fitness = 0.0;
     private double production;
     private String lastTriggeredBehaviorName;
     private Coordinate lastTriggeredCaller;
@@ -42,14 +43,24 @@ public class MockCell extends BehaviorCell {
     private boolean died;
     private int triggerCount = 0;
 
+    public MockCell() {
+        super();
+    }
+
+    public MockCell(int state) {
+        super();
+        this.state = state;
+    }
+
     @Override
     public int consider() {
+        considerCount++;
         return considerCount;
     }
 
     @Override
     public void apply() {
-
+        considerCount = 0;
     }
 
     @Override
@@ -98,7 +109,7 @@ public class MockCell extends BehaviorCell {
     }
 
     @Override
-    protected void setDivisible(boolean divisible) {
+    public void setDivisible(boolean divisible) {
         this.divisible = divisible;
     }
 
@@ -138,5 +149,24 @@ public class MockCell extends BehaviorCell {
     @Override
     public void adjustFitness(double delta) {
 
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof MockCell)) {
+            return false;
+        }
+
+        MockCell other = (MockCell) obj;
+
+        if (other.state != this.state) {
+            return false;
+        }
+
+        if (!EpsilonUtil.epsilonEquals(other.fitness, fitness)) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -29,17 +29,14 @@ import java.util.HashSet;
 
 /**
  * @author David Bruce Borenstein
- * @test CellLookupManagerTest
  */
 public class CellLookupManager {
 
     private CellLayerContent content;
-    private CellLayerIndices indices;
     private Geometry geom;
 
-    public CellLookupManager(Geometry geom, CellLayerContent content, CellLayerIndices indices) {
+    public CellLookupManager(Geometry geom, CellLayerContent content) {
         this.content = content;
-        this.indices = indices;
         this.geom = geom;
     }
 
@@ -50,7 +47,7 @@ public class CellLookupManager {
      * @return
      */
     public int[] getNeighborStates(Coordinate coord) {
-        content.checkExists(coord);
+        content.sanityCheck(coord);
 
         // Get set of neighbors
         Coordinate[] neighbors = geom.getNeighbors(coord, Geometry.APPLY_BOUNDARIES);
@@ -77,18 +74,16 @@ public class CellLookupManager {
      * @param maxDistance
      * @return
      */
-    // TODO: Create a second function that doesn't have the second
-    // argument for unbounded searching?
     public Coordinate[] getNearestVacancies(Coordinate coord, int maxDistance) {
 
-        content.checkExists(coord);
+        content.sanityCheck(coord);
 
 
         // If there are no vacancies, just return now. This should prevent infinite
         // loop even when searching without bound.
-        if (!geom.isInfinite() && (indices.getOccupiedSites().size() > content.getCanonicalSites().length)) {
+        if (!geom.isInfinite() && (content.getOccupiedSites().size() > content.getCanonicalSites().length)) {
             throw new IllegalStateException("Consistency failure.");
-        } else if (!geom.isInfinite() && (indices.getOccupiedSites().size() == content.getCanonicalSites().length)) {
+        } else if (!geom.isInfinite() && (content.getOccupiedSites().size() == content.getCanonicalSites().length)) {
             return new Coordinate[0];
         }
 
@@ -117,9 +112,9 @@ public class CellLookupManager {
                     continue;
                 }
                 // Sanity check
-                content.checkExists(query);
+                content.sanityCheck(query);
 
-                if (!indices.isOccupied(query) && !incl.contains(query)) {
+                if (!content.getOccupiedSites().contains(query) && !incl.contains(query)) {
 
                     incl.add(query);
                     res.add(query);
@@ -140,7 +135,6 @@ public class CellLookupManager {
     }
 
     public Coordinate getCellLocation(Cell cell) {
-        CellLocationIndex locationIndex = indices.getCellLocationIndex();
-        return locationIndex.locate(cell);
+        return content.locate(cell);
     }
 }

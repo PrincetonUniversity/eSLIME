@@ -21,10 +21,9 @@ package layers.cell;
 
 import cells.Cell;
 import control.identifiers.Coordinate;
+import structural.NonNullIntegerMap;
 
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.Map;
+import java.util.Set;
 
 /**
  * Direct representation of cell layer indices. Only the cell layer and
@@ -47,25 +46,35 @@ public class CellLayerIndices {
     protected CellIndex divisibleSites;
 
     // Map that tracks count of cells with each state
-    protected HashMap<Integer, Integer> stateMap;
+    protected NonNullIntegerMap stateMap;
 
-    public CellLocationIndex getCellLocationIndex() {
-        return cellLocationIndex;
-    }
+//    public CellLocationIndex getCellLocationIndex() {
+//        return cellLocationIndex;
+//    }
 
     protected CellLocationIndex cellLocationIndex;
+
+    //protected CellLayerContent callback;
 
     // IdentityHashMap resolves the actual memory address of the
     // key, ie, using == instead of equals(...). This way, no matter
     // how equality is defined for cells, the cell-->coordinate map
     // will uniquely map cells to a location.
-    protected IdentityHashMap<Cell, Coordinate> cellToCoord;
+//    protected IdentityHashMap<Cell, Coordinate> cellToCoord;
 
     public CellLayerIndices() {
         occupiedSites = new CellIndex();
         divisibleSites = new CellIndex();
-        stateMap = new HashMap<>();
+        stateMap = new NonNullIntegerMap();
         cellLocationIndex = new CellLocationIndex();
+    }
+
+    public Coordinate locate(Cell cell) {
+        return cellLocationIndex.locate(cell);
+    }
+
+    public boolean isIndexed(Cell cell) {
+        return cellLocationIndex.isIndexed(cell);
     }
 
     public boolean isOccupied(Coordinate cell) {
@@ -92,8 +101,8 @@ public class CellLayerIndices {
      *
      * @return
      */
-    public CellIndex getOccupiedSites() {
-        return occupiedSites;
+    public Set<Coordinate> getOccupiedSites() {
+        return occupiedSites.set();
     }
 
     /**
@@ -101,11 +110,58 @@ public class CellLayerIndices {
      *
      * @return
      */
-    public CellIndex getDivisibleSites() {
-        return divisibleSites;
+    public Set<Coordinate> getDivisibleSites() {
+        return divisibleSites.set();
     }
 
-    public void incrStateCount(Cell cell) {
+    public void refresh(Coordinate coord, Cell previous, Cell current) {
+        if (previous != null) {
+            remove(coord, previous);
+        }
+
+        if (current != null) {
+            add(coord, current);
+        }
+    }
+
+    private void remove(Coordinate coord, Cell cell) {
+        cellLocationIndex.remove(cell);
+        decrStateCount(cell);
+        setOccupied(coord, false);
+        setDivisible(coord, false);
+    }
+
+    private void setDivisible(Coordinate coord, boolean isDivisible) {
+        if (isDivisible) {
+            divisibleSites.add(coord);
+        } else {
+            divisibleSites.remove(coord);
+        }
+
+    }
+
+    private void setOccupied(Coordinate coord, boolean isOccupied) {
+        if (isOccupied) {
+            occupiedSites.add(coord);
+        } else {
+            occupiedSites.remove(coord);
+        }
+    }
+
+    private void decrStateCount(Cell cell) {
+        Integer currentState = cell.getState();
+        Integer currentCount = stateMap.get(currentState);
+        stateMap.put(currentState, currentCount - 1);
+    }
+
+    private void add(Coordinate coord, Cell cell) {
+        cellLocationIndex.add(cell, coord);
+        incrStateCount(cell);
+        setOccupied(coord, true);
+        setDivisible(coord, cell.isDivisible());
+    }
+
+    private void incrStateCount(Cell cell) {
         Integer currentState = cell.getState();
 
         if (!stateMap.containsKey(currentState)) {
@@ -116,13 +172,7 @@ public class CellLayerIndices {
         stateMap.put(currentState, currentCount + 1);
     }
 
-    public void decrStateCount(Cell cell) {
-        Integer currentState = cell.getState();
-        Integer currentCount = stateMap.get(currentState);
-        stateMap.put(currentState, currentCount - 1);
-    }
-
-    public Map<Integer, Integer> getStateMap() {
+    public NonNullIntegerMap getStateMap() {
         return stateMap;
     }
 }

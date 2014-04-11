@@ -21,6 +21,7 @@ package layers;
 
 import cells.Cell;
 import cells.FissionCell;
+import cells.MockCell;
 import cells.SimpleCell;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
@@ -226,7 +227,6 @@ public class CellIntegrationTest extends EslimeTestCase {
     }
 
     public void testNoOverwriteOnMove() {
-        //HexRing geom = new HexRing(6, 6);
         Lattice lattice = new TriangularLattice();
         Shape shape = new Rectangle(lattice, 6, 6);
         Boundary boundary = new PlaneRingHard(shape, lattice);
@@ -234,11 +234,11 @@ public class CellIntegrationTest extends EslimeTestCase {
         CellLayer layer = new CellLayer(geom, 0);
 
         // Set up one cell
-        Cell toPlace = new SimpleCell(1);
+        Cell toPlace = new MockCell(1);
         Coordinate coord = new Coordinate(2, 3, 0);
         layer.getUpdateManager().place(toPlace, coord);
 
-        Cell second = new SimpleCell(2);
+        Cell second = new MockCell(2);
         Coordinate sc = new Coordinate(3, 3, 0);
         layer.getUpdateManager().place(second, sc);
 

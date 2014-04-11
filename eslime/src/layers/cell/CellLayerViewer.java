@@ -23,6 +23,7 @@ import cells.Cell;
 import control.identifiers.Coordinate;
 
 import java.util.HashSet;
+import java.util.Set;
 
 /**
  * @author David Bruce Borenstein
@@ -30,14 +31,10 @@ import java.util.HashSet;
  */
 public class CellLayerViewer {
 
-    private CellLayer layer;
     private CellLayerContent content;
-    private CellLayerIndices indices;
 
-    public CellLayerViewer(CellLayer layer, CellLayerContent content, CellLayerIndices indices) {
-        this.layer = layer;
+    public CellLayerViewer(CellLayerContent content) {
         this.content = content;
-        this.indices = indices;
     }
 
     /**
@@ -48,7 +45,7 @@ public class CellLayerViewer {
      */
     public HashSet<Coordinate> getOccupiedSites() {
         // Construct a copy of internal state
-        HashSet<Coordinate> res = new HashSet<Coordinate>(indices.getOccupiedSites());
+        HashSet<Coordinate> res = new HashSet<>(content.getOccupiedSites());
 
         // Return it
         return res;
@@ -61,7 +58,7 @@ public class CellLayerViewer {
      */
     public HashSet<Coordinate> getDivisibleSites() {
         // Construct a copy of internal state
-        HashSet<Coordinate> res = new HashSet<Coordinate>(indices.getDivisibleSites());
+        HashSet<Coordinate> res = new HashSet<>(content.getDivisibleSites());
 
         // Return it
         return res;
@@ -85,18 +82,22 @@ public class CellLayerViewer {
     }
 
     public StateMapViewer getStateMapViewer() {
-        return new StateMapViewer(indices.getStateMap());
+        return new StateMapViewer(content.getStateMap());
     }
 
     public boolean isOccupied(Coordinate c) {
-        return indices.isOccupied(c);
+        return content.getOccupiedSites().contains(c);
     }
 
     public boolean isDivisible(Coordinate c) {
-        return indices.isDivisible(c);
+        return content.getDivisibleSites().contains(c);
     }
 
     public boolean exists(Cell cell) {
-        return indices.getCellLocationIndex().isIndexed(cell);
+        return content.isIndexed(cell);
+    }
+
+    public Set<Coordinate> getImaginarySites() {
+        return content.getImaginarySites();
     }
 }

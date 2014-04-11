@@ -28,16 +28,19 @@ import layers.Layer;
  */
 public class CellLayer extends Layer {
 
-    private CellLayerIndices indices;
     private CellLayerContent content;
-
     private String id;
 
     public CellLayer(Geometry geom, int id) {
         geometry = geom;
         this.id = Integer.toString(id);
-        indices = new CellLayerIndices();
-        content = new CellLayerContent(geometry, indices);
+
+        CellLayerIndices indices = new CellLayerIndices();
+        if (geometry.isInfinite()) {
+            content = new InfiniteCellLayerContent(geometry, indices);
+        } else {
+            content = new FiniteCellLayerContent(geometry, indices);
+        }
     }
 
     @Override
@@ -46,15 +49,15 @@ public class CellLayer extends Layer {
     }
 
     public CellLookupManager getLookupManager() {
-        return new CellLookupManager(geometry, content, indices);
+        return new CellLookupManager(geometry, content);
     }
 
     public CellUpdateManager getUpdateManager() {
-        return new CellUpdateManager(content, indices);
+        return new CellUpdateManager(content);
     }
 
     public CellLayerViewer getViewer() {
-        return new CellLayerViewer(this, content, indices);
+        return new CellLayerViewer(content);
     }
 
 }

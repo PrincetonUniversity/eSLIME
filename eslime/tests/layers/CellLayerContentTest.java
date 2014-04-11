@@ -19,9 +19,7 @@
 
 package layers;
 
-import cells.Cell;
-import cells.FissionCell;
-import cells.SimpleCell;
+import cells.MockCell;
 import control.identifiers.Coordinate;
 import control.identifiers.Flags;
 import geometry.MockGeometry;
@@ -29,128 +27,104 @@ import layers.cell.CellLayerContent;
 import layers.cell.MockCellLayerIndices;
 import test.EslimeTestCase;
 
-public class CellLayerContentTest extends EslimeTestCase {
+public abstract class CellLayerContentTest extends EslimeTestCase {
+    protected Coordinate[] c;
+    protected MockGeometry geom;
+    protected CellLayerContent query;
+    protected MockCell f0, f1, f2;
+    protected MockCellLayerIndices indices;
 
-    public void testCheckExists() {
-        // Initialize data structures
-        Coordinate inside = new Coordinate(0, 0, 0);
-        Coordinate outside = new Coordinate(-1, -1, Flags.END_OF_WORLD);
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        c = new Coordinate[3];
 
-        MockGeometry geom = new MockGeometry();
-        geom.setCanonicalSites(new Coordinate[]{inside});
-        CellLayerContent content = new CellLayerContent(geom, null);
+        c[0] = new Coordinate(0, 0, 0);
+        c[1] = new Coordinate(1, 0, 0);
+        c[2] = new Coordinate(2, 0, 0);
 
-        // Set mock geometry to have "infinite" flag and test
-        geom.setInfinite(true);
-        assertEquals(inside, content.checkExists(inside));
-        assertEquals(outside, content.checkExists(outside));
+        geom = new MockGeometry();
+        geom.setCanonicalSites(c);
 
-        // Now set infinite to false and check
-        geom.setInfinite(false);
-        assertEquals(inside, content.checkExists(inside));
+        indices = new MockCellLayerIndices();
 
-        boolean thrown = false;
-        try {
-            content.checkExists(outside);
-        } catch (IllegalStateException ex) {
-            thrown = true;
-        }
-        assertTrue(thrown);
+        query = makeQuery();
+
+        f0 = makeMockCell(1, 0.5);
+        f1 = makeMockCell(1, 0.5);
+        f2 = makeMockCell(2, 0.7);
     }
 
-    public void testPutGet() {
-        // Initialize data structures
-        Coordinate inside = new Coordinate(0, 0, 0);
+    private MockCell makeMockCell(int state, double fitness) {
+        MockCell cell = new MockCell();
+        cell.setState(state);
+        cell.setFitness(fitness);
 
-        MockGeometry geom = new MockGeometry();
-        geom.setCanonicalSites(new Coordinate[]{inside});
+        return cell;
+    }
 
-        MockCellLayerIndices indices = new MockCellLayerIndices();
-        CellLayerContent content = new CellLayerContent(geom, indices);
 
-        Cell cell = new SimpleCell(1);
+    // Actually, create a full mock for dependencies and test out
+    // that all appropriate requests are fired--nothing more
+    public void testPutHasGetRemove() {
 
-        // "put" a cell in
-        indices.setOccupied(inside, false);
-        content.put(inside, cell);
+        // Test before and after state
+        assertFalse(query.has(c[0]));
+        query.put(c[0], f0);
+        assertTrue(query.has(c[0]));
+        assertEquals(f0, query.get(c[0]));
 
-        // set mock index to occupied
-        indices.setOccupied(inside, true);
+        // Check that indices were triggered correctly.
+        assertEquals(c[0], indices.getLastCoord());
+        assertNull(indices.getLastPrevious());
+        assertEquals(f0, indices.getLastCurrent());
 
-        // "get" cell
-        assertEquals(cell, content.get(inside));
+        query.remove(c[0]);
+
+        assertFalse(query.has(c[0]));
+        assertEquals(c[0], indices.getLastCoord());
+        assertEquals(f0, indices.getLastPrevious());
+        assertNull(indices.getLastCurrent());
     }
 
     public void testGetCanonicalSites() {
-        Coordinate[] c = new Coordinate[3];
-
-        c[0] = new Coordinate(0, 0, 0);
-        c[1] = new Coordinate(1, 0, 0);
-        c[2] = new Coordinate(2, 0, 0);
-
-        MockGeometry geom = new MockGeometry();
-        geom.setCanonicalSites(c);
-
-        CellLayerContent content = new CellLayerContent(geom, null);
-        assertEquals(content.getCanonicalSites()[0], c[0]);
-        assertEquals(content.getCanonicalSites()[1], c[1]);
-        assertEquals(content.getCanonicalSites()[2], c[2]);
+        assertEquals(query.getCanonicalSites()[0], c[0]);
+        assertEquals(query.getCanonicalSites()[1], c[1]);
+        assertEquals(query.getCanonicalSites()[2], c[2]);
     }
 
     public void testGetStateVector() {
-        // Mock canonical sites to 3 locations
-        Coordinate[] c = new Coordinate[3];
-
-        c[0] = new Coordinate(0, 0, 0);
-        c[1] = new Coordinate(1, 0, 0);
-        c[2] = new Coordinate(2, 0, 0);
-
-        MockGeometry geom = new MockGeometry();
-        geom.setCanonicalSites(c);
-
-        // Mock canonical sites to 3 locations
-        FissionCell f0 = new FissionCell(1, 0.5, 1.0);
-        FissionCell f1 = new FissionCell(1, 0.5, 1.0);
-        FissionCell f2 = new FissionCell(2, 0.7, 1.0);
-
-        // Add a cell to each canonical site
-        CellLayerContent content = new CellLayerContent(geom, null);
-        content.put(c[0], f0);
-        content.put(c[1], f1);
-        content.put(c[2], f2);
+        query.put(c[0], f0);
+        query.put(c[1], f1);
+        query.put(c[2], f2);
 
         // Fitness vector goes in order of canonical sites array
-        assertEquals(content.getStateVector()[0], 1);
-        assertEquals(content.getStateVector()[1], 1);
-        assertEquals(content.getStateVector()[2], 2);
+        assertEquals(query.getStateVector()[0], 1);
+        assertEquals(query.getStateVector()[1], 1);
+        assertEquals(query.getStateVector()[2], 2);
     }
 
     public void testGetFitnessVector() {
-        // Mock canonical sites to 3 locations
-        Coordinate[] c = new Coordinate[3];
-
-        c[0] = new Coordinate(0, 0, 0);
-        c[1] = new Coordinate(1, 0, 0);
-        c[2] = new Coordinate(2, 0, 0);
-
-        MockGeometry geom = new MockGeometry();
-        geom.setCanonicalSites(c);
-
-        // Mock canonical sites to 3 locations
-        FissionCell f0 = new FissionCell(1, 0.5, 1.0);
-        FissionCell f1 = new FissionCell(1, 0.5, 1.0);
-        FissionCell f2 = new FissionCell(2, 0.7, 1.0);
-
-        // Add a cell to each canonical site
-        CellLayerContent content = new CellLayerContent(geom, null);
-        content.put(c[0], f0);
-        content.put(c[1], f1);
-        content.put(c[2], f2);
+        query.put(c[0], f0);
+        query.put(c[1], f1);
+        query.put(c[2], f2);
 
         // Fitness vector goes in order of canonical sites array
-        assertEquals(content.getFitnessVector()[0], 0.5, epsilon);
-        assertEquals(content.getFitnessVector()[1], 0.5, epsilon);
-        assertEquals(content.getFitnessVector()[2], 0.7, epsilon);
-
+        assertEquals(query.getFitnessVector()[0], 0.5, epsilon);
+        assertEquals(query.getFitnessVector()[1], 0.5, epsilon);
+        assertEquals(query.getFitnessVector()[2], 0.7, epsilon);
     }
+
+    public void testHasCanonicalForm() {
+        // Try something that does...
+        Coordinate yes = new Coordinate(0, 0, Flags.BEYOND_BOUNDS);
+        assertTrue(query.hasCanonicalForm(yes));
+
+        // Try something that doesn't
+        Coordinate no = new Coordinate(-1, 0, Flags.BEYOND_BOUNDS);
+        assertFalse(query.hasCanonicalForm(no));
+    }
+
+    public abstract CellLayerContent makeQuery();
+
 }

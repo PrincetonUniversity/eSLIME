@@ -39,7 +39,7 @@ public class CellLocationIndex {
         locationMap = new IdentityHashMap<>();
     }
 
-    public void place(Cell cell, Coordinate coordinate) {
+    public void add(Cell cell, Coordinate coordinate) {
         if (locationMap.containsKey(cell)) {
             throw new IllegalStateException("Attempting to overwrite existing location key.");
         }
@@ -47,19 +47,19 @@ public class CellLocationIndex {
         locationMap.put(cell, coordinate);
     }
 
-    public void move(Cell cell, Coordinate coordinate) {
-        if (!locationMap.containsKey(cell)) {
-            throw new IllegalStateException("Attempting to move a cell that does not have an indexed spatial location.");
-        }
-
-        remove(cell);
-        place(cell, coordinate);
-    }
+//    public void move(Cell cell, Coordinate coordinate) {
+//        if (!locationMap.containsKey(cell)) {
+//            throw new IllegalStateException("Attempting to move a cell that does not have an indexed spatial location.");
+//        }
+//
+//        remove(cell);
+//        place(cell, coordinate);
+//    }
 
     public void remove(Cell cell) {
-        if (!locationMap.containsKey(cell)) {
-            throw new IllegalStateException("Attempting to remove a cell that does not have an indexed spatial location.");
-        }
+//        if (!locationMap.containsKey(cell)) {
+//            throw new IllegalStateException("Attempting to remove a cell that does not have an indexed spatial location.");
+//        }
 
         locationMap.remove(cell);
     }

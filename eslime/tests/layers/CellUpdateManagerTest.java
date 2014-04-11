@@ -20,7 +20,7 @@
 package layers;
 
 import cells.Cell;
-import cells.SimpleCell;
+import cells.MockCell;
 import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import layers.cell.CellUpdateManager;
@@ -29,169 +29,107 @@ import layers.cell.MockCellLayerIndices;
 import test.EslimeTestCase;
 
 public class CellUpdateManagerTest extends EslimeTestCase {
-    public void testConsiderApply() {
-        // Set up mocks
-        MockGeometry geom = new MockGeometry();
-        Coordinate o = new Coordinate(0, 0, 0);
-        geom.setCanonicalSites(new Coordinate[]{o});
-        MockCellLayerIndices indices = new MockCellLayerIndices();
-        MockCellLayerContent content = new MockCellLayerContent(geom, indices);
-        Cell cell = new SimpleCell(1);
-        content.put(o, cell);
-        CellUpdateManager manager = new CellUpdateManager(content, indices);
+    private MockGeometry geom;
+    private MockCellLayerIndices indices;
+    private MockCellLayerContent content;
+    private Coordinate o, t;
+    private CellUpdateManager query;
 
-        assertEquals(manager.consider(o), 1);
-        assertEquals(manager.consider(o), 2);
-        manager.apply(o);
-        assertEquals(manager.consider(o), 1);
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        geom = new MockGeometry();
+        o = new Coordinate(0, 0, 0);
+        t = new Coordinate(1, 0, 0);
+        Coordinate[] cc = new Coordinate[]{o, t};
+        geom.setCanonicalSites(cc);
+
+        indices = new MockCellLayerIndices();
+        content = new MockCellLayerContent(geom, indices);
+        query = new CellUpdateManager(content);
+    }
+
+    public void testConsiderApply() {
+        MockCell cell = new MockCell();
+        query.place(cell, o);
+        assertEquals(1, query.consider(o));
+        assertEquals(2, query.consider(o));
+        query.apply(o);
+        assertEquals(1, query.consider(o));
 
     }
 
     public void testDivideTo() {
-        // Set up mocks
-        MockGeometry geom = new MockGeometry();
-        Coordinate o = new Coordinate(0, 0, 0);
-        Coordinate t = new Coordinate(1, 0, 0);
+        MockCell cell = new MockCell(1);
+        query.place(cell, o);
+        MockCell child = new MockCell(2);
+        cell.setChild(child);
+        assertNull(indices.getLastPrevious());
+        assertEquals(cell, indices.getLastCurrent());
+        assertEquals(o, indices.getLastCoord());
+        assertTrue(content.has(o));
 
-        geom.setCanonicalSites(new Coordinate[]{o, t});
-        MockCellLayerIndices indices = new MockCellLayerIndices();
+        query.divideTo(o, t);
+        assertNull(indices.getLastPrevious());
+        assertEquals(t, indices.getLastCoord());
+        assertTrue(content.has(t));
 
-        MockCellLayerContent content = new MockCellLayerContent(geom, indices);
-        Cell cell = new SimpleCell(1);
-        CellUpdateManager manager = new CellUpdateManager(content, indices);
-        manager.place(cell, o);
-        assertTrue(indices.isOccupied(o));
-        assertTrue(indices.isDivisible(o));
-        assertFalse(indices.isOccupied(t));
-        assertFalse(indices.isDivisible(t));
-        assertEquals(o, indices.getCellLocationIndex().locate(cell));
-        manager.divideTo(o, t);
-
-        assertTrue(indices.isOccupied(t));
-        assertTrue(indices.isDivisible(t));
-        assertEquals(content.get(t).getState(), 1);
-
-        Cell child = content.get(t);
-        assertEquals(t, indices.getCellLocationIndex().locate(child));
+        assertEquals(t, content.locate(child));
     }
 
     public void testDivide() {
-        // Set up mocks
-        MockGeometry geom = new MockGeometry();
-        Coordinate o = new Coordinate(0, 0, 0);
-        Coordinate t = new Coordinate(1, 0, 0);
+        MockCell cell = new MockCell(1);
+        MockCell child = new MockCell(2);
+        cell.setChild(child);
+        query.place(cell, o);
 
-        geom.setCanonicalSites(new Coordinate[]{o, t});
-        MockCellLayerIndices indices = new MockCellLayerIndices();
-//		indices.setOccupied(o, true);
-//		indices.setDivisible(o, true);
-
-        MockCellLayerContent content = new MockCellLayerContent(geom, indices);
-        Cell cell = new SimpleCell(1);
-        CellUpdateManager manager = new CellUpdateManager(content, indices);
-        manager.place(cell, o);
-
-        Cell daughter = manager.divide(o);
-
-        assertEquals(daughter.getState(), cell.getState());
-        assertEquals(daughter.getFitness(), cell.getFitness(), epsilon);
-
-        // Child is not yet placed and should therefore not be indexed
-        assertFalse(indices.getCellLocationIndex().isIndexed(daughter));
+        Cell actual = query.divide(o);
+        Cell expected = child;
+        assertEquals(expected, actual);
     }
 
 
     public void testBanish() {
-        // Set up mocks
-        MockGeometry geom = new MockGeometry();
-        Coordinate o = new Coordinate(0, 0, 0);
-        Coordinate t = new Coordinate(1, 0, 0);
+        Cell cell = new MockCell();
+        content.put(o, cell);
 
-        geom.setCanonicalSites(new Coordinate[]{o, t});
-        MockCellLayerIndices indices = new MockCellLayerIndices();
-//		indices.setOccupied(o, true);
-//		indices.setDivisible(o, true);
-
-        MockCellLayerContent content = new MockCellLayerContent(geom, indices);
-        Cell cell = new SimpleCell(1);
-
-        CellUpdateManager manager = new CellUpdateManager(content, indices);
-        manager.place(cell, o);
-
-        assertTrue(indices.isOccupied(o));
-        assertTrue(indices.isDivisible(o));
-
-        assertTrue(indices.getCellLocationIndex().isIndexed(cell));
-
-        manager.banish(o);
-
-        assertTrue(content.get(o) == null);
-        assertFalse(indices.isOccupied(o));
-        assertFalse(indices.isDivisible(o));
-
-        assertFalse(indices.getCellLocationIndex().isIndexed(cell));
+        assertTrue(content.has(o));
+        query.banish(o);
+        assertFalse(content.has(o));
     }
 
     public void testMove() {
-        // Set up mocks
-        MockGeometry geom = new MockGeometry();
-        Coordinate o = new Coordinate(0, 0, 0);
-        Coordinate t = new Coordinate(1, 0, 0);
+        Cell cell = new MockCell(1);
+        query.place(cell, o);
+        assertNull(indices.getLastPrevious());
+        assertEquals(cell, indices.getLastCurrent());
+        assertEquals(o, indices.getLastCoord());
+        assertTrue(content.has(o));
 
-        geom.setCanonicalSites(new Coordinate[]{o, t});
-        MockCellLayerIndices indices = new MockCellLayerIndices();
-//		indices.setOccupied(o, true);
-//		indices.setDivisible(o, true);
-        Cell cell = new SimpleCell(1);
-        //indices.getCellLocationIndex().place(cell, o);
-        MockCellLayerContent content = new MockCellLayerContent(geom, indices);
+        query.move(o, t);
 
-        CellUpdateManager manager = new CellUpdateManager(content, indices);
-        manager.place(cell, o);
-
-        assertTrue(indices.isOccupied(o));
-        assertTrue(indices.isDivisible(o));
-        assertFalse(indices.isOccupied(t));
-        assertFalse(indices.isDivisible(t));
-        assertEquals(o, indices.getCellLocationIndex().locate(cell));
-
-        manager.move(o, t);
-
-        assertEquals(t, indices.getCellLocationIndex().locate(cell));
-        assertFalse(indices.isOccupied(o));
-        assertFalse(indices.isDivisible(o));
-        assertTrue(indices.isOccupied(t));
-        assertTrue(indices.isDivisible(t));
+        assertFalse(content.has(o));
+        assertEquals(cell, indices.getLastCurrent());
+        assertEquals(t, indices.getLastCoord());
+        assertTrue(content.has(t));
     }
 
     public void testSwap() {
-        // Set up mocks
-        MockGeometry geom = new MockGeometry();
-        Coordinate o = new Coordinate(0, 0, 0);
-        Coordinate t = new Coordinate(1, 0, 0);
+        Cell cell1 = new MockCell(1);
+        Cell cell2 = new MockCell(2);
+        query.place(cell1, o);
+        query.place(cell2, t);
 
-        geom.setCanonicalSites(new Coordinate[]{o, t});
-        MockCellLayerIndices indices = new MockCellLayerIndices();
-        Cell cell1 = new SimpleCell(1);
-        Cell cell2 = new SimpleCell(2);
-//	    indices.getCellLocationIndex().place(cell1, o);
-//        indices.getCellLocationIndex().place(cell2, t);
-        MockCellLayerContent content = new MockCellLayerContent(geom, indices);
-
-        CellUpdateManager manager = new CellUpdateManager(content, indices);
-        manager.place(cell1, o);
-        manager.place(cell2, t);
-
-        assertEquals(o, indices.getCellLocationIndex().locate(cell1));
-        assertEquals(t, indices.getCellLocationIndex().locate(cell2));
+        assertEquals(o, content.locate(cell1));
+        assertEquals(t, content.locate(cell2));
 
         assertEquals(content.get(o).getState(), 1);
         assertEquals(content.get(t).getState(), 2);
 
-        manager.swap(o, t);
+        query.swap(o, t);
 
-        assertEquals(o, indices.getCellLocationIndex().locate(cell2));
-        assertEquals(t, indices.getCellLocationIndex().locate(cell1));
+        assertEquals(o, content.locate(cell2));
+        assertEquals(t, content.locate(cell1));
 
         assertEquals(content.get(o).getState(), 2);
         assertEquals(content.get(t).getState(), 1);
@@ -199,27 +137,11 @@ public class CellUpdateManagerTest extends EslimeTestCase {
     }
 
     public void testPlace() {
-        // Set up mocks
-        MockGeometry geom = new MockGeometry();
-        Coordinate o = new Coordinate(0, 0, 0);
-        Coordinate t = new Coordinate(1, 0, 0);
+        Cell cell = new MockCell(1);
 
-        geom.setCanonicalSites(new Coordinate[]{o, t});
-        MockCellLayerIndices indices = new MockCellLayerIndices();
-
-        MockCellLayerContent content = new MockCellLayerContent(geom, indices);
-        Cell cell = new SimpleCell(1);
-
-        CellUpdateManager manager = new CellUpdateManager(content, indices);
-
-        assertFalse(indices.getCellLocationIndex().isIndexed(cell));
-        assertTrue(content.get(o) == null);
-
-        manager.place(cell, o);
-
-        assertTrue(indices.getCellLocationIndex().isIndexed(cell));
-
-        assertFalse(content.get(o) == null);
+        assertFalse(content.has(o));
+        query.place(cell, o);
+        assertTrue(content.has(o));
     }
 
 }

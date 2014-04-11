@@ -19,10 +19,24 @@
  * /
  */
 
-package io.serialize.binary;
+package structural;
+
+import java.util.HashMap;
 
 /**
- * Created by dbborens on 3/28/14.
+ * Created by David B Borenstein on 4/11/14.
  */
-public class HighlightsWriter {
+public class NonNullIntegerMap extends HashMap<Integer, Integer> {
+    @Override
+    public Integer get(Object key) {
+        if (!(key instanceof Integer)) {
+            throw new IllegalStateException("Received unexpected key class.");
+        }
+
+        if (!containsKey(key)) {
+            return 0;
+        }
+
+        return super.get(key);
+    }
 }

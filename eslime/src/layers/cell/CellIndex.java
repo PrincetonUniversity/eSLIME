@@ -93,6 +93,11 @@ public class CellIndex implements Set<Coordinate> {
         return contents.iterator();
     }
 
+    public Set<Coordinate> set() {
+        HashSet<Coordinate> copy = new HashSet<>(contents);
+        return copy;
+    }
+
     @Override
     public boolean remove(Object o) {
         if (!(o instanceof Coordinate)) {

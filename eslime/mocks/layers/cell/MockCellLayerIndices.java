@@ -65,11 +65,28 @@ public class MockCellLayerIndices extends CellLayerIndices {
         return divisible;
     }
 
-    public void decrStateCount(Cell cell) {
-        if (!stateMap.containsKey(cell.getState())) {
-            stateMap.put(cell.getState(), 0);
-        }
+    private Coordinate lastCoord;
+    private Cell lastPrevious;
 
-        super.decrStateCount(cell);
+    public Coordinate getLastCoord() {
+        return lastCoord;
+    }
+
+    public Cell getLastPrevious() {
+        return lastPrevious;
+    }
+
+    public Cell getLastCurrent() {
+        return lastCurrent;
+    }
+
+    private Cell lastCurrent;
+
+    @Override
+    public void refresh(Coordinate coord, Cell previous, Cell current) {
+        super.refresh(coord, previous, current);
+        lastPrevious = previous;
+        lastCurrent = current;
+        lastCoord = coord;
     }
 }

@@ -105,13 +105,8 @@ public abstract class BulkDivisionProcess extends CellProcess {
             throw new IllegalStateException();
         }
 
-        // Look for sites that have been pushed out of the world
-        for (Coordinate toCheck : preliminary) {
-
-            if (toCheck.hasFlag(Flags.END_OF_WORLD)) {
-                layer.getUpdateManager().banish(toCheck);
-            }
-
+        for (Coordinate c : layer.getViewer().getImaginarySites()) {
+            layer.getUpdateManager().banish(c);
         }
 
         // Divide the child cell into the vacancy left by the parent
@@ -128,6 +123,8 @@ public abstract class BulkDivisionProcess extends CellProcess {
      *                TODO: This is so cloodgy and terrible.
      */
     private void shove(Coordinate curLoc, Coordinate d, HashSet<Coordinate> sites) {
+        System.out.println("Shoving: curLoc=" + curLoc + "; d=" + d);
+
         // Base case 0: we've reached the target
         if (d.norm() == 0) {
             return;
@@ -184,7 +181,10 @@ public abstract class BulkDivisionProcess extends CellProcess {
         Coordinate du = new Coordinate(dNext, d.flags());
         shove(nextLoc, du, sites);
 
-        layer.getUpdateManager().f_swap(curLoc, nextLoc);
+        if (nextLoc.equals(new Coordinate(12, 5, 1))) {
+            throw new RuntimeException("WTF?");
+        }
+        layer.getUpdateManager().swap(curLoc, nextLoc);
 
         sites.add(nextLoc);
     }

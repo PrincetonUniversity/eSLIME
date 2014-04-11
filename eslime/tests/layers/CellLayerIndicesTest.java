@@ -19,82 +19,84 @@
 
 package layers;
 
-import cells.Cell;
-import cells.SimpleCell;
+import cells.MockCell;
 import control.identifiers.Coordinate;
-import junit.framework.TestCase;
 import layers.cell.CellLayerIndices;
+import test.EslimeTestCase;
 
-public class CellLayerIndicesTest extends TestCase {
+public class CellLayerIndicesTest extends EslimeTestCase {
 
-    public void testIsOccupied() {
-        CellLayerIndices indices = new CellLayerIndices();
+    private Coordinate c;
+    private CellLayerIndices query;
 
-        Coordinate coord = new Coordinate(0, 0, 0);
-        assertFalse(indices.isOccupied(coord));
-
-        indices.getOccupiedSites().add(coord);
-        assertTrue(indices.isOccupied(coord));
-
-        indices.getOccupiedSites().remove(coord);
-        assertFalse(indices.isOccupied(coord));
+    @Override
+    protected void setUp() throws Exception {
+        c = new Coordinate(0, 0, 0);
+        query = new CellLayerIndices();
     }
 
-    public void testIsDivisible() {
-        CellLayerIndices indices = new CellLayerIndices();
+    public void testNulltoNull() {
+        query.refresh(c, null, null);
 
-        Coordinate coord = new Coordinate(0, 0, 0);
-        assertFalse(indices.isDivisible(coord));
-
-        indices.getDivisibleSites().add(coord);
-        assertTrue(indices.isDivisible(coord));
-
-        indices.getDivisibleSites().remove(coord);
-        assertFalse(indices.isDivisible(coord));
+        assertFalse(query.isDivisible(c));
+        assertFalse(query.isOccupied(c));
     }
 
-    public void testGetOccupiedSites() {
-        CellLayerIndices indices = new CellLayerIndices();
-        assertEquals(indices.getOccupiedSites().size(), 0);
+    public void testNonNullToNull() {
+        MockCell cell = new MockCell();
+        cell.setDivisible(true);
+        query.refresh(c, null, cell);
 
-        Coordinate coord = new Coordinate(0, 0, 0);
-        indices.getOccupiedSites().add(coord);
-
-        assertEquals(indices.getOccupiedSites().size(), 1);
+        query.refresh(c, cell, null);
+        assertFalse(query.isIndexed(cell));
+        assertFalse(query.isDivisible(c));
+        assertFalse(query.isOccupied(c));
     }
 
-    public void testGetDivisibleSites() {
-        CellLayerIndices indices = new CellLayerIndices();
-        assertEquals(indices.getDivisibleSites().size(), 0);
 
-        Coordinate coord = new Coordinate(0, 0, 0);
-        indices.getDivisibleSites().add(coord);
+    public void testNullToNonDivisible() {
+        MockCell cell = new MockCell();
 
-        assertEquals(indices.getDivisibleSites().size(), 1);
+        cell.setDivisible(false);
+        cell.setState(3);
+
+        query.refresh(c, null, cell);
+
+        assertTrue(query.isIndexed(cell));
+        assertEquals(c, query.locate(cell));
+        assertFalse(query.isDivisible(c));
+        assertTrue(query.isOccupied(c));
+        assertEquals((Integer) 1, query.getStateMap().get(3));
     }
 
-    public void testStateCount() {
-        CellLayerIndices indices = new CellLayerIndices();
-
-        indices.getStateMap().put(1, 5);
-        assertEquals((int) indices.getStateMap().get(1), 5);
-
-        Cell c = new SimpleCell(1);
-
-        indices.incrStateCount(c);
-        assertEquals((int) indices.getStateMap().get(1), 6);
-
-        indices.decrStateCount(c);
-        assertEquals((int) indices.getStateMap().get(1), 5);
+    public void testNullToDivisible() {
+        MockCell cell = new MockCell();
+        cell.setDivisible(true);
+        query.refresh(c, null, cell);
+        assertTrue(query.isDivisible(c));
     }
 
-    public void testStateMap() {
-        CellLayerIndices indices = new CellLayerIndices();
+    public void testNonNullTransition() {
+        MockCell dCell = new MockCell();
+        dCell.setState(5);
+        dCell.setDivisible(true);
 
-        assertEquals(indices.getStateMap().size(), 0);
+        MockCell nCell = new MockCell();
+        nCell.setDivisible(false);
+        nCell.setState(2);
 
-        indices.getStateMap().put(0, 1);
-        indices.getStateMap().put(1, 3);
-        assertEquals(indices.getStateMap().size(), 2);
+        query.refresh(c, null, nCell);
+        assertTrue(query.isIndexed(nCell));
+        assertFalse(query.isIndexed(dCell));
+        assertFalse(query.isDivisible(c));
+        assertEquals((Integer) 0, query.getStateMap().get(5));
+        assertEquals((Integer) 1, query.getStateMap().get(2));
+
+        query.refresh(c, nCell, dCell);
+        assertFalse(query.isIndexed(nCell));
+        assertTrue(query.isIndexed(dCell));
+        assertTrue(query.isDivisible(c));
+        assertEquals((Integer) 1, query.getStateMap().get(5));
+        assertEquals((Integer) 0, query.getStateMap().get(2));
     }
 }

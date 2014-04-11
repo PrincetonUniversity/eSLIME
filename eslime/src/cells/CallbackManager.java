@@ -60,7 +60,8 @@ public class CallbackManager {
 
         if (layer.getViewer().exists(cell)) {
             Coordinate coord = layer.getLookupManager().getCellLocation(cell);
-            layer.getUpdateManager().refreshDivisibility(coord);
+            layer.getUpdateManager().banish(coord);
+            layer.getUpdateManager().place(cell, coord);
         }
     }
 

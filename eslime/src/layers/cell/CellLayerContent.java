@@ -21,22 +21,23 @@ package layers.cell;
 
 import cells.Cell;
 import control.identifiers.Coordinate;
-import control.identifiers.Flags;
 import geometry.Geometry;
 
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * @author David Bruce Borenstein
- * @test CellLayerContentTest
  */
-public class CellLayerContent {
+public abstract class CellLayerContent {
 
     // Mapping of sites to cell pointers -- the lattice itself.
     protected HashMap<Coordinate, Cell> map;
 
     // All sites (basically the keyset for the lattice map).
-    protected Coordinate[] canonicalSites;
+    protected Set<Coordinate> canonicalSites;
 
     protected Geometry geom;
     protected CellLayerIndices indices;
@@ -44,52 +45,42 @@ public class CellLayerContent {
     public CellLayerContent(Geometry geom, CellLayerIndices indices) {
         // Assign geometry.
         this.geom = geom;
-        this.indices = indices;
-        // Get canonical site list.
-        canonicalSites = geom.getCanonicalSites();
 
+        this.indices = indices;
+
+        // Get canonical site list.
+        canonicalSites = new HashSet<>(geom.getCanonicalSites().length);
+
+        Coordinate[] cc = geom.getCanonicalSites();
         // Initialize map.
         map = new HashMap<>();
-        for (int i = 0; i < canonicalSites.length; i++) {
-            Coordinate coord = canonicalSites[i];
+        for (int i = 0; i < cc.length; i++) {
+            Coordinate coord = cc[i];
 
             // Initialize each site to null (empty)
             map.put(coord, null);
+            canonicalSites.add(coord);
         }
     }
 
-    public Coordinate checkExists(Coordinate coord) {
-        // First check to see if this cell is supposed to be retained even though
-        // it is not a "real" coordinate.
-        if (geom.isInfinite() && coord.hasFlag(Flags.END_OF_WORLD)) {
-            return coord;
-        }
+    public Set<Coordinate> getOccupiedSites() {
+        return indices.getOccupiedSites();
+    }
 
-        Coordinate canonical = coord.canonicalize();
-
-        // Otherwise, it had better be in the coordinate system.
-        if (!map.containsKey(canonical)) {
-            StringBuilder ss = new StringBuilder();
-            ss.append("Consistency failure: coordinate ");
-            ss.append(coord.stringForm());
-            ss.append(" does not exist in this geometry.\n");
-            String str = ss.toString();
-            throw new IllegalStateException(str);
-        }
-        return canonical;
+    public Set<Coordinate> getDivisibleSites() {
+        return indices.getDivisibleSites();
     }
 
     public Cell get(Coordinate coord) {
-        checkExists(coord);
-
-        // Validate input
-        if (!indices.isOccupied(coord))
-            throw new IllegalStateException("Attempted to access an empty cell at " + coord);
 
         // Get pointer to cell and return it
         Cell res = map.get(coord.canonicalize());
 
         return res;
+    }
+
+    public boolean has(Coordinate coord) {
+        return (get(coord) != null);
     }
 
     /**
@@ -100,15 +91,22 @@ public class CellLayerContent {
      */
     public Coordinate[] getCanonicalSites() {
         // Construct a copy of internal state
-        Coordinate[] res = canonicalSites.clone();
+        Coordinate[] res = geom.getCanonicalSites();
 
         // Return it
         return res;
     }
 
-    public void put(Coordinate coord, Cell cell) {
-        checkExists(coord);
-        map.put(coord, cell);
+    public void put(Coordinate coord, Cell current) {
+        Cell previous = map.get(coord);
+        indices.refresh(coord, previous, current);
+        map.put(coord, current);
+    }
+
+    public void remove(Coordinate coord) {
+        Cell previous = map.get(coord);
+        indices.refresh(coord, previous, null);
+        map.put(coord, null);
     }
 
     public int[] getStateVector() {
@@ -129,6 +127,16 @@ public class CellLayerContent {
     }
 
     /**
+     * Returns true iff the specified site has a canonical form
+     * in this geometry.
+     */
+    public boolean hasCanonicalForm(Coordinate coord) {
+        Coordinate canonical = coord.canonicalize();
+        boolean has = canonicalSites.contains(canonical);
+        return has;
+    }
+
+    /**
      * Returns the fitness vector, in canonical site order.
      */
     public double[] getFitnessVector() {
@@ -146,5 +154,21 @@ public class CellLayerContent {
         }
 
         return fArr;
+    }
+
+    public abstract void sanityCheck(Coordinate coord);
+
+    public abstract Set<Coordinate> getImaginarySites();
+
+    public Coordinate locate(Cell cell) {
+        return indices.locate(cell);
+    }
+
+    public Map<Integer, Integer> getStateMap() {
+        return indices.getStateMap();
+    }
+
+    public boolean isIndexed(Cell cell) {
+        return indices.isIndexed(cell);
     }
 }
