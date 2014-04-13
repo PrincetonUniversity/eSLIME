@@ -21,13 +21,36 @@
 
 package io.visual.map;
 
-import junit.framework.TestCase;
+import io.visual.glyph.Glyph;
+import io.visual.glyph.GlyphTest;
+import io.visual.glyph.MockGlyph;
+import layers.LightweightSystemState;
 
 /**
  * Created by dbborens on 4/1/14.
  */
-public class MapVisualizationTest extends TestCase {
-    public void testLifeCycle() throws Exception {
-        fail("This test should verify that the renderer completes and the image is not null. It should also invoke init and conclude, and neither of those should fail, either.");
+public class MapVisualizationTest extends GlyphTest {
+    @Override
+    protected Glyph makeGlyph() {
+        return new MockGlyph();
+    }
+
+    @Override
+    protected String getFileName() {
+        return "mapVisualizationTest.png";
+    }
+
+    @Override
+    protected void populateStateAndFitness(LightweightSystemState systemState) {
+        int n = makeGeometry().getCanonicalSites().length;
+        double[] fitness = new double[n];
+        int[] state = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            fitness[i] = (i % 2) + 1;
+            state[i] = ((i + 1) % 2) + 1;
+        }
+        systemState.setFitnessVector(fitness);
+        systemState.setStateVector(state);
     }
 }

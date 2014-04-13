@@ -104,6 +104,9 @@ public abstract class PixelTranslator {
 
     protected abstract void calcLimits(int[] extrema);
 
+    // Provide the coordinate of the lower-leftmost coordinate to be included in.
+    // the field of view. This may not be a coordinate that exists in this
+    // geometry (ie, in the case of non-rectangular geometries).
     protected abstract void calcOrigin();
 
     /**

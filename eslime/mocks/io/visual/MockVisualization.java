@@ -30,19 +30,42 @@ import java.awt.image.BufferedImage;
  * Created by David B Borenstein on 4/9/14.
  */
 public class MockVisualization implements Visualization {
+    private boolean isRender;
+    private boolean isConclude;
+    private boolean isInit;
+
+    public boolean isRender() {
+        return isRender;
+    }
+
+    public boolean isConclude() {
+        return isConclude;
+    }
+
+    public boolean isInit() {
+        return isInit;
+    }
+
+    public MockVisualization() {
+        isRender = false;
+        isConclude = false;
+        isInit = false;
+    }
+
     @Override
     public void init(Geometry geometry) {
-
+        isInit = true;
     }
 
     @Override
     public BufferedImage render(SystemState systemState) {
-        return null;
+        isRender = true;
+        return new BufferedImage(1, 1, BufferedImage.TYPE_3BYTE_BGR);
     }
 
     @Override
     public void conclude() {
-
+        isConclude = true;
     }
 
     @Override

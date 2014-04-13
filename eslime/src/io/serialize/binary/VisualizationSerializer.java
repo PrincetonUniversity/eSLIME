@@ -58,6 +58,16 @@ public class VisualizationSerializer extends Serializer {
         this.mode = mode;
     }
 
+    public VisualizationSerializer(GeneralParameters p,
+                                   Visualization visualization,
+                                   String prefix, String mode,
+                                   String outputPath) {
+        super(p);
+        this.visualization = visualization;
+        this.prefix = prefix;
+        this.mode = mode;
+    }
+
     @Override
     public void dispatchHalt(HaltCondition ex) {
         // Initialize the visualization to this simulation.
@@ -79,6 +89,8 @@ public class VisualizationSerializer extends Serializer {
             // Export the frame to the disk.
             generateFile(systemState, image);
         }
+
+        visualization.conclude();
     }
 
     private void generateFile(SystemState systemState, BufferedImage image) {

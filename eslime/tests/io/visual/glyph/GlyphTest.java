@@ -86,12 +86,8 @@ public abstract class GlyphTest extends EslimeTestCase {
 
     protected abstract Glyph makeGlyph();
 
-    private LightweightSystemState makeSystemState() {
-        MockCoordinateDeindexer deindexer = new MockCoordinateDeindexer();
-        deindexer.setUnderlying(geometry.getCanonicalSites());
-
+    protected void populateStateAndFitness(LightweightSystemState systemState) {
         int n = makeGeometry().getCanonicalSites().length;
-
         double[] fitness = new double[n];
         int[] state = new int[n];
 
@@ -99,11 +95,18 @@ public abstract class GlyphTest extends EslimeTestCase {
             fitness[i] = 0;
             state[i] = 0;
         }
+        systemState.setFitnessVector(fitness);
+        systemState.setStateVector(state);
+
+    }
+
+    private LightweightSystemState makeSystemState() {
+        MockCoordinateDeindexer deindexer = new MockCoordinateDeindexer();
+        deindexer.setUnderlying(geometry.getCanonicalSites());
+
 
         LightweightSystemState ret = new LightweightSystemState(deindexer);
-        ret.setFitnessVector(fitness);
-        ret.setStateVector(state);
-
+        populateStateAndFitness(ret);
         Set<Coordinate> highlights = new HashSet<>();
         for (Coordinate c : geometry.getCanonicalSites()) {
             highlights.add(c);
@@ -115,7 +118,7 @@ public abstract class GlyphTest extends EslimeTestCase {
         return ret;
     }
 
-    private Geometry makeGeometry() {
+    protected Geometry makeGeometry() {
         Lattice lattice = new TriangularLattice();
         Shape shape = new Rectangle(lattice, 10, 10);
         Boundary boundary = new Absorbing(shape, lattice);
