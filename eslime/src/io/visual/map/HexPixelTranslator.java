@@ -29,6 +29,9 @@ import java.awt.*;
  * Created by dbborens on 4/1/14.
  */
 public class HexPixelTranslator extends PixelTranslator {
+
+    private int yOffset;
+
     @Override
     public double getDiagonal() {
         return 2 * edge;
@@ -37,34 +40,6 @@ public class HexPixelTranslator extends PixelTranslator {
     @Override
     public boolean equals(Object obj) {
         return (obj instanceof HexPixelTranslator);
-    }
-
-    @Override
-    protected void calcLimits(int[] extrema) {
-        int xMin = extrema[0];
-        int xMax = extrema[1];
-        int yMin = extrema[2];
-        int yMax = extrema[3];
-
-        // Hexagonal lattice: height value depends on width.
-        int mx = xMax - xMin;
-        int my = (yMax - yMin) - (mx / 2);
-        latticeDims = new Coordinate(mx, my, 0);
-
-        // Calculate pixel bounds.
-        double heightFP = Math.sqrt(3.0) * ((double) (my) + 1.5) * edge;
-        double widthFP = 1.5 * ((double) (mx) + 1.5f) * edge;
-
-        int px = (int) Math.ceil(widthFP);
-        int py = (int) Math.ceil(heightFP);
-        imageDims = new Coordinate(px, py, 0);
-    }
-
-    @Override
-    protected void calcOrigin() {
-        int x = (int) Math.round(edge);
-        int y = (int) Math.round(edge * Math.sqrt(3.0f));
-        origin = new Coordinate(x, y, 0);
     }
 
     @Override
@@ -79,6 +54,56 @@ public class HexPixelTranslator extends PixelTranslator {
 
         Coordinate ret = new Coordinate(px, py, 0);
         return ret;
+    }
+
+    @Override
+    protected void calcLimits(MapState mapState) {
+        int xMin, xMax, yMin, yMax;
+
+        xMin = 2147483647;
+        xMax = -2147483648;
+
+        yMin = 2147483647;
+        yMax = -2147483648;
+
+        for (Coordinate c : mapState.getCoordinates()) {
+            Coordinate pixels = indexToOffset(c.x(), c.y());
+            int x = pixels.x();
+            int y = pixels.y();
+
+            if (x < xMin) {
+                xMin = x;
+            }
+
+            if (x > xMax) {
+                xMax = x;
+            }
+
+            if (y < yMin) {
+                yMin = y;
+            }
+
+            if (y > yMax) {
+                yMax = y;
+            }
+        }
+
+        int dy = (int) Math.ceil((yMax - yMin) + (Math.sqrt(3.0) * edge));
+        int dx = (int) Math.ceil(xMax - xMin + (2 * edge)) + 1;
+        imageDims = new Coordinate(dx, dy, 0);
+        calcYOffset(yMin);
+    }
+
+    private void calcYOffset(int y) {
+        int y0 = (int) (indexToOffset(0, 0).y() - (0.5 * Math.sqrt(3.0) * edge));
+        yOffset = y - y0;
+    }
+
+    @Override
+    protected void calcOrigin() {
+        int x = (int) Math.round(edge);
+        int y = (int) Math.round(edge * Math.sqrt(3.0f)) - yOffset;
+        origin = new Coordinate(x, y, 0);
     }
 
     private Coordinate indexToOffset(int x, int y) {
@@ -106,20 +131,4 @@ public class HexPixelTranslator extends PixelTranslator {
         return p;
     }
 
-//    @Override
-//    public Coordinate indexToCenterPixels(Coordinate c) {
-//        // First, get coordinate of lower left hand corner.
-//        Coordinate corner = indexToPixels(c);
-//
-//        // x distance to center = edge length.
-//        int dx = (int) Math.round(edge);
-//
-//        // y distance to center = sqrt(3)/2 * edge length.
-//        int dy = (int) Math.round((Math.sqrt(3.0) / 2.0) * edge);
-//
-//        int x = corner.x() + dx;
-//        int y = corner.y() + dy;
-//
-//        return new Coordinate(x + dx, y + dy, 0);
-//    }
 }

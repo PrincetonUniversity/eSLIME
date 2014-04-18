@@ -60,7 +60,7 @@ public class HexPixelTranslatorTest extends EslimeTestCase {
 
     public void testGetImageDims() throws Exception {
         Coordinate actual = query.getImageDims();
-        Coordinate expected = new Coordinate(38, 26, 0);
+        Coordinate expected = new Coordinate(36, 27, 0);
         assertEquals(expected, actual);
     }
 

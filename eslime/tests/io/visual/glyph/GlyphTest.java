@@ -55,7 +55,7 @@ public abstract class GlyphTest extends EslimeTestCase {
     Geometry geometry;
     private HighlightManager highlightManager;
     private MapVisualization map;
-    private SystemState systemState;
+    protected SystemState systemState;
 
     @Override
     protected void setUp() throws Exception {
@@ -80,14 +80,14 @@ public abstract class GlyphTest extends EslimeTestCase {
         map.init(geometry);
 
         // Create system state
-        systemState = makeSystemState();
+        systemState = makeSystemState(geometry);
 
     }
 
     protected abstract Glyph makeGlyph();
 
-    protected void populateStateAndFitness(LightweightSystemState systemState) {
-        int n = makeGeometry().getCanonicalSites().length;
+    protected void populateStateAndFitness(Geometry geom, LightweightSystemState systemState) {
+        int n = geom.getCanonicalSites().length;
         double[] fitness = new double[n];
         int[] state = new int[n];
 
@@ -100,15 +100,15 @@ public abstract class GlyphTest extends EslimeTestCase {
 
     }
 
-    private LightweightSystemState makeSystemState() {
+    protected LightweightSystemState makeSystemState(Geometry geom) {
         MockCoordinateDeindexer deindexer = new MockCoordinateDeindexer();
-        deindexer.setUnderlying(geometry.getCanonicalSites());
+        deindexer.setUnderlying(geom.getCanonicalSites());
 
 
         LightweightSystemState ret = new LightweightSystemState(deindexer);
-        populateStateAndFitness(ret);
+        populateStateAndFitness(geom, ret);
         Set<Coordinate> highlights = new HashSet<>();
-        for (Coordinate c : geometry.getCanonicalSites()) {
+        for (Coordinate c : geom.getCanonicalSites()) {
             highlights.add(c);
         }
         ret.setHighlights(0, highlights);
@@ -135,6 +135,7 @@ public abstract class GlyphTest extends EslimeTestCase {
 
         assertBinaryFilesEqual("glyphs/" + getFileName(), getFileName());
     }
+
 
     protected abstract String getFileName();
 }

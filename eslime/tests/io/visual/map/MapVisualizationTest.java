@@ -21,10 +21,24 @@
 
 package io.visual.map;
 
+import geometry.Geometry;
+import geometry.boundaries.Arena;
+import geometry.boundaries.Boundary;
+import geometry.lattice.Lattice;
+import geometry.lattice.TriangularLattice;
+import geometry.shape.Hexagon;
+import geometry.shape.Shape;
+import io.visual.color.ColorManager;
+import io.visual.color.DefaultColorManager;
 import io.visual.glyph.Glyph;
 import io.visual.glyph.GlyphTest;
 import io.visual.glyph.MockGlyph;
+import io.visual.highlight.HighlightManager;
 import layers.LightweightSystemState;
+
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 
 /**
  * Created by dbborens on 4/1/14.
@@ -41,8 +55,8 @@ public class MapVisualizationTest extends GlyphTest {
     }
 
     @Override
-    protected void populateStateAndFitness(LightweightSystemState systemState) {
-        int n = makeGeometry().getCanonicalSites().length;
+    protected void populateStateAndFitness(Geometry geom, LightweightSystemState systemState) {
+        int n = geom.getCanonicalSites().length;
         double[] fitness = new double[n];
         int[] state = new int[n];
 
@@ -52,5 +66,27 @@ public class MapVisualizationTest extends GlyphTest {
         }
         systemState.setFitnessVector(fitness);
         systemState.setStateVector(state);
+    }
+
+    // Regression test for issues with incorrect bounds for hexagonal
+    // geometries. (Really a graphical test for HexPixelTranslator.)
+    public void testHexagon() throws Exception {
+        Lattice lattice = new TriangularLattice();
+        Shape shape = new Hexagon(lattice, 10);
+        Boundary boundary = new Arena(shape, lattice);
+        Geometry geom = new Geometry(lattice, shape, boundary);
+        ColorManager colorManager = new DefaultColorManager();
+        MapState mapState = new MapState(colorManager, 25.0);
+        HighlightManager highlightManager = new HighlightManager();
+        mapState.setHighlightManager(highlightManager);
+        MapVisualization map = new MapVisualization(mapState);
+        map.init(geom);
+        systemState = makeSystemState(geom);
+        BufferedImage result = map.render(systemState);
+        File file = new File(outputPath + "HexagonalMap.png");
+        ImageIO.write(result, "png", file);
+
+        assertBinaryFilesEqual("glyphs/HexagonalMap.png", "HexagonalMap.png");
+
     }
 }

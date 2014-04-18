@@ -32,9 +32,6 @@ import java.awt.*;
  */
 public abstract class PixelTranslator {
 
-    // Dimensions of the the lattice, as measured from the lower-left-most cell
-    // to the upper-right-most cell (in units of cells)
-    protected Coordinate latticeDims;
 
     // Dimensions of the image (in units of pixels)
     protected Coordinate imageDims;
@@ -54,55 +51,11 @@ public abstract class PixelTranslator {
         edge = mapState.getEdge();
         Coordinate[] coordinates = mapState.getCoordinates();
         mapState.setCoordinates(coordinates);
-        int[] extrema = calcModelExtrema(mapState);
-        calcLimits(extrema);
+        calcLimits(mapState);
         calcOrigin();
     }
 
-    private int[] calcModelExtrema(MapState mapState) {
-        // Find limits of coordinate range
-        Coordinate[] sites = mapState.getCoordinates();
-
-        int xMin, xMax, yMin, yMax;
-
-        xMin = 2147483647;
-        xMax = -2147483648;
-
-        yMin = 2147483647;
-        yMax = -2147483648;
-
-        for (int i = 0; i < sites.length; i++) {
-            Coordinate coord = sites[i];
-
-            int x = coord.x();
-            int y = coord.y();
-
-            if (x < xMin) {
-                xMin = x;
-            }
-
-            if (x > xMax) {
-                xMax = x;
-            }
-
-            if (y < yMin) {
-                yMin = y;
-            }
-
-            if (y > yMax) {
-                yMax = y;
-            }
-        }
-
-        // We expect only positive or zero coordinates.
-        if ((xMin != 0) || (yMin != 0)) {
-            throw new IllegalStateException("Negative coordinate or no coordinates loaded.");
-        }
-
-        return new int[]{xMin, xMax, yMin, yMax};
-    }
-
-    protected abstract void calcLimits(int[] extrema);
+    protected abstract void calcLimits(MapState mapState);
 
     // Provide the coordinate of the lower-leftmost coordinate to be included in.
     // the field of view. This may not be a coordinate that exists in this
