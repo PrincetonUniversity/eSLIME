@@ -21,6 +21,7 @@ package io.serialize;
 
 import io.factory.SerializationFactory;
 import io.serialize.binary.ContinuumStateWriter;
+import io.serialize.binary.HighlightWriter;
 import io.serialize.binary.TimeWriter;
 import io.serialize.binary.VisualizationSerializer;
 import io.serialize.interactive.ProgressReporter;
@@ -89,8 +90,20 @@ public class SerializationFactoryTest extends EslimeTestCase {
     }
 
     public void testHighlightWriter() {
-        fail("Should verify that the writer gets a list of children as expected.");
-//        doTest("highlight-writer", HighlightWriter.class);
+        Element e = new BaseElement("highlight-writer");
+        // Create channels
+        Element channels = new BaseElement("channels");
+        Element c1 = new BaseElement("channel");
+        c1.setText("3");
+        Element c2 = new BaseElement("channel");
+        c2.setText("5");
+        channels.add(c1);
+        channels.add(c2);
+        e.add(channels);
+
+        Serializer actual = SerializationFactory.instantiate(e, p);
+        Serializer expected = new HighlightWriter(p, new int[] {3, 5});
+        assertEquals(expected, actual);
     }
 
     public void testVisualizationSerializer() {
@@ -104,4 +117,5 @@ public class SerializationFactoryTest extends EslimeTestCase {
         Class actual = result.getClass();
         assertEquals(VisualizationSerializer.class, actual);
     }
+
 }

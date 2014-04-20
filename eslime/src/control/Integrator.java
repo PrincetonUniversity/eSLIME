@@ -28,16 +28,16 @@ public class Integrator {
 
     private final ProcessManager processManager;
     private GeneralParameters p;
-    private SerializationManager mgr;
+    private SerializationManager serializationManager;
 
     private double time = 0.0D;
 
     public Integrator(GeneralParameters p, ProcessManager processManager,
-                      SerializationManager mgr) {
+                      SerializationManager serializationManager) {
 
         // Assign member variables.
         this.p = p;
-        this.mgr = mgr;
+        this.serializationManager = serializationManager;
 
         this.processManager = processManager;
     }
@@ -60,7 +60,7 @@ public class Integrator {
             }
 
             // Send the results to the serialization manager.
-            mgr.step(state, n);
+            serializationManager.step(state, n);
             time = state.getTime();
         }
 
@@ -68,6 +68,6 @@ public class Integrator {
         // loop, which proceeds for a specified number of iterations
         // before terminating. (This prevents infinite loops.)
         return new StepMaxReachedEvent(time);
-
     }
+
 }

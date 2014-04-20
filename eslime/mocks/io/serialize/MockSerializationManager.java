@@ -20,13 +20,31 @@
 package io.serialize;
 
 import org.dom4j.tree.BaseElement;
+import processes.StepState;
 
 /**
  * Created by David B Borenstein on 1/12/14.
  */
 public class MockSerializationManager extends SerializationManager {
 
+    private StepState stepState;
+    private int frame;
+
     public MockSerializationManager() {
         super(new BaseElement("dummy"), null, null);
+    }
+
+    public StepState getStepState() {
+        return stepState;
+    }
+
+    public int getFrame() {
+        return frame;
+    }
+
+    @Override
+    public void step(StepState stepState, int frame) {
+        this.frame = frame;
+        this.stepState = stepState;
     }
 }

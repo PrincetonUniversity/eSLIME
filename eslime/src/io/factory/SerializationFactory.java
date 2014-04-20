@@ -71,7 +71,8 @@ public abstract class SerializationFactory {
             TimeWriter tw = new TimeWriter(p);
             return tw;
         } else if (writerClass.equalsIgnoreCase("highlight-writer")) {
-            int[] channels = XmlUtil.getIntegerArray(e, "channels");
+            Element channelsElem = e.element("channels");
+            int[] channels = XmlUtil.getIntegerArray(channelsElem, "channel");
             HighlightWriter hw = new HighlightWriter(p, channels);
             return hw;
         } else if (writerClass.equalsIgnoreCase("visualization-serializer")) {

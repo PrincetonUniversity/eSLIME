@@ -80,6 +80,27 @@ public class HighlightWriter extends Serializer {
         createDataStreams();
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof HighlightWriter)) {
+            return false;
+        }
+
+        HighlightWriter other = (HighlightWriter) obj;
+
+        if (other.channels.length != this.channels.length) {
+            return false;
+        }
+
+        for (int i = 0; i < channels.length; i++) {
+            if (other.channels[i] != this.channels[i]) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     private void createDataStreams() {
         streamMap = new HashMap<>(channels.length);
 

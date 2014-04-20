@@ -34,14 +34,22 @@ public class MockProcessManager extends ProcessManager {
         super();
         timesIterated = 0;
         doTriggeredProcessedCalled = false;
+        stepStateDt = 0.0;
     }
 
     @Override
     public StepState doTriggeredProcesses(int n, double startTime) throws HaltCondition {
         timesIterated++;
-        return new StepState(startTime);
+        StepState stepState = new StepState(startTime);
+        stepState.advanceClock(stepStateDt);
+        return stepState;
     }
 
+    private double stepStateDt;
+
+    public void setStepStateDt(double stepStateDt) {
+        this.stepStateDt = stepStateDt;
+    }
 
     public int getTimesIterated() {
         return timesIterated;
