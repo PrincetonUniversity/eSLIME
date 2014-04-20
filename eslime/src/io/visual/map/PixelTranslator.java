@@ -86,12 +86,4 @@ public abstract class PixelTranslator {
      */
     public abstract double getDiagonal();
 
-//    /**
-//     * Convert coordinate (in the cell-based coordinate system of the model)
-//     * to the pixel coordinate of the center of the hexagon.
-//     *
-//     * @param c the coordinate to be converted.
-//     * @return
-//     */
-//    public abstract Coordinate indexToCenterPixels(Coordinate c);
 }
