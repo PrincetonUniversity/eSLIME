@@ -62,7 +62,7 @@ public abstract class EslimeTestCase extends TestCase {
         }
     }
 
-    protected void assertArraysEqual(double[] actual, double[] expected, boolean sort) {
+    protected void assertArraysEqual(double[] expected, double[] actual, boolean sort) {
         assertEquals(expected.length, actual.length);
 
         if (sort) {

@@ -19,9 +19,9 @@
  * /
  */
 
-package io.visual.glyph;
+package io.visual.highlight;
 
-import io.visual.highlight.HighlightManager;
+import io.visual.glyph.MockGlyph;
 import layers.MockSystemState;
 import test.EslimeLatticeTestCase;
 
@@ -57,5 +57,9 @@ public class HighlightManagerTest extends EslimeLatticeTestCase {
         systemState.setHighlighted(true);
         query.render(origin, systemState);
         assertEquals(origin, glyph.getLastOverlaid());
+    }
+
+    public void testGetHighlightChannels() throws Exception {
+        fail("Implementation: add several channels and then make sure you get the expected array.");
     }
 }

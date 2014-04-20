@@ -27,6 +27,7 @@ import control.identifiers.Coordinate;
 import geometry.Geometry;
 import io.serialize.Serializer;
 import layers.LayerManager;
+import processes.StepState;
 import structural.utilities.FileConventions;
 import structural.utilities.PrimitiveSerializer;
 
@@ -44,14 +45,12 @@ public class HighlightWriter extends Serializer {
     private Geometry geometry;
     private Map<Integer, DataOutputStream> streamMap;
 
-    private Integer[] channels;
+    private int[] channels;
 
-    public HighlightWriter(GeneralParameters p) {
+    public HighlightWriter(GeneralParameters p, int[] channels) {
         super(p);
         makeFiles();
-
-        // For the moment, only one highlight channel is utilized
-        channels = new Integer[]{0};
+        this.channels = channels;
     }
 
     @Override
@@ -64,15 +63,13 @@ public class HighlightWriter extends Serializer {
     }
 
     @Override
-    public void step(Coordinate[] highlights, double gillespie, int frame) {
-        // This method will need to be updated when multi-channel highlighting
-        // is implemented in the step(...) signature
-        int channel = 0;
+    public void step(StepState stepState, int frame) {
+        for (int channel : channels) {
+            DataOutputStream stream = streamMap.get(channel);
+            List<Coordinate> vector = Arrays.asList(stepState.getHighlights(channel));
 
-        DataOutputStream stream = streamMap.get(channel);
-        List<Coordinate> vector = Arrays.asList(highlights);
-
-        PrimitiveSerializer.writeCoercedCoordinateVector(stream, vector, geometry);
+            PrimitiveSerializer.writeCoercedCoordinateVector(stream, vector, geometry);
+        }
     }
 
     @Override

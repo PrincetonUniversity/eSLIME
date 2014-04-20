@@ -54,17 +54,14 @@ public class Integrator {
         for (int n = 0; n < p.T(); n++) {
             StepState state;
             try {
-                state = processManager.doTriggeredProcesses(n);
+                state = processManager.doTriggeredProcesses(n, time);
             } catch (HaltCondition haltCondition) {
                 return haltCondition;
             }
 
-            // Signal to state object that we are done modifying it.
-            state.close();
-
             // Send the results to the serialization manager.
-            mgr.step(state.getHighlights(), time, n);
-            time += state.getDt();
+            mgr.step(state, n);
+            time = state.getTime();
         }
 
         // If we got here, it's because we got through the outermost

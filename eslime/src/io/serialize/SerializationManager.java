@@ -21,16 +21,14 @@ package io.serialize;
 
 import control.GeneralParameters;
 import control.halt.HaltCondition;
-import control.identifiers.Coordinate;
 import io.factory.SerializationFactory;
 import layers.LayerManager;
 import org.dom4j.Element;
+import processes.StepState;
 import structural.postprocess.ImageSequence;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 /**
  * @untested
@@ -68,9 +66,9 @@ public class SerializationManager {
     /**
      * Advance current instance by one time step.
      */
-    public void step(Coordinate[] highlights, double gillespie, int frame) {
+    public void step(StepState stepState, int frame) {
         for (Serializer tw : writers) {
-            tw.step(highlights, gillespie, frame);
+            tw.step(stepState, frame);
         }
     }
 

@@ -21,6 +21,7 @@
 
 package io.serialize.binary;
 
+import processes.MockStepState;
 import structural.MockGeneralParameters;
 import structural.utilities.FileConventions;
 import test.EslimeTestCase;
@@ -46,8 +47,10 @@ public class TimeWriterTest extends EslimeTestCase {
         MockGeneralParameters p = makeMockGeneralParameters();
         TimeWriter query = new TimeWriter(p);
         query.init(null);
-        query.step(null, 0.5, 2);
-        query.step(null, 1.3, 4);
+//        query.step(null, 0.5, 2);
+//        query.step(null, 1.3, 4);
+        query.step(new MockStepState(0.5), 2);
+        query.step(new MockStepState(1.3), 4);
         query.dispatchHalt(null);
     }
 }

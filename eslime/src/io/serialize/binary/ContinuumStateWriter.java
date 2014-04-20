@@ -27,6 +27,7 @@ import io.serialize.Serializer;
 import layers.LayerManager;
 import layers.solute.SoluteLayer;
 import no.uib.cipr.matrix.DenseVector;
+import processes.StepState;
 import structural.utilities.FileConventions;
 import structural.utilities.PrimitiveSerializer;
 
@@ -102,13 +103,13 @@ public class ContinuumStateWriter extends Serializer {
     }
 
     @Override
-    public void step(Coordinate[] highlights, double gillespie, int frame) {
+    public void step(StepState stepState, int frame) {
         try {
             // Write opening parity sequence
             writeStartParitySequence();
 
             // Write entry header
-            dataStream.writeDouble(gillespie);
+            dataStream.writeDouble(stepState.getTime());
             dataStream.writeInt(frame);
 
             // Process state vector

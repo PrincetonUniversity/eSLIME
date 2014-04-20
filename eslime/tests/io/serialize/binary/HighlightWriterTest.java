@@ -21,8 +21,6 @@
 
 package io.serialize.binary;
 
-import control.identifiers.Coordinate;
-import structural.MockGeneralParameters;
 import structural.utilities.FileConventions;
 import test.EslimeLatticeTestCase;
 
@@ -44,11 +42,13 @@ public class HighlightWriterTest extends EslimeLatticeTestCase {
     }
 
     private void runLifeCycle() {
-        MockGeneralParameters p = makeMockGeneralParameters();
-        HighlightWriter query = new HighlightWriter(p);
-        query.init(layerManager);
-        Coordinate[] highlights = new Coordinate[]{x, y};
-        query.step(highlights, 0.1, 2);
-        query.dispatchHalt(null);
+        fail("Uncomment code below and add a second channel.");
+//        MockGeneralParameters p = makeMockGeneralParameters();
+//        HighlightWriter query = new HighlightWriter(p);
+//        query.init(layerManager);
+//        Coordinate[] highlights = new Coordinate[]{x, y};
+//        query.step(highlights, 0.1, 2);
+//        query.dispatchHalt(null);
     }
+
 }

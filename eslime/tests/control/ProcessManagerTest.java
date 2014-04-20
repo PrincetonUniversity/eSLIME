@@ -31,6 +31,7 @@ import structural.MockGeneralParameters;
 public class ProcessManagerTest extends TestCase {
 
     private static final int CURRENT_N = 2;
+    private static final double CURRENT_TIME = 1.7;
     MockProcess yes, no;
     ProcessManager query;
     MockProcessFactory factory;
@@ -113,21 +114,11 @@ public class ProcessManagerTest extends TestCase {
 
     public void testDoTriggeredProcesses() throws Exception {
         // Execute doTriggeredProcesses.
-        query.doTriggeredProcesses(CURRENT_N);
+        query.doTriggeredProcesses(CURRENT_N, CURRENT_TIME);
 
         // Verify that only the triggered process actually took place.
         assertEquals(0, no.getTimesFired());
         assertEquals(1, yes.getTimesFired());
     }
 
-//    private class ProcessManagerExposed extends ProcessManager {
-//        public ProcessManagerExposed(ProcessFactory factory, GeneralParameters p) {
-//            super(factory, p);
-//        }
-//
-//        @Override
-//        public boolean triggered(int n, processes.Process process) {
-//            return super.triggered(n, process);
-//        }
-//    }
 }

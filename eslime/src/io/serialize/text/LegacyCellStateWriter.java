@@ -27,6 +27,7 @@ import geometry.Geometry;
 import io.serialize.Serializer;
 import layers.LayerManager;
 import layers.cell.CellLayer;
+import processes.StepState;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -68,6 +69,11 @@ public class LegacyCellStateWriter extends Serializer {
     // I/O handle for the state file
     private BufferedWriter stateWriter;
 
+
+    @Override
+    public void step(StepState stepState, int frame) {
+
+    }
 
     // Timestamp for project
     private Date date = new Date();

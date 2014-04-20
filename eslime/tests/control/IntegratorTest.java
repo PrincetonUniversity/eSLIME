@@ -57,4 +57,8 @@ public class IntegratorTest extends TestCase {
         assertTrue(halt instanceof StepMaxReachedEvent);
         assertEquals(5, mgr.getTimesIterated());
     }
+
+    public void testStateApplied() throws Exception {
+        fail("Should verify that time gets advanced appropriately, etc.");
+    }
 }

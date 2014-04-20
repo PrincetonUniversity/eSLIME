@@ -83,7 +83,8 @@ public class ActionFactoryTest extends EslimeTestCase {
         Element e = fixtureRoot.element("trigger");
         TargetRule rule = new TargetSelf(callback, layerManager, -1, null);
         Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
-        Action expected = new Trigger(callback, layerManager, "test", rule);
+
+        Action expected = new Trigger(callback, layerManager, "test", rule, null, null);
         assertEquals(expected, actual);
     }
 

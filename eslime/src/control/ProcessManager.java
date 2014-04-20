@@ -31,9 +31,6 @@ import java.util.ArrayList;
  */
 public class ProcessManager {
 
-    private ProcessFactory factory;
-    private GeneralParameters p;
-
     private Process[] processes;
 
     /**
@@ -43,9 +40,6 @@ public class ProcessManager {
     }
 
     public ProcessManager(ProcessFactory factory, GeneralParameters p) {
-
-        this.p = p;
-
         processes = factory.getProcesses();
     }
 
@@ -99,17 +93,17 @@ public class ProcessManager {
         }
     }
 
-    public StepState doTriggeredProcesses(int n) throws HaltCondition {
-        StepState state = new StepState();
+    public StepState doTriggeredProcesses(int n, double startTime) throws HaltCondition {
+        StepState stepState = new StepState(startTime);
 
         // Get triggered events.
         Process[] triggeredProcesses = getTriggeredProcesses(n);
 
         // Fire each triggered cell event.
         for (Process process : triggeredProcesses) {
-            process.iterate(state);
+            process.iterate(stepState);
         }
 
-        return state;
+        return stepState;
     }
 }

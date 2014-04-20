@@ -29,11 +29,11 @@ import java.io.File;
 /**
  * Takes in either a file or a string. Interprets the contents as
  * an XML document. Verifies that general structure of the document
- * is that of a jeSLIME parameters file. Provides handles to
+ * is that of an eSLIME project file. Provides handles to
  * sub-elements.
- *
+ * <p/>
  * It is important, both for speed and resource management, to load
- * elements into native data structures and close the ParameterLoader
+ * elements into native data structures and close the ProjectLoader
  * early on.
  *
  * @author dbborens
@@ -43,7 +43,7 @@ public class ProjectLoader {
 
     // Version -- checked against parameters file to make sure they're
     // compatible
-    private final static String VERSION = "0.5.0";
+    private final static String VERSION = "0.5.2";
 
     private Element root;
     private String stringForm;
@@ -73,15 +73,6 @@ public class ProjectLoader {
 
         }
     }
-
-	/*public ProjectLoader(String toLoad) throws DocumentException {
-        SAXReader reader = new SAXReader();
-		Document document = reader.read(toLoad);
-		validate(document);
-		root = document.getRootElement();
-
-		stringForm = document.asXML();
-	}*/
 
     public Element getElement(String element) {
         return root.element(element);

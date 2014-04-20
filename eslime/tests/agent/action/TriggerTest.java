@@ -23,6 +23,7 @@ import agent.targets.MockTargetRule;
 import agent.targets.TargetOccupiedNeighbors;
 import agent.targets.TargetRule;
 import cells.MockCell;
+import control.arguments.ConstantInteger;
 import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import layers.MockLayerManager;
@@ -46,6 +47,7 @@ public class TriggerTest extends EslimeTestCase {
     private MockGeometry geom;
     private Coordinate o, p, q;
     private Random random;
+    private ConstantInteger selfChannel, targetChannel;
 
     @Override
     protected void setUp() throws Exception {
@@ -71,8 +73,10 @@ public class TriggerTest extends EslimeTestCase {
         Coordinate[] targets = new Coordinate[]{o};
         targetRule.setTargets(targets);
 
+        selfChannel = new ConstantInteger(1);
+        targetChannel = new ConstantInteger(2);
         // Create a trigger action.
-        query = new Trigger(causeCell, layerManager, effectName, targetRule);
+        query = new Trigger(causeCell, layerManager, effectName, targetRule, selfChannel, targetChannel);
     }
 
     public void testRun() throws Exception {
@@ -118,9 +122,9 @@ public class TriggerTest extends EslimeTestCase {
         TargetRule differentTargetRule = new TargetOccupiedNeighbors(dummyCell2, layerManager, -1, random);
         String differentEffectName = "not the same as effectName";
 
-        identical = new Trigger(dummyCell1, layerManager, effectName, targetRule);
-        differentBehavior = new Trigger(dummyCell1, layerManager, differentEffectName, sameTargetRule);
-        differentTargeter = new Trigger(dummyCell2, layerManager, effectName, differentTargetRule);
+        identical = new Trigger(dummyCell1, layerManager, effectName, targetRule, selfChannel, targetChannel);
+        differentBehavior = new Trigger(dummyCell1, layerManager, differentEffectName, sameTargetRule, selfChannel, targetChannel);
+        differentTargeter = new Trigger(dummyCell2, layerManager, effectName, differentTargetRule, selfChannel, targetChannel);
 
         assertEquals(query, identical);
         assertNotEquals(query, differentBehavior);
@@ -136,4 +140,7 @@ public class TriggerTest extends EslimeTestCase {
         assertEquals(causeCell, query.getCallback());
     }
 
+//    public void testHighlight() throws Exception {
+//        fail("This doesn't need to pass until the next task is complete");
+//    }
 }

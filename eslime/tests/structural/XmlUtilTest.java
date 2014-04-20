@@ -76,4 +76,11 @@ public class XmlUtilTest extends EslimeTestCase {
         doIntegerTest(testRoot, "positive", 2);
     }
 
+    public void getIntArrayEmpty() throws Exception {
+        fail("Should verify that a null element returns an empty int[] array");
+    }
+
+    public void getIntArray() throws Exception {
+        fail("Should verify that only elements of the appropriate node name get cast as ints");
+    }
 }

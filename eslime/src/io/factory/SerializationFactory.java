@@ -29,6 +29,7 @@ import io.serialize.interactive.ProgressReporter;
 import io.serialize.text.*;
 import io.visual.Visualization;
 import org.dom4j.Element;
+import structural.utilities.XmlUtil;
 
 /**
  * Created by dbborens on 1/17/14.
@@ -70,7 +71,8 @@ public abstract class SerializationFactory {
             TimeWriter tw = new TimeWriter(p);
             return tw;
         } else if (writerClass.equalsIgnoreCase("highlight-writer")) {
-            HighlightWriter hw = new HighlightWriter(p);
+            int[] channels = XmlUtil.getIntegerArray(e, "channels");
+            HighlightWriter hw = new HighlightWriter(p, channels);
             return hw;
         } else if (writerClass.equalsIgnoreCase("visualization-serializer")) {
             VisualizationSerializer vs = visualizationSerializer(e, p);
@@ -81,7 +83,7 @@ public abstract class SerializationFactory {
     }
 
     private static VisualizationSerializer visualizationSerializer(Element e,
-                                                          GeneralParameters p) {
+                                                                   GeneralParameters p) {
 
         String prefix;
         Element prefixElement = e.element("prefix");

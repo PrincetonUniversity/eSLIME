@@ -21,12 +21,10 @@ package io.serialize;
 
 import io.factory.SerializationFactory;
 import io.serialize.binary.ContinuumStateWriter;
-import io.serialize.binary.HighlightWriter;
 import io.serialize.binary.TimeWriter;
 import io.serialize.binary.VisualizationSerializer;
 import io.serialize.interactive.ProgressReporter;
 import io.serialize.text.*;
-import io.visual.Visualization;
 import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;
 import structural.MockGeneralParameters;
@@ -91,7 +89,8 @@ public class SerializationFactoryTest extends EslimeTestCase {
     }
 
     public void testHighlightWriter() {
-        doTest("highlight-writer", HighlightWriter.class);
+        fail("Should verify that the writer gets a list of children as expected.");
+//        doTest("highlight-writer", HighlightWriter.class);
     }
 
     public void testVisualizationSerializer() {

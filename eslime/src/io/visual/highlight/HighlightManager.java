@@ -91,4 +91,15 @@ public class HighlightManager {
             glyph.init(translator);
         }
     }
+
+    public int[] getHighlightChannels() {
+        int[] channels = new int[glyphMap.size()];
+        int i = 0;
+        for (Integer channel : glyphMap.keySet()) {
+            channels[i] = channel;
+            i++;
+        }
+
+        return channels;
+    }
 }

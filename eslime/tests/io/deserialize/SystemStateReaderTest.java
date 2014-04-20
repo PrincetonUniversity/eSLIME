@@ -32,6 +32,7 @@ import io.serialize.text.LegacyCellStateWriter;
 import layers.LightweightSystemState;
 import layers.MockSoluteLayer;
 import no.uib.cipr.matrix.DenseVector;
+import processes.MockStepState;
 import structural.MockGeneralParameters;
 import structural.postprocess.SolutionViewer;
 import test.EslimeLatticeTestCase;
@@ -128,20 +129,25 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
 
         Coordinate[] highlights = new Coordinate[]{x};
 
+        MockStepState stepState = new MockStepState(1.7);
+        stepState.setHighlights(0, highlights);
         /* Initialize output and push first state */
         for (Serializer serializer : serializers) {
             serializer.init(layerManager);
-            serializer.step(highlights, 1.7, 2);
+            serializer.step(stepState, 2);
         }
 
         /* Set up second state */
         layer.getUpdateManager().banish(x);
         highlights = new Coordinate[]{y};
+        stepState = new MockStepState(4.8);
+        stepState.setHighlights(0, highlights);
+
         pushState(layer0, new double[]{0.1, 0.2, 0.3, 0.4, 0.5});
 
         /* Push second state and close fixture */
         for (Serializer serializer : serializers) {
-            serializer.step(highlights, 4.8, 6);
+            serializer.step(stepState, 6);
             serializer.dispatchHalt(null);
         }
     }
@@ -154,7 +160,7 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
                 new TimeWriter(p),
                 new ContinuumStateWriter(p),
                 new LegacyCellStateWriter(p),
-                new HighlightWriter(p)
+                new HighlightWriter(p, new int[]{0})
         };
 
         return ret;

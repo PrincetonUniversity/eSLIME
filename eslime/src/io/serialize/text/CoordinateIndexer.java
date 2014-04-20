@@ -26,6 +26,7 @@ import geometry.Geometry;
 import io.serialize.Serializer;
 import layers.LayerManager;
 import layers.cell.CellLayer;
+import processes.StepState;
 import structural.utilities.FileConventions;
 
 import java.io.BufferedWriter;
@@ -74,7 +75,7 @@ public class CoordinateIndexer extends Serializer {
     }
 
     @Override
-    public void step(Coordinate[] highlights, double gillespie, int frame) {
+    public void step(StepState stepState, int frame) {
         // Doesn't do anything
     }
 

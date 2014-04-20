@@ -21,6 +21,7 @@ package processes;
 
 import control.identifiers.Coordinate;
 
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -36,58 +37,39 @@ import java.util.Set;
  */
 public class StepState {
 
-    private Set<Coordinate> highlights = new HashSet<Coordinate>();
-    private double dt = 0D;
-    private double time;
-    private boolean closed = false;
+    private HashMap<Integer, Set<Coordinate>> highlights;
+    private double dt;
+    private double startTime;
 
-
-    public void stepState(double time) {
-        this.time = time;
+    public StepState(double startTime) {
+        highlights = new HashMap<>();
+        dt = 0;
+        this.startTime = startTime;
     }
 
-    public void highlight(Coordinate c) {
-        if (closed)
-            throw new IllegalStateException("Consistency failure in StepState object");
-
-        highlights.add(c);
+    public void highlight(Coordinate c, Integer channel) {
+        if (!highlights.containsKey(channel)) {
+            highlights.put(channel, new HashSet<Coordinate>());
+        }
+        Set<Coordinate> set = highlights.get(channel);
+        set.add(c);
     }
 
     public void advanceClock(double time) {
-        if (closed)
-            throw new IllegalStateException("Consistency failure in StepState object");
-
         dt += time;
     }
 
-    public void close() {
-        closed = true;
-    }
-
     public double getDt() {
-        if (!closed) {
-            throw new IllegalStateException("Attempted to access state before it was finalized.");
-        }
-
         return dt;
     }
 
-    public Coordinate[] getHighlights() {
-        if (!closed) {
-            throw new IllegalStateException("Attempted to access state before it was finalized.");
-        }
+    public Coordinate[] getHighlights(Integer channel) {
+        Set<Coordinate> set = highlights.get(channel);
 
-        return highlights.toArray(new Coordinate[0]);
+        return set.toArray(new Coordinate[set.size()]);
     }
 
-    /**
-     * Gets the system time as of the start of the cycle. Does not factor
-     * in the amount of time that has elapsed since the start of the
-     * cycle (dt).
-     *
-     * @return
-     */
     public double getTime() {
-        return time;
+        return startTime + dt;
     }
 }

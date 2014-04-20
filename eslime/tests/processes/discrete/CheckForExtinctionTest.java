@@ -27,7 +27,7 @@ import geometry.MockGeometry;
 import junit.framework.TestCase;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
-import processes.StepState;
+import processes.MockStepState;
 
 /**
  * Created by dbborens on 3/5/14.
@@ -52,7 +52,7 @@ public class CheckForExtinctionTest extends TestCase {
         boolean actual = false;
 
         try {
-            StepState state = new StepState();
+            MockStepState state = new MockStepState();
             query.fire(state);
         } catch (ExtinctionEvent event) {
             actual = true;

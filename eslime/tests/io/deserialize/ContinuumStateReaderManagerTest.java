@@ -28,6 +28,7 @@ import layers.LightweightSystemState;
 import layers.MockLayerManager;
 import layers.MockSoluteLayer;
 import no.uib.cipr.matrix.DenseVector;
+import processes.MockStepState;
 import structural.MockGeneralParameters;
 import structural.postprocess.SolutionViewer;
 import test.EslimeLatticeTestCase;
@@ -112,7 +113,8 @@ public class ContinuumStateReaderManagerTest extends EslimeLatticeTestCase {
 
         SolutionViewer soln = new SolutionViewer(vec, geom);
         layer.push(soln);
-        csw.step(null, 1.0, 1);
+//        csw.step(null, 1.0, 1);
+        csw.step(new MockStepState(1.0), 1);
         csw.dispatchHalt(null);
     }
 }

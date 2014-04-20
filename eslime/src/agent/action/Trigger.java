@@ -22,6 +22,7 @@ package agent.action;
 import agent.targets.TargetRule;
 import cells.BehaviorCell;
 import cells.Cell;
+import control.arguments.Argument;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
 import layers.cell.CellLayerViewer;
@@ -35,6 +36,10 @@ public class Trigger extends Action {
     private String behaviorName;
     private TargetRule targetRule;
 
+    // Highlight channels for the targeting and targeted cells
+    private Argument<Integer> selfChannel;
+    private Argument<Integer> targetChannel;
+
     /**
      * Trigger a predesignated behavior in a cell or set of cells designated by a
      * targeting rule.
@@ -44,10 +49,12 @@ public class Trigger extends Action {
      * @param behaviorName The name of the behavior to be triggered in the targets.
      * @param targetRule   The targeting rule used to identify targets when called.
      */
-    public Trigger(BehaviorCell callback, LayerManager layerManager, String behaviorName, TargetRule targetRule) {
+    public Trigger(BehaviorCell callback, LayerManager layerManager, String behaviorName, TargetRule targetRule, Argument<Integer> selfChannel, Argument<Integer> targetChannel) {
         super(callback, layerManager);
         this.behaviorName = behaviorName;
         this.targetRule = targetRule;
+        this.selfChannel = selfChannel;
+        this.targetChannel = targetChannel;
     }
 
     @Override
@@ -134,7 +141,7 @@ public class Trigger extends Action {
     @Override
     public Action clone(BehaviorCell child) {
         TargetRule clonedTargeter = targetRule.clone(child);
-        Trigger cloned = new Trigger(child, getLayerManager(), behaviorName, clonedTargeter);
+        Trigger cloned = new Trigger(child, getLayerManager(), behaviorName, clonedTargeter, selfChannel, targetChannel);
         return cloned;
     }
 }

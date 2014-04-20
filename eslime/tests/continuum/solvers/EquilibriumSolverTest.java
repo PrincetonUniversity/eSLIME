@@ -44,6 +44,7 @@ import layers.MockSoluteLayer;
 import no.uib.cipr.matrix.DenseMatrix;
 import no.uib.cipr.matrix.DenseVector;
 import no.uib.cipr.matrix.Matrix;
+import processes.MockStepState;
 import structural.MockGeneralParameters;
 import structural.postprocess.SolutionViewer;
 import structural.utilities.EpsilonUtil;
@@ -549,7 +550,7 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
         // Construct writer
         ContinuumStateWriter writer = new ContinuumStateWriter(p);
         writer.init(lm);
-        writer.step(null, 0, 0);
+        writer.step(new MockStepState(), 0);
         writer.dispatchHalt(null);
     }
 

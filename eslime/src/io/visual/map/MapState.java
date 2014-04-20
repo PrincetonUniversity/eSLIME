@@ -102,4 +102,8 @@ public class MapState {
     public double getEdge() {
         return edge;
     }
+
+    public int[] getChannels() {
+        return new int[0];
+    }
 }
