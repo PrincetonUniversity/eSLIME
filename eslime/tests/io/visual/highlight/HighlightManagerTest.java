@@ -60,6 +60,9 @@ public class HighlightManagerTest extends EslimeLatticeTestCase {
     }
 
     public void testGetHighlightChannels() throws Exception {
-        fail("Implementation: add several channels and then make sure you get the expected array.");
+        query.setGlyph(2, new MockGlyph());
+        int[] expected = new int[]{0, 2};
+        int[] actual = query.getHighlightChannels();
+        assertArraysEqual(expected, actual, true);
     }
 }

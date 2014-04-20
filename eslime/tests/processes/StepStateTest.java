@@ -21,29 +21,47 @@
 
 package processes;
 
-import junit.framework.TestCase;
+import control.identifiers.Coordinate;
+import test.EslimeLatticeTestCase;
 
 /**
  * Created by David B Borenstein on 4/20/14.
  */
-public class StepStateTest extends TestCase {
+public class StepStateTest extends EslimeLatticeTestCase {
+
+    private StepState query;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        query = new StepState(1.2);
+    }
+
     public void testHighlight() throws Exception {
-        fail("Not yet implemented");
+        query.highlight(origin, 1);
+
+        Coordinate[] expected = new Coordinate[]{origin};
+        Coordinate[] actual = query.getHighlights(1);
+        assertArraysEqual(expected, actual, false);
     }
 
-    public void testAdvanceClock() throws Exception {
-        fail("Not yet implemented");
+    public void testEmptyHighlight() throws Exception {
+        query.highlight(origin, 1);
+
+        Coordinate[] expected = new Coordinate[0];
+        Coordinate[] actual = query.getHighlights(2);
+        assertArraysEqual(expected, actual, false);
     }
 
-    public void testGetDt() throws Exception {
-        fail("Not yet implemented");
-    }
-
-    public void testGetHighlights() throws Exception {
-        fail("Not yet implemented");
+    public void testDt() throws Exception {
+        assertEquals(0.0, query.getDt(), epsilon);
+        query.advanceClock(0.1);
+        assertEquals(0.1, query.getDt(), epsilon);
     }
 
     public void testGetTime() throws Exception {
-        fail("Not yet implemented");
+        assertEquals(1.2, query.getTime(), epsilon);
+        query.advanceClock(0.1);
+        assertEquals(1.3, query.getTime(), epsilon);
     }
 }

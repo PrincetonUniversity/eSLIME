@@ -64,6 +64,10 @@ public class StepState {
     }
 
     public Coordinate[] getHighlights(Integer channel) {
+        if (!highlights.containsKey(channel)) {
+            return new Coordinate[0];
+        }
+
         Set<Coordinate> set = highlights.get(channel);
 
         return set.toArray(new Coordinate[set.size()]);

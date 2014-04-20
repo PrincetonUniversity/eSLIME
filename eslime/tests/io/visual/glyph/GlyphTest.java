@@ -46,7 +46,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Integration test of the dot glyph (a filled dot at the center of the cell).
+ * Integration test for glyphs.
  * <p/>
  * Created by dbborens on 4/3/14.
  */

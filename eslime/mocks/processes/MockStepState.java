@@ -42,7 +42,7 @@ public class MockStepState extends StepState {
 
     @Override
     public Coordinate[] getHighlights(Integer channel) {
-        return super.getHighlights(channel);
+        return highlightMap.get(channel);
     }
 
     public void setHighlights(Integer channel, Coordinate[] highlights) {
