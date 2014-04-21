@@ -20,7 +20,7 @@
 package processes.discrete;
 
 import cells.MockCell;
-import processes.StepState;
+import processes.MockStepState;
 import test.EslimeLatticeTestCase;
 
 /**
@@ -62,7 +62,7 @@ public class CullTest extends EslimeLatticeTestCase {
 
         // Cull.
         query.target();
-        query.fire(new StepState());
+        query.fire(new MockStepState());
 
         // Only the one above the threshold should survive.
         assertTrue(layer.getViewer().isOccupied(x));
@@ -84,7 +84,7 @@ public class CullTest extends EslimeLatticeTestCase {
 
         // Cull.
         query.target();
-        query.fire(new StepState());
+        query.fire(new MockStepState());
 
         assertFalse(layer.getViewer().isOccupied(x));
     }

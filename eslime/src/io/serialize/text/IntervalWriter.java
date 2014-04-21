@@ -21,9 +21,9 @@ package io.serialize.text;
 
 import control.GeneralParameters;
 import control.halt.HaltCondition;
-import control.identifiers.Coordinate;
 import io.serialize.Serializer;
 import layers.LayerManager;
+import processes.StepState;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -59,10 +59,10 @@ public class IntervalWriter extends Serializer {
     }
 
     @Override
-    public void step(Coordinate[] highlights, double gillespie, int frame) {
+    public void step(StepState stepState, int frame) {
         Long interval = System.currentTimeMillis() - prevTime;
         if (p.isFrame(frame)) {
-            interval(frame, gillespie, interval);
+            interval(frame, stepState.getTime(), interval);
         }
 
         prevTime = System.currentTimeMillis();

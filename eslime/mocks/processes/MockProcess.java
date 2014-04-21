@@ -23,6 +23,7 @@ import control.GeneralParameters;
 import control.halt.HaltCondition;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
+import layers.MockLayerManager;
 import processes.gillespie.GillespieState;
 
 /**
@@ -121,5 +122,9 @@ public class MockProcess extends Process {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public void setLayerManager(MockLayerManager layerManager) {
+        this.layerManager = layerManager;
     }
 }

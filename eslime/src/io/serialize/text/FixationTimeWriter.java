@@ -23,8 +23,8 @@ import control.GeneralParameters;
 import control.halt.FixationEvent;
 import control.halt.HaltCondition;
 import control.halt.StepMaxReachedEvent;
-import control.identifiers.Coordinate;
 import io.serialize.Serializer;
+import processes.StepState;
 
 import java.io.BufferedWriter;
 
@@ -47,7 +47,7 @@ public class FixationTimeWriter extends Serializer {
     }
 
     @Override
-    public void step(Coordinate[] highlights, double gillespie, int frame) {
+    public void step(StepState stepState, int frame) {
 
     }
 

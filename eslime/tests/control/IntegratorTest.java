@@ -23,12 +23,14 @@ import control.halt.HaltCondition;
 import control.halt.StepMaxReachedEvent;
 import io.serialize.MockSerializationManager;
 import junit.framework.TestCase;
+import processes.StepState;
 import structural.MockGeneralParameters;
+import test.EslimeTestCase;
 
 /**
  * Created by David B Borenstein on 1/7/14.
  */
-public class IntegratorTest extends TestCase {
+public class IntegratorTest extends EslimeTestCase {
 
     // Items used during construction
     private MockGeneralParameters p;
@@ -56,5 +58,15 @@ public class IntegratorTest extends TestCase {
 
         assertTrue(halt instanceof StepMaxReachedEvent);
         assertEquals(5, mgr.getTimesIterated());
+    }
+
+    public void testStateApplied() throws Exception {
+        p.setT(1);
+        mgr.setStepStateDt(1.0);
+        // Each of the following should have been called 5 times:
+        integrator.go();
+        StepState stepState = sm.getStepState();
+        assertEquals(1.0, stepState.getDt());
+        assertEquals(1.0, stepState.getTime());
     }
 }

@@ -28,7 +28,7 @@ import layers.MockLayerManager;
 import layers.MockSoluteLayer;
 import layers.cell.CellLayer;
 import no.uib.cipr.matrix.DenseVector;
-import processes.StepState;
+import processes.MockStepState;
 import processes.gillespie.GillespieState;
 import test.EslimeTestCase;
 
@@ -117,7 +117,7 @@ public class FieldUpdateProcessTest extends EslimeTestCase {
     }
 
     public void testFire() throws Exception {
-        StepState state = new StepState();
+        MockStepState state = new MockStepState();
         query.fire(state);
 
 

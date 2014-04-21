@@ -21,15 +21,18 @@ package agent.action;
 
 import cells.BehaviorCell;
 import cells.Cell;
+import control.arguments.Argument;
+import control.arguments.ConstantInteger;
 import control.identifiers.Coordinate;
-import junit.framework.TestCase;
 import layers.LayerManager;
 import layers.MockLayerManager;
+import processes.StepState;
+import test.EslimeTestCase;
 
 /**
  * Created by David B Borenstein on 1/23/14.
  */
-public class ActionTest extends TestCase {
+public class ActionTest extends EslimeTestCase {
 
     MockLayerManager layerManager;
     Coordinate caller;
@@ -69,6 +72,15 @@ public class ActionTest extends TestCase {
         assertEquals(caller, query.getLastCaller());
     }
 
+    public void testDoHighlight() throws Exception {
+        StepState stepState = new StepState(0.0);
+        layerManager.setStepState(stepState);
+        query.doHighlight(new ConstantInteger(1), caller);
+        Coordinate[] actual = stepState.getHighlights(1);
+        Coordinate[] expected = new Coordinate[]{caller};
+        assertArraysEqual(expected, actual, true);
+    }
+
     private class ExposedAction extends Action {
 
         private boolean isRun = false;
@@ -105,6 +117,11 @@ public class ActionTest extends TestCase {
         @Override
         public Action clone(BehaviorCell child) {
             return new ExposedAction(child, layerManager);
+        }
+
+        @Override
+        public void doHighlight(Argument<Integer> channelArg, Coordinate toHighlight) {
+            super.doHighlight(channelArg, toHighlight);
         }
     }
 }

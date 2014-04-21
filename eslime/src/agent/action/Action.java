@@ -20,8 +20,10 @@
 package agent.action;
 
 import cells.BehaviorCell;
+import control.arguments.Argument;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
+import processes.StepState;
 
 /**
  * Actions are the consituent members of Behaviors. They
@@ -63,4 +65,14 @@ public abstract class Action {
 
     public abstract Action clone(BehaviorCell child);
 
+    protected void doHighlight(Argument<Integer> channelArg, Coordinate toHighlight) {
+        // If not using highlights, do nothing
+        if (channelArg == null) {
+            return;
+        }
+
+        Integer channel = channelArg.next();
+        StepState stepState = getLayerManager().getStepState();
+        stepState.highlight(toHighlight, channel);
+    }
 }

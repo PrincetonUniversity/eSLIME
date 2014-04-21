@@ -26,7 +26,7 @@ import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
-import processes.StepState;
+import processes.MockStepState;
 import processes.gillespie.GillespieState;
 import test.EslimeTestCase;
 
@@ -63,7 +63,7 @@ public class CheckForFixationTest extends EslimeTestCase {
     public void doTest(boolean expectFixation) {
         boolean fixed = false;
         try {
-            StepState state = new StepState();
+            MockStepState state = new MockStepState();
             query.fire(state);
 
             // Fixation events halt flow in the simulation.

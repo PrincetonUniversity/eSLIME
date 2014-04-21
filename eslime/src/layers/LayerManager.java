@@ -25,6 +25,7 @@ import layers.cell.CellLayer;
 import layers.solute.SoluteLayer;
 import layers.solute.SoluteLayerFactory;
 import org.dom4j.Element;
+import processes.StepState;
 
 import java.util.HashMap;
 import java.util.List;
@@ -37,6 +38,7 @@ public class LayerManager {
     private static final int GEOMETRY_ID = 0;
     private CellLayer cellLayer;
     private HashMap<String, SoluteLayer> soluteLayers;
+    private StepState stepState;
 
     public LayerManager() {
         // Null default constructor, used in mock testing
@@ -95,5 +97,13 @@ public class LayerManager {
 
     public CellLayer getCellLayer() {
         return cellLayer;
+    }
+
+    public void setStepState(StepState stepState) {
+        this.stepState = stepState;
+    }
+
+    public StepState getStepState() {
+        return stepState;
     }
 }

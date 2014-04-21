@@ -23,11 +23,13 @@ import agent.targets.MockTargetRule;
 import agent.targets.TargetOccupiedNeighbors;
 import agent.targets.TargetRule;
 import cells.MockCell;
+import control.arguments.ConstantInteger;
 import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import layers.cell.CellUpdateManager;
+import processes.StepState;
 import test.EslimeTestCase;
 
 import java.util.Random;
@@ -46,6 +48,7 @@ public class TriggerTest extends EslimeTestCase {
     private MockGeometry geom;
     private Coordinate o, p, q;
     private Random random;
+//    private ConstantInteger selfChannel, targetChannel;
 
     @Override
     protected void setUp() throws Exception {
@@ -71,8 +74,11 @@ public class TriggerTest extends EslimeTestCase {
         Coordinate[] targets = new Coordinate[]{o};
         targetRule.setTargets(targets);
 
+//        selfChannel = new ConstantInteger(1);
+//        targetChannel = new ConstantInteger(2);
         // Create a trigger action.
-        query = new Trigger(causeCell, layerManager, effectName, targetRule);
+//        query = new Trigger(causeCell, layerManager, effectName, targetRule, selfChannel, targetChannel);
+        query = new Trigger(causeCell, layerManager, effectName, targetRule, null, null);
     }
 
     public void testRun() throws Exception {
@@ -118,9 +124,9 @@ public class TriggerTest extends EslimeTestCase {
         TargetRule differentTargetRule = new TargetOccupiedNeighbors(dummyCell2, layerManager, -1, random);
         String differentEffectName = "not the same as effectName";
 
-        identical = new Trigger(dummyCell1, layerManager, effectName, targetRule);
-        differentBehavior = new Trigger(dummyCell1, layerManager, differentEffectName, sameTargetRule);
-        differentTargeter = new Trigger(dummyCell2, layerManager, effectName, differentTargetRule);
+        identical = new Trigger(dummyCell1, layerManager, effectName, targetRule, null, null);
+        differentBehavior = new Trigger(dummyCell1, layerManager, differentEffectName, sameTargetRule, null, null);
+        differentTargeter = new Trigger(dummyCell2, layerManager, effectName, differentTargetRule, null, null);
 
         assertEquals(query, identical);
         assertNotEquals(query, differentBehavior);
@@ -134,6 +140,27 @@ public class TriggerTest extends EslimeTestCase {
         assertEquals(query, cloned);
         assertEquals(cloneCell, cloned.getCallback());
         assertEquals(causeCell, query.getCallback());
+    }
+
+    public void testHighlighting() throws Exception {
+        StepState stepState = new StepState(0.0);
+        layerManager.setStepState(stepState);
+        ConstantInteger selfChannel = new ConstantInteger(2);
+        ConstantInteger targetChannel = new ConstantInteger(4);
+        query = new Trigger(causeCell, layerManager, effectName, targetRule, selfChannel, targetChannel);
+        query.run(null);
+
+        Coordinate[] expected, actual;
+
+        // Check target highlights
+        expected = new Coordinate[]{q};
+        actual = stepState.getHighlights(2);
+        assertArraysEqual(expected, actual, true);
+
+        // Check cause highlights
+        expected = new Coordinate[]{o};
+        actual = stepState.getHighlights(4);
+        assertArraysEqual(expected, actual, true);
     }
 
 }

@@ -21,9 +21,10 @@ package control;
 
 import io.factory.MockProcessFactory;
 import junit.framework.TestCase;
+import layers.MockLayerManager;
 import processes.MockProcess;
 import processes.Process;
-import structural.MockGeneralParameters;
+import processes.StepState;
 
 /**
  * Created by David B Borenstein on 1/7/14.
@@ -31,20 +32,21 @@ import structural.MockGeneralParameters;
 public class ProcessManagerTest extends TestCase {
 
     private static final int CURRENT_N = 2;
+    private static final double CURRENT_TIME = 1.7;
     MockProcess yes, no;
     ProcessManager query;
     MockProcessFactory factory;
-    MockGeneralParameters p;
+    MockLayerManager layerManager;
 
     @Override
     protected void setUp() throws Exception {
         initHelperObjects();
         initYesAndNo();
-        query = new ProcessManager(factory, p);
+        query = new ProcessManager(factory, layerManager);
     }
 
     private void initHelperObjects() {
-        p = new MockGeneralParameters();
+        layerManager = new MockLayerManager();
         factory = new MockProcessFactory();
     }
 
@@ -54,12 +56,13 @@ public class ProcessManagerTest extends TestCase {
     private void initYesAndNo() {
 
         yes = new MockProcess();
-
+        yes.setLayerManager(layerManager);
         // These processes each run once, but only one runs at the current time.
         yes.setStart(CURRENT_N);
         yes.setPeriod(0);
 
         no = new MockProcess();
+        no.setLayerManager(layerManager);
         no.setStart(CURRENT_N + 1);
         no.setPeriod(0);
 
@@ -113,21 +116,18 @@ public class ProcessManagerTest extends TestCase {
 
     public void testDoTriggeredProcesses() throws Exception {
         // Execute doTriggeredProcesses.
-        query.doTriggeredProcesses(CURRENT_N);
+        query.doTriggeredProcesses(CURRENT_N, CURRENT_TIME);
 
         // Verify that only the triggered process actually took place.
         assertEquals(0, no.getTimesFired());
         assertEquals(1, yes.getTimesFired());
     }
 
-//    private class ProcessManagerExposed extends ProcessManager {
-//        public ProcessManagerExposed(ProcessFactory factory, GeneralParameters p) {
-//            super(factory, p);
-//        }
-//
-//        @Override
-//        public boolean triggered(int n, processes.Process process) {
-//            return super.triggered(n, process);
-//        }
-//    }
+    public void testStepStateRenewal() throws Exception {
+        StepState first = query.doTriggeredProcesses(0, 0.0);
+        StepState second = query.doTriggeredProcesses(0, 0.0);
+
+        // First and second should be distinct objects (reference inequality)
+        assertFalse(first == second);
+    }
 }

@@ -71,8 +71,8 @@ public class NeighborSwap extends CellProcess {
 
         layer.getUpdateManager().swap(target.p, target.q);
 
-        state.highlight(target.p);
-        state.highlight(target.q);
+//        state.highlight(target.p);
+//        state.highlight(target.q);
 
         candidates = null;
     }

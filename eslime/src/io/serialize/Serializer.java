@@ -21,8 +21,8 @@ package io.serialize;
 
 import control.GeneralParameters;
 import control.halt.HaltCondition;
-import control.identifiers.Coordinate;
 import layers.LayerManager;
+import processes.StepState;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -73,7 +73,7 @@ public abstract class Serializer {
     /**
      * Step to the next frame of the current instance.
      */
-    public abstract void step(Coordinate[] highlights, double gillespie, int frame);
+    public abstract void step(StepState stepState, int frame);
 
     protected void mkDir(String pathStr, boolean recursive) {
         File path = new File(pathStr);

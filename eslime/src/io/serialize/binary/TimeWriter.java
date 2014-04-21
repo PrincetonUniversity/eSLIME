@@ -23,9 +23,9 @@ package io.serialize.binary;
 
 import control.GeneralParameters;
 import control.halt.HaltCondition;
-import control.identifiers.Coordinate;
 import io.serialize.Serializer;
 import layers.LayerManager;
+import processes.StepState;
 import structural.utilities.FileConventions;
 
 import java.io.DataOutputStream;
@@ -70,10 +70,10 @@ public class TimeWriter extends Serializer {
     }
 
     @Override
-    public void step(Coordinate[] highlights, double gillespie, int frame) {
+    public void step(StepState stepState, int frame) {
         try {
             stream.writeInt(frame);
-            stream.writeDouble(gillespie);
+            stream.writeDouble(stepState.getTime());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

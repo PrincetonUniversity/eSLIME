@@ -21,9 +21,9 @@ package io.serialize.interactive;
 
 import control.GeneralParameters;
 import control.halt.HaltCondition;
-import control.identifiers.Coordinate;
 import io.serialize.Serializer;
 import layers.LayerManager;
+import processes.StepState;
 
 /**
  * Outputs some basic information about simulation progress.
@@ -35,6 +35,7 @@ import layers.LayerManager;
 public class ProgressReporter extends Serializer {
 
     private long start;
+
     public ProgressReporter(GeneralParameters p) {
         super(p);
     }
@@ -45,7 +46,7 @@ public class ProgressReporter extends Serializer {
     }
 
     @Override
-    public void step(Coordinate[] highlights, double gillespie, int frame) {
+    public void step(StepState stepState, int frame) {
         if (p.isFrame(frame)) {
             System.out.println("   Frame " + frame + ".");
         }

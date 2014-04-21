@@ -21,11 +21,11 @@ package io.serialize.text;
 
 import control.GeneralParameters;
 import control.halt.HaltCondition;
-import control.identifiers.Coordinate;
 import io.serialize.Serializer;
 import layers.LayerManager;
 import layers.cell.CellLayer;
 import layers.cell.StateMapViewer;
+import processes.StepState;
 
 import java.io.BufferedWriter;
 import java.util.ArrayList;
@@ -67,7 +67,7 @@ public class FrequencyWriter extends Serializer {
     }
 
     @Override
-    public void step(Coordinate[] highlights, double gillespie, int frame) {
+    public void step(StepState stepState, int frame) {
         CellLayer layer = layerManager.getCellLayer();
         if (p.isFrame(frame)) {
             frames.add(frame);

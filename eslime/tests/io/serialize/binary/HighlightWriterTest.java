@@ -22,6 +22,7 @@
 package io.serialize.binary;
 
 import control.identifiers.Coordinate;
+import processes.MockStepState;
 import structural.MockGeneralParameters;
 import structural.utilities.FileConventions;
 import test.EslimeLatticeTestCase;
@@ -31,7 +32,8 @@ import test.EslimeLatticeTestCase;
  */
 public class HighlightWriterTest extends EslimeLatticeTestCase {
 
-    private int channel = 0;
+
+    private int[] channels = new int[]{0, 7};
 
     public void testLifeCycle() throws Exception {
         runLifeCycle();
@@ -39,16 +41,21 @@ public class HighlightWriterTest extends EslimeLatticeTestCase {
     }
 
     private void checkFiles() {
-        String filename = FileConventions.makeHighlightFilename(channel);
-        assertBinaryFilesEqual(filename);
+        for (int channel : channels) {
+            String filename = FileConventions.makeHighlightFilename(channel);
+            assertBinaryFilesEqual(filename);
+        }
     }
 
     private void runLifeCycle() {
         MockGeneralParameters p = makeMockGeneralParameters();
-        HighlightWriter query = new HighlightWriter(p);
+        HighlightWriter query = new HighlightWriter(p, channels);
         query.init(layerManager);
-        Coordinate[] highlights = new Coordinate[]{x, y};
-        query.step(highlights, 0.1, 2);
+        MockStepState stepState = new MockStepState(0.1);
+        stepState.setHighlights(0, new Coordinate[]{x, y});
+        stepState.setHighlights(7, new Coordinate[]{origin});
+        query.step(stepState, 2);
         query.dispatchHalt(null);
     }
+
 }

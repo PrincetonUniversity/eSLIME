@@ -23,6 +23,7 @@ import agent.action.*;
 import agent.targets.TargetRule;
 import cells.BehaviorCell;
 import control.GeneralParameters;
+import control.arguments.Argument;
 import layers.LayerManager;
 import org.dom4j.Element;
 import structural.RangeMap;
@@ -49,14 +50,14 @@ public class ActionFactory {
             case "stochastic-choice":
                 return stochasticChoice(e, callback, layerManager, p);
             case "null":
-                return nullAction(callback, layerManager);
+                return nullAction();
             default:
                 String msg = "Unrecognized action '" + actionName + "'.";
                 throw new IllegalArgumentException(msg);
         }
     }
 
-    private static Action nullAction(BehaviorCell callback, LayerManager layerManager) {
+    private static Action nullAction() {
         return new NullAction();
     }
 
@@ -83,7 +84,9 @@ public class ActionFactory {
         Element descriptor = e.element("target");
         TargetRule targetRule = TargetFactory.instantiate(callback, layerManager, descriptor, random);
         String behaviorName = e.element("behavior").getTextTrim();
-        return new Trigger(callback, layerManager, behaviorName, targetRule);
+        Argument<Integer> selfChannel = IntegerArgumentFactory.instantiate(e, "actor-highlight", -1, p.getRandom());
+        Argument<Integer> targetChannel = IntegerArgumentFactory.instantiate(e, "target-highlight", -1, p.getRandom());
+        return new Trigger(callback, layerManager, behaviorName, targetRule, selfChannel, targetChannel);
     }
 
     private static Action adjustFitness(Element e, BehaviorCell callback, LayerManager layerManager) {

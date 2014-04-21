@@ -21,6 +21,8 @@ package structural.utilities;
 
 import org.dom4j.Element;
 
+import java.util.List;
+
 /**
  * Created by dbborens on 2/20/14.
  */
@@ -90,4 +92,22 @@ public abstract class XmlUtil {
         return ret;
     }
 
+    public static int[] getIntegerArray(Element e, String tokenName) {
+        if (e == null) {
+            return new int[0];
+        }
+
+        List<Element> children = e.elements(tokenName);
+
+        int[] ret = new int[children.size()];
+        int i = 0;
+        for (Element child : children) {
+            String valueText = child.getTextTrim();
+            int value = Integer.valueOf(valueText);
+            ret[i] = value;
+            i++;
+        }
+
+        return ret;
+    }
 }

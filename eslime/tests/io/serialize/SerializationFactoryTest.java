@@ -26,7 +26,6 @@ import io.serialize.binary.TimeWriter;
 import io.serialize.binary.VisualizationSerializer;
 import io.serialize.interactive.ProgressReporter;
 import io.serialize.text.*;
-import io.visual.Visualization;
 import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;
 import structural.MockGeneralParameters;
@@ -91,7 +90,20 @@ public class SerializationFactoryTest extends EslimeTestCase {
     }
 
     public void testHighlightWriter() {
-        doTest("highlight-writer", HighlightWriter.class);
+        Element e = new BaseElement("highlight-writer");
+        // Create channels
+        Element channels = new BaseElement("channels");
+        Element c1 = new BaseElement("channel");
+        c1.setText("3");
+        Element c2 = new BaseElement("channel");
+        c2.setText("5");
+        channels.add(c1);
+        channels.add(c2);
+        e.add(channels);
+
+        Serializer actual = SerializationFactory.instantiate(e, p);
+        Serializer expected = new HighlightWriter(p, new int[] {3, 5});
+        assertEquals(expected, actual);
     }
 
     public void testVisualizationSerializer() {
@@ -105,4 +117,5 @@ public class SerializationFactoryTest extends EslimeTestCase {
         Class actual = result.getClass();
         assertEquals(VisualizationSerializer.class, actual);
     }
+
 }

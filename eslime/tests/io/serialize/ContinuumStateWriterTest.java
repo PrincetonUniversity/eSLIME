@@ -24,6 +24,7 @@ import io.serialize.binary.ContinuumStateWriter;
 import layers.MockLayerManager;
 import layers.MockSoluteLayer;
 import no.uib.cipr.matrix.DenseVector;
+import processes.StepState;
 import structural.MockGeneralParameters;
 import structural.postprocess.SolutionViewer;
 import test.EslimeTestCase;
@@ -84,11 +85,11 @@ public class ContinuumStateWriterTest extends EslimeTestCase {
 
         // Push first state
         layer.push(first);
-        csw.step(null, 1.0, 1);
+        csw.step(new StepState(1.0), 1);
 
         // Push second state
         layer.push(second);
-        csw.step(null, 2, 2);
+        csw.step(new StepState(2.0), 2);
 
         // Close file handles
         csw.dispatchHalt(null);

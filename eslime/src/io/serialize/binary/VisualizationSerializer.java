@@ -23,11 +23,11 @@ package io.serialize.binary;
 
 import control.GeneralParameters;
 import control.halt.HaltCondition;
-import control.identifiers.Coordinate;
 import io.deserialize.SystemStateReader;
 import io.serialize.Serializer;
 import io.visual.Visualization;
 import layers.SystemState;
+import processes.StepState;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -52,16 +52,6 @@ public class VisualizationSerializer extends Serializer {
     public VisualizationSerializer(GeneralParameters p,
                                    Visualization visualization,
                                    String prefix, String mode) {
-        super(p);
-        this.visualization = visualization;
-        this.prefix = prefix;
-        this.mode = mode;
-    }
-
-    public VisualizationSerializer(GeneralParameters p,
-                                   Visualization visualization,
-                                   String prefix, String mode,
-                                   String outputPath) {
         super(p);
         this.visualization = visualization;
         this.prefix = prefix;
@@ -119,7 +109,7 @@ public class VisualizationSerializer extends Serializer {
     }
 
     @Override
-    public void step(Coordinate[] highlights, double gillespie, int frame) {
+    public void step(StepState stepState, int frame) {
         // Doesn't do anything
     }
 }
