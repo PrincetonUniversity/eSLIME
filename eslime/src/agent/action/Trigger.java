@@ -71,7 +71,13 @@ public class Trigger extends Action {
             // We require an occupied cell for the target of trigger actions.
             BehaviorCell targetCell = getWithCast(target);
             targetCell.trigger(behaviorName, self);
+            highlight(target, self);
         }
+    }
+
+    private void highlight(Coordinate target, Coordinate ownLocation) {
+        doHighlight(targetChannel, target);
+        doHighlight(selfChannel, ownLocation);
     }
 
     /**

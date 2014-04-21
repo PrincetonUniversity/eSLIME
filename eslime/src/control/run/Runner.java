@@ -68,7 +68,7 @@ public class Runner implements Runnable {
             gm = new GeometryFactory(pp.getElement("geometry"));
             lm = new LayerManager(pp.getElement("layers"), gm);
             factory = new ProcessFactory(loader, lm, p);
-            pm = new ProcessManager(factory, p);
+            pm = new ProcessManager(factory, lm);
             Element writers = pp.getElement("writers");
             mgr = new SerializationManager(writers, p, lm);
             mgr.init(lm);

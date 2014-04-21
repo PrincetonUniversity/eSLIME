@@ -21,6 +21,7 @@ package control;
 
 import control.halt.HaltCondition;
 import io.factory.ProcessFactory;
+import layers.LayerManager;
 import processes.Process;
 import processes.StepState;
 
@@ -32,6 +33,7 @@ import java.util.ArrayList;
 public class ProcessManager {
 
     private Process[] processes;
+    private LayerManager layerManager;
 
     /**
      * Default constructor included for testing
@@ -39,8 +41,9 @@ public class ProcessManager {
     public ProcessManager() {
     }
 
-    public ProcessManager(ProcessFactory factory, GeneralParameters p) {
+    public ProcessManager(ProcessFactory factory, LayerManager layerManager) {
         processes = factory.getProcesses();
+        this.layerManager = layerManager;
     }
 
     //protected Process[] getTriggeredProcesses(int n, double t) {
@@ -96,13 +99,22 @@ public class ProcessManager {
     public StepState doTriggeredProcesses(int n, double startTime) throws HaltCondition {
         StepState stepState = new StepState(startTime);
 
+        // Pass the step state object to the layer manager. This way, both actions
+        // and processes can access it.
+        layerManager.setStepState(stepState);
+
         // Get triggered events.
         Process[] triggeredProcesses = getTriggeredProcesses(n);
 
         // Fire each triggered cell event.
         for (Process process : triggeredProcesses) {
-            process.iterate(stepState);
+            process.iterate();
         }
+
+        // There's no reason for the layer manager to touch the StepState
+        // object until the next cycle. If it does, the program should blow up,
+        // so we have it throw a null pointer exception.
+        layerManager.setStepState(null);
 
         return stepState;
     }

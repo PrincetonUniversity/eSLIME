@@ -71,7 +71,7 @@ public class UniformBiomassGrowthTest extends TestCase {
         assertTrue(!layer.getViewer().getDivisibleSites().contains(coord2));
 
         try {
-            process.iterate(null);
+            process.iterate();
         } catch (Exception ex) {
             fail();
         }
@@ -117,7 +117,7 @@ public class UniformBiomassGrowthTest extends TestCase {
         assertTrue(!layer.getViewer().getDivisibleSites().contains(coord2));
 
         try {
-            process.iterate(null);
+            process.iterate();
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

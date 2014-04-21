@@ -21,9 +21,10 @@ package control;
 
 import io.factory.MockProcessFactory;
 import junit.framework.TestCase;
+import layers.MockLayerManager;
 import processes.MockProcess;
 import processes.Process;
-import structural.MockGeneralParameters;
+import processes.StepState;
 
 /**
  * Created by David B Borenstein on 1/7/14.
@@ -35,17 +36,17 @@ public class ProcessManagerTest extends TestCase {
     MockProcess yes, no;
     ProcessManager query;
     MockProcessFactory factory;
-    MockGeneralParameters p;
+    MockLayerManager layerManager;
 
     @Override
     protected void setUp() throws Exception {
         initHelperObjects();
         initYesAndNo();
-        query = new ProcessManager(factory, p);
+        query = new ProcessManager(factory, layerManager);
     }
 
     private void initHelperObjects() {
-        p = new MockGeneralParameters();
+        layerManager = new MockLayerManager();
         factory = new MockProcessFactory();
     }
 
@@ -55,12 +56,13 @@ public class ProcessManagerTest extends TestCase {
     private void initYesAndNo() {
 
         yes = new MockProcess();
-
+        yes.setLayerManager(layerManager);
         // These processes each run once, but only one runs at the current time.
         yes.setStart(CURRENT_N);
         yes.setPeriod(0);
 
         no = new MockProcess();
+        no.setLayerManager(layerManager);
         no.setStart(CURRENT_N + 1);
         no.setPeriod(0);
 
@@ -121,4 +123,11 @@ public class ProcessManagerTest extends TestCase {
         assertEquals(1, yes.getTimesFired());
     }
 
+    public void testStepStateRenewal() throws Exception {
+        StepState first = query.doTriggeredProcesses(0, 0.0);
+        StepState second = query.doTriggeredProcesses(0, 0.0);
+
+        // First and second should be distinct objects (reference inequality)
+        assertFalse(first == second);
+    }
 }

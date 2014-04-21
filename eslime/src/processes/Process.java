@@ -98,9 +98,10 @@ public abstract class Process {
      */
     public abstract void fire(StepState state) throws HaltCondition;
 
-    public void iterate(StepState state) throws HaltCondition {
+    public void iterate() throws HaltCondition {
         target();
-        fire(state);
+        StepState stepState = layerManager.getStepState();
+        fire(stepState);
     }
 
     /**
