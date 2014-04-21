@@ -69,14 +69,8 @@ public class LegacyCellStateWriter extends Serializer {
     // I/O handle for the state file
     private BufferedWriter stateWriter;
 
-
-    @Override
-    public void step(StepState stepState, int frame) {
-
-    }
-
-    // Timestamp for project
-    private Date date = new Date();
+//    // Timestamp for project
+//    private Date date = new Date();
 
     // Extrema for each field type
     private Extrema ef;                // Fitness
@@ -123,32 +117,30 @@ public class LegacyCellStateWriter extends Serializer {
 
     /**
      * Appends a state to the file.
-     *
-     * @param gillespie Interval (in simulated time) between the last time step and the current one.
      */
-    public void step(Coordinate[] highlights, double gillespie, int frame) {
+    public void step(StepState stepState, int frame) {
         CellLayer layer = layerManager.getCellLayer();
         int[] s = layer.getViewer().getStateVector();
         double[] f = layer.getViewer().getFitnessVector();
 
-        if (p.isFrame(frame)) {
-            writeDoubleArray(f, ef, gillespie, frame, "fitness");
-            writeIntegerArray(s, gillespie, frame, "state");
+//        if (p.isFrame(frame)) {
+            writeDoubleArray(f, ef, stepState.getTime(), frame, "fitness");
+            writeIntegerArray(s, stepState.getTime(), frame, "state");
 
-            int[] h = coordToInt(highlights);
-            writeIntegerArray(h, gillespie, frame, "highlight");
-        }
+//            int[] h = coordToInt(highlights);
+//            writeIntegerArray(h, gillespie, frame, "highlight");
+//        }
     }
 
-    protected int[] coordToInt(Coordinate[] highlights) {
-        Geometry geom = layerManager.getCellLayer().getGeometry();
-        int[] hl = new int[highlights.length];
-        for (int i = 0; i < highlights.length; i++) {
-            hl[i] = geom.coordToIndex(highlights[i]);
-        }
-
-        return hl;
-    }
+//    protected int[] coordToInt(Coordinate[] highlights) {
+//        Geometry geom = layerManager.getCellLayer().getGeometry();
+//        int[] hl = new int[highlights.length];
+//        for (int i = 0; i < highlights.length; i++) {
+//            hl[i] = geom.coordToIndex(highlights[i]);
+//        }
+//
+//        return hl;
+//    }
 
     /**
      * Write out the cell types, represented by colors.

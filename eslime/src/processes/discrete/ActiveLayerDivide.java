@@ -20,6 +20,7 @@
 package processes.discrete;
 
 import control.GeneralParameters;
+import control.arguments.Argument;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import io.loader.ProcessLoader;
@@ -35,7 +36,7 @@ public class ActiveLayerDivide extends BulkDivisionProcess {
     private Coordinate[] candidates = null;
 
     public ActiveLayerDivide(ProcessLoader loader, LayerManager layerManager, int id,
-                             GeneralParameters p, int maxTargets) {
+                             GeneralParameters p, Argument<Integer> maxTargets) {
         super(loader, layerManager, id, p, maxTargets);
 
         depth = Integer.valueOf(get("depth"));

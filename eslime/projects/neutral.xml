@@ -20,7 +20,7 @@
   -->
 
 <simulation>
-    <version>0.5.0</version>
+    <version>0.5.2</version>
 
     <!-- Declare general simulation properties -->
     <general>
@@ -37,9 +37,8 @@
     <!-- Declare geometry properties -->
     <geometry>
         <shape>
-            <class>Rectangle</class>
-            <width>32</width>
-            <height>32</height>
+            <class>Hexagon</class>
+            <radius>16</radius>
         </shape>
         <lattice>
             <class>Triangular</class>
@@ -70,7 +69,7 @@
                  place. -->
 
             <types>1</types>
-            <tokens>32</tokens>
+            <tokens>408</tokens>
 
             <cell-descriptor>
                 <class>BehaviorCell</class>
@@ -98,8 +97,8 @@
                 <state>2</state>
                 <initial-fitness>
                     <uniform>
-                        <min>0.25</min>
-                        <max>0.5</max>
+                        <min>0.01</min>
+                        <max>1.00</max>
                     </uniform>
                 </initial-fitness>
                 <threshold>1.0</threshold>
@@ -114,6 +113,13 @@
         <uniform-biomass-growth>
             <delta>0.1</delta>
         </uniform-biomass-growth>
+
+        <!-- Swap one cell with one of its neighbors every few cycles -->
+        <neighbor-swap>
+            <max-targets>1</max-targets>
+
+            <period>4</period>
+        </neighbor-swap>
 
         <!-- Remove the cells that have died. -->
         <cull/>

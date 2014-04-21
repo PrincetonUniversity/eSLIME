@@ -19,7 +19,6 @@
 
 package processes;
 
-import control.identifiers.Coordinate;
 import test.EslimeTestCase;
 
 import java.util.Arrays;
@@ -31,15 +30,15 @@ import java.util.Random;
  */
 public class MaxTargetHelperTest extends EslimeTestCase {
     // Set of all outcomes
-    private Coordinate[] omega;
+    private Object[] omega;
     private Random random;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        omega = new Coordinate[10];
+        omega = new Object[10];
         for (int i = 0; i < 10; i++) {
-            omega[i] = new Coordinate(i, 0, 0);
+            omega[i] = new Object();
         }
 
         random = new Random(RANDOM_SEED);
@@ -62,8 +61,8 @@ public class MaxTargetHelperTest extends EslimeTestCase {
     }
 
     public void testListCase() {
-        List<Coordinate> omegaList = Arrays.asList(omega);
-        Coordinate[] coordinates = MaxTargetHelper.respectMaxTargets(omegaList, 1, random);
+        List<Object> omegaList = Arrays.asList(omega);
+        Object[] coordinates = MaxTargetHelper.respectMaxTargets(omegaList, 1, random);
         int actual = coordinates.length;
         int expected = 1;
 
@@ -71,7 +70,7 @@ public class MaxTargetHelperTest extends EslimeTestCase {
     }
 
     private void doTest(int maxTargetsArg, int expected) {
-        Coordinate[] actualArr = MaxTargetHelper.respectMaxTargets(omega, maxTargetsArg, random);
+        Object[] actualArr = MaxTargetHelper.respectMaxTargets(omega, maxTargetsArg, random);
         int actual = actualArr.length;
         assertEquals(expected, actual);
     }

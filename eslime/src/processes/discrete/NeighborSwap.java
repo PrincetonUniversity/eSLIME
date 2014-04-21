@@ -20,11 +20,13 @@
 package processes.discrete;
 
 import control.GeneralParameters;
+import control.arguments.Argument;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
+import processes.MaxTargetHelper;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 
@@ -40,14 +42,16 @@ import java.util.Set;
  */
 public class NeighborSwap extends CellProcess {
 
-    private List<SwapTuple> candidates = null;
+    private List<Object> candidates = null;
+    private Argument<Integer> maxTargets;
     private Geometry geom;
 
     public NeighborSwap(ProcessLoader loader, LayerManager layerManager, int id,
-                        GeneralParameters p) {
+                        GeneralParameters p, Argument<Integer> maxTargets) {
 
         super(loader, layerManager, id, p);
         geom = layer.getGeometry();
+        this.maxTargets = maxTargets;
     }
 
     @Override
@@ -63,27 +67,25 @@ public class NeighborSwap extends CellProcess {
 
         //System.out.println("In NeighborSwap::iterate().");
 
-        SwapTuple target = selectTarget();
+        Object[] targets = selectTargets();
 
-        if (target == null) {
+        if (targets.length == 0) {
             return;
         }
 
-        layer.getUpdateManager().swap(target.p, target.q);
-
-//        state.highlight(target.p);
-//        state.highlight(target.q);
-
+        for (Object tObj : targets) {
+            SwapTuple target = (SwapTuple) tObj;
+            layer.getUpdateManager().swap(target.p, target.q);
+        }
         candidates = null;
     }
 
-    private SwapTuple selectTarget() {
+    private Object[] selectTargets() {
+
+        Object[] selectedCoords = MaxTargetHelper.respectMaxTargets(candidates, maxTargets.next(), p.getRandom());
 
 
-        // Choose a candidate
-        int index = p.getRandom().nextInt(candidates.size());
-        SwapTuple target = candidates.get(index);
-        return target;
+        return selectedCoords;
     }
 
     /**
@@ -103,7 +105,7 @@ public class NeighborSwap extends CellProcess {
     public void target(GillespieState gs) throws HaltCondition {
 
         // Create an ArrayList of SwapTuples
-        candidates = new ArrayList<SwapTuple>();
+        candidates = new ArrayList<>();
 
         // Get a list of occupied sites
         Set<Coordinate> coords = layer.getViewer().getOccupiedSites();

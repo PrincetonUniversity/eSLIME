@@ -74,13 +74,13 @@ public class TriggerProcess extends CellProcess {
     }
 
     private Cell[] resolveTargets() {
-        ArrayList<Coordinate> vacancyFiltered = respectVacancyRequirements(activeSites);
-        ArrayList<Coordinate> neighborFiltered = respectNeighborhoodRequirements(vacancyFiltered);
-        Coordinate[] selectedCoords = MaxTargetHelper.respectMaxTargets(neighborFiltered, maxTargets, p.getRandom());
+        ArrayList<Object> vacancyFiltered = respectVacancyRequirements(activeSites);
+        ArrayList<Object> neighborFiltered = respectNeighborhoodRequirements(vacancyFiltered);
+        Object[] selectedCoords = MaxTargetHelper.respectMaxTargets(neighborFiltered, maxTargets, p.getRandom());
 
         Cell[] selectedCells = new Cell[selectedCoords.length];
         for (int i = 0; i < selectedCells.length; i++) {
-            Coordinate coord = selectedCoords[i];
+            Coordinate coord = (Coordinate) selectedCoords[i];
             selectedCells[i] = layer.getViewer().getCell(coord);
         }
 
@@ -91,13 +91,14 @@ public class TriggerProcess extends CellProcess {
      * If require-neighbors is set, removes any candidates that don't have any
      * occupied neighbors.
      */
-    private ArrayList<Coordinate> respectNeighborhoodRequirements(ArrayList<Coordinate> unfiltered) {
-        ArrayList<Coordinate> filtered = new ArrayList<>(unfiltered.size());
+    private ArrayList<Object> respectNeighborhoodRequirements(ArrayList<Object> unfiltered) {
+        ArrayList<Object> filtered = new ArrayList<>(unfiltered.size());
         if (!requireNeighbors) {
             return unfiltered;
         }
 
-        for (Coordinate candidate : unfiltered) {
+        for (Object cObj : unfiltered) {
+            Coordinate candidate = (Coordinate) cObj;
             int[] neighborStates = layer.getLookupManager().getNeighborStates(candidate);
 
             // Count up the number of vacant neighbors.
@@ -124,8 +125,8 @@ public class TriggerProcess extends CellProcess {
      *
      * @param unfiltered
      */
-    private ArrayList<Coordinate> respectVacancyRequirements(Coordinate[] unfiltered) {
-        ArrayList<Coordinate> candidates = new ArrayList<>(unfiltered.length);
+    private ArrayList<Object> respectVacancyRequirements(Coordinate[] unfiltered) {
+        ArrayList<Object> candidates = new ArrayList<>(unfiltered.length);
 
 
         for (Coordinate c : unfiltered) {

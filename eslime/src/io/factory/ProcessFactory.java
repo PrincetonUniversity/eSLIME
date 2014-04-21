@@ -19,7 +19,9 @@
 
 package io.factory;
 
+import com.sun.javafx.image.impl.General;
 import control.GeneralParameters;
+import control.arguments.Argument;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import org.dom4j.Element;
@@ -74,15 +76,16 @@ public class ProcessFactory {
             return new Tick(loader, layerManager, id, p);
 
         } else if (processClass.equalsIgnoreCase("divide-anywhere")) {
-            int maxTargets = getMaxTargets(e);
+            Argument<Integer> maxTargets = getMaxTargets(e, p);
             return new DivideAnywhere(loader, layerManager, id, p, maxTargets);
 
         } else if (processClass.equalsIgnoreCase("active-layer-divide")) {
-            int maxTargets = getMaxTargets(e);
+            Argument<Integer> maxTargets = getMaxTargets(e, p);
             return new ActiveLayerDivide(loader, layerManager, id, p, maxTargets);
 
         } else if (processClass.equalsIgnoreCase("neighbor-swap")) {
-            return new NeighborSwap(loader, layerManager, id, p);
+            Argument<Integer> maxTargets = getMaxTargets(e, p);
+            return new NeighborSwap(loader, layerManager, id, p, maxTargets);
 
         } else if (processClass.equalsIgnoreCase("scatter")) {
             return new Scatter(loader, layerManager, id, p);
@@ -134,14 +137,15 @@ public class ProcessFactory {
         }
     }
 
-    private int getMaxTargets(Element e) {
-        Element maxElem = e.element("max-targets");
-        if (maxElem == null) {
-            return -1;
-        }
-
-        String maxStr = maxElem.getTextTrim();
-        Integer maxTargets = Integer.valueOf(maxStr);
-        return maxTargets;
+    private Argument<Integer> getMaxTargets(Element e, GeneralParameters p) {
+        return IntegerArgumentFactory.instantiate(e, "max-targets", -1, p.getRandom());
+//        Element maxElem = e.element("max-targets");
+//        if (maxElem == null) {
+//            return -1;
+//        }
+//
+//        String maxStr = maxElem.getTextTrim();
+//        Integer maxTargets = Integer.valueOf(maxStr);
+//        return maxTargets;
     }
 }

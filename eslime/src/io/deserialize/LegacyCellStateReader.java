@@ -82,7 +82,13 @@ public class LegacyCellStateReader {
 
             br = new BufferedReader(fr);
 
-            prevLine = br.readLine().trim();
+            String untrimmed = br.readLine();
+
+            if (untrimmed == null) {
+                throw new IOException("Empty data file " + dataFile.getAbsolutePath());
+            }
+
+            prevLine = untrimmed.trim();
 
         } catch (Exception e) {
             throw new RuntimeException(e);

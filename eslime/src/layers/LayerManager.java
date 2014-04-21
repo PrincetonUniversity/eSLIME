@@ -54,7 +54,7 @@ public class LayerManager {
 
         // Build solute layers, if present
         List<Object> slElemObjs = layerRoot.elements("solute-layer");
-        soluteLayers = new HashMap<>();
+        soluteLayers = new HashMap<String, SoluteLayer>();
         for (Object o : slElemObjs) {
             Element e = (Element) o;
             initSoluteLayer(e, factory);
@@ -75,6 +75,7 @@ public class LayerManager {
     private CellLayer buildCellLayer(Element layerRoot, GeometryFactory factory) {
         Element e = layerRoot.element("cell-layer");
         Geometry geometry = factory.make(e);
+        System.err.println(geometry.getCanonicalSites().length);
         CellLayer layer = new CellLayer(geometry, GEOMETRY_ID);
         return layer;
     }

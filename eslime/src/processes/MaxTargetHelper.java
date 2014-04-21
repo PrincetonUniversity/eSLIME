@@ -19,8 +19,6 @@
 
 package processes;
 
-import control.identifiers.Coordinate;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.Random;
@@ -33,7 +31,7 @@ import java.util.Random;
  */
 public abstract class MaxTargetHelper {
 
-    public static Coordinate[] respectMaxTargets(Coordinate[] candidates, int maxTargets, Random random) {
+    public static Object[] respectMaxTargets(Object[] candidates, int maxTargets, Random random) {
         // If maxTargets is < 0, it means that there is no maxTargets; return all.
         if (maxTargets < 0) {
             return candidates;
@@ -46,7 +44,7 @@ public abstract class MaxTargetHelper {
         // Otherwise, permute and choose the first n, where n = maxTargets.
         permute(candidates, random);
 
-        Coordinate[] reduced = Arrays.copyOfRange(candidates, 0, maxTargets);
+        Object[] reduced = Arrays.copyOfRange(candidates, 0, maxTargets);
 
         return reduced;
     }
@@ -55,22 +53,22 @@ public abstract class MaxTargetHelper {
      * Fischer-Yates shuffling algorithm for permuting the contents of
      * a coordinate array.
      */
-    private static void permute(Coordinate[] arr, Random random) {
+    private static void permute(Object[] arr, Random random) {
         for (int i = arr.length - 1; i > 0; i--) {
             int j = random.nextInt(i + 1);
             swap(arr, i, j);
         }
     }
 
-    private static void swap(Coordinate[] arr, int i, int j) {
-        Coordinate temp = arr[j];
+    private static void swap(Object[] arr, int i, int j) {
+        Object temp = arr[j];
         arr[j] = arr[i];
         arr[i] = temp;
     }
 
-    public static Coordinate[] respectMaxTargets(List<Coordinate> candidates, int maxTargets, Random random) {
+    public static Object[] respectMaxTargets(List<Object> candidates, int maxTargets, Random random) {
         // This method is a target for optimization.
-        Coordinate[] candidateArr = candidates.toArray(new Coordinate[0]);
+        Object[] candidateArr = candidates.toArray(new Object[0]);
         return respectMaxTargets(candidateArr, maxTargets, random);
     }
 }

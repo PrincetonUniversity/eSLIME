@@ -21,6 +21,7 @@ package processes.discrete;
 
 import cells.Cell;
 import control.GeneralParameters;
+import control.arguments.Argument;
 import control.halt.HaltCondition;
 import control.halt.LatticeFullEvent;
 import control.identifiers.Coordinate;
@@ -44,11 +45,11 @@ public abstract class BulkDivisionProcess extends CellProcess {
 
     protected Random random;
     private Geometry geom;
-    private int maxTargets;
+    private Argument<Integer> maxTargets;
 
 //    private int debug = 0;
     public BulkDivisionProcess(ProcessLoader loader, LayerManager layerManager, int id,
-                               GeneralParameters p, int maxTargets) {
+                               GeneralParameters p, Argument<Integer> maxTargets) {
         super(loader, layerManager, id, p);
         random = p.getRandom();
         geom = layer.getGeometry();
@@ -56,7 +57,7 @@ public abstract class BulkDivisionProcess extends CellProcess {
     }
 
     protected void execute(StepState state, Coordinate[] candidates) throws HaltCondition {
-        Coordinate[] chosen = MaxTargetHelper.respectMaxTargets(candidates, maxTargets, p.getRandom());
+        Object[] chosen = MaxTargetHelper.respectMaxTargets(candidates, maxTargets.next(), p.getRandom());
         Cell[] chosenCells = toCellArray(chosen);
         for (int i = 0; i < chosenCells.length; i++) {
             Cell cell = chosenCells[i];
@@ -75,11 +76,11 @@ public abstract class BulkDivisionProcess extends CellProcess {
 
     }
 
-    private Cell[] toCellArray(Coordinate[] chosen) {
+    private Cell[] toCellArray(Object[] chosen) {
         int n = chosen.length;
         Cell[] cells = new Cell[n];
         for (int i = 0; i < n; i++) {
-            Coordinate coord = chosen[i];
+            Coordinate coord = (Coordinate) chosen[i];
             Cell cell = layer.getViewer().getCell(coord);
             cells[i] = cell;
         }
