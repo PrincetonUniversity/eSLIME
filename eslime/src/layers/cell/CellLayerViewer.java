@@ -100,4 +100,17 @@ public class CellLayerViewer {
     public Set<Coordinate> getImaginarySites() {
         return content.getImaginarySites();
     }
+
+    /**
+     * Returns 0 for vacant cells; otherwise, returns the cell's state.
+     * @param coord
+     * @return
+     */
+    public int getState(Coordinate coord) {
+        if (!isOccupied(coord)) {
+            return 0;
+        }
+
+        return getCell(coord).getState();
+    }
 }

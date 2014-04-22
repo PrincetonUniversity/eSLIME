@@ -123,4 +123,11 @@ public class CellLayerViewerTest extends EslimeTestCase {
         assertFalse(query.isDivisible(c2));
     }
 
+    public void getStateVacant() {
+        fail("Not yet implemented");
+    }
+
+    public void getStateNonVacant() {
+        fail("Not yet implemented");
+    }
 }
