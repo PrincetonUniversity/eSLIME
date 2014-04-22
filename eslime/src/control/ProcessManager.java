@@ -96,8 +96,7 @@ public class ProcessManager {
         }
     }
 
-    public StepState doTriggeredProcesses(int n, double startTime) throws HaltCondition {
-        StepState stepState = new StepState(startTime);
+    public StepState doTriggeredProcesses(int n, StepState stepState) throws HaltCondition {
 
         // Pass the step state object to the layer manager. This way, both actions
         // and processes can access it.

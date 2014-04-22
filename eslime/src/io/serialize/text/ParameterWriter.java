@@ -73,8 +73,12 @@ public class ParameterWriter extends Serializer {
     }
 
     @Override
-    public void step(StepState stepState, int frame) {
-        // Doesn't do anything.
+    public void cycleStart(StepState stepState, int frame) {
+
+    }
+
+    @Override
+    public void cycleEnd(StepState stepState, int frame) {
 
     }
 

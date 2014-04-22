@@ -134,7 +134,8 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
         /* Initialize output and push first state */
         for (Serializer serializer : serializers) {
             serializer.init(layerManager);
-            serializer.step(stepState, 2);
+            serializer.cycleStart(stepState, 2);
+            serializer.cycleEnd(stepState, 2);
         }
 
         /* Set up second state */
@@ -147,7 +148,8 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
 
         /* Push second state and close fixture */
         for (Serializer serializer : serializers) {
-            serializer.step(stepState, 6);
+            serializer.cycleStart(stepState, 6);
+            serializer.cycleEnd(stepState, 6);
             serializer.dispatchHalt(null);
         }
     }

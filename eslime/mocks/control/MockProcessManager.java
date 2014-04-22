@@ -38,9 +38,8 @@ public class MockProcessManager extends ProcessManager {
     }
 
     @Override
-    public StepState doTriggeredProcesses(int n, double startTime) throws HaltCondition {
+    public StepState doTriggeredProcesses(int n, StepState stepState) throws HaltCondition {
         timesIterated++;
-        StepState stepState = new StepState(startTime);
         stepState.advanceClock(stepStateDt);
         return stepState;
     }

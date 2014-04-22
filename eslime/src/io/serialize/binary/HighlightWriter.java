@@ -63,13 +63,18 @@ public class HighlightWriter extends Serializer {
     }
 
     @Override
-    public void step(StepState stepState, int frame) {
+    public void cycleEnd(StepState stepState, int frame) {
         for (int channel : channels) {
             DataOutputStream stream = streamMap.get(channel);
             List<Coordinate> vector = Arrays.asList(stepState.getHighlights(channel));
 
             PrimitiveSerializer.writeCoercedCoordinateVector(stream, vector, geometry);
         }
+    }
+
+    @Override
+    public void cycleStart(StepState stepState, int frame) {
+
     }
 
     @Override

@@ -55,7 +55,7 @@ public class FrequencyWriter extends Serializer {
     public FrequencyWriter(GeneralParameters p) {
         super(p);
 
-        histo = new HashMap<Integer, HashMap<Integer, Integer>>();
+        histo = new HashMap<>();
     }
 
     @Override
@@ -67,7 +67,7 @@ public class FrequencyWriter extends Serializer {
     }
 
     @Override
-    public void step(StepState stepState, int frame) {
+    public void cycleStart(StepState stepState, int frame) {
         CellLayer layer = layerManager.getCellLayer();
         if (p.isFrame(frame)) {
             frames.add(frame);
@@ -84,6 +84,11 @@ public class FrequencyWriter extends Serializer {
                 observedStates.add(state);
             }
         }
+    }
+
+    @Override
+    public void cycleEnd(StepState stepState, int frame) {
+
     }
 
     public void dispatchHalt(HaltCondition ex) {

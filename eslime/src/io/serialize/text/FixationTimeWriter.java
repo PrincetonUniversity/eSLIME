@@ -47,7 +47,12 @@ public class FixationTimeWriter extends Serializer {
     }
 
     @Override
-    public void step(StepState stepState, int frame) {
+    public void cycleStart(StepState stepState, int frame) {
+
+    }
+
+    @Override
+    public void cycleEnd(StepState stepState, int frame) {
 
     }
 

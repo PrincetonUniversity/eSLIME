@@ -43,7 +43,13 @@ public class MockSerializationManager extends SerializationManager {
     }
 
     @Override
-    public void step(StepState stepState, int frame) {
+    public void cycleStart(StepState stepState, int frame) {
+        this.frame = frame;
+        this.stepState = stepState;
+    }
+
+    @Override
+    public void cycleEnd(StepState stepState, int frame) {
         this.frame = frame;
         this.stepState = stepState;
     }

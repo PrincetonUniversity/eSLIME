@@ -63,12 +63,14 @@ public class SerializationManager {
         }
     }
 
-    /**
-     * Advance current instance by one time step.
-     */
-    public void step(StepState stepState, int frame) {
+    public void cycleStart(StepState stepState, int frame) {
         for (Serializer tw : writers) {
-            tw.step(stepState, frame);
+            tw.cycleStart(stepState, frame);
+        }
+    }
+    public void cycleEnd(StepState stepState, int frame) {
+        for (Serializer tw : writers) {
+            tw.cycleEnd(stepState, frame);
         }
     }
 

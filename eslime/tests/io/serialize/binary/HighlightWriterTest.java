@@ -54,7 +54,8 @@ public class HighlightWriterTest extends EslimeLatticeTestCase {
         MockStepState stepState = new MockStepState(0.1);
         stepState.setHighlights(0, new Coordinate[]{x, y});
         stepState.setHighlights(7, new Coordinate[]{origin});
-        query.step(stepState, 2);
+        query.cycleStart(stepState, 2);
+        query.cycleEnd(stepState, 2);
         query.dispatchHalt(null);
     }
 

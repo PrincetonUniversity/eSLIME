@@ -50,17 +50,17 @@ public class Integrator {
      * @return
      */
     public HaltCondition go() {
-
+        StepState state = new StepState(time);
         for (int n = 0; n < p.T(); n++) {
-            StepState state;
+            serializationManager.cycleStart(state, n);
             try {
-                state = processManager.doTriggeredProcesses(n, time);
+                state = processManager.doTriggeredProcesses(n, state);
             } catch (HaltCondition haltCondition) {
                 return haltCondition;
             }
 
             // Send the results to the serialization manager.
-            serializationManager.step(state, n);
+            serializationManager.cycleEnd(state, n);
             time = state.getTime();
         }
 
