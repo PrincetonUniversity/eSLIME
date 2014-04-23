@@ -154,9 +154,9 @@ public class TriggerProcess extends CellProcess {
 
     @Override
     public void fire(StepState state) throws HaltCondition {
-        System.out.println("Executing Trigger. " + targets.length);
+//        System.out.println("Executing Trigger. " + targets.length);
         for (Cell target : targets) {
-            System.out.println("   Triggering behavior '" + behaviorName + "' in cell of type" + target.getState());
+//            System.out.println("   Triggering behavior '" + behaviorName + "' in cell of type" + target.getState());
             // A null caller on the trigger method means that the caller is
             // a process rather than a cell.
             target.trigger(behaviorName, null);

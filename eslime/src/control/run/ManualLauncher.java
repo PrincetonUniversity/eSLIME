@@ -29,9 +29,12 @@ package control.run;
 public class ManualLauncher {
 
     public static void main(String[] args) {
-        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/instigator_vs_pacifist.xml";
-//        String path = "/Users/dbborens/IdeaProjects/eSLIME/eslime/eslime/projects/neutral.xml";
-//        String path = "D:/Users/David B Borenstein/IdeaProjects/jeSLIME/eslime/projects/neutral.xml";
+        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/pacifist_vs_pacifist.xml";
+//          String path = "/Users/dbborens/IdeaProjects/t6ss/xml/instigator_vs_pacifist.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/instigator_vs_instigator.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/retaliator_vs_retaliator.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/retaliator_vs_pacifist.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/instigator_vs_retaliator.xml";
         Runner runner = new Runner(path);
         runner.run();
 
