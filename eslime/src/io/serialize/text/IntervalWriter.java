@@ -59,18 +59,13 @@ public class IntervalWriter extends Serializer {
     }
 
     @Override
-    public void cycleEnd(StepState stepState, int frame) {
+    public void record(StepState stepState) {
         Long interval = System.currentTimeMillis() - prevTime;
-        if (p.isFrame(frame)) {
-            interval(frame, stepState.getTime(), interval);
+        if (p.isFrame(stepState.getFrame())) {
+            interval(stepState.getFrame(), stepState.getTime(), interval);
         }
 
         prevTime = System.currentTimeMillis();
-    }
-
-    @Override
-    public void cycleStart(StepState stepState, int frame) {
-
     }
 
     @Override

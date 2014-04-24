@@ -71,25 +71,12 @@ public abstract class Serializer {
     public abstract void close();
 
     /**
-     * Step to the next frame of the current instance.
-     */
-//    public abstract void step(StepState stepState, int frame);
-
-    /**
-     * Perform any serialization actions that should occur at the start at the
-     * beginning of an integration cycle.
+     * Record the state of the simulation.
+     *
      * @param stepState
-     * @param frame
      */
-    public abstract void cycleStart(StepState stepState, int frame);
+    public abstract void record(StepState stepState);
 
-    /**
-     * Perform any serialization actions that should occur at the start at the
-     * end of an integration cycle.
-     * @param stepState
-     * @param frame
-     */
-    public abstract void cycleEnd(StepState stepState, int frame);
 
     protected void mkDir(String pathStr, boolean recursive) {
         File path = new File(pathStr);

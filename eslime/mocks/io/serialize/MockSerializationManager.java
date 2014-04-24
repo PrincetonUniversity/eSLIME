@@ -28,7 +28,6 @@ import processes.StepState;
 public class MockSerializationManager extends SerializationManager {
 
     private StepState stepState;
-    private int frame;
 
     public MockSerializationManager() {
         super(new BaseElement("dummy"), null, null);
@@ -38,19 +37,9 @@ public class MockSerializationManager extends SerializationManager {
         return stepState;
     }
 
-    public int getFrame() {
-        return frame;
-    }
-
     @Override
-    public void cycleStart(StepState stepState, int frame) {
-        this.frame = frame;
+    public void record(StepState stepState) {
         this.stepState = stepState;
     }
 
-    @Override
-    public void cycleEnd(StepState stepState, int frame) {
-        this.frame = frame;
-        this.stepState = stepState;
-    }
 }

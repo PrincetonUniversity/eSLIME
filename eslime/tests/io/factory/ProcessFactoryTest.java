@@ -107,6 +107,18 @@ public class ProcessFactoryTest extends TestCase {
         doTest("exponential-inverse", ExponentialInverse.class);
     }
 
+    public void testCheckForFixation() {
+        doTest("check-for-fixation", CheckForFixation.class);
+    }
+
+    public void testCheckForExtinction() {
+        doTest("check-for-extinction", CheckForExtinction.class);
+    }
+
+    public void testForRecord() {
+        doTest("record", Record.class);
+    }
+
     public void testTick() {
         Element child = new BaseElement("dt");
         child.setText("1");

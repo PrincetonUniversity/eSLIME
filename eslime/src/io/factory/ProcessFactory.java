@@ -129,6 +129,9 @@ public class ProcessFactory {
         } else if (processClass.equalsIgnoreCase("check-for-extinction")) {
             return new CheckForExtinction(loader, layerManager, id, p);
 
+        } else if (processClass.equalsIgnoreCase("record")) {
+            return new Record(loader, layerManager, id, p);
+
         } else {
             String msg = "Unrecognized process '" +
                     processClass + "' (id=" + id + ").";

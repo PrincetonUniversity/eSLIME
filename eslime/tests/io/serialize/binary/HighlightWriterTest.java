@@ -51,11 +51,10 @@ public class HighlightWriterTest extends EslimeLatticeTestCase {
         MockGeneralParameters p = makeMockGeneralParameters();
         HighlightWriter query = new HighlightWriter(p, channels);
         query.init(layerManager);
-        MockStepState stepState = new MockStepState(0.1);
+        MockStepState stepState = new MockStepState(0.1, 2, null);
         stepState.setHighlights(0, new Coordinate[]{x, y});
         stepState.setHighlights(7, new Coordinate[]{origin});
-        query.cycleStart(stepState, 2);
-        query.cycleEnd(stepState, 2);
+        query.record(stepState);
         query.dispatchHalt(null);
     }
 

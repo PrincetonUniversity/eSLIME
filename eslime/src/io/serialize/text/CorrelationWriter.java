@@ -22,6 +22,7 @@
 package io.serialize.text;
 
 import control.GeneralParameters;
+import control.arguments.Argument;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
@@ -29,6 +30,7 @@ import io.serialize.Serializer;
 import layers.LayerManager;
 import layers.cell.CellLayer;
 import processes.StepState;
+import structural.utilities.EpsilonUtil;
 
 import java.io.BufferedWriter;
 import java.util.HashMap;
@@ -58,16 +60,16 @@ public class CorrelationWriter extends Serializer {
     /**
      *
      * @param p
-     * @param triggerTime The minimum time at which the RDF should be run.
+     * @param triggerTimeArg The minimum time at which the RDF should be run.
      *                    Once it is run, it will not be run a second time
      *                    for the same simulation. Multiple RDF serializers
      *                    can be included for the same model!
      */
-    public CorrelationWriter(GeneralParameters p, String filename, double triggerTime) {
+    public CorrelationWriter(GeneralParameters p, String filename, Argument<Double> triggerTimeArg) {
         super(p);
         identity = new HashMap<>();
         observations = new HashMap<>();
-        this.triggerTime = triggerTime;
+        this.triggerTime = triggerTimeArg.next();
         this.filename = filename;
     }
 
@@ -135,7 +137,7 @@ public class CorrelationWriter extends Serializer {
     }
 
     @Override
-    public void cycleStart(StepState stepState, int frame) {
+    public void record(StepState stepState) {
         // Has the analysis fired yet? If so, return.
         if (fired) {
             return;
@@ -189,7 +191,20 @@ public class CorrelationWriter extends Serializer {
     }
 
     @Override
-    public void cycleEnd(StepState stepState, int frame) {
-        // Doesn't do anything.
+    public boolean equals(Object obj) {
+        if (!(obj instanceof CorrelationWriter)) {
+            return false;
+        }
+
+        CorrelationWriter other = (CorrelationWriter) obj;
+        if (!EpsilonUtil.epsilonEquals(triggerTime, other.triggerTime)) {
+            return false;
+        }
+
+        if (!filename.equals(other.filename)) {
+            return false;
+        }
+
+        return true;
     }
 }

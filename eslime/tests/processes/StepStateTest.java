@@ -22,6 +22,7 @@
 package processes;
 
 import control.identifiers.Coordinate;
+import io.serialize.MockSerializationManager;
 import test.EslimeLatticeTestCase;
 
 /**
@@ -30,11 +31,12 @@ import test.EslimeLatticeTestCase;
 public class StepStateTest extends EslimeLatticeTestCase {
 
     private StepState query;
-
+    private MockSerializationManager serializationManager;
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        query = new StepState(1.2);
+        serializationManager = new MockSerializationManager();
+        query = new StepState(1.2, 1, serializationManager);
     }
 
     public void testHighlight() throws Exception {
@@ -63,5 +65,13 @@ public class StepStateTest extends EslimeLatticeTestCase {
         assertEquals(1.2, query.getTime(), epsilon);
         query.advanceClock(0.1);
         assertEquals(1.3, query.getTime(), epsilon);
+    }
+
+    public void testGetState() throws Exception {
+        fail("Not yet implemented");
+    }
+
+    public void testRecord() throws Exception {
+        fail("Not yet implemented");
     }
 }

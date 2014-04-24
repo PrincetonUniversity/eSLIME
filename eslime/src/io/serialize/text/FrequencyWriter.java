@@ -67,14 +67,14 @@ public class FrequencyWriter extends Serializer {
     }
 
     @Override
-    public void cycleStart(StepState stepState, int frame) {
+    public void record(StepState stepState) {
         CellLayer layer = layerManager.getCellLayer();
-        if (p.isFrame(frame)) {
-            frames.add(frame);
+        if (p.isFrame(stepState.getFrame())) {
+            frames.add(stepState.getFrame());
 
             // Create a bucket for this frame.
             HashMap<Integer, Integer> observations = new HashMap<Integer, Integer>();
-            histo.put(frame, observations);
+            histo.put(stepState.getFrame(), observations);
 
             // Iterate over all observed states for this frame.
             StateMapViewer smv = layer.getViewer().getStateMapViewer();
@@ -84,11 +84,6 @@ public class FrequencyWriter extends Serializer {
                 observedStates.add(state);
             }
         }
-    }
-
-    @Override
-    public void cycleEnd(StepState stepState, int frame) {
-
     }
 
     public void dispatchHalt(HaltCondition ex) {

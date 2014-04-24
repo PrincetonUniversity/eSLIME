@@ -102,28 +102,23 @@ public class ContinuumStateWriter extends Serializer {
         extrema = new Extrema();
     }
 
-    public void cycleStart(StepState stepState, int frame) {
+    public void record(StepState stepState) {
         try {
             // Write opening parity sequence
             writeStartParitySequence();
 
             // Write entry header
             dataStream.writeDouble(stepState.getTime());
-            dataStream.writeInt(frame);
+            dataStream.writeInt(stepState.getFrame());
 
             // Process state vector
-            processData(frame);
+            processData(stepState.getFrame());
 
             // Write closing parity sequence
             writeEndParitySequence();
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
-    }
-
-    @Override
-    public void cycleEnd(StepState stepState, int frame) {
-
     }
 
     /**

@@ -75,12 +75,7 @@ public class CoordinateIndexer extends Serializer {
     }
 
     @Override
-    public void cycleStart(StepState stepState, int frame) {
-
-    }
-
-    @Override
-    public void cycleEnd(StepState stepState, int frame) {
+    public void record(StepState stepState) {
 
     }
 

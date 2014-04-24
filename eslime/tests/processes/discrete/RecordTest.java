@@ -19,10 +19,16 @@
  * /
  */
 
-package io.serialize.interactive;
+package processes.discrete;
+
+import junit.framework.TestCase;
+import test.EslimeLatticeTestCase;
 
 /**
- * Created by dbborens on 4/1/14.
+ * Created by dbborens on 4/24/14.
  */
-public class VisualizationReporter {
+public class RecordTest extends EslimeLatticeTestCase {
+    public void testLifeCycle() {
+        fail("Not yet implemented");
+    }
 }

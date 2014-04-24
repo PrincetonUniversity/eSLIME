@@ -20,6 +20,7 @@
 package io.factory;
 
 import control.GeneralParameters;
+import control.arguments.Argument;
 import io.serialize.Serializer;
 import io.serialize.binary.ContinuumStateWriter;
 import io.serialize.binary.HighlightWriter;
@@ -78,11 +79,18 @@ public abstract class SerializationFactory {
         } else if (writerClass.equalsIgnoreCase("visualization-serializer")) {
             VisualizationSerializer vs = visualizationSerializer(e, p);
             return vs;
+        } else if (writerClass.equalsIgnoreCase("correlation-writer")) {
+            return correlationWriter(e, p);
         } else {
             throw new IllegalArgumentException("Unrecognized serialization '" + writerClass + "'");
         }
     }
 
+    private static CorrelationWriter correlationWriter(Element e, GeneralParameters p) {
+        Argument<Double> triggerTimeArg = DoubleArgumentFactory.instantiate(e, "trigger-time", 0.0, p.getRandom());
+        String filename = XmlUtil.getString(e, "filename", "correlation.txt");
+        return new CorrelationWriter(p, filename, triggerTimeArg);
+    }
     private static VisualizationSerializer visualizationSerializer(Element e,
                                                                    GeneralParameters p) {
 

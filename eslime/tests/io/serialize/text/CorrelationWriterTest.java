@@ -22,6 +22,7 @@
 package io.serialize.text;
 
 import cells.MockCell;
+import control.arguments.ConstantDouble;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
 import geometry.boundaries.Arena;
@@ -32,6 +33,7 @@ import geometry.shape.Rectangle;
 import geometry.shape.Shape;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
+import processes.MockStepState;
 import processes.StepState;
 import structural.MockGeneralParameters;
 import test.EslimeTestCase;
@@ -99,11 +101,10 @@ public class CorrelationWriterTest extends EslimeTestCase {
     public void testTrivialCase() throws Exception {
         String filename = "TrivialCorrelation.txt";
         MockGeneralParameters p = makeMockGeneralParameters();
-        CorrelationWriter query = new CorrelationWriter(p, filename, 1.0);
+        CorrelationWriter query = new CorrelationWriter(p, filename, new ConstantDouble(1.0));
         query.init(layerManager);
-        StepState state = new StepState(2.0);
-        query.cycleStart(state, 1);
-        query.cycleEnd(state, 1);
+        StepState state = new StepState(2.0, 1, null);
+        query.record(state);
         query.dispatchHalt(null);
         query.close();
         assertFilesEqual(filename);
@@ -112,12 +113,11 @@ public class CorrelationWriterTest extends EslimeTestCase {
     public void testCheckerboardCase() throws Exception {
         String filename = "CheckerboardCorrelation.txt";
         MockGeneralParameters p = makeMockGeneralParameters();
-        CorrelationWriter query = new CorrelationWriter(p, filename, 1.0);
+        CorrelationWriter query = new CorrelationWriter(p, filename, new ConstantDouble(1.0));
         loadCheckerboard();
         query.init(layerManager);
-        StepState state = new StepState(2.0);
-        query.cycleStart(state, 1);
-        query.cycleEnd(state, 1);
+        StepState state = new StepState(2.0, 1, null);
+        query.record(state);
         query.dispatchHalt(null);
         query.close();
         assertFilesEqual(filename);
@@ -135,12 +135,11 @@ public class CorrelationWriterTest extends EslimeTestCase {
         // at longer lengths and exactly right at shorter states.
         String filename = "ThreeStateCorrelation.txt";
         MockGeneralParameters p = makeMockGeneralParameters();
-        CorrelationWriter query = new CorrelationWriter(p, filename, 1.0);
+        CorrelationWriter query = new CorrelationWriter(p, filename, new ConstantDouble(1.0));
         loadThreeState();
         query.init(layerManager);
-        StepState state = new StepState(2.0);
-        query.cycleStart(state, 1);
-        query.cycleEnd(state, 1);
+        StepState state = new StepState(2.0, 1, null);
+        query.record(state);
         query.dispatchHalt(null);
         query.close();
         assertFilesEqual(filename);
@@ -158,16 +157,14 @@ public class CorrelationWriterTest extends EslimeTestCase {
     public void testAggregation() throws Exception {
         String filename = "AggregateCorrelation.txt";
         MockGeneralParameters p = makeMockGeneralParameters();
-        CorrelationWriter query = new CorrelationWriter(p, filename, 1.0);
+        CorrelationWriter query = new CorrelationWriter(p, filename, new ConstantDouble(1.0));
         query.init(layerManager);
-        StepState state = new StepState(2.0);
-        query.cycleStart(state, 1);
-        query.cycleEnd(state, 1);
+        StepState state = new StepState(2.0, 1, null);
+        query.record(state);
         query.dispatchHalt(null);
         loadCheckerboard();
         query.init(layerManager);
-        query.cycleStart(state, 1);
-        query.cycleEnd(state, 1);
+        query.record(state);
         query.dispatchHalt(null);
         query.close();
         assertFilesEqual(filename);

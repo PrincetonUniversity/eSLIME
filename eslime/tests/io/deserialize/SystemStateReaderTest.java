@@ -129,27 +129,26 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
 
         Coordinate[] highlights = new Coordinate[]{x};
 
-        MockStepState stepState = new MockStepState(1.7);
+        MockStepState stepState = new MockStepState(1.7, 2, null);
         stepState.setHighlights(0, highlights);
         /* Initialize output and push first state */
         for (Serializer serializer : serializers) {
             serializer.init(layerManager);
-            serializer.cycleStart(stepState, 2);
-            serializer.cycleEnd(stepState, 2);
+            serializer.record(stepState);
+            serializer.record(stepState);
         }
 
         /* Set up second state */
         layer.getUpdateManager().banish(x);
         highlights = new Coordinate[]{y};
-        stepState = new MockStepState(4.8);
+        stepState = new MockStepState(4.8, 6, null);
         stepState.setHighlights(0, highlights);
 
         pushState(layer0, new double[]{0.1, 0.2, 0.3, 0.4, 0.5});
 
         /* Push second state and close fixture */
         for (Serializer serializer : serializers) {
-            serializer.cycleStart(stepState, 6);
-            serializer.cycleEnd(stepState, 6);
+            serializer.record(stepState);
             serializer.dispatchHalt(null);
         }
     }

@@ -63,17 +63,12 @@ public class SerializationManager {
         }
     }
 
-    public void cycleStart(StepState stepState, int frame) {
+    public void record(StepState stepState) {
         for (Serializer tw : writers) {
-            tw.cycleStart(stepState, frame);
+            tw.record(stepState);
         }
-    }
-    public void cycleEnd(StepState stepState, int frame) {
-        for (Serializer tw : writers) {
-            tw.cycleEnd(stepState, frame);
-        }
-    }
 
+    }
     /**
      * Conclude the entire simulation project.
      */

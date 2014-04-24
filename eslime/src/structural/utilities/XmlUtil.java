@@ -110,4 +110,13 @@ public abstract class XmlUtil {
 
         return ret;
     }
+
+    public static String getString(Element e, String elemName, String defaultString) {
+        Element stringElem = e.element(elemName);
+        if (stringElem == null) {
+            return defaultString;
+        }
+
+        return stringElem.getTextTrim();
+    }
 }

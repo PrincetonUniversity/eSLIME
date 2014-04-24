@@ -116,7 +116,7 @@ public class ProcessManagerTest extends TestCase {
 
     public void testDoTriggeredProcesses() throws Exception {
         // Execute doTriggeredProcesses.
-        query.doTriggeredProcesses(CURRENT_N, new StepState(CURRENT_TIME));
+        query.doTriggeredProcesses(new StepState(CURRENT_TIME, CURRENT_N, null));
 
         // Verify that only the triggered process actually took place.
         assertEquals(0, no.getTimesFired());
@@ -124,8 +124,8 @@ public class ProcessManagerTest extends TestCase {
     }
 
     public void testStepStateRenewal() throws Exception {
-        StepState first = query.doTriggeredProcesses(0, new StepState(0.0));
-        StepState second = query.doTriggeredProcesses(0, new StepState(0.0));
+        StepState first = query.doTriggeredProcesses(new StepState(0.0, 0, null));
+        StepState second = query.doTriggeredProcesses(new StepState(0.0, 0, null));
 
         // First and second should be distinct objects (reference inequality)
         assertFalse(first == second);

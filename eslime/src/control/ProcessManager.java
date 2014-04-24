@@ -96,14 +96,14 @@ public class ProcessManager {
         }
     }
 
-    public StepState doTriggeredProcesses(int n, StepState stepState) throws HaltCondition {
+    public StepState doTriggeredProcesses(StepState stepState) throws HaltCondition {
 
         // Pass the step state object to the layer manager. This way, both actions
         // and processes can access it.
         layerManager.setStepState(stepState);
 
         // Get triggered events.
-        Process[] triggeredProcesses = getTriggeredProcesses(n);
+        Process[] triggeredProcesses = getTriggeredProcesses(stepState.getFrame());
 
         // Fire each triggered cell event.
         for (Process process : triggeredProcesses) {

@@ -22,6 +22,7 @@
 package processes;
 
 import control.identifiers.Coordinate;
+import io.serialize.SerializationManager;
 
 import java.util.HashMap;
 
@@ -34,11 +35,15 @@ public class MockStepState extends StepState {
     }
 
     public MockStepState(double startTime) {
-        super(startTime);
-        highlightMap = new HashMap<>();
+        this(startTime, 0, null);
     }
 
     private HashMap<Integer, Coordinate[]> highlightMap;
+
+    public MockStepState(double startTime, int frame, SerializationManager serializationManager) {
+        super(startTime, frame, serializationManager);
+        highlightMap = new HashMap<>();
+    }
 
     @Override
     public Coordinate[] getHighlights(Integer channel) {

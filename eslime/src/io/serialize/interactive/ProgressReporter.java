@@ -46,15 +46,10 @@ public class ProgressReporter extends Serializer {
     }
 
     @Override
-    public void cycleStart(StepState stepState, int frame) {
-        if (p.isFrame(frame)) {
-            System.out.println("   Frame " + frame + ".");
-        }
-    }
-
-    @Override
-    public void cycleEnd(StepState stepState, int frame) {
-
+    public void record(StepState stepState) {
+//        if (p.isFrame(stepState.getFrame())) {
+            System.out.println("   Frame " + stepState.getFrame() + ".");
+//        }
     }
 
     @Override

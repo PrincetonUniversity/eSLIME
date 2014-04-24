@@ -42,7 +42,6 @@ public class ParameterWriter extends Serializer {
             File paramsFile = new File(paramsFileStr);
             FileWriter fw = new FileWriter(paramsFile);
             BufferedWriter bwp = new BufferedWriter(fw);
-            System.out.println("p xml is null? " + (p.getProjectXML() == null));
 
             bwp.write(p.getProjectXML());
             bwp.close();
@@ -73,12 +72,7 @@ public class ParameterWriter extends Serializer {
     }
 
     @Override
-    public void cycleStart(StepState stepState, int frame) {
-
-    }
-
-    @Override
-    public void cycleEnd(StepState stepState, int frame) {
+    public void record(StepState stepState) {
 
     }
 

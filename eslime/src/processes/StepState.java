@@ -20,6 +20,7 @@
 package processes;
 
 import control.identifiers.Coordinate;
+import io.serialize.SerializationManager;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -40,11 +41,15 @@ public class StepState {
     private HashMap<Integer, Set<Coordinate>> highlights;
     private double dt;
     private double startTime;
+    private int frame;
+    private SerializationManager serializationManager;
 
-    public StepState(double startTime) {
+    public StepState(double startTime, int frame, SerializationManager serializationManager) {
         highlights = new HashMap<>();
         dt = 0;
         this.startTime = startTime;
+        this.serializationManager = serializationManager;
+        this.frame = frame;
     }
 
     public void highlight(Coordinate c, Integer channel) {
@@ -73,7 +78,15 @@ public class StepState {
         return set.toArray(new Coordinate[set.size()]);
     }
 
+    public void record() {
+        serializationManager.record(this);
+    }
+
     public double getTime() {
         return startTime + dt;
+    }
+
+    public int getFrame() {
+        return frame;
     }
 }

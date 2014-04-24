@@ -115,22 +115,18 @@ public class LegacyCellStateWriter extends Serializer {
     }
 
 
-    @Override
-    public void cycleEnd(StepState stepState, int frame) {
-
-    }
-
     /**
      * Appends a state to the file.
      */
-    public void cycleStart(StepState stepState, int frame) {
+    @Override
+    public void record(StepState stepState) {
         CellLayer layer = layerManager.getCellLayer();
         int[] s = layer.getViewer().getStateVector();
         double[] f = layer.getViewer().getFitnessVector();
 
 //        if (p.isFrame(frame)) {
-            writeDoubleArray(f, ef, stepState.getTime(), frame, "fitness");
-            writeIntegerArray(s, stepState.getTime(), frame, "state");
+            writeDoubleArray(f, ef, stepState.getTime(), stepState.getFrame(), "fitness");
+            writeIntegerArray(s, stepState.getTime(), stepState.getFrame(), "state");
 
 //            int[] h = coordToInt(highlights);
 //            writeIntegerArray(h, gillespie, frame, "highlight");
