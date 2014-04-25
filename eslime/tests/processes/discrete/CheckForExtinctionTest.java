@@ -42,7 +42,7 @@ public class CheckForExtinctionTest extends TestCase {
         geometry = new MockGeometry();
         geometry.setCanonicalSites(cc);
 
-        layer = new CellLayer(geometry, 0);
+        layer = new CellLayer(geometry);
         layerManager = new MockLayerManager();
         layerManager.setCellLayer(layer);
         query = new CheckForExtinction(null, layerManager, 0, null);

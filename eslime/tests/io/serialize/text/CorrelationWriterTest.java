@@ -57,7 +57,7 @@ public class CorrelationWriterTest extends EslimeTestCase {
         Boundary boundary = new Arena(shape, lattice);
         geom = new Geometry(lattice, shape, boundary);
 
-        layer = new CellLayer(geom, 0);
+        layer = new CellLayer(geom);
         layerManager = new MockLayerManager();
         layerManager.setCellLayer(layer);
 

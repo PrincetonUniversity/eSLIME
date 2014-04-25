@@ -42,7 +42,7 @@ public class CallbackManagerTest extends TestCase {
         c = new Coordinate(0, 0, 0);
         Coordinate[] cc = new Coordinate[]{c};
         geom.setCanonicalSites(cc);
-        layer = new CellLayer(geom, 0);
+        layer = new CellLayer(geom);
         MockLayerManager layerManager = new MockLayerManager();
         layerManager.setCellLayer(layer);
 

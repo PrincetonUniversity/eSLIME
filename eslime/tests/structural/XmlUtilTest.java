@@ -76,11 +76,21 @@ public class XmlUtilTest extends EslimeTestCase {
         doIntegerTest(testRoot, "positive", 2);
     }
 
-    public void getIntArrayEmpty() throws Exception {
+    public void testGetStringDefault() throws Exception {
+        fail("Not yet implemented");
+
+    }
+
+    public void testGetStringNoDefault() throws Exception {
+        fail("Not yet implemented");
+
+    }
+
+    public void testGetIntEmptyArray() throws Exception {
         fail("Should verify that a null element returns an empty int[] array");
     }
 
-    public void getIntArray() throws Exception {
+    public void testGetIntArray() throws Exception {
         fail("Should verify that only elements of the appropriate node name get cast as ints");
     }
 }

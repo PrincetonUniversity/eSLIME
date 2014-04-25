@@ -41,26 +41,36 @@ public class TriggerProcess extends CellProcess {
     private String behaviorName;
     private boolean skipVacant;
     private boolean requireNeighbors;
+//    private boolean recordAfterTargeting;
     private int maxTargets;
 
     // We use a cell array because triggering may also move cells
     private Cell[] targets;
 
-    public TriggerProcess(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
-        super(loader, layerManager, id, p);
-        behaviorName = get("behavior");
-        Element e = loader.getProcess(id);
-        skipVacant = XmlUtil.getBoolean(e, "skip-vacant-sites");
-        maxTargets = XmlUtil.getInteger(e, "max-targets", -1);
-        requireNeighbors = XmlUtil.getBoolean(e, "require-neighbors");
-    }
+//    public TriggerProcess(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
+//        super(loader, layerManager, id, p);
+//        behaviorName = get("behavior");
+//        Element e = loader.getProcess(id);
+//        skipVacant = XmlUtil.getBoolean(e, "skip-vacant-sites");
+//        maxTargets = XmlUtil.getInteger(e, "max-targets", -1);
+//        requireNeighbors = XmlUtil.getBoolean(e, "require-neighbors");
+//    }
 
-    public TriggerProcess(LayerManager layerManager, String behaviorName, GeneralParameters p, boolean skipVacant, boolean requireNeighbors, int maxTargets) {
-        super(null, layerManager, 0, p);
+    public TriggerProcess(LayerManager layerManager,
+                          int id,
+                          String behaviorName,
+                          GeneralParameters p,
+                          boolean skipVacant,
+                          boolean requireNeighbors,
+                          int maxTargets) {
+//                          int maxTargets,
+//                          boolean recordAfterTargeting) {
+        super(null, layerManager, id, p);
         this.behaviorName = behaviorName;
         this.skipVacant = skipVacant;
         this.maxTargets = maxTargets;
         this.requireNeighbors = requireNeighbors;
+//        this.recordAfterTargeting = recordAfterTargeting;
     }
 
     @Override
@@ -71,6 +81,7 @@ public class TriggerProcess extends CellProcess {
         if (gs != null) {
             gs.add(getID(), 1, 1D);
         }
+
     }
 
     private Cell[] resolveTargets() {

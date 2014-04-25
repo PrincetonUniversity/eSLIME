@@ -25,11 +25,28 @@ import cells.Cell;
 import control.identifiers.Coordinate;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by David B Borenstein on 4/11/14.
  */
 public class CanonicalCellMap extends HashMap<Coordinate, Cell> {
+    public CanonicalCellMap(int initialCapacity, float loadFactor) {
+        super(initialCapacity, loadFactor);
+    }
+
+    public CanonicalCellMap(int initialCapacity) {
+        super(initialCapacity);
+    }
+
+    public CanonicalCellMap() {
+        super();
+    }
+
+    public CanonicalCellMap(Map<? extends Coordinate, ? extends Cell> m) {
+        super(m);
+    }
+
     @Override
     public boolean containsKey(Object key) {
         Coordinate canonical = objToCanonicalCoord(key);

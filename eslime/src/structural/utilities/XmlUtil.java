@@ -119,4 +119,14 @@ public abstract class XmlUtil {
 
         return stringElem.getTextTrim();
     }
+
+    public static String getString(Element e, String elemName) {
+        Element stringElem = e.element(elemName);
+        if (stringElem == null) {
+            throw new IllegalArgumentException("Expected string element '" +
+                    elemName + "' for parent element " + e.getName());
+        }
+
+        return stringElem.getTextTrim();
+    }
 }

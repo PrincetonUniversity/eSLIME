@@ -47,7 +47,7 @@ public class VisualizationSerializerTest extends EslimeTestCase {
         super.setUp();
         MockLayerManager lm = new MockLayerManager();
         MockGeometry geom = buildMockGeometry();
-        CellLayer layer = new CellLayer(geom, 0);
+        CellLayer layer = new CellLayer(geom);
         lm.setCellLayer(layer);
         visualization = new MockVisualization();
         MockGeneralParameters p = new MockGeneralParameters();

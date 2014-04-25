@@ -23,6 +23,7 @@ package layers.cell;
 
 import control.identifiers.Coordinate;
 import geometry.Geometry;
+import structural.CanonicalCellMap;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -38,6 +39,25 @@ public class FiniteCellLayerContent extends CellLayerContent {
     @Override
     public Set<Coordinate> getImaginarySites() {
         return new HashSet<>(0);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        return true;
+    }
+
+    @Override
+    public FiniteCellLayerContent clone() {
+        CanonicalCellMap clonedMap = new CanonicalCellMap(map);
+        HashSet<Coordinate> clonedSites = new HashSet<>(canonicalSites);
+        CellLayerIndices clonedIndices = indices.clone(clonedMap);
+        FiniteCellLayerContent clone = new FiniteCellLayerContent(geom, clonedIndices);
+        clone.map = clonedMap;
+        clone.canonicalSites = clonedSites;
+        return clone;
     }
 
     @Override

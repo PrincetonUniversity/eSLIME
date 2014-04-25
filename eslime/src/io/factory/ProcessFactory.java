@@ -113,9 +113,20 @@ public class ProcessFactory {
             return new FieldUpdateProcess(loader, id, layerManager, p, target);
 
         } else if (processClass.equalsIgnoreCase("trigger")) {
-//            int maxTargets = getMaxTargets(e);
-            return new TriggerProcess(loader, layerManager, id, p);
-
+            String behaviorName = XmlUtil.getString(e, "behavior");
+            boolean skipVacant = XmlUtil.getBoolean(e, "skip-vacant-sites");
+            int maxTargets = XmlUtil.getInteger(e, "max-targets", -1);
+//            boolean recordAfterTargeting = XmlUtil.getBoolean(e, "record-after-targeting");
+            boolean requireNeighbors = XmlUtil.getBoolean(e, "require-neighbors");
+            return new TriggerProcess(layerManager,
+                    id,
+                    behaviorName,
+                    p,
+                    skipVacant,
+                    requireNeighbors,
+                    maxTargets);
+//                    maxTargets,
+//                    recordAfterTargeting);
         } else if (processClass.equalsIgnoreCase("cull")) {
             double threshold = XmlUtil.getDouble(e, "threshold", 0.0);
             return new Cull(loader, layerManager, id, p, threshold);

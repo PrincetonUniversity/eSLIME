@@ -57,7 +57,7 @@ public class TargetRuleTest extends EslimeTestCase {
         geom.setCanonicalSites(cc);
 
         layerManager = new MockLayerManager();
-        cellLayer = new CellLayer(geom, 0);
+        cellLayer = new CellLayer(geom);
         layerManager.setCellLayer(cellLayer);
 
         occupiedNeighbor = new MockCell();

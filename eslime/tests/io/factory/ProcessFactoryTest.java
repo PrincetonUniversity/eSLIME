@@ -64,7 +64,7 @@ public class ProcessFactoryTest extends TestCase {
 
         geometry.setCanonicalSites(canonicalSites);
 
-        cl = new CellLayer(geometry, 0);
+        cl = new CellLayer(geometry);
 
         sl = new MockSoluteLayer();
         sl.setGeometry(geometry);

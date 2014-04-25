@@ -23,9 +23,14 @@ import cells.Cell;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
 
+import java.util.HashSet;
 import java.util.Set;
 
 public class MockCellLayerContent extends CellLayerContent {
+
+    private Set<Coordinate> imaginarySites;
+    private int[] stateVector;
+    private double[] fitnessVector;
 
     public MockCellLayerContent(Geometry geom, CellLayerIndices indices) {
         super(geom, indices);
@@ -36,28 +41,20 @@ public class MockCellLayerContent extends CellLayerContent {
 
     }
 
-    private Set<Coordinate> imaginarySites;
-
-    private void setImaginarySites(Set<Coordinate> imaginarySites) {
-        this.imaginarySites = imaginarySites;
-    }
-
     @Override
     public Set<Coordinate> getImaginarySites() {
         return imaginarySites;
     }
 
+	/* stateVector */
+
+    private void setImaginarySites(Set<Coordinate> imaginarySites) {
+        this.imaginarySites = imaginarySites;
+    }
+
     public Cell get(Coordinate coord) {
         // Mock getter doesn't do any validation
         return map.get(coord);
-    }
-
-	/* stateVector */
-
-    private int[] stateVector;
-
-    public void setStateVector(int[] stateVector) {
-        this.stateVector = stateVector;
     }
 
     @Override
@@ -67,14 +64,25 @@ public class MockCellLayerContent extends CellLayerContent {
 
 	/* fitnessVector */
 
-    private double[] fitnessVector;
+    public void setStateVector(int[] stateVector) {
+        this.stateVector = stateVector;
+    }
+
+    @Override
+    public double[] getFitnessVector() {
+        return fitnessVector;
+    }
 
     public void setFitnessVector(double[] fitnessVector) {
         this.fitnessVector = fitnessVector;
     }
 
     @Override
-    public double[] getFitnessVector() {
-        return fitnessVector;
+    public CellLayerContent clone() {
+        MockCellLayerContent clone = new MockCellLayerContent(geom, indices);
+        clone.imaginarySites = new HashSet<>(imaginarySites);
+        clone.stateVector = stateVector.clone();
+        clone.fitnessVector = fitnessVector.clone();
+        return clone;
     }
 }

@@ -127,4 +127,9 @@ public abstract class CellLayerContentTest extends EslimeTestCase {
 
     public abstract CellLayerContent makeQuery();
 
+    public void testClone() {
+        Object clone = query.clone();
+        assertEquals(query, clone);
+        assertFalse(query == clone);
+    }
 }

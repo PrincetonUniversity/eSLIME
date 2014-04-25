@@ -45,7 +45,7 @@ public class UniformBiomassGrowthTest extends TestCase {
         Shape shape = new Rectangle(lattice, 6, 6);
         Boundary boundary = new PlaneRingHard(shape, lattice);
         Geometry geom = new Geometry(lattice, shape, boundary);
-        CellLayer layer = new CellLayer(geom, 0);
+        CellLayer layer = new CellLayer(geom);
         MockLayerManager layerManager = new MockLayerManager();
 
         // Create two cells that can be fed
@@ -91,7 +91,7 @@ public class UniformBiomassGrowthTest extends TestCase {
         Shape shape = new Rectangle(lattice, 6, 6);
         Boundary boundary = new PlaneRingHard(shape, lattice);
         Geometry geom = new Geometry(lattice, shape, boundary);
-        CellLayer layer = new CellLayer(geom, 0);
+        CellLayer layer = new CellLayer(geom);
         MockLayerManager layerManager = new MockLayerManager();
 
         // Create two cells that can be fed

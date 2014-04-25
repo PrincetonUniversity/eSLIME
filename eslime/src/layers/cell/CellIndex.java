@@ -165,4 +165,21 @@ public class CellIndex implements Set<Coordinate> {
         return contents.toArray(a);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CellIndex that = (CellIndex) o;
+
+        if (contents != null ? !contents.equals(that.contents) : that.contents != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return contents != null ? contents.hashCode() : 0;
+    }
 }

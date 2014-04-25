@@ -55,7 +55,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         Geometry geom = new Geometry(lattice, shape, boundary);
 
         try {
-            new CellLayer(geom, 0);
+            new CellLayer(geom);
         } catch (Exception ex) {
             fail();
         }
@@ -68,7 +68,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         Boundary boundary = new PlaneRingHard(shape, lattice);
         Geometry geom = new Geometry(lattice, shape, boundary);
 
-        CellLayer layer = new CellLayer(geom, 0);
+        CellLayer layer = new CellLayer(geom);
 
         // Set up a cell
         Cell toPlace = new SimpleCell(1);
@@ -89,7 +89,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         Shape shape = new Rectangle(lattice, 6, 6);
         Boundary boundary = new PlaneRingHard(shape, lattice);
         Geometry geom = new Geometry(lattice, shape, boundary);
-        CellLayer layer = new CellLayer(geom, 0);
+        CellLayer layer = new CellLayer(geom);
 
         Cell toPlace = new FissionCell(1, 0.5, 1.0);
         Coordinate coord = new Coordinate(2, 3, 0);
@@ -116,7 +116,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         Shape shape = new Rectangle(lattice, 6, 6);
         Boundary boundary = new PlaneRingHard(shape, lattice);
         Geometry geom = new Geometry(lattice, shape, boundary);
-        CellLayer layer = new CellLayer(geom, 0);
+        CellLayer layer = new CellLayer(geom);
 
         // Set up one cell
         Cell toPlace = new SimpleCell(1);
@@ -159,7 +159,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         Shape shape = new Rectangle(lattice, 6, 6);
         Boundary boundary = new PlaneRingHard(shape, lattice);
         Geometry geom = new Geometry(lattice, shape, boundary);
-        CellLayer layer = new CellLayer(geom, 0);
+        CellLayer layer = new CellLayer(geom);
 
         // Set up one cell
         Cell toPlace = new SimpleCell(1);
@@ -208,7 +208,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         Shape shape = new Rectangle(lattice, 6, 6);
         Boundary boundary = new PlaneRingHard(shape, lattice);
         Geometry geom = new Geometry(lattice, shape, boundary);
-        CellLayer layer = new CellLayer(geom, 0);
+        CellLayer layer = new CellLayer(geom);
 
         // Set up one cell
         Cell toPlace = new SimpleCell(1);
@@ -231,7 +231,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         Shape shape = new Rectangle(lattice, 6, 6);
         Boundary boundary = new PlaneRingHard(shape, lattice);
         Geometry geom = new Geometry(lattice, shape, boundary);
-        CellLayer layer = new CellLayer(geom, 0);
+        CellLayer layer = new CellLayer(geom);
 
         // Set up one cell
         Cell toPlace = new MockCell(1);
@@ -265,7 +265,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         Shape shape = new Rectangle(lattice, 6, 6);
         Boundary boundary = new PlaneRingHard(shape, lattice);
         Geometry geom = new Geometry(lattice, shape, boundary);
-        CellLayer layer = new CellLayer(geom, 0);
+        CellLayer layer = new CellLayer(geom);
 
         // There shouldn't be anything in the state map yet.
         assertEquals(0, layer.getViewer().getStateMapViewer().getStates().length);

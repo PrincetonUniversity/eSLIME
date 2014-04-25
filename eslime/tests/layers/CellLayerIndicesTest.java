@@ -22,6 +22,7 @@ package layers;
 import cells.MockCell;
 import control.identifiers.Coordinate;
 import layers.cell.CellLayerIndices;
+import structural.CanonicalCellMap;
 import test.EslimeTestCase;
 
 public class CellLayerIndicesTest extends EslimeTestCase {
@@ -98,5 +99,13 @@ public class CellLayerIndicesTest extends EslimeTestCase {
         assertTrue(query.isDivisible(c));
         assertEquals((Integer) 1, query.getStateMap().get(5));
         assertEquals((Integer) 0, query.getStateMap().get(2));
+    }
+
+    public void testClone() {
+        CanonicalCellMap map = new CanonicalCellMap(1);
+        map.put(c, null);
+        Object clone = query.clone(map);
+        assertEquals(query, clone);
+        assertFalse(query == clone);
     }
 }

@@ -43,7 +43,7 @@ public abstract class EslimeLatticeTestCase extends EslimeTestCase {
     protected void setUp() throws Exception {
         geom = buildMockGeometry();
         layerManager = new MockLayerManager();
-        layer = new CellLayer(geom, 0);
+        layer = new CellLayer(geom);
         layerManager.setCellLayer(layer);
 
         cc = geom.getCanonicalSites();

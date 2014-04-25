@@ -35,7 +35,7 @@ import java.util.List;
  */
 public class LayerManager {
 
-    private static final int GEOMETRY_ID = 0;
+//    private static final int GEOMETRY_ID = 0;
     private CellLayer cellLayer;
     private HashMap<String, SoluteLayer> soluteLayers;
     private StepState stepState;
@@ -76,7 +76,7 @@ public class LayerManager {
         Element e = layerRoot.element("cell-layer");
         Geometry geometry = factory.make(e);
         System.err.println(geometry.getCanonicalSites().length);
-        CellLayer layer = new CellLayer(geometry, GEOMETRY_ID);
+        CellLayer layer = new CellLayer(geometry);
         return layer;
     }
 

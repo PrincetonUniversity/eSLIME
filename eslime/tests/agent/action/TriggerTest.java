@@ -67,7 +67,7 @@ public class TriggerTest extends EslimeTestCase {
         o = geom.getCanonicalSites()[0];
         p = geom.getCanonicalSites()[1];
         q = geom.getCanonicalSites()[2];
-        cellLayer = new CellLayer(geom, 0);
+        cellLayer = new CellLayer(geom);
         cellLayer.getUpdateManager().place(effectCell, o);
         cellLayer.getUpdateManager().place(causeCell, q);
         layerManager.setCellLayer(cellLayer);

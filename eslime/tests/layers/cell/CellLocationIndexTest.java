@@ -34,10 +34,7 @@ public class CellLocationIndexTest extends TestCase {
     private Coordinate c1, c2;
 
     // The object to be tested
-    private ExposedCellLocationIndex locationIndex;
-
-    // Handle to the internal state of the tested object
-    private IdentityHashMap<Cell, Coordinate> map;
+    private CellLocationIndex locationIndex;
 
     @Override
     protected void setUp() throws Exception {
@@ -47,38 +44,37 @@ public class CellLocationIndexTest extends TestCase {
         c1 = new Coordinate(0, 0, 0);
         c2 = new Coordinate(0, 1, 0);
 
-        locationIndex = new ExposedCellLocationIndex();
-        map = locationIndex.getLocationMap();
+        locationIndex = new CellLocationIndex();
     }
 
     public void testPlace() throws Exception {
         // Index should be empty
-        assertEquals(0, map.keySet().size());
+        assertEquals(0, locationIndex.keySet().size());
 
         // Place a cell
         locationIndex.add(o1, c1);
 
         // Cell should index to placed coordinate
-        assertEquals(1, map.keySet().size());
-        assertEquals(c1, map.get(o1));
+        assertEquals(1, locationIndex.keySet().size());
+        assertEquals(c1, locationIndex.get(o1));
     }
 
 //    public void testMove() throws Exception {
 //        locationIndex.add(o1, c1);
 //        locationIndex.move(o1, c2);
-//        assertEquals(c2, map.get(o1));
+//        assertEquals(c2, locationIndex.get(o1));
 //    }
 
     public void testRemove() throws Exception {
         // Manually add a cell to the map
-        map.put(o1, c1);
-        assertEquals(1, map.keySet().size());
+        locationIndex.put(o1, c1);
+        assertEquals(1, locationIndex.keySet().size());
 
         // Remove the cell using the index object
         locationIndex.remove(o1);
 
         // Map should be empty
-        assertEquals(0, map.keySet().size());
+        assertEquals(0, locationIndex.keySet().size());
     }
 
     public void testLocate() throws Exception {
@@ -94,9 +90,4 @@ public class CellLocationIndexTest extends TestCase {
         assertFalse(locationIndex.isIndexed(o2));
     }
 
-    private class ExposedCellLocationIndex extends CellLocationIndex {
-        public IdentityHashMap<Cell, Coordinate> getLocationMap() {
-            return locationMap;
-        }
-    }
 }

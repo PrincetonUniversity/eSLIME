@@ -54,7 +54,7 @@ public class SmiteTest extends EslimeTestCase {
         layerManager = new MockLayerManager();
 
         // Construct layer
-        layer = new CellLayer(geom, 0);
+        layer = new CellLayer(geom);
         layerManager.setCellLayer(layer);
 
         // Construct process

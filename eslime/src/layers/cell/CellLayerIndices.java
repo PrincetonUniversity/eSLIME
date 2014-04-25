@@ -21,8 +21,11 @@ package layers.cell;
 
 import cells.Cell;
 import control.identifiers.Coordinate;
+import structural.CanonicalCellMap;
 import structural.NonNullIntegerMap;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Set;
 
 /**
@@ -172,7 +175,88 @@ public class CellLayerIndices {
         stateMap.put(currentState, currentCount + 1);
     }
 
+    public CellLayerIndices clone(CanonicalCellMap cellMap) {
+        CellIndex clonedOccupied = new CellIndex(occupiedSites);
+        CellIndex clonedDivisible = new CellIndex(divisibleSites);
+        NonNullIntegerMap clonedStateMap = new NonNullIntegerMap(stateMap);
+        CellLayerIndices clone = new CellLayerIndices();
+        CellLocationIndex clonedLocIndex = buildLocationIndex(cellMap);
+        clone.cellLocationIndex = clonedLocIndex;
+        clone.occupiedSites = clonedOccupied;
+        clone.divisibleSites = clonedDivisible;
+        clone.stateMap = clonedStateMap;
+        return clone;
+    }
+
+    private CellLocationIndex buildLocationIndex(CanonicalCellMap cellMap) {
+        CellLocationIndex ret = new CellLocationIndex();
+        for (Coordinate key : cellMap.keySet()) {
+            Cell value = cellMap.get(key);
+            if (value != null) {
+               ret.add(value, key);
+            }
+        }
+
+        return ret;
+    }
+
     public NonNullIntegerMap getStateMap() {
         return stateMap;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CellLayerIndices indices = (CellLayerIndices) o;
+
+        if (divisibleSites != null ? !divisibleSites.equals(indices.divisibleSites) : indices.divisibleSites != null)
+            return false;
+        if (occupiedSites != null ? !occupiedSites.equals(indices.occupiedSites) : indices.occupiedSites != null)
+            return false;
+        if (stateMap != null ? !stateMap.equals(indices.stateMap) : indices.stateMap != null)
+            return false;
+
+        // We don't want true equality of the cell location index, because we
+        // make a new copy of each cell as part of cloning the CellLayer.
+        if (!valuesEqual(cellLocationIndex, indices.cellLocationIndex)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * CellLocationIndex is backed by the memory addresses of the keys, which we
+     * don't want to compare. So we compare the values only.
+     * @param p
+     * @param q
+     * @return
+     */
+    private boolean valuesEqual(CellLocationIndex p, CellLocationIndex q) {
+        Set<Coordinate> pCoords = new HashSet<>(p.values());
+        Set<Coordinate> qCoords = new HashSet<>(q.values());
+
+        if (pCoords.size() != qCoords.size()) {
+            return false;
+        }
+
+        for (Coordinate c : pCoords) {
+            if (!qCoords.contains(c)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = occupiedSites != null ? occupiedSites.hashCode() : 0;
+        result = 31 * result + (divisibleSites != null ? divisibleSites.hashCode() : 0);
+        result = 31 * result + (stateMap != null ? stateMap.hashCode() : 0);
+        result = 31 * result + (cellLocationIndex != null ? cellLocationIndex.hashCode() : 0);
+        return result;
     }
 }

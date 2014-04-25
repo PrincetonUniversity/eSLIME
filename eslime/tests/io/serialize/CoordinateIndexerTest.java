@@ -52,7 +52,7 @@ public class CoordinateIndexerTest extends EslimeTestCase {
         params = new MockGeneralParameters();
         params.setInstancePath(outputPath);
         lm = new MockLayerManager();
-        CellLayer layer = new CellLayer(geom, 0);
+        CellLayer layer = new CellLayer(geom);
         lm.setCellLayer(layer);
         indexer = new CoordinateIndexer(params);
         indexer.init(lm);
@@ -62,9 +62,9 @@ public class CoordinateIndexerTest extends EslimeTestCase {
         // dispatchHalt instructs the indexer to build the index
         indexer.dispatchHalt(null);
 
-        // Compare output to fixture
-        String fixture = fixturePath + FileConventions.COORDINATE_FILENAME;
-        String output = outputPath + FileConventions.COORDINATE_FILENAME;
+//        // Compare output to fixture
+//        String fixture = fixturePath + FileConventions.COORDINATE_FILENAME;
+//        String output = outputPath + FileConventions.COORDINATE_FILENAME;
 
         assertFilesEqual(FileConventions.COORDINATE_FILENAME);
     }

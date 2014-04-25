@@ -90,7 +90,7 @@ public class FieldUpdateProcessTest extends EslimeTestCase {
     }
 
     private void initDependentObjects() {
-        cellLayer = new CellLayer(geom, 0);
+        cellLayer = new CellLayer(geom);
         soluteLayer.setGeometry(geom);
         layerManager.addSoluteLayer("query", soluteLayer);
         layerManager.setCellLayer(cellLayer);

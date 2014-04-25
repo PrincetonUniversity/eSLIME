@@ -116,7 +116,7 @@ public class LegacyCellStateReader {
     }
 
     private ConditionViewer readConditions() throws IOException {
-        int fCurrent = frame;
+        int fCurrent;
 
         VectorViewer f = null;        // Fitness
 

@@ -48,7 +48,7 @@ public class CellFactoryTest extends EslimeTestCase {
         layerManager = new MockLayerManager();
 
         MockGeometry geom = buildMockGeometry();
-        CellLayer layer = new CellLayer(geom, 0);
+        CellLayer layer = new CellLayer(geom);
         layerManager.setCellLayer(layer);
         p.initializeRandom(RANDOM_SEED);
     }

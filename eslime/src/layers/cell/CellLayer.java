@@ -29,11 +29,9 @@ import layers.Layer;
 public class CellLayer extends Layer {
 
     private CellLayerContent content;
-    private String id;
 
-    public CellLayer(Geometry geom, int id) {
+    public CellLayer(Geometry geom) {
         geometry = geom;
-        this.id = Integer.toString(id);
 
         CellLayerIndices indices = new CellLayerIndices();
         if (geometry.isInfinite()) {
@@ -41,11 +39,6 @@ public class CellLayer extends Layer {
         } else {
             content = new FiniteCellLayerContent(geometry, indices);
         }
-    }
-
-    @Override
-    public String getId() {
-        return id;
     }
 
     public CellLookupManager getLookupManager() {
@@ -60,4 +53,34 @@ public class CellLayer extends Layer {
         return new CellLayerViewer(content);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CellLayer cellLayer = (CellLayer) o;
+
+        if (content != null ? !content.equals(cellLayer.content) : cellLayer.content != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return content != null ? content.hashCode() : 0;
+    }
+
+    @Override
+    public CellLayer clone() {
+        CellLayerContent contentClone = content.clone();
+        CellLayer clone = new CellLayer(geometry);
+        clone.content = contentClone;
+        return clone;
+    }
+
+    @Override
+    public String getId() {
+        return "0";
+    }
 }
