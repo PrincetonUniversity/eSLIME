@@ -119,29 +119,17 @@ public class LegacyCellStateWriter extends Serializer {
      * Appends a state to the file.
      */
     @Override
-    public void record(StepState stepState) {
-        CellLayer layer = layerManager.getCellLayer();
+    public void flush(StepState stepState) {
+        CellLayer layer = stepState.getRecordedCellLayer();
         int[] s = layer.getViewer().getStateVector();
         double[] f = layer.getViewer().getFitnessVector();
 
-//        if (p.isFrame(frame)) {
-            writeDoubleArray(f, ef, stepState.getTime(), stepState.getFrame(), "fitness");
+            writeDoubleArray(f, layer, ef, stepState.getTime(),
+                    stepState.getFrame(), "fitness");
+
             writeIntegerArray(s, stepState.getTime(), stepState.getFrame(), "state");
 
-//            int[] h = coordToInt(highlights);
-//            writeIntegerArray(h, gillespie, frame, "highlight");
-//        }
     }
-
-//    protected int[] coordToInt(Coordinate[] highlights) {
-//        Geometry geom = layerManager.getCellLayer().getGeometry();
-//        int[] hl = new int[highlights.length];
-//        for (int i = 0; i < highlights.length; i++) {
-//            hl[i] = geom.coordToIndex(highlights[i]);
-//        }
-//
-//        return hl;
-//    }
 
     /**
      * Write out the cell types, represented by colors.
@@ -206,9 +194,9 @@ public class LegacyCellStateWriter extends Serializer {
      *
      * @param v The vector of values, in canonical site order.
      */
-    private void writeDoubleArray(double[] v, Extrema extrema, double gillespie, int frame, String title) {
+    private void writeDoubleArray(double[] v, CellLayer layer, Extrema extrema,
+                                  double gillespie, int frame, String title) {
 
-        CellLayer layer = layerManager.getCellLayer();
         Coordinate[] coords = layer.getGeometry().getCanonicalSites();
 
         StringBuilder sb = new StringBuilder();

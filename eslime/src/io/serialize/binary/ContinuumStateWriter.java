@@ -102,7 +102,8 @@ public class ContinuumStateWriter extends Serializer {
         extrema = new Extrema();
     }
 
-    public void record(StepState stepState) {
+    @Override
+    public void flush(StepState stepState) {
         try {
             // Write opening parity sequence
             writeStartParitySequence();

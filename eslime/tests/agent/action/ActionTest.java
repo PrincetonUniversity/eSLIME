@@ -73,7 +73,7 @@ public class ActionTest extends EslimeTestCase {
     }
 
     public void testDoHighlight() throws Exception {
-        StepState stepState = new StepState(0.0, 0, null);
+        StepState stepState = new StepState(0.0, 0);
         layerManager.setStepState(stepState);
         query.doHighlight(new ConstantInteger(1), caller);
         Coordinate[] actual = stepState.getHighlights(1);

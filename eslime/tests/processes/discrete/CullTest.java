@@ -52,21 +52,21 @@ public class CullTest extends EslimeLatticeTestCase {
         die.setFitness(THRESHOLD - 0.1);
 
         // Place a cell above the threshold.
-        layer.getUpdateManager().place(live, x);
+        cellLayer.getUpdateManager().place(live, x);
 
         // Place a cell below the threshold.
-        layer.getUpdateManager().place(die, y);
+        cellLayer.getUpdateManager().place(die, y);
 
         // Verify that there are two live cells.
-        assertEquals(2, layer.getViewer().getOccupiedSites().size());
+        assertEquals(2, cellLayer.getViewer().getOccupiedSites().size());
 
         // Cull.
         query.target();
         query.fire(new MockStepState());
 
         // Only the one above the threshold should survive.
-        assertTrue(layer.getViewer().isOccupied(x));
-        assertEquals(1, layer.getViewer().getOccupiedSites().size());
+        assertTrue(cellLayer.getViewer().isOccupied(x));
+        assertEquals(1, cellLayer.getViewer().getOccupiedSites().size());
     }
 
     /**
@@ -78,14 +78,14 @@ public class CullTest extends EslimeLatticeTestCase {
     public void testBorderlineCase() throws Exception {
         MockCell borderline = new MockCell();
         borderline.setFitness(THRESHOLD);
-        layer.getUpdateManager().place(borderline, x);
+        cellLayer.getUpdateManager().place(borderline, x);
 
-        assertTrue(layer.getViewer().isOccupied(x));
+        assertTrue(cellLayer.getViewer().isOccupied(x));
 
         // Cull.
         query.target();
         query.fire(new MockStepState());
 
-        assertFalse(layer.getViewer().isOccupied(x));
+        assertFalse(cellLayer.getViewer().isOccupied(x));
     }
 }

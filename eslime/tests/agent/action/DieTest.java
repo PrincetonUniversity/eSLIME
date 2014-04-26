@@ -52,13 +52,13 @@ public class DieTest extends EslimeLatticeTestCase {
         cell.setDispatcher(dispatcher);
         dispatcher.map(eventName, behavior);
 
-        layer.getUpdateManager().place(cell, origin);
+        cellLayer.getUpdateManager().place(cell, origin);
     }
 
     public void testRun() throws Exception {
-        assertTrue(layer.getViewer().isOccupied(origin));
+        assertTrue(cellLayer.getViewer().isOccupied(origin));
         cell.trigger("TEST", null);
-        assertFalse(layer.getViewer().isOccupied(origin));
+        assertFalse(cellLayer.getViewer().isOccupied(origin));
     }
 
     public void testEquals() throws Exception {

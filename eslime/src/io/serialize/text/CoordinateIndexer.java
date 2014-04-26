@@ -36,6 +36,8 @@ import java.io.IOException;
 
 public class CoordinateIndexer extends Serializer {
 
+    private Geometry geometry;
+
     // This file specifies the relationship between vector index and coordinate.
 
     public CoordinateIndexer(GeneralParameters p) {
@@ -43,7 +45,6 @@ public class CoordinateIndexer extends Serializer {
     }
 
     protected void makeCoordinateMap() {
-        CellLayer layer = layerManager.getCellLayer();
         try {
 
             String coordMapFileStr = p.getInstancePath() + '/' + FileConventions.COORDINATE_FILENAME;
@@ -51,10 +52,9 @@ public class CoordinateIndexer extends Serializer {
             FileWriter fw = new FileWriter(coordMapFile);
             BufferedWriter bwp = new BufferedWriter(fw);
 
-            Geometry geom = layer.getGeometry();
-            for (Coordinate c : geom.getCanonicalSites()) {
+            for (Coordinate c : geometry.getCanonicalSites()) {
                 StringBuilder sb = new StringBuilder();
-                sb.append(layer.getGeometry().coordToIndex(c));
+                sb.append(geometry.coordToIndex(c));
                 sb.append("\t");
                 sb.append(c.toString());
                 sb.append("\n");
@@ -72,10 +72,11 @@ public class CoordinateIndexer extends Serializer {
     @Override
     public void init(LayerManager lm) {
         super.init(lm);
+        geometry = lm.getCellLayer().getGeometry();
     }
 
     @Override
-    public void record(StepState stepState) {
+    public void flush(StepState stepState) {
 
     }
 

@@ -46,10 +46,8 @@ public class ProgressReporter extends Serializer {
     }
 
     @Override
-    public void record(StepState stepState) {
-//        if (p.isFrame(stepState.getFrame())) {
+    public void flush(StepState stepState) {
             System.out.println("   Frame " + stepState.getFrame() + ".");
-//        }
     }
 
     @Override

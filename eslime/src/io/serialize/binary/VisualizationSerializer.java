@@ -23,9 +23,11 @@ package io.serialize.binary;
 
 import control.GeneralParameters;
 import control.halt.HaltCondition;
+import geometry.Geometry;
 import io.deserialize.SystemStateReader;
 import io.serialize.Serializer;
 import io.visual.Visualization;
+import layers.LayerManager;
 import layers.SystemState;
 import processes.StepState;
 
@@ -49,6 +51,14 @@ public class VisualizationSerializer extends Serializer {
     // See Java's ImageIO class for more information.
     private String mode;
 
+    private Geometry geometry;
+
+    @Override
+    public void init(LayerManager layerManager) {
+        super.init(layerManager);
+        geometry = layerManager.getCellLayer().getGeometry();
+    }
+
     public VisualizationSerializer(GeneralParameters p,
                                    Visualization visualization,
                                    String prefix, String mode) {
@@ -61,7 +71,7 @@ public class VisualizationSerializer extends Serializer {
     @Override
     public void dispatchHalt(HaltCondition ex) {
         // Initialize the visualization to this simulation.
-        visualization.init(layerManager.getCellLayer().getGeometry());
+        visualization.init(geometry);
 
         // Get expected fields.
         String[] soluteIds = visualization.getSoluteIds();
@@ -109,7 +119,7 @@ public class VisualizationSerializer extends Serializer {
     }
 
     @Override
-    public void record(StepState stepState) {
+    public void flush(StepState stepState) {
 
     }
 }

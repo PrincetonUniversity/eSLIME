@@ -137,7 +137,7 @@ public class CorrelationWriter extends Serializer {
     }
 
     @Override
-    public void record(StepState stepState) {
+    public void flush(StepState stepState) {
         // Has the analysis fired yet? If so, return.
         if (fired) {
             return;
@@ -148,27 +148,27 @@ public class CorrelationWriter extends Serializer {
             return;
         }
 
-        Geometry geom = layerManager.getCellLayer().getGeometry();
+        CellLayer layer = stepState.getRecordedCellLayer();
+        Geometry geom = layer.getGeometry();
         Coordinate[] cc = geom.getCanonicalSites();
         // Iterate over all canonical sites.
         for (Coordinate i : cc) {
             // For each canonical site, iterate over all canonical sites.
             for (Coordinate j : cc) {
-                recordObservation(i, j);
+                recordObservation(i, j, layer);
             }
         }
         // Mark the analysis event as having fired.
         fired = true;
     }
 
-    private void recordObservation(Coordinate i, Coordinate j) {
-        CellLayer l = layerManager.getCellLayer();
+    private void recordObservation(Coordinate i, Coordinate j, CellLayer l) {
 
         // Calculate L1 distance r.
         int r = l.getGeometry().getL1Distance(i, j, Geometry.IGNORE_BOUNDARIES);
 
-        int iState = layerManager.getCellLayer().getViewer().getState(i);
-        int jState = layerManager.getCellLayer().getViewer().getState(j);
+        int iState = l.getViewer().getState(i);
+        int jState = l.getViewer().getState(j);
 
         // If identical, record an identity at distance r.
         if (iState == jState) {

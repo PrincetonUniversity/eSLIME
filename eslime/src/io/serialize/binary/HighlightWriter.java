@@ -42,7 +42,7 @@ import java.util.Map;
  * Created by dbborens on 3/28/14.
  */
 public class HighlightWriter extends Serializer {
-    private Geometry geometry;
+//    private Geometry geometry;
     private Map<Integer, DataOutputStream> streamMap;
 
     private int[] channels;
@@ -63,7 +63,8 @@ public class HighlightWriter extends Serializer {
     }
 
     @Override
-    public void record(StepState stepState) {
+    public void flush(StepState stepState) {
+        Geometry geometry = stepState.getRecordedCellLayer().getGeometry();
         for (int channel : channels) {
             DataOutputStream stream = streamMap.get(channel);
             List<Coordinate> vector = Arrays.asList(stepState.getHighlights(channel));
@@ -75,7 +76,6 @@ public class HighlightWriter extends Serializer {
     @Override
     public void init(LayerManager layerManager) {
         super.init(layerManager);
-        geometry = layerManager.getCellLayer().getGeometry();
 
         createDataStreams();
     }

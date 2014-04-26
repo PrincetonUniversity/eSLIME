@@ -63,9 +63,9 @@ public class SerializationManager {
         }
     }
 
-    public void record(StepState stepState) {
+    public void flush(StepState stepState) {
         for (Serializer tw : writers) {
-            tw.record(stepState);
+            tw.flush(stepState);
         }
 
     }

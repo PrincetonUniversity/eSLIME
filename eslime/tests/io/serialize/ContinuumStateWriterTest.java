@@ -85,11 +85,11 @@ public class ContinuumStateWriterTest extends EslimeTestCase {
 
         // Push first state
         layer.push(first);
-        csw.record(new StepState(1.0, 1, null));
+        csw.flush(new StepState(1.0, 1));
 
         // Push second state
         layer.push(second);
-        csw.record(new StepState(2.0, 2, null));
+        csw.flush(new StepState(2.0, 2));
 
         // Close file handles
         csw.dispatchHalt(null);

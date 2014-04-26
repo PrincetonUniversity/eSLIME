@@ -72,7 +72,7 @@ public class ParameterWriter extends Serializer {
     }
 
     @Override
-    public void record(StepState stepState) {
+    public void flush(StepState stepState) {
 
     }
 

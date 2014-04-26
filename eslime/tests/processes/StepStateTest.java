@@ -31,12 +31,10 @@ import test.EslimeLatticeTestCase;
 public class StepStateTest extends EslimeLatticeTestCase {
 
     private StepState query;
-    private MockSerializationManager serializationManager;
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        serializationManager = new MockSerializationManager();
-        query = new StepState(1.2, 1, serializationManager);
+        query = new StepState(1.2, 1);
     }
 
     public void testHighlight() throws Exception {

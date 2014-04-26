@@ -20,7 +20,7 @@
 package processes;
 
 import control.identifiers.Coordinate;
-import io.serialize.SerializationManager;
+import layers.cell.CellLayer;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -38,17 +38,16 @@ import java.util.Set;
  */
 public class StepState {
 
+    private CellLayer recordedCellLayer;
     private HashMap<Integer, Set<Coordinate>> highlights;
     private double dt;
     private double startTime;
     private int frame;
-    private SerializationManager serializationManager;
 
-    public StepState(double startTime, int frame, SerializationManager serializationManager) {
+    public StepState(double startTime, int frame) {
         highlights = new HashMap<>();
         dt = 0;
         this.startTime = startTime;
-        this.serializationManager = serializationManager;
         this.frame = frame;
     }
 
@@ -78,8 +77,8 @@ public class StepState {
         return set.toArray(new Coordinate[set.size()]);
     }
 
-    public void record() {
-        serializationManager.record(this);
+    public void record(CellLayer cellLayer) {
+        recordedCellLayer = cellLayer.clone();
     }
 
     public double getTime() {
@@ -88,5 +87,9 @@ public class StepState {
 
     public int getFrame() {
         return frame;
+    }
+
+    public CellLayer getRecordedCellLayer() {
+        return recordedCellLayer;
     }
 }

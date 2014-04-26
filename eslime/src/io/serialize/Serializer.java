@@ -33,7 +33,7 @@ import java.io.IOException;
  * Created by dbborens on 12/11/13.
  */
 public abstract class Serializer {
-    protected LayerManager layerManager;
+    private LayerManager layerManager;
     protected GeneralParameters p;
     protected boolean closed = true;
 
@@ -75,7 +75,7 @@ public abstract class Serializer {
      *
      * @param stepState
      */
-    public abstract void record(StepState stepState);
+    public abstract void flush(StepState stepState);
 
 
     protected void mkDir(String pathStr, boolean recursive) {

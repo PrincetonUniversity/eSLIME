@@ -67,8 +67,8 @@ public class FrequencyWriter extends Serializer {
     }
 
     @Override
-    public void record(StepState stepState) {
-        CellLayer layer = layerManager.getCellLayer();
+    public void flush(StepState stepState) {
+        CellLayer layer = stepState.getRecordedCellLayer();
         if (p.isFrame(stepState.getFrame())) {
             frames.add(stepState.getFrame());
 

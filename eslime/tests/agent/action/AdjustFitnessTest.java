@@ -44,10 +44,10 @@ public class AdjustFitnessTest extends EslimeLatticeTestCase {
         // Set up test objects
         layerManager = new MockLayerManager();
         MockGeometry geom = buildMockGeometry();
-        layer = new CellLayer(geom);
-        layerManager.setCellLayer(layer);
+        cellLayer = new CellLayer(geom);
+        layerManager.setCellLayer(cellLayer);
         cell = new BehaviorCell(layerManager, 1, 0.5, 1.0);
-        layer.getUpdateManager().place(cell, origin);
+        cellLayer.getUpdateManager().place(cell, origin);
         query = new AdjustFitness(cell, layerManager, 0.5);
         identical = new AdjustFitness(cell, layerManager, 0.5);
         different = new AdjustFitness(cell, layerManager, 0.7);

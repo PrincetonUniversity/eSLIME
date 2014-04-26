@@ -143,7 +143,7 @@ public class TriggerTest extends EslimeTestCase {
     }
 
     public void testHighlighting() throws Exception {
-        StepState stepState = new StepState(0.0, 0, null);
+        StepState stepState = new StepState(0.0, 0);
         layerManager.setStepState(stepState);
         ConstantInteger selfChannel = new ConstantInteger(2);
         ConstantInteger targetChannel = new ConstantInteger(4);

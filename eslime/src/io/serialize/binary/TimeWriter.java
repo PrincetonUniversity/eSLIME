@@ -70,7 +70,7 @@ public class TimeWriter extends Serializer {
     }
 
     @Override
-    public void record(StepState stepState) {
+    public void flush(StepState stepState) {
         try {
             stream.writeInt(stepState.getFrame());
             stream.writeDouble(stepState.getTime());

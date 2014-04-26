@@ -49,8 +49,8 @@ public class TimeWriterTest extends EslimeTestCase {
         query.init(null);
 //        query.step(null, 0.5, 2);
 //        query.step(null, 1.3, 4);
-        query.record(new MockStepState(0.5, 2, null));
-        query.record(new MockStepState(1.3, 4, null));
+        query.flush(new MockStepState(0.5, 2));
+        query.flush(new MockStepState(1.3, 4));
         query.dispatchHalt(null);
     }
 }

@@ -31,7 +31,6 @@ public class Integrator {
     private SerializationManager serializationManager;
 
     private double time = 0.0D;
-    private StepState stepState;
 
     public Integrator(GeneralParameters p, ProcessManager processManager,
                       SerializationManager serializationManager) {
@@ -51,8 +50,7 @@ public class Integrator {
      */
     public HaltCondition go() {
         for (int n = 0; n < p.T(); n++) {
-            StepState state = new StepState(time, n, serializationManager);
-//            serializationManager.cycleStart(state, n);
+            StepState state = new StepState(time, n);
             try {
                 state = processManager.doTriggeredProcesses(state);
             } catch (HaltCondition haltCondition) {
@@ -60,7 +58,7 @@ public class Integrator {
             }
 
             // Send the results to the serialization manager.
-//            serializationManager.cycleEnd(state, n);
+            serializationManager.flush(state);
             time = state.getTime();
         }
 

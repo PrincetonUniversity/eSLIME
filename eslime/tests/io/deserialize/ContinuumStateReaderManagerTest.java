@@ -113,7 +113,7 @@ public class ContinuumStateReaderManagerTest extends EslimeLatticeTestCase {
 
         SolutionViewer soln = new SolutionViewer(vec, geom);
         layer.push(soln);
-        csw.record(new MockStepState(1.0, 1, null));
+        csw.flush(new MockStepState(1.0, 1));
         csw.dispatchHalt(null);
     }
 }

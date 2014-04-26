@@ -38,7 +38,7 @@ public class MockSerializationManager extends SerializationManager {
     }
 
     @Override
-    public void record(StepState stepState) {
+    public void flush(StepState stepState) {
         this.stepState = stepState;
     }
 

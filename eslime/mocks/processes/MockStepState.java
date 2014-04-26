@@ -35,13 +35,13 @@ public class MockStepState extends StepState {
     }
 
     public MockStepState(double startTime) {
-        this(startTime, 0, null);
+        this(startTime, 0);
     }
 
     private HashMap<Integer, Coordinate[]> highlightMap;
 
-    public MockStepState(double startTime, int frame, SerializationManager serializationManager) {
-        super(startTime, frame, serializationManager);
+    public MockStepState(double startTime, int frame) {
+        super(startTime, frame);
         highlightMap = new HashMap<>();
     }
 

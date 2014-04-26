@@ -59,7 +59,7 @@ public class IntervalWriter extends Serializer {
     }
 
     @Override
-    public void record(StepState stepState) {
+    public void flush(StepState stepState) {
         Long interval = System.currentTimeMillis() - prevTime;
         if (p.isFrame(stepState.getFrame())) {
             interval(stepState.getFrame(), stepState.getTime(), interval);

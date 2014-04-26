@@ -37,7 +37,7 @@ public class BehaviorCellTest extends EslimeLatticeTestCase {
         dispatcher = new MockBehaviorDispatcher();
         query = new BehaviorCell(layerManager, 1, 1.0, 0.5);
         query.setDispatcher(dispatcher);
-        layer.getUpdateManager().place(query, origin);
+        cellLayer.getUpdateManager().place(query, origin);
     }
 
     public void testConsiderAndApply() {
@@ -82,9 +82,9 @@ public class BehaviorCellTest extends EslimeLatticeTestCase {
     }
 
     public void testDie() throws Exception {
-        assertTrue(layer.getViewer().isOccupied(origin));
+        assertTrue(cellLayer.getViewer().isOccupied(origin));
         query.die();
-        assertFalse(layer.getViewer().isOccupied(origin));
+        assertFalse(cellLayer.getViewer().isOccupied(origin));
     }
 
     public void testEquals() {
@@ -136,7 +136,7 @@ public class BehaviorCellTest extends EslimeLatticeTestCase {
     }
 
     private void assertDivisibilityStatus(boolean expected) {
-        boolean layerActual = layer.getViewer().isDivisible(origin);
+        boolean layerActual = cellLayer.getViewer().isDivisible(origin);
         boolean cellActual = query.isDivisible();
         assertEquals(expected, layerActual);
         assertEquals(expected, cellActual);
