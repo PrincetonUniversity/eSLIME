@@ -64,21 +64,19 @@ public class Runner implements Runnable {
             Element processRoot = pp.getElement("cell-processes");
             loader = new ProcessLoader(processRoot);
             p = new GeneralParameters(pp);
-            System.err.println("RANDOM SEED " + p.getRandomSeed());
             gm = new GeometryFactory(pp.getElement("geometry"));
             lm = new LayerManager(pp.getElement("layers"), gm);
             factory = new ProcessFactory(loader, lm, p);
             pm = new ProcessManager(factory, lm);
             Element writers = pp.getElement("writers");
             mgr = new SerializationManager(writers, p, lm);
-            mgr.init(lm);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
 
         for (int i = 0; i < p.getNumInstances(); i++) {
-
             Integrator integrator = new Integrator(p, pm, mgr);
+            mgr.init(lm);
 
             // This step includes the execution of the simulation until some
             // end condition(s) defined in the parameters. It includes setting up

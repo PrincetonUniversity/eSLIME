@@ -64,7 +64,7 @@ public class ActionFactory {
     private static Action stochasticChoice(Element e, BehaviorCell callback, LayerManager layerManager,
                                            GeneralParameters p) {
 
-        RangeMap<Action> chooser = ActionChooserFactory.instantiate(e, callback, layerManager, p);
+        ActionRangeMap chooser = ActionChooserFactory.instantiate(e, callback, layerManager, p);
         Random random = p.getRandom();
 
         Action action = new StochasticChoice(callback, layerManager, chooser, random);

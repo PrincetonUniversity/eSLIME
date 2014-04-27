@@ -72,7 +72,7 @@ public class ActionFactoryTest extends EslimeTestCase {
     public void testStochasticChoice() throws Exception {
         Element e = fixtureRoot.element("stochastic-choice");
         Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
-        RangeMap<Action> chooser = new RangeMap(1);
+        ActionRangeMap chooser = new ActionRangeMap(1);
         Action child = new NullAction();
         chooser.add(child, 1.0);
         Action expected = new StochasticChoice(callback, layerManager, chooser, p.getRandom());

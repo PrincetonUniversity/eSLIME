@@ -43,6 +43,7 @@ public class ProgressReporter extends Serializer {
     public void init(LayerManager lm) {
         start = System.currentTimeMillis();
         System.out.println("Instance " + p.getInstance() + ": " + p.getInstancePath());
+        System.err.println("Random key: " + p.getRandomSeed());
     }
 
     @Override
@@ -53,7 +54,6 @@ public class ProgressReporter extends Serializer {
     @Override
     public void dispatchHalt(HaltCondition ex) {
         System.out.println("  Instance halted. Cause type: " + ex.getClass().getSimpleName());
-
     }
 
     @Override

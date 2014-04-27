@@ -50,13 +50,13 @@ public class RangeMap<T> {
     // The first element is pre-loaded as 0.0, but each ceiling is then
     // appended. This means that floors has one too many elements, which is
     // handled accordingly.
-    private ArrayList<Double> floors;
+    protected ArrayList<Double> floors;
 
     // We track the value associated with each floor in the same order as
     // the floors. Note that keys should always be one element shorter than
     // floors.
 
-    private ArrayList<T> keys;
+    protected ArrayList<T> keys;
 
     public RangeMap(int initialSize) {
         floors = new ArrayList<>(initialSize + 1);

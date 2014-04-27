@@ -56,6 +56,11 @@ public class CellLocationIndex extends IdentityHashMap<Cell, Coordinate> {
 
     }
 
+    @Override
+    public Coordinate remove(Object key) {
+        return super.remove(key);
+    }
+
     public boolean isIndexed(Cell cell) {
         return containsKey(cell);
     }

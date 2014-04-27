@@ -21,10 +21,12 @@ package processes.discrete;
 
 import cells.Cell;
 import control.GeneralParameters;
+import control.arguments.Argument;
 import control.halt.HaltCondition;
 import control.halt.LatticeFullEvent;
 import control.identifiers.Coordinate;
 import io.factory.CellFactory;
+import io.factory.IntegerArgumentFactory;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
@@ -35,8 +37,8 @@ import java.util.Random;
 
 public class Scatter extends CellProcess {
 
-    private int numGroups;
-    private int groupSize;
+    private Argument<Integer> numGroups;
+    private Argument<Integer> groupSize;
 
     private Random random;
 
@@ -49,8 +51,8 @@ public class Scatter extends CellProcess {
 
         random = p.getRandom();
 
-        numGroups = Integer.valueOf(get("types", "1"));
-        groupSize = Integer.valueOf(get("tokens"));
+        numGroups = IntegerArgumentFactory.instantiate(e, "types", 1, p.getRandom());
+        groupSize = IntegerArgumentFactory.instantiate(e, "tokens", 1, p.getRandom());
     }
 
     public void target(GillespieState gs) throws HaltCondition {
@@ -74,11 +76,13 @@ public class Scatter extends CellProcess {
             throw new IllegalStateException("fire() invoked on scatter before target().");
         }
 
-        for (int i = 0; i < numGroups; i++) {
+        int n = numGroups.next();
+        for (int i = 0; i < n; i++) {
             CellFactory factory = getCellFactory(layerManager);
 
             // Create a cell factory for this group
-            for (int j = 0; j < groupSize; j++) {
+            int m = groupSize.next();
+            for (int j = 0; j < m; j++) {
 
                 if (candidates.isEmpty()) {
                     throw new LatticeFullEvent(state.getTime());

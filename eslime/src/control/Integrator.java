@@ -50,6 +50,9 @@ public class Integrator {
      */
     public HaltCondition go() {
         for (int n = 0; n < p.T(); n++) {
+//            if (n == 9) {
+//                System.err.println("Breakpoint");
+//            }
             StepState state = new StepState(time, n);
             try {
                 state = processManager.doTriggeredProcesses(state);

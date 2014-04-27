@@ -89,6 +89,8 @@ public class GeneralParameters {
     public void advance() {
         instance++;
         updateInstancePath();
+        randomSeed = System.currentTimeMillis();
+        random = new Random(randomSeed);
     }
 
     // Pull in a single-datum element
@@ -269,10 +271,6 @@ public class GeneralParameters {
         return epsilon;
     }
 
-    public String getLatticeShape() {
-        return "HexRing";
-    }
-
     private String date() {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd/HH'h'mm'm'ss's'");
         Date date = new Date();
@@ -349,7 +347,7 @@ public class GeneralParameters {
     }
 
     public HashSet<Integer> getFrames() {
-        return new HashSet<Integer>(frames);
+        return new HashSet<>(frames);
     }
 
     /**

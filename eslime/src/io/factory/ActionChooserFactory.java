@@ -20,6 +20,7 @@
 package io.factory;
 
 import agent.action.Action;
+import agent.action.ActionRangeMap;
 import cells.BehaviorCell;
 import control.GeneralParameters;
 import layers.LayerManager;
@@ -40,10 +41,11 @@ import java.util.List;
  */
 public abstract class ActionChooserFactory {
 
-    public static RangeMap<Action> instantiate(Element base, BehaviorCell callback, LayerManager layerManager,
+    public static ActionRangeMap instantiate(Element base, BehaviorCell callback, LayerManager layerManager,
                                                GeneralParameters p) {
 
-        RangeMap<Action> chooser = new RangeMap<>();
+        ActionRangeMap chooser = new ActionRangeMap();
+//        RangeMap<Action> chooser = new RangeMap<>();
         // Iterate through all enumerated options.
         for (Object o : base.elements("option")) {
             Element option = (Element) o;

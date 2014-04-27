@@ -34,11 +34,11 @@ import java.util.Random;
  * Created by dbborens on 3/6/14.
  */
 public class StochasticChoice extends Action {
-    private RangeMap<Action> chooser;
+    private ActionRangeMap chooser;
     private Random random;
 
     public StochasticChoice(BehaviorCell callback, LayerManager layerManager,
-                            RangeMap<Action> chooser, Random random) {
+                            ActionRangeMap chooser, Random random) {
 
         super(callback, layerManager);
         this.chooser = chooser;
@@ -70,7 +70,8 @@ public class StochasticChoice extends Action {
 
     @Override
     public Action clone(BehaviorCell child) {
-        RangeMap<Action> clonedChooser = chooser.clone();
+        // BUG IS HERE -- need an ActionRangeMap extends RangeMap<Action> that clones actions with new targets
+        ActionRangeMap clonedChooser = chooser.clone(child);
         StochasticChoice cloned = new StochasticChoice(child, getLayerManager(), clonedChooser, random);
         return cloned;
     }

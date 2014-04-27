@@ -75,8 +75,6 @@ public class Cull extends CellProcess {
     }
 
     private void execute(StepState state, Coordinate[] targetsArr) {
-        if (targetsArr.length != 0) {
-        }
         CellUpdateManager manager = layer.getUpdateManager();
         for (Coordinate target : targetsArr) {
             manager.banish(target);

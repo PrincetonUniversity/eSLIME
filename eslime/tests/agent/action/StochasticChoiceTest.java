@@ -35,7 +35,7 @@ public class StochasticChoiceTest extends EslimeTestCase {
     private MockCell callback;
     private MockLayerManager layerManager;
     private MockAction action;
-    private MockRangeMap<Action> chooser;
+    private MockActionRangeMap chooser;
     private Random random;
 
     @Override
@@ -45,7 +45,7 @@ public class StochasticChoiceTest extends EslimeTestCase {
         random = new Random(RANDOM_SEED);
         callback = new MockCell();
         action = new MockAction();
-        chooser = new MockRangeMap<>();
+        chooser = new MockActionRangeMap();
         chooser.setNextTarget(action);
         layerManager = new MockLayerManager();
         query = new StochasticChoice(callback, layerManager, chooser, random);
@@ -59,7 +59,7 @@ public class StochasticChoiceTest extends EslimeTestCase {
 
     public void testEquals() throws Exception {
         MockCell otherCell = new MockCell();
-        MockRangeMap<Action> otherChooser = new MockRangeMap<>();
+        MockActionRangeMap otherChooser = new MockActionRangeMap();
 
         StochasticChoice other = new StochasticChoice(otherCell, null, otherChooser, null);
 
