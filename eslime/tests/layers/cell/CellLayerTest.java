@@ -22,7 +22,6 @@
 package layers.cell;
 
 import geometry.MockGeometry;
-import junit.framework.TestCase;
 import test.EslimeTestCase;
 
 /**
