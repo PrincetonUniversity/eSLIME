@@ -138,6 +138,8 @@ public class CorrelationWriter extends Serializer {
 
     @Override
     public void flush(StepState stepState) {
+        System.out.print("Analyzing correlation...");
+        long start = System.currentTimeMillis();
         // Has the analysis fired yet? If so, return.
         if (fired) {
             return;
@@ -159,10 +161,13 @@ public class CorrelationWriter extends Serializer {
             }
         }
         // Mark the analysis event as having fired.
+        long total = System.currentTimeMillis() - start;
+        System.out.println("done in " + total + " ms");
         fired = true;
     }
 
     private void recordObservation(Coordinate i, Coordinate j, CellLayer l) {
+        long start = System.currentTimeMillis();
 
         // Calculate L1 distance r.
         int r = l.getGeometry().getL1Distance(i, j, Geometry.IGNORE_BOUNDARIES);
@@ -177,7 +182,6 @@ public class CorrelationWriter extends Serializer {
 
         // Record that an observation occurred.
         increment(observations, r);
-
     }
 
     private void increment(HashMap<Integer, Double> map, Integer key) {

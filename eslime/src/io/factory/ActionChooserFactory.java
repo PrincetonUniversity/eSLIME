@@ -26,7 +26,6 @@ import control.GeneralParameters;
 import layers.LayerManager;
 import org.dom4j.Attribute;
 import org.dom4j.Element;
-import structural.RangeMap;
 
 import java.util.List;
 
@@ -45,7 +44,6 @@ public abstract class ActionChooserFactory {
                                                GeneralParameters p) {
 
         ActionRangeMap chooser = new ActionRangeMap();
-//        RangeMap<Action> chooser = new RangeMap<>();
         // Iterate through all enumerated options.
         for (Object o : base.elements("option")) {
             Element option = (Element) o;

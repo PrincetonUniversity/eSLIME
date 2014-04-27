@@ -112,9 +112,9 @@ public class Geometry {
             Coordinate wrapped = lattice.getDisplacement(pw, qw);
             return wrapped;
         } else if (mode == FLAG_BOUNDARIES) {
-            throw new UnsupportedOperationException("You need to convert the return type of getDisplacement to a coordinate vector before you can use FLAG_BOUNDARIES meaningfully for displacement.");
+            throw new UnsupportedOperationException();
         } else if (mode == EXCLUDE_BOUNDARIES) {
-            throw new UnsupportedOperationException("You need to convert the return type of getDisplacement to a coordinate vector before you can use EXCLUDE_BOUNDARIES meaningfully for displacement.");
+            throw new UnsupportedOperationException();
         } else if (mode == IGNORE_BOUNDARIES) {
             Coordinate naive = lattice.getDisplacement(pCoord, qCoord);
             return naive;
@@ -141,6 +141,7 @@ public class Geometry {
     }
 
     public int getL1Distance(Coordinate p, Coordinate q, int mode) {
+//        long start = System.currentTimeMillis();
         Coordinate vec = getDisplacement(p, q, mode);
         // Calculate L1 norm. If basis is only 2D, third component will be zero
         int res = Math.abs(vec.x()) + Math.abs(vec.y());
@@ -149,6 +150,8 @@ public class Geometry {
             res += Math.abs(vec.z());
         }
 
+//        long total = System.currentTimeMillis() - start;
+//        System.out.println("   Calculate L1 distance: " + total + " ms");
         return (res);
     }
 
@@ -157,7 +160,7 @@ public class Geometry {
     }
 
     private Coordinate[] setBoundaryFlag(Coordinate[] coords) {
-        ArrayList<Coordinate> applied = new ArrayList<Coordinate>(coords.length);
+        ArrayList<Coordinate> applied = new ArrayList<>(coords.length);
 
         for (Coordinate coord : coords) {
             applied.add(setBoundaryFlag(coord));
@@ -168,7 +171,7 @@ public class Geometry {
     }
 
     private Coordinate[] applyBoundaries(Coordinate[] coords) {
-        ArrayList<Coordinate> applied = new ArrayList<Coordinate>(coords.length);
+        ArrayList<Coordinate> applied = new ArrayList<>(coords.length);
 
         for (Coordinate coord : coords) {
             Coordinate res = applyBoundaries(coord);
