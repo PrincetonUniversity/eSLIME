@@ -21,8 +21,11 @@ package processes.discrete;
 
 import cells.Cell;
 import control.GeneralParameters;
+import control.arguments.Argument;
+import control.arguments.ConstantDouble;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
+import io.factory.DoubleArgumentFactory;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
@@ -37,7 +40,7 @@ import structural.utilities.XmlUtil;
 public class UniformBiomassGrowth extends CellProcess {
 
     // How much biomass to accumulate per time step
-    private double delta;
+    private Argument<Double> delta;
 
     // If false, apply() will be called on cells after their
     // biomass is updated. If true, you must call apply() on
@@ -48,8 +51,8 @@ public class UniformBiomassGrowth extends CellProcess {
                                 GeneralParameters p) {
         super(loader, layerManager, id, p);
 
-        delta = Double.valueOf(get("delta"));
-
+//        delta = Double.valueOf(get("delta"));
+        delta = DoubleArgumentFactory.instantiate(e, "delta", p.getRandom());
         defer = XmlUtil.getBoolean(e, "defer");
 
         if (defer) {
@@ -61,7 +64,7 @@ public class UniformBiomassGrowth extends CellProcess {
                                 double delta, boolean defer) {
         super(null, layerManager, 0, null);
 
-        this.delta = delta;
+        this.delta = new ConstantDouble(delta);
         this.defer = defer;
     }
 
@@ -75,17 +78,12 @@ public class UniformBiomassGrowth extends CellProcess {
 
     @Override
     public void fire(StepState state) throws HaltCondition {
-//        System.out.println("Executing uniform biomass growth.");
         // Feed the cells.
         for (Coordinate site : activeSites) {
             if (layer.getViewer().isOccupied(site)) {
                 Cell cell = layer.getViewer().getCell(site);
-                double oldFitness = cell.getFitness();
-                layer.getViewer().getCell(site).adjustFitness(delta);
+                layer.getViewer().getCell(site).adjustFitness(delta.next());
 
-//                System.out.print("   Fed cell at " + site);
-//                System.out.print(". Before: " + oldFitness);
-//                System.out.println(". After: " + cell.getFitness());
             }
         }
 
@@ -100,9 +98,6 @@ public class UniformBiomassGrowth extends CellProcess {
                 }
             }
         }
-
-        // It would be annoying to highlight cells just for being fed, so we
-        // don't.
     }
 
 }
