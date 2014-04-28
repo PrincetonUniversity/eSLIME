@@ -129,8 +129,8 @@ public class CorrelationWriter extends Serializer {
         }
 
         // Write the output to a file
-        String path = p.getInstancePath() + '/' + filename;
-        mkDir(p.getInstancePath(), true);
+        String path = p.getPath() + '/' + filename;
+        mkDir(p.getPath(), true);
         BufferedWriter writer = makeBufferedWriter(path);
         hAppend(writer, sb);
         hClose(writer);
@@ -138,18 +138,21 @@ public class CorrelationWriter extends Serializer {
 
     @Override
     public void flush(StepState stepState) {
-        System.out.print("Analyzing correlation...");
+        System.out.println("Go");
         long start = System.currentTimeMillis();
         // Has the analysis fired yet? If so, return.
         if (fired) {
+            System.out.println("I still think I fired.");
             return;
         }
 
         // Is it time to fire yet? If not, return.
         if (stepState.getTime() < triggerTime) {
+            System.out.println(stepState.getTime() + " < " + triggerTime);
             return;
         }
 
+        System.out.print("Analyzing correlation...");
         CellLayer layer = stepState.getRecordedCellLayer();
         Geometry geom = layer.getGeometry();
         Coordinate[] cc = geom.getCanonicalSites();
@@ -167,7 +170,6 @@ public class CorrelationWriter extends Serializer {
     }
 
     private void recordObservation(Coordinate i, Coordinate j, CellLayer l) {
-        long start = System.currentTimeMillis();
 
         // Calculate L1 distance r.
         int r = l.getGeometry().getL1Distance(i, j, Geometry.IGNORE_BOUNDARIES);

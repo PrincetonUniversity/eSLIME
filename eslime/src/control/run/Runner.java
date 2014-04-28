@@ -65,16 +65,17 @@ public class Runner implements Runnable {
             loader = new ProcessLoader(processRoot);
             p = new GeneralParameters(pp);
             gm = new GeometryFactory(pp.getElement("geometry"));
-            lm = new LayerManager(pp.getElement("layers"), gm);
-            factory = new ProcessFactory(loader, lm, p);
-            pm = new ProcessManager(factory, lm);
             Element writers = pp.getElement("writers");
-            mgr = new SerializationManager(writers, p, lm);
+            mgr = new SerializationManager(writers, p);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }
 
-        for (int i = 0; i < p.getNumInstances(); i++) {
+        int n = p.getNumInstances();
+        for (int i = 0; i < n; i++) {
+            lm = new LayerManager(pp.getElement("layers"), gm);
+            factory = new ProcessFactory(loader, lm, p);
+            pm = new ProcessManager(factory, lm);
             Integrator integrator = new Integrator(p, pm, mgr);
             mgr.init(lm);
 

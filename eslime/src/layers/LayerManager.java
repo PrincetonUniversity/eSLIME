@@ -75,7 +75,6 @@ public class LayerManager {
     private CellLayer buildCellLayer(Element layerRoot, GeometryFactory factory) {
         Element e = layerRoot.element("cell-layer");
         Geometry geometry = factory.make(e);
-        System.err.println(geometry.getCanonicalSites().length);
         CellLayer layer = new CellLayer(geometry);
         return layer;
     }

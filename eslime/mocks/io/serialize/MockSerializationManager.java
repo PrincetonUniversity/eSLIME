@@ -30,7 +30,7 @@ public class MockSerializationManager extends SerializationManager {
     private StepState stepState;
 
     public MockSerializationManager() {
-        super(new BaseElement("dummy"), null, null);
+        super(new BaseElement("dummy"), null);
     }
 
     public StepState getStepState() {

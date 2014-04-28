@@ -57,7 +57,7 @@ public class Scatter extends CellProcess {
 
     public void target(GillespieState gs) throws HaltCondition {
         // Construct initial set of candidates
-        candidates = new HashSet<Coordinate>();
+        candidates = new HashSet<>();
 
         for (Coordinate c : activeSites) {
             if (!layer.getViewer().isOccupied(c)) {
@@ -82,6 +82,7 @@ public class Scatter extends CellProcess {
 
             // Create a cell factory for this group
             int m = groupSize.next();
+            System.out.println("Tokens: " + m);
             for (int j = 0; j < m; j++) {
 
                 if (candidates.isEmpty()) {

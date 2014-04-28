@@ -25,7 +25,6 @@ import io.factory.SerializationFactory;
 import layers.LayerManager;
 import org.dom4j.Element;
 import processes.StepState;
-import structural.postprocess.ImageSequence;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,11 +36,9 @@ public class SerializationManager {
 
     private List<Serializer> writers;
     private GeneralParameters p;
-    private LayerManager lm;
 
-    public SerializationManager(Element we, GeneralParameters p, LayerManager lm) {
+    public SerializationManager(Element we, GeneralParameters p) {
         this.p = p;
-        this.lm = lm;
 
 
         writers = new ArrayList<>();
@@ -83,11 +80,6 @@ public class SerializationManager {
 
         for (Serializer tw : writers) {
             tw.dispatchHalt(ex);
-        }
-
-        if (p.isStateMap()) {
-            ImageSequence imgSequence = new ImageSequence(p.getInstancePath(), lm.getCellLayer().getGeometry(), p);
-            imgSequence.generate();
         }
     }
 }

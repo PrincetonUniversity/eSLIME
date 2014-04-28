@@ -43,7 +43,7 @@ public class ProgressReporter extends Serializer {
     public void init(LayerManager lm) {
         start = System.currentTimeMillis();
         System.out.println("Instance " + p.getInstance() + ": " + p.getInstancePath());
-        System.err.println("Random key: " + p.getRandomSeed());
+        System.out.println("Random key: " + p.getRandomSeed());
     }
 
     @Override
