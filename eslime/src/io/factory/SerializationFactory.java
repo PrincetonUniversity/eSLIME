@@ -53,8 +53,8 @@ public abstract class SerializationFactory {
         } else if (writerClass.equalsIgnoreCase("progress-reporter")) {
             ProgressReporter pr = new ProgressReporter(p);
             return pr;
-        } else if (writerClass.equalsIgnoreCase("frequency-writer")) {
-            FrequencyWriter freq = new FrequencyWriter(p);
+        } else if (writerClass.equalsIgnoreCase("census-writer")) {
+            CensusWriter freq = new CensusWriter(p);
             return freq;
         } else if (writerClass.equalsIgnoreCase("interval-writer")) {
             IntervalWriter iw = new IntervalWriter(p);

@@ -68,8 +68,8 @@ public class SerializationFactoryTest extends EslimeTestCase {
         doTest("progress-reporter", ProgressReporter.class);
     }
 
-    public void testFrequencyWriter() {
-        doTest("frequency-writer", FrequencyWriter.class);
+    public void testCensusWriter() {
+        doTest("census-writer", CensusWriter.class);
 
     }
 

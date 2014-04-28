@@ -34,25 +34,22 @@ import java.util.HashSet;
 import java.util.TreeSet;
 
 /**
- * Writes out a histogram of states by frame. Note that this
- * metric requires aggregation, and for this reason should
- * not be used to make a recording at every frame.
+ * Writes out the number of each "state" as a function of time.
  *
  * @author dbborens
  */
-public class FrequencyWriter extends Serializer {
+public class CensusWriter extends Serializer {
 
-    private static final String FILENAME = "histo.txt";
-    ArrayList<Integer> frames = new ArrayList<Integer>();
+    private static final String FILENAME = "census.txt";
+    ArrayList<Integer> frames = new ArrayList<>();
     // The keys to this map are FRAMES. The values are a mapping from STATE
     // number to count. If a state number does not appear, that means the
     // count was zero at that time.
     HashMap<Integer, HashMap<Integer, Integer>> histo;
-    HashSet<Integer> observedStates = new HashSet<Integer>();
-    private boolean closed = true;
+    HashSet<Integer> observedStates = new HashSet<>();
     private BufferedWriter bw;
 
-    public FrequencyWriter(GeneralParameters p) {
+    public CensusWriter(GeneralParameters p) {
         super(p);
 
         histo = new HashMap<>();
@@ -69,20 +66,18 @@ public class FrequencyWriter extends Serializer {
     @Override
     public void flush(StepState stepState) {
         CellLayer layer = stepState.getRecordedCellLayer();
-        if (p.isFrame(stepState.getFrame())) {
-            frames.add(stepState.getFrame());
+        frames.add(stepState.getFrame());
 
-            // Create a bucket for this frame.
-            HashMap<Integer, Integer> observations = new HashMap<Integer, Integer>();
-            histo.put(stepState.getFrame(), observations);
+        // Create a bucket for this frame.
+        HashMap<Integer, Integer> observations = new HashMap<Integer, Integer>();
+        histo.put(stepState.getFrame(), observations);
 
-            // Iterate over all observed states for this frame.
-            StateMapViewer smv = layer.getViewer().getStateMapViewer();
-            for (Integer state : smv.getStates()) {
-                Integer count = smv.getCount(state);
-                observations.put(state, count);
-                observedStates.add(state);
-            }
+        // Iterate over all observed states for this frame.
+        StateMapViewer smv = layer.getViewer().getStateMapViewer();
+        for (Integer state : smv.getStates()) {
+            Integer count = smv.getCount(state);
+            observations.put(state, count);
+            observedStates.add(state);
         }
     }
 
@@ -93,7 +88,7 @@ public class FrequencyWriter extends Serializer {
 
     private void conclude() {
         // Sort the states numerically
-        TreeSet<Integer> sortedStates = new TreeSet<Integer>(observedStates);
+        TreeSet<Integer> sortedStates = new TreeSet<>(observedStates);
 
         // Write out the header
         StringBuilder line = new StringBuilder();
@@ -108,7 +103,7 @@ public class FrequencyWriter extends Serializer {
 
         hAppend(bw, line);
 
-        TreeSet<Integer> sortedFrames = new TreeSet<Integer>(histo.keySet());
+        TreeSet<Integer> sortedFrames = new TreeSet<>(histo.keySet());
         for (Integer frame : sortedFrames) {
             HashMap<Integer, Integer> observations = histo.get(frame);
 
