@@ -1,3 +1,5 @@
 <component name="CopyrightManager">
-  <settings default="CC BY Intl 4.0" />
+  <settings default="CC BY Intl 4.0">
+    <module2copyright />
+  </settings>
 </component>

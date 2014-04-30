@@ -29,6 +29,13 @@ import java.util.HashMap;
  */
 public class MockAction extends Action {
     private int timesRun;
+    private BehaviorCell callback = null;
+
+    public void setIdentifier(int identifier) {
+        this.identifier = identifier;
+    }
+
+    private int identifier = 0;
     private HashMap<Coordinate, Integer> callerCounts;
 
     public Coordinate getLastCaller() {
@@ -39,7 +46,10 @@ public class MockAction extends Action {
 
     @Override
     public Action clone(BehaviorCell child) {
-        return new MockAction();
+        MockAction clone = new MockAction();
+        clone.setCallback(child);
+        clone.setIdentifier(identifier);
+        return clone;
     }
 
     public MockAction() {
@@ -70,16 +80,30 @@ public class MockAction extends Action {
         return timesRun;
     }
 
-    @Override
-    public boolean equals(Object obj) {
-        return (obj instanceof MockAction);
+    public void setCallback(BehaviorCell callback) {
+        this.callback = callback;
     }
 
-//    public int timesCaller(Coordinate caller) {
-//        if (!callerCounts.containsKey(caller))
-//            return 0;
-//
-//        return callerCounts.get(caller);
-//    }
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
 
+        MockAction that = (MockAction) o;
+
+        if (identifier != that.identifier) {
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return callback != null ? callback.hashCode() : 0;
+    }
+
+    public BehaviorCell getCallback() {
+        return callback;
+    }
 }

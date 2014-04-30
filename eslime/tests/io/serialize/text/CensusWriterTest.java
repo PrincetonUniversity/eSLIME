@@ -21,6 +21,11 @@
 
 package io.serialize.text;
 
+import cells.MockCell;
+import control.GeneralParameters;
+import control.identifiers.Coordinate;
+import layers.cell.CellUpdateManager;
+import processes.StepState;
 import test.EslimeLatticeTestCase;
 
 /**
@@ -29,6 +34,46 @@ import test.EslimeLatticeTestCase;
 public class CensusWriterTest extends EslimeLatticeTestCase {
 
     public void testLifeCycle() throws Exception {
-        fail("Not yet implemented.");
+        GeneralParameters p = makeMockGeneralParameters();
+        CensusWriter writer = new CensusWriter(p);
+        writer.init(layerManager);
+        // Create original configuration
+        put(origin, 1);
+        put(x, 1);
+        put(y, 2);
+        put(z, 3);
+
+        // Flush original configuration
+        StepState state = new StepState(0.0, 0);
+        state.record(cellLayer);
+        writer.flush(state);
+
+        // Create second configuration
+        replace(origin, 3);
+        state = new StepState(1.0, 1);
+        state.record(cellLayer);
+        writer.flush(state);
+
+        // Create third configuration
+        put(yz, 4);
+        state = new StepState(2.0, 2);
+        state.record(cellLayer);
+        writer.flush(state);
+
+        writer.dispatchHalt(null);
+        writer.close();
+        assertFilesEqual("census.txt");
+    }
+
+    private void replace(Coordinate c, int state) {
+        CellUpdateManager u = cellLayer.getUpdateManager();
+        u.banish(c);
+        put(c, state);
+    }
+
+    private void put(Coordinate c, int state) {
+        MockCell cell = new MockCell(state);
+        CellUpdateManager u = cellLayer.getUpdateManager();
+        u.place(cell, c);
     }
 }

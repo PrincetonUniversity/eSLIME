@@ -21,6 +21,7 @@
 
 package agent.action;
 
+import cells.MockCell;
 import junit.framework.TestCase;
 
 /**
@@ -28,6 +29,38 @@ import junit.framework.TestCase;
  */
 public class ActionRangeMapTest extends TestCase {
     public void testClone() throws Exception {
-        fail("Not yet implemented");
+        MockCell originalCell = new MockCell(1);
+        MockCell cloneCell = new MockCell(2);
+
+        ActionRangeMap original = makeActionRangeMap(originalCell);
+        ActionRangeMap expected = makeActionRangeMap(cloneCell);
+        ActionRangeMap actual = original.clone(cloneCell);
+
+        assertEquals(expected, actual);
+        assertFalse(expected == actual);
+
+        checkCallbacks(actual, cloneCell);
+        checkCallbacks(original, originalCell);
+    }
+
+    private void checkCallbacks(ActionRangeMap map, MockCell cell) {
+        for (Action key : map.getKeys()) {
+            assertEquals(cell, key.getCallback());
+        }
+    }
+
+    private ActionRangeMap makeActionRangeMap(MockCell cell) {
+        ActionRangeMap ret = new ActionRangeMap(3);
+        loadMockAction(ret, cell, 0.5, 1);
+        loadMockAction(ret, cell, 0.75, 2);
+        loadMockAction(ret, cell, 0.01, 3);
+        return ret;
+    }
+
+    private void loadMockAction(ActionRangeMap map, MockCell cell, double weight, int identifier) {
+        MockAction action = new MockAction();
+        action.setIdentifier(identifier);
+        action.setCallback(cell);
+        map.add(action, weight);
     }
 }

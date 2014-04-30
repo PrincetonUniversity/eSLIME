@@ -77,20 +77,48 @@ public class XmlUtilTest extends EslimeTestCase {
     }
 
     public void testGetStringDefault() throws Exception {
-        fail("Not yet implemented");
-
+        Element testRoot = fixtureRoot.element("get-string");
+        doStringTest(testRoot, "default", "default value", "default value");
+        doStringTest(testRoot, "empty", "default value", "");
+        doStringTest(testRoot, "non-empty", "default value", "test");
     }
 
     public void testGetStringNoDefault() throws Exception {
-        fail("Not yet implemented");
+        Element testRoot = fixtureRoot.element("get-string");
+        doStringTest(testRoot, "empty", "");
+        doStringTest(testRoot, "non-empty", "test");
 
+        boolean thrown = false;
+        try {
+            XmlUtil.getString(testRoot, "default");
+        } catch (Exception e) {
+            thrown = true;
+        }
+
+        assertTrue(thrown);
     }
 
-    public void testGetIntEmptyArray() throws Exception {
-        fail("Should verify that a null element returns an empty int[] array");
+    public void testGetEmptyIntArray() throws Exception {
+        Element testRoot = fixtureRoot.element("get-int-array");
+        int[] actual = XmlUtil.getIntegerArray(testRoot.element("empty"), "item");
+        int[] expected = new int[0];
+        assertArraysEqual(expected, actual, false);
     }
 
     public void testGetIntArray() throws Exception {
-        fail("Should verify that only elements of the appropriate node name get cast as ints");
+        Element testRoot = fixtureRoot.element("get-int-array");
+        int[] actual = XmlUtil.getIntegerArray(testRoot.element("non-empty"), "item");
+        int[] expected = new int[] {3, 4, -1};
+        assertArraysEqual(expected, actual, false);
+    }
+
+    private void doStringTest(Element testRoot, String elemName, String defaultValue, String expected) {
+        String actual = XmlUtil.getString(testRoot, elemName, defaultValue);
+        assertEquals(expected, actual);
+    }
+
+    private void doStringTest(Element testRoot, String elemName, String expected) {
+        String actual = XmlUtil.getString(testRoot, elemName);
+        assertEquals(expected, actual);
     }
 }

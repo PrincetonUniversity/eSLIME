@@ -50,4 +50,22 @@
             <test>4e-3</test>
         </scientific>
     </get-double>
+
+    <get-string>
+        <empty />
+        <non-empty>
+            test
+        </non-empty>
+    </get-string>
+
+    <get-int-array>
+        <empty />
+
+        <non-empty>
+            <item>3</item>
+            <item>4</item>
+            <item>-1</item>
+        </non-empty>
+
+    </get-int-array>
 </fixture>
