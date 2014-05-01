@@ -19,7 +19,7 @@
 
 package processes.discrete;
 
-import cells.SimpleCell;
+import cells.MockCell;
 import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import layers.MockLayerManager;
@@ -96,7 +96,7 @@ public class SmiteTest extends EslimeTestCase {
      */
     public void testLifeCycle() throws Exception {
         // Create a cell on the lattice
-        SimpleCell cell = new SimpleCell(1);
+        MockCell cell = new MockCell(1);
         layer.getUpdateManager().place(cell, query);
 
         // Verify that the cell is there

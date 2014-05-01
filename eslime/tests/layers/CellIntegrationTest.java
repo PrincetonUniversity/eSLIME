@@ -19,10 +19,9 @@
 
 package layers;
 
+import cells.BehaviorCell;
 import cells.Cell;
-import cells.FissionCell;
 import cells.MockCell;
-import cells.SimpleCell;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
 import geometry.boundaries.Boundary;
@@ -71,7 +70,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         CellLayer layer = new CellLayer(geom);
 
         // Set up a cell
-        Cell toPlace = new SimpleCell(1);
+        Cell toPlace = new MockCell(1);
 
         Coordinate coord = new Coordinate(2, 3, 0);
 
@@ -90,8 +89,9 @@ public class CellIntegrationTest extends EslimeTestCase {
         Boundary boundary = new PlaneRingHard(shape, lattice);
         Geometry geom = new Geometry(lattice, shape, boundary);
         CellLayer layer = new CellLayer(geom);
-
-        Cell toPlace = new FissionCell(1, 0.5, 1.0);
+        MockLayerManager lm = new MockLayerManager();
+        lm.setCellLayer(layer);
+        Cell toPlace = new BehaviorCell(lm, 1, 0.5, 1.0);
         Coordinate coord = new Coordinate(2, 3, 0);
 
         layer.getUpdateManager().place(toPlace, coord);
@@ -100,11 +100,6 @@ public class CellIntegrationTest extends EslimeTestCase {
         assertTrue(!layer.getViewer().getDivisibleSites().contains(coord));
 
         layer.getViewer().getCell(coord).adjustFitness(1.0);
-
-        assertEquals(layer.getViewer().getCell(coord).getFitness(), 0.5);
-        assertTrue(!layer.getViewer().getDivisibleSites().contains(coord));
-
-        layer.getUpdateManager().apply(coord);
 
         assertEquals(layer.getViewer().getCell(coord).getFitness(), 1.5);
         assertTrue(layer.getViewer().getDivisibleSites().contains(coord));
@@ -119,7 +114,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         CellLayer layer = new CellLayer(geom);
 
         // Set up one cell
-        Cell toPlace = new SimpleCell(1);
+        Cell toPlace = new MockCell(1);
         Coordinate coord = new Coordinate(2, 3, 0);
         layer.getUpdateManager().place(toPlace, coord);
 
@@ -129,7 +124,7 @@ public class CellIntegrationTest extends EslimeTestCase {
 
         // Add an occupied neighbor
         Coordinate coordAbove = new Coordinate(3, 3, 0);
-        layer.getUpdateManager().place(new SimpleCell(2), coordAbove);
+        layer.getUpdateManager().place(new MockCell(2), coordAbove);
 
         // Check that the right cell is placed
         assertFalse(layer.getViewer().getCell(coord).getState() == layer.getViewer().getCell(coordAbove).getState());
@@ -140,14 +135,14 @@ public class CellIntegrationTest extends EslimeTestCase {
 
         // Add a cell at adjacent to southern boundary
         Coordinate south = new Coordinate(2, 1, 0);
-        layer.getUpdateManager().place(new SimpleCell(1), south);
+        layer.getUpdateManager().place(new MockCell(1), south);
 
         // Should be short one vacant neighbor (hard BCs for cells)
         assertEquals(5, layer.getLookupManager().getNearestVacancies(south, -1).length);
 
         // Add a cell at origin (should be just like south)
         Coordinate origin = new Coordinate(0, 0, 0);
-        layer.getUpdateManager().place(new SimpleCell(1), origin);
+        layer.getUpdateManager().place(new MockCell(1), origin);
 
         // Should be short one vacant neighbor (hard BCs for cells)
         assertEquals(5, layer.getLookupManager().getNearestVacancies(origin, -1).length);
@@ -162,7 +157,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         CellLayer layer = new CellLayer(geom);
 
         // Set up one cell
-        Cell toPlace = new SimpleCell(1);
+        Cell toPlace = new MockCell(1);
         Coordinate coord = new Coordinate(2, 3, 0);
         layer.getUpdateManager().place(toPlace, coord);
 
@@ -182,14 +177,14 @@ public class CellIntegrationTest extends EslimeTestCase {
 
         // Fill all but one canonical neighbor
         for (int i = 0; i < nVec.length - 1; i++) {
-            layer.getUpdateManager().place(new SimpleCell(100), nVec[i]);
+            layer.getUpdateManager().place(new MockCell(100), nVec[i]);
         }
 
         // List of vacancies should be only remaining canonical neighbor
         assertEquals(1, layer.getLookupManager().getNearestVacancies(coord, -1).length);
 
         // Fill that one -- should have 12 nearest vacancies now
-        layer.getUpdateManager().place(new SimpleCell(100), nVec[nVec.length - 1]);
+        layer.getUpdateManager().place(new MockCell(100), nVec[nVec.length - 1]);
         assertEquals(12, layer.getLookupManager().getNearestVacancies(coord, -1).length);
 
         // Now try getNearestVacancies with a maximum radius of 1--shouldn't have any
@@ -211,11 +206,11 @@ public class CellIntegrationTest extends EslimeTestCase {
         CellLayer layer = new CellLayer(geom);
 
         // Set up one cell
-        Cell toPlace = new SimpleCell(1);
+        Cell toPlace = new MockCell(1);
         Coordinate coord = new Coordinate(2, 3, 0);
         layer.getUpdateManager().place(toPlace, coord);
 
-        Cell second = new SimpleCell(2);
+        Cell second = new MockCell(2);
 
         boolean thrown = false;
         try {
@@ -260,7 +255,6 @@ public class CellIntegrationTest extends EslimeTestCase {
      */
 
     public void testLatticeFunctionality() {
-        //HexRing geom = new HexRing(6, 6);
         Lattice lattice = new TriangularLattice();
         Shape shape = new Rectangle(lattice, 6, 6);
         Boundary boundary = new PlaneRingHard(shape, lattice);
@@ -273,7 +267,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         // Unoccupied lattice: occupied and divisible sites should be empty, vacant == canonical
         Coordinate[] canonical = geom.getCanonicalSites();
 
-        HashSet<Coordinate> cSet = new HashSet<Coordinate>(canonical.length);
+        HashSet<Coordinate> cSet = new HashSet<>(canonical.length);
         for (int i = 0; i < canonical.length; i++)
             cSet.add(canonical[i]);
 
@@ -281,7 +275,11 @@ public class CellIntegrationTest extends EslimeTestCase {
         assertEquals(0, layer.getViewer().getOccupiedSites().size());
 
         // Place one cell
-        Cell toPlace = new SimpleCell(1);
+        MockCell toPlace = new MockCell(1);
+        MockCell childCell = new MockCell(1);
+        childCell.setDivisible(true);
+        toPlace.setDivisible(true);
+        toPlace.setChild(childCell);
         Coordinate coord = new Coordinate(2, 3, 0);
         layer.getUpdateManager().place(toPlace, coord);
 
@@ -312,7 +310,6 @@ public class CellIntegrationTest extends EslimeTestCase {
 
         // Indices should reflect the division
         assertEquals(2, layer.getViewer().getOccupiedSites().size());
-
         assertEquals(2, layer.getViewer().getDivisibleSites().size());
 
         // Tell only one cell to consider...
@@ -353,6 +350,5 @@ public class CellIntegrationTest extends EslimeTestCase {
 
         HashSet<Coordinate> oSet = layer.getViewer().getOccupiedSites();
         assertTrue(oSet.contains(destination));
-
     }
 }

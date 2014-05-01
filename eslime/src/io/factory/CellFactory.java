@@ -22,8 +22,6 @@ package io.factory;
 import agent.control.BehaviorDispatcher;
 import cells.BehaviorCell;
 import cells.Cell;
-import cells.FissionCell;
-import cells.SimpleCell;
 import control.GeneralParameters;
 import control.arguments.Argument;
 import control.arguments.ConstantInteger;
@@ -82,13 +80,7 @@ public class CellFactory {
     public Cell instantiate() {
         String className = cellDescriptor.element("class").getTextTrim();
 
-        if (className.equalsIgnoreCase("SimpleCell")) {
-            return simpleCell();
-
-        } else if (className.equalsIgnoreCase("FissionCell")) {
-            return fissionCell();
-
-        } else if (className.equalsIgnoreCase("BehaviorCell")) {
+        if (className.equalsIgnoreCase("BehaviorCell")) {
             return behaviorCell();
         } else {
 
@@ -116,23 +108,6 @@ public class CellFactory {
         // Return completed object
         return cell;
     }
-
-    private Cell fissionCell() {
-        double initialFitnessValue = initialHealth.next();
-        double thresholdValue = threshold.next();
-        int stateValue = cellState.next();
-
-        Cell cell = new FissionCell(stateValue, initialFitnessValue, thresholdValue);
-
-        return cell;
-    }
-
-    private Cell simpleCell() {
-        int stateValue = cellState.next();
-        Cell cell = new SimpleCell(stateValue);
-        return cell;
-    }
-
 
     private int getNextState() {
         CellLayer layer = layerManager.getCellLayer();

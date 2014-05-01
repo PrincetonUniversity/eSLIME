@@ -99,10 +99,6 @@ public class MockCell extends BehaviorCell {
         this.child = child;
     }
 
-    public void setConsiderCount(int considerCount) {
-        this.considerCount = considerCount;
-    }
-
     @Override
     public boolean isDivisible() {
         return divisible;
