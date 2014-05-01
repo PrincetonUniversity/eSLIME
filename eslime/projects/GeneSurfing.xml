@@ -69,7 +69,7 @@
             <cell-descriptor>
                 <class>FissionCell</class>
                 <state>2</state>
-                <initial-fitness>0.5</initial-fitness>
+                <initial-health>0.5</initial-health>
                 <threshold>1.0</threshold>
             </cell-descriptor>
             <active-sites>
@@ -99,7 +99,7 @@
             <cell-descriptor>
                 <class>FissionCell</class>
                 <state>1</state>
-                <initial-fitness>0.5</initial-fitness>
+                <initial-health>0.5</initial-health>
                 <threshold>1.0</threshold>
             </cell-descriptor>
             <active-sites>
@@ -147,7 +147,7 @@
 
         <!--
             Mutants should grow more slowly, so we set their delta at 0.2:
-            a very big fitness penalty!
+            a very big health penalty!
         -->
 
         <targeted-biomass-growth>
@@ -190,11 +190,11 @@
 
         <!--
             This writer creates a FASTA-like vector representation of the system
-            state. This includes the phenotype of each cell, the fitness, and so
+            state. This includes the phenotype of each cell, the health, and so
             on. It also writes an index file that specifies the mapping between
             vector index and coordinate value. Finally, it records information
             about global extrema, such as the minimum and
-            maximum of each solute field, as well as minimum and maximum fitnesses.
+            maximum of each solute field, as well as minimum and maximum healthes.
             This is used for setting the scale of some visualizations.
         -->
 

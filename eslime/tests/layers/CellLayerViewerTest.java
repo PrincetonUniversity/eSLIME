@@ -87,10 +87,10 @@ public class CellLayerViewerTest extends EslimeTestCase {
         assertEquals(cell, query.getCell(c1));
     }
 
-    public void testGetFitnessVector() {
-        double[] fitnesses = new double[]{0.1, 0.2};
-        content.setFitnessVector(fitnesses);
-        assertArraysEqual(fitnesses, query.getFitnessVector(), false);
+    public void testGetHealthVector() {
+        double[] healthes = new double[]{0.1, 0.2};
+        content.setHealthVector(healthes);
+        assertArraysEqual(healthes, query.getHealthVector(), false);
     }
 
     public void testGetStateVector() {

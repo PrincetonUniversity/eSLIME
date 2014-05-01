@@ -62,7 +62,7 @@ public class CellFactory {
 
         cellState = getCellState(cellDescriptor);
         threshold = DoubleArgumentFactory.instantiate(cellDescriptor, "threshold", 2.0, p.getRandom());
-        initialHealth = DoubleArgumentFactory.instantiate(cellDescriptor, "initial-fitness", 1.0, p.getRandom());
+        initialHealth = DoubleArgumentFactory.instantiate(cellDescriptor, "initial-health", 1.0, p.getRandom());
     }
 
     private Argument<Integer> getCellState(Element cellDescriptor) {
@@ -93,12 +93,12 @@ public class CellFactory {
 
     private Cell behaviorCell() {
         // Load cell properties
-        double initialFitnessValue = initialHealth.next();
+        double initialHealthValue = initialHealth.next();
         double thresholdValue = threshold.next();
         int stateValue = cellState.next();
 
         // Construct cell
-        BehaviorCell cell = new BehaviorCell(layerManager, stateValue, initialFitnessValue, thresholdValue);
+        BehaviorCell cell = new BehaviorCell(layerManager, stateValue, initialHealthValue, thresholdValue);
 
         // Load behaviors
         Element behaviorRoot = cellDescriptor.element("behaviors");

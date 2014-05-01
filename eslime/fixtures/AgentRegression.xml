@@ -93,17 +93,17 @@
                      have the same "state" id. -->
                 <state>sequential</state>
 
-                <initial-fitness>0.5</initial-fitness>
+                <initial-health>0.5</initial-health>
                 <threshold>1.0</threshold>
 
                 <behaviors>
                     <!-- We are defining the "grow" behavior in both the fast and
-                         slow cells to mean "increase cell fitness by a specified
+                         slow cells to mean "increase cell health by a specified
                          amount." The difference is how fast they do it. -->
                     <grow>
-                        <adjust-fitness>
+                        <adjust-health>
                             <delta>0.5</delta>
-                        </adjust-fitness>
+                        </adjust-health>
                     </grow>
                 </behaviors>
             </cell-descriptor>
@@ -126,13 +126,13 @@
             <cell-descriptor>
                 <class>BehaviorCell</class>
                 <state>sequential</state>
-                <initial-fitness>0.5</initial-fitness>
+                <initial-health>0.5</initial-health>
                 <threshold>1.0</threshold>
                 <behaviors>
                     <grow>
-                        <adjust-fitness>
+                        <adjust-health>
                             <delta>0.25</delta>
-                        </adjust-fitness>
+                        </adjust-health>
                     </grow>
                 </behaviors>
             </cell-descriptor>

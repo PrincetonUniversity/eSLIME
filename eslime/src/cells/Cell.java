@@ -25,19 +25,18 @@ import control.identifiers.Coordinate;
  * Parent class for cells.
  *
  * @author David Bruce Borenstein
- * @tested (see subclass tests)
  */
 public abstract class Cell {
     private int state;
-    private double fitness;
+    private double health;
     private boolean divisible;
 
     public int getState() {
         return state;
     }
 
-    public double getFitness() {
-        return fitness;
+    public double getHealth() {
+        return health;
     }
 
     public boolean isDivisible() {
@@ -91,7 +90,7 @@ public abstract class Cell {
      * Informs the cell that it has been given a direct benefit.
      * The effect of this benefit depends on the cell class.
      */
-    public abstract void adjustFitness(double delta);
+    public abstract void adjustHealth(double delta);
 
     protected void setState(int state) {
         if (state == 0) {
@@ -101,8 +100,8 @@ public abstract class Cell {
         this.state = state;
     }
 
-    protected void setFitness(double fitness) {
-        this.fitness = fitness;
+    protected void setHealth(double health) {
+        this.health = health;
     }
 
     protected void setDivisible(boolean divisible) {

@@ -34,7 +34,7 @@ import java.util.Set;
  */
 public class LightweightSystemState extends SystemState {
 
-    private double[] fitnessVector;
+    private double[] healthVector;
     private Map<String, ContinuumState> continuumStates;
     private double time;
     private int frame;
@@ -57,14 +57,14 @@ public class LightweightSystemState extends SystemState {
     }
 
 
-    public void setFitnessVector(double[] fitnessVector) {
-        this.fitnessVector = fitnessVector;
+    public void setHealthVector(double[] healthVector) {
+        this.healthVector = healthVector;
     }
 
     @Override
-    public double getFitness(Coordinate coord) {
+    public double getHealth(Coordinate coord) {
         int index = deindexer.getIndex(coord);
-        return fitnessVector[index];
+        return healthVector[index];
     }
 
     @Override

@@ -32,9 +32,9 @@
         </target>
     </trigger>
 
-    <adjust-fitness>
+    <adjust-health>
         <delta>0.5</delta>
-    </adjust-fitness>
+    </adjust-health>
 
     <stochastic-choice>
         <option weight="1.0">

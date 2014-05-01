@@ -57,7 +57,7 @@ public class Cull extends CellProcess {
             }
 
             Cell cell = layer.getViewer().getCell(candidate);
-            if (cell.getFitness() <= threshold) {
+            if (cell.getHealth() <= threshold) {
                 targets.add(candidate);
             }
         }

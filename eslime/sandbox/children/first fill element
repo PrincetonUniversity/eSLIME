@@ -3,7 +3,7 @@
 
 <cell-descriptor>
     <class>BehaviorCell</class>
-    <initial-fitness>0.5</initial-fitness>
+    <initial-health>0.5</initial-health>
     <threshold>1.0</threshold>
 
     <behaviors>

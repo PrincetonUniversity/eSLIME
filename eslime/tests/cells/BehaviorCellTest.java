@@ -58,18 +58,18 @@ public class BehaviorCellTest extends EslimeLatticeTestCase {
         Cell child = query.divide();
         assertEquals(child, query);
 
-        // Fitness should be half for each
-        assertEquals(0.5, query.getFitness(), epsilon);
-        assertEquals(0.5, child.getFitness(), epsilon);
+        // Health should be half for each
+        assertEquals(0.5, query.getHealth(), epsilon);
+        assertEquals(0.5, child.getHealth(), epsilon);
     }
 
     public void testClone() throws Exception {
         Cell clone = query.clone();
         assertEquals(clone, query);
 
-        // Since no division took place, fitness should be original for each
-        assertEquals(1.0, query.getFitness(), epsilon);
-        assertEquals(1.0, clone.getFitness(), epsilon);
+        // Since no division took place, health should be original for each
+        assertEquals(1.0, query.getHealth(), epsilon);
+        assertEquals(1.0, clone.getHealth(), epsilon);
     }
 
     public void testTrigger() throws Exception {
@@ -115,23 +115,23 @@ public class BehaviorCellTest extends EslimeLatticeTestCase {
 
     /**
      * The base BehaviorCell class automatically marks itself
-     * as divisible according to its fitness. So if a call
-     * to setFitness() puts it above or below the threshold,
+     * as divisible according to its health. So if a call
+     * to setHealth() puts it above or below the threshold,
      * that should be noted.
      */
     public void testDivisibilityThresholding() {
         double threshold = query.getThreshold();
 
         // Start off below threshold.
-        query.setFitness(threshold / 2);
+        query.setHealth(threshold / 2);
         assertDivisibilityStatus(false);
 
         // Adjust above threshold.
-        query.setFitness(threshold * 2);
+        query.setHealth(threshold * 2);
         assertDivisibilityStatus(true);
 
         // Adjust below threshold again.
-        query.setFitness(threshold / 2);
+        query.setHealth(threshold / 2);
         assertDivisibilityStatus(false);
     }
 

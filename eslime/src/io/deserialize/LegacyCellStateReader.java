@@ -118,9 +118,9 @@ public class LegacyCellStateReader {
     private ConditionViewer readConditions() throws IOException {
         int fCurrent;
 
-        VectorViewer f = null;        // Fitness
+        VectorViewer f = null;        // Health
 
-        Extrema ef = getFitnessExtremes();
+        Extrema ef = getHealthExtremes();
         int[] states = new int[deindexer.getNumSites()];
         HashSet<Coordinate> highlights = new HashSet<Coordinate>();
         while (prevLine != null) {
@@ -133,7 +133,7 @@ public class LegacyCellStateReader {
             if (frame != fCurrent)
                 break;
 
-            if (tokens[0].equals("fitness")) {
+            if (tokens[0].equals("health")) {
                 f = readVector(ef);
             } else if (tokens[0].equals("state")) {
                 states = readStates();
@@ -147,10 +147,10 @@ public class LegacyCellStateReader {
         return new ConditionViewer(f, states, highlights, frame, gillespie, deindexer);
     }
 
-    private Extrema getFitnessExtremes() {
+    private Extrema getHealthExtremes() {
         File metadataFile = new File(path + '/' + METADATA_FILENAME);
         ExtremaReader reader = new ExtremaReader(metadataFile);
-        Extrema ret = reader.get("fitness");
+        Extrema ret = reader.get("health");
         return ret;
     }
 
@@ -232,7 +232,7 @@ public class LegacyCellStateReader {
 
     public void populate(LightweightSystemState state) {
         ConditionViewer viewer = next();
-        state.setFitnessVector(viewer.getFitnessVector());
+        state.setHealthVector(viewer.getHealthVector());
         state.setStateVector(viewer.getStateVector());
     }
 }

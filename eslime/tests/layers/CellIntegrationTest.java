@@ -78,7 +78,7 @@ public class CellIntegrationTest extends EslimeTestCase {
 
         // Get its properties through the lattice.
         // TODO This should be replaced with epsilon equality
-        assertEquals(toPlace.getFitness(), layer.getViewer().getCell(coord).getFitness(), epsilon);
+        assertEquals(toPlace.getHealth(), layer.getViewer().getCell(coord).getHealth(), epsilon);
         assertEquals(toPlace.getState(), layer.getViewer().getCell(coord).getState());
     }
 
@@ -96,12 +96,12 @@ public class CellIntegrationTest extends EslimeTestCase {
 
         layer.getUpdateManager().place(toPlace, coord);
 
-        assertEquals(layer.getViewer().getCell(coord).getFitness(), 0.5);
+        assertEquals(layer.getViewer().getCell(coord).getHealth(), 0.5);
         assertTrue(!layer.getViewer().getDivisibleSites().contains(coord));
 
-        layer.getViewer().getCell(coord).adjustFitness(1.0);
+        layer.getViewer().getCell(coord).adjustHealth(1.0);
 
-        assertEquals(layer.getViewer().getCell(coord).getFitness(), 1.5);
+        assertEquals(layer.getViewer().getCell(coord).getHealth(), 1.5);
         assertTrue(layer.getViewer().getDivisibleSites().contains(coord));
     }
 

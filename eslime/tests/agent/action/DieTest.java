@@ -42,7 +42,7 @@ public class DieTest extends EslimeLatticeTestCase {
         cell = new BehaviorCell(layerManager, 1, 1.0, 1.0);
         query = new Die(cell, layerManager);
         identical = new Die(cell, layerManager);
-        different = new AdjustFitness(cell, layerManager, 0.7);
+        different = new AdjustHealth(cell, layerManager, 0.7);
 
         // Configure behavior dispatcher
         eventName = "TEST";

@@ -55,16 +55,16 @@ public class MapVisualizationTest extends GlyphTest {
     }
 
     @Override
-    protected void populateStateAndFitness(Geometry geom, LightweightSystemState systemState) {
+    protected void populateStateAndHealth(Geometry geom, LightweightSystemState systemState) {
         int n = geom.getCanonicalSites().length;
-        double[] fitness = new double[n];
+        double[] health = new double[n];
         int[] state = new int[n];
 
         for (int i = 0; i < n; i++) {
-            fitness[i] = (i % 2) + 1;
+            health[i] = (i % 2) + 1;
             state[i] = ((i + 1) % 2) + 1;
         }
-        systemState.setFitnessVector(fitness);
+        systemState.setHealthVector(health);
         systemState.setStateVector(state);
     }
 

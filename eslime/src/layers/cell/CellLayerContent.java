@@ -24,7 +24,6 @@ import control.identifiers.Coordinate;
 import geometry.Geometry;
 import structural.CanonicalCellMap;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
@@ -138,9 +137,9 @@ public abstract class CellLayerContent {
     }
 
     /**
-     * Returns the fitness vector, in canonical site order.
+     * Returns the health vector, in canonical site order.
      */
-    public double[] getFitnessVector() {
+    public double[] getHealthVector() {
         Coordinate[] cArr = getCanonicalSites();
 
         double[] fArr = new double[cArr.length];
@@ -150,7 +149,7 @@ public abstract class CellLayerContent {
             if (c == null) {
                 fArr[i] = 0D;
             } else {
-                fArr[i] = map.get(cArr[i]).getFitness();
+                fArr[i] = map.get(cArr[i]).getHealth();
             }
         }
 

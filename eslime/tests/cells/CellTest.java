@@ -27,7 +27,7 @@ import test.EslimeTestCase;
 public abstract class CellTest extends EslimeTestCase {
     public abstract void testGetState() throws Exception;
 
-    public abstract void testGetFitness() throws Exception;
+    public abstract void testGetHealth() throws Exception;
 
     public abstract void testIsDivisible() throws Exception;
 

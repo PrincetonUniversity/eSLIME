@@ -24,7 +24,7 @@
     </cell-a>
     <cell-b>
         <class>BehaviorCell</class>
-        <initial-fitness>0.5</initial-fitness>
+        <initial-health>0.5</initial-health>
         <threshold>1.0</threshold>
         <state>2</state>
         <behaviors>
@@ -35,12 +35,12 @@
     </cell-b>
     <cell-stochastic>
         <class>BehaviorCell</class>
-        <initial-fitness>
+        <initial-health>
             <uniform>
                 <min>0.5</min>
                 <max>1.0</max>
             </uniform>
-        </initial-fitness>
+        </initial-health>
         <threshold>1.0</threshold>
         <state>2</state>
         <behaviors>

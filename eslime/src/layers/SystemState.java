@@ -36,13 +36,13 @@ import control.identifiers.Coordinate;
 public abstract class SystemState {
 
     /**
-     * Returns the fitness of the cell at the specified coordinate
+     * Returns the health of the cell at the specified coordinate
      * of the discrete layer. Value is 0.0 if the position is
      * vacant.
      *
-     * @param coord The coordinate whose fitness is to be retrieved.
+     * @param coord The coordinate whose health is to be retrieved.
      */
-    public abstract double getFitness(Coordinate coord);
+    public abstract double getHealth(Coordinate coord);
 
     /**
      * Returns the state of the cell at the specified coordinate of

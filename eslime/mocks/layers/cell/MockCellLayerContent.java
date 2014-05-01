@@ -30,7 +30,7 @@ public class MockCellLayerContent extends CellLayerContent {
 
     private Set<Coordinate> imaginarySites;
     private int[] stateVector;
-    private double[] fitnessVector;
+    private double[] healthVector;
 
     public MockCellLayerContent(Geometry geom, CellLayerIndices indices) {
         super(geom, indices);
@@ -62,19 +62,19 @@ public class MockCellLayerContent extends CellLayerContent {
         return stateVector;
     }
 
-	/* fitnessVector */
+	/* healthVector */
 
     public void setStateVector(int[] stateVector) {
         this.stateVector = stateVector;
     }
 
     @Override
-    public double[] getFitnessVector() {
-        return fitnessVector;
+    public double[] getHealthVector() {
+        return healthVector;
     }
 
-    public void setFitnessVector(double[] fitnessVector) {
-        this.fitnessVector = fitnessVector;
+    public void setHealthVector(double[] healthVector) {
+        this.healthVector = healthVector;
     }
 
     @Override
@@ -82,7 +82,7 @@ public class MockCellLayerContent extends CellLayerContent {
         MockCellLayerContent clone = new MockCellLayerContent(geom, indices);
         clone.imaginarySites = new HashSet<>(imaginarySites);
         clone.stateVector = stateVector.clone();
-        clone.fitnessVector = fitnessVector.clone();
+        clone.healthVector = healthVector.clone();
         return clone;
     }
 }

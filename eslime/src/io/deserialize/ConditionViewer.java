@@ -51,7 +51,7 @@ public class ConditionViewer {
         return states[i];
     }
 
-    public double getFitness(Coordinate c) {
+    public double getHealth(Coordinate c) {
         int i = deindexer.getIndex(c);
 
         return f.get(i);
@@ -79,7 +79,7 @@ public class ConditionViewer {
         return states;
     }
 
-    public double[] getFitnessVector() {
+    public double[] getHealthVector() {
         return f.getData();
     }
 }

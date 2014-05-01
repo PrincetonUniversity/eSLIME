@@ -26,7 +26,6 @@ import control.GeneralParameters;
 import control.arguments.Argument;
 import layers.LayerManager;
 import org.dom4j.Element;
-import structural.RangeMap;
 
 import java.util.Random;
 
@@ -43,8 +42,8 @@ public class ActionFactory {
                 return mockAction();
             case "die":
                 return die(callback, layerManager);
-            case "adjust-fitness":
-                return adjustFitness(e, callback, layerManager);
+            case "adjust-health":
+                return adjustHealth(e, callback, layerManager);
             case "trigger":
                 return trigger(e, callback, layerManager, p);
             case "stochastic-choice":
@@ -89,10 +88,10 @@ public class ActionFactory {
         return new Trigger(callback, layerManager, behaviorName, targetRule, selfChannel, targetChannel);
     }
 
-    private static Action adjustFitness(Element e, BehaviorCell callback, LayerManager layerManager) {
+    private static Action adjustHealth(Element e, BehaviorCell callback, LayerManager layerManager) {
         String deltaStr = e.element("delta").getTextTrim();
         double delta = Double.valueOf(deltaStr);
-        return new AdjustFitness(callback, layerManager, delta);
+        return new AdjustHealth(callback, layerManager, delta);
     }
 
 }

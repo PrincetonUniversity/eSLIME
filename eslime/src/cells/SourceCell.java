@@ -36,7 +36,7 @@ public class SourceCell extends Cell {
     public SourceCell(int state, HashMap<String, Double> production) {
         super();
         considerCount = 0;
-        setFitness(0);
+        setHealth(0);
         setState(state);
         this.production = production;
         this.epsilon = EpsilonUtil.epsilon();
@@ -76,7 +76,7 @@ public class SourceCell extends Cell {
     }
 
     @Override
-    public void adjustFitness(double delta) {
+    public void adjustHealth(double delta) {
         throw new UnsupportedOperationException("Source cells cannot eat");
     }
 

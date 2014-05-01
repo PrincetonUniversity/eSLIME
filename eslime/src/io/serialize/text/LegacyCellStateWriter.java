@@ -73,7 +73,7 @@ public class LegacyCellStateWriter extends Serializer {
 //    private Date date = new Date();
 
     // Extrema for each field type
-    private Extrema ef;                // Fitness
+    private Extrema ef;                // Health
 
     //public CellStateWriter(String stateDir, Parameters p, int n) {
 
@@ -122,10 +122,10 @@ public class LegacyCellStateWriter extends Serializer {
     public void flush(StepState stepState) {
         CellLayer layer = stepState.getRecordedCellLayer();
         int[] s = layer.getViewer().getStateVector();
-        double[] f = layer.getViewer().getFitnessVector();
+        double[] f = layer.getViewer().getHealthVector();
 
             writeDoubleArray(f, layer, ef, stepState.getTime(),
-                    stepState.getFrame(), "fitness");
+                    stepState.getFrame(), "health");
 
             writeIntegerArray(s, stepState.getTime(), stepState.getFrame(), "state");
 
@@ -242,7 +242,7 @@ public class LegacyCellStateWriter extends Serializer {
             FileWriter mfw = new FileWriter(metadata);
             BufferedWriter mbw = new BufferedWriter(mfw);
 
-            mbw.write("fitness>");
+            mbw.write("health>");
             mbw.write(ef.toString());
             mbw.write('\n');
 

@@ -86,16 +86,16 @@ public abstract class GlyphTest extends EslimeTestCase {
 
     protected abstract Glyph makeGlyph();
 
-    protected void populateStateAndFitness(Geometry geom, LightweightSystemState systemState) {
+    protected void populateStateAndHealth(Geometry geom, LightweightSystemState systemState) {
         int n = geom.getCanonicalSites().length;
-        double[] fitness = new double[n];
+        double[] health = new double[n];
         int[] state = new int[n];
 
         for (int i = 0; i < n; i++) {
-            fitness[i] = 0;
+            health[i] = 0;
             state[i] = 0;
         }
-        systemState.setFitnessVector(fitness);
+        systemState.setHealthVector(health);
         systemState.setStateVector(state);
 
     }
@@ -106,7 +106,7 @@ public abstract class GlyphTest extends EslimeTestCase {
 
 
         LightweightSystemState ret = new LightweightSystemState(deindexer);
-        populateStateAndFitness(geom, ret);
+        populateStateAndHealth(geom, ret);
         Set<Coordinate> highlights = new HashSet<>();
         for (Coordinate c : geom.getCanonicalSites()) {
             highlights.add(c);

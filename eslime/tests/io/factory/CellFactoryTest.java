@@ -57,7 +57,7 @@ public class CellFactoryTest extends EslimeTestCase {
         double[] results = new double[10];
         for (int i = 0; i < 10; i++) {
             Cell actual = query.instantiate();
-            results[i] = actual.getFitness();
+            results[i] = actual.getHealth();
         }
 
         assertFalse(EpsilonUtil.epsilonEquals(0.0, var(results)));

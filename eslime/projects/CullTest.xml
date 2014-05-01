@@ -74,7 +74,7 @@
             <cell-descriptor>
                 <class>BehaviorCell</class>
                 <state>sequential</state>
-                <initial-fitness>1.0</initial-fitness>
+                <initial-health>1.0</initial-health>
                 <threshold>1.0</threshold>
 
             </cell-descriptor>

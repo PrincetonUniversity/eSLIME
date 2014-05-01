@@ -38,7 +38,7 @@ public class MockSystemState extends SystemState {
     }
 
     @Override
-    public double getFitness(Coordinate coord) {
+    public double getHealth(Coordinate coord) {
         return 0;
     }
 

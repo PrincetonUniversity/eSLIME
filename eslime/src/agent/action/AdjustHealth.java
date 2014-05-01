@@ -25,15 +25,15 @@ import layers.LayerManager;
 import structural.utilities.EpsilonUtil;
 
 /**
- * Adjusts the agent's fitness by a predefined delta.
+ * Adjusts the agent's health by a predefined delta.
  * <p/>
  * Created by David B Borenstein on 2/5/14.
  */
-public class AdjustFitness extends Action {
+public class AdjustHealth extends Action {
 
     private double delta;
 
-    public AdjustFitness(BehaviorCell callback, LayerManager layerManager, double delta) {
+    public AdjustHealth(BehaviorCell callback, LayerManager layerManager, double delta) {
         super(callback, layerManager);
         this.delta = delta;
     }
@@ -41,23 +41,23 @@ public class AdjustFitness extends Action {
     @Override
     public void run(Coordinate caller) {
         BehaviorCell cell = getCallback();
-        double curFitness = cell.getFitness();
-        double adjFitness = curFitness + delta;
-        cell.setFitness(adjFitness);
+        double curHealth = cell.getHealth();
+        double adjHealth = curHealth + delta;
+        cell.setHealth(adjHealth);
 
 //        // DEBUG CODE
 //        Coordinate self = getLayerManager().getCellLayer().getLookupManager().getCellLocation(cell);
-//        System.out.println("Adjusted cell at " + self + " from " + curFitness + " to " + adjFitness);
+//        System.out.println("Adjusted cell at " + self + " from " + curHealth + " to " + adjHealth);
 //        System.out.println("   Is this cell now divisible? " + cell.isDivisible());
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof AdjustFitness)) {
+        if (!(obj instanceof AdjustHealth)) {
             return false;
         }
 
-        AdjustFitness other = (AdjustFitness) obj;
+        AdjustHealth other = (AdjustHealth) obj;
         if (!EpsilonUtil.epsilonEquals(other.delta, this.delta)) {
             return false;
         }
@@ -67,7 +67,7 @@ public class AdjustFitness extends Action {
 
     @Override
     public Action clone(BehaviorCell child) {
-        AdjustFitness clone = new AdjustFitness(child, getLayerManager(), delta);
+        AdjustHealth clone = new AdjustHealth(child, getLayerManager(), delta);
         return clone;
     }
 }

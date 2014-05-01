@@ -64,8 +64,8 @@ public class UniformBiomassGrowthTest extends TestCase {
         CellProcess process = new UniformBiomassGrowth(layerManager, 1.5, false);
 
         // Verify that they get fed when the process is invoked
-        assertEquals(layer.getViewer().getCell(coord1).getFitness(), 0.7, epsilon);
-        assertEquals(layer.getViewer().getCell(coord2).getFitness(), 0.3, epsilon);
+        assertEquals(layer.getViewer().getCell(coord1).getHealth(), 0.7, epsilon);
+        assertEquals(layer.getViewer().getCell(coord2).getHealth(), 0.3, epsilon);
 
         assertTrue(!layer.getViewer().getDivisibleSites().contains(coord1));
         assertTrue(!layer.getViewer().getDivisibleSites().contains(coord2));
@@ -77,8 +77,8 @@ public class UniformBiomassGrowthTest extends TestCase {
         }
 
         // Verify that they get fed when the process is invoked
-        assertEquals(layer.getViewer().getCell(coord1).getFitness(), 2.2, epsilon);
-        assertEquals(layer.getViewer().getCell(coord2).getFitness(), 1.8, epsilon);
+        assertEquals(layer.getViewer().getCell(coord1).getHealth(), 2.2, epsilon);
+        assertEquals(layer.getViewer().getCell(coord2).getHealth(), 1.8, epsilon);
 
         assertTrue(layer.getViewer().getDivisibleSites().contains(coord1));
         assertTrue(!layer.getViewer().getDivisibleSites().contains(coord2));
@@ -110,8 +110,8 @@ public class UniformBiomassGrowthTest extends TestCase {
 //        CellProcess process = new UniformBiomassGrowth(layerManager, 1.5, true);
 //
 //        // Verify that they get fed when the process is invoked
-//        assertEquals(layer.getViewer().getCell(coord1).getFitness(), 0.7, epsilon);
-//        assertEquals(layer.getViewer().getCell(coord2).getFitness(), 0.3, epsilon);
+//        assertEquals(layer.getViewer().getCell(coord1).getHealth(), 0.7, epsilon);
+//        assertEquals(layer.getViewer().getCell(coord2).getHealth(), 0.3, epsilon);
 //
 //        assertTrue(!layer.getViewer().getDivisibleSites().contains(coord1));
 //        assertTrue(!layer.getViewer().getDivisibleSites().contains(coord2));
@@ -122,8 +122,8 @@ public class UniformBiomassGrowthTest extends TestCase {
 //            throw new RuntimeException(ex);
 //        }
 //
-//        assertEquals(layer.getViewer().getCell(coord1).getFitness(), 0.7, epsilon);
-//        assertEquals(layer.getViewer().getCell(coord2).getFitness(), 0.3, epsilon);
+//        assertEquals(layer.getViewer().getCell(coord1).getHealth(), 0.7, epsilon);
+//        assertEquals(layer.getViewer().getCell(coord2).getHealth(), 0.3, epsilon);
 //
 //        assertTrue(!layer.getViewer().getDivisibleSites().contains(coord1));
 //        assertTrue(!layer.getViewer().getDivisibleSites().contains(coord2));
@@ -132,8 +132,8 @@ public class UniformBiomassGrowthTest extends TestCase {
 //        layer.getUpdateManager().apply(coord2);
 //
 //        // Verify that they get fed when the process is invoked
-//        assertEquals(layer.getViewer().getCell(coord1).getFitness(), 2.2, epsilon);
-//        assertEquals(layer.getViewer().getCell(coord2).getFitness(), 1.8, epsilon);
+//        assertEquals(layer.getViewer().getCell(coord1).getHealth(), 2.2, epsilon);
+//        assertEquals(layer.getViewer().getCell(coord2).getHealth(), 1.8, epsilon);
 //
 //        assertTrue(layer.getViewer().getDivisibleSites().contains(coord1));
 //        assertTrue(!layer.getViewer().getDivisibleSites().contains(coord2));

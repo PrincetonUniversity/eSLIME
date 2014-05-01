@@ -31,8 +31,8 @@ import test.EslimeLatticeTestCase;
 /**
  * Created by David B Borenstein on 2/5/14.
  */
-public class AdjustFitnessTest extends EslimeLatticeTestCase {
-    private AdjustFitness query, identical, different;
+public class AdjustHealthTest extends EslimeLatticeTestCase {
+    private AdjustHealth query, identical, different;
     private BehaviorCell cell;
     private BehaviorDispatcher dispatcher;
     private Behavior behavior;
@@ -48,9 +48,9 @@ public class AdjustFitnessTest extends EslimeLatticeTestCase {
         layerManager.setCellLayer(cellLayer);
         cell = new BehaviorCell(layerManager, 1, 0.5, 1.0);
         cellLayer.getUpdateManager().place(cell, origin);
-        query = new AdjustFitness(cell, layerManager, 0.5);
-        identical = new AdjustFitness(cell, layerManager, 0.5);
-        different = new AdjustFitness(cell, layerManager, 0.7);
+        query = new AdjustHealth(cell, layerManager, 0.5);
+        identical = new AdjustHealth(cell, layerManager, 0.5);
+        different = new AdjustHealth(cell, layerManager, 0.7);
 
         // Configure behavior dispatcher
         eventName = "TEST";
@@ -62,17 +62,17 @@ public class AdjustFitnessTest extends EslimeLatticeTestCase {
     }
 
     public void testRun() throws Exception {
-        assertEquals(0.5, cell.getFitness(), epsilon);
+        assertEquals(0.5, cell.getHealth(), epsilon);
         cell.trigger("TEST", null);
-        assertEquals(1.0, cell.getFitness(), epsilon);
+        assertEquals(1.0, cell.getHealth(), epsilon);
     }
 
     public void testEquals() throws Exception {
-        // Create two equivalent AdjustFitness objects.
+        // Create two equivalent AdjustHealth objects.
         // Should be equal.
         assertEquals(query, identical);
 
-        // Create a third, different AdjustFitness object.
+        // Create a third, different AdjustHealth object.
         // Should not be equal.
         assertNotEquals(query, different);
     }

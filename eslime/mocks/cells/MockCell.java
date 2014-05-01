@@ -35,7 +35,7 @@ public class MockCell extends BehaviorCell {
     private int considerCount;
     private Cell child;
     private int state = 1;
-    private double fitness = 0.0;
+    private double health = 0.0;
     private double production;
     private String lastTriggeredBehaviorName;
     private Coordinate lastTriggeredCaller;
@@ -83,12 +83,12 @@ public class MockCell extends BehaviorCell {
     }
 
     @Override
-    public double getFitness() {
-        return fitness;
+    public double getHealth() {
+        return health;
     }
 
-    public void setFitness(double fitness) {
-        this.fitness = fitness;
+    public void setHealth(double health) {
+        this.health = health;
     }
 
     public void setProduction(double production) {
@@ -143,7 +143,7 @@ public class MockCell extends BehaviorCell {
     }
 
     @Override
-    public void adjustFitness(double delta) {
+    public void adjustHealth(double delta) {
 
     }
 
@@ -159,7 +159,7 @@ public class MockCell extends BehaviorCell {
             return false;
         }
 
-        if (!EpsilonUtil.epsilonEquals(other.fitness, fitness)) {
+        if (!EpsilonUtil.epsilonEquals(other.health, health)) {
             return false;
         }
 

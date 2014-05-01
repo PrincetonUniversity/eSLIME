@@ -90,16 +90,16 @@ public class BullseyeGlyphTest extends EslimeTestCase {
 
         int n = makeGeometry().getCanonicalSites().length;
 
-        double[] fitness = new double[n];
+        double[] health = new double[n];
         int[] state = new int[n];
 
         for (int i = 0; i < n; i++) {
-            fitness[i] = 0;
+            health[i] = 0;
             state[i] = 0;
         }
 
         LightweightSystemState ret = new LightweightSystemState(deindexer);
-        ret.setFitnessVector(fitness);
+        ret.setHealthVector(health);
         ret.setStateVector(state);
 
         Set<Coordinate> highlights = new HashSet<>();

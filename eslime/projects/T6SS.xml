@@ -74,7 +74,7 @@
             <cell-descriptor>
                 <class>BehaviorCell</class>
                 <state>sequential</state>
-                <initial-fitness>0.5</initial-fitness>
+                <initial-health>0.5</initial-health>
                 <threshold>1.0</threshold>
 
                 <behaviors>
@@ -92,16 +92,16 @@
                         </trigger>
 
                         <!-- Step 2: incur a cost. -->
-                        <adjust-fitness>
+                        <adjust-health>
                             <delta>-0.1</delta>
-                        </adjust-fitness>
+                        </adjust-health>
                     </attack>
 
-                    <!-- Being attacked involves taking a fitness penalty. -->
+                    <!-- Being attacked involves taking a health penalty. -->
                     <be-attacked>
-                        <adjust-fitness>
+                        <adjust-health>
                             <delta>-5.0</delta>
-                        </adjust-fitness>
+                        </adjust-health>
                     </be-attacked>
                 </behaviors>
 
@@ -120,7 +120,7 @@
             <cell-descriptor>
                 <class>BehaviorCell</class>
                 <state>sequential</state>
-                <initial-fitness>0.5</initial-fitness>
+                <initial-health>0.5</initial-health>
                 <threshold>1.0</threshold>
 
                 <behaviors>
@@ -154,9 +154,9 @@
                                 </trigger>
 
                                 <!-- Step 2: incur a cost. -->
-                                <adjust-fitness>
+                                <adjust-health>
                                     <delta>-0.3</delta>
-                                </adjust-fitness>
+                                </adjust-health>
                             </option>
                         </stochastic-choice>
                     </be-attacked>

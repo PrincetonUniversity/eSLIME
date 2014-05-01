@@ -45,7 +45,7 @@ public class TargetedBiomassGrowth extends CellProcess {
     // a cell before the new biomass accumulates.
     private boolean defer;
 
-    // Only adjustFitness cells if they are of the target type.
+    // Only adjustHealth cells if they are of the target type.
     private int targetCellType;
 
     public TargetedBiomassGrowth(ProcessLoader loader, LayerManager layerManager, int id,
@@ -82,7 +82,7 @@ public class TargetedBiomassGrowth extends CellProcess {
         // Feed the cells.
         for (Coordinate site : activeSites) {
             if (layer.getViewer().isOccupied(site) && layer.getViewer().getCell(site).getState() == targetCellType) {
-                layer.getViewer().getCell(site).adjustFitness(delta);
+                layer.getViewer().getCell(site).adjustHealth(delta);
                 targetSites.add(site);
             }
         }

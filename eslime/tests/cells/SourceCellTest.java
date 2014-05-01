@@ -50,9 +50,9 @@ public class SourceCellTest extends CellTest {
     }
 
     @Override
-    public void testGetFitness() throws Exception {
-        assertEquals(0.0, a.getFitness(), epsilon);
-        assertEquals(0.0, b.getFitness(), epsilon);
+    public void testGetHealth() throws Exception {
+        assertEquals(0.0, a.getHealth(), epsilon);
+        assertEquals(0.0, b.getHealth(), epsilon);
     }
 
     @Override

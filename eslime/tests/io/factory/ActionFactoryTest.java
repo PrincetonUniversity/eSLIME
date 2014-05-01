@@ -26,7 +26,6 @@ import cells.MockCell;
 import layers.MockLayerManager;
 import org.dom4j.Element;
 import structural.MockGeneralParameters;
-import structural.RangeMap;
 import test.EslimeTestCase;
 
 /**
@@ -88,10 +87,10 @@ public class ActionFactoryTest extends EslimeTestCase {
         assertEquals(expected, actual);
     }
 
-    public void testAdjustFitness() throws Exception {
-        Element e = fixtureRoot.element("adjust-fitness");
+    public void testAdjustHealth() throws Exception {
+        Element e = fixtureRoot.element("adjust-health");
         Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
-        Action expected = new AdjustFitness(callback, layerManager, 0.5);
+        Action expected = new AdjustHealth(callback, layerManager, 0.5);
         assertEquals(expected, actual);
 
     }

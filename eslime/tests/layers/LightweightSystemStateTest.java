@@ -49,13 +49,13 @@ public class LightweightSystemStateTest extends SystemStateTest {
     }
 
     @Override
-    public void testGetFitness() throws Exception {
-        double[] fitnessVector = new double[]{1.0, 0.0, -0.1, 2.0};
-        query.setFitnessVector(fitnessVector);
+    public void testGetHealth() throws Exception {
+        double[] healthVector = new double[]{1.0, 0.0, -0.1, 2.0};
+        query.setHealthVector(healthVector);
         for (int i = 0; i < 4; i++) {
             Coordinate coord = canonicals[i];
-            double expected = fitnessVector[i];
-            double actual = query.getFitness(coord);
+            double expected = healthVector[i];
+            double actual = query.getHealth(coord);
             assertEquals(expected, actual, epsilon);
         }
     }

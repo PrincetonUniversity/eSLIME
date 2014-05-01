@@ -82,7 +82,7 @@ public class UniformBiomassGrowth extends CellProcess {
         for (Coordinate site : activeSites) {
             if (layer.getViewer().isOccupied(site)) {
                 Cell cell = layer.getViewer().getCell(site);
-                layer.getViewer().getCell(site).adjustFitness(delta.next());
+                layer.getViewer().getCell(site).adjustHealth(delta.next());
 
             }
         }

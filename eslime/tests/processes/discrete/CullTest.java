@@ -48,8 +48,8 @@ public class CullTest extends EslimeLatticeTestCase {
         MockCell live = new MockCell();
         MockCell die = new MockCell();
 
-        live.setFitness(THRESHOLD + 0.1);
-        die.setFitness(THRESHOLD - 0.1);
+        live.setHealth(THRESHOLD + 0.1);
+        die.setHealth(THRESHOLD - 0.1);
 
         // Place a cell above the threshold.
         cellLayer.getUpdateManager().place(live, x);
@@ -77,7 +77,7 @@ public class CullTest extends EslimeLatticeTestCase {
      */
     public void testBorderlineCase() throws Exception {
         MockCell borderline = new MockCell();
-        borderline.setFitness(THRESHOLD);
+        borderline.setHealth(THRESHOLD);
         cellLayer.getUpdateManager().place(borderline, x);
 
         assertTrue(cellLayer.getViewer().isOccupied(x));

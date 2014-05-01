@@ -55,10 +55,10 @@ public abstract class CellLayerContentTest extends EslimeTestCase {
         f2 = makeMockCell(2, 0.7);
     }
 
-    private MockCell makeMockCell(int state, double fitness) {
+    private MockCell makeMockCell(int state, double health) {
         MockCell cell = new MockCell();
         cell.setState(state);
-        cell.setFitness(fitness);
+        cell.setHealth(health);
 
         return cell;
     }
@@ -98,21 +98,21 @@ public abstract class CellLayerContentTest extends EslimeTestCase {
         query.put(c[1], f1);
         query.put(c[2], f2);
 
-        // Fitness vector goes in order of canonical sites array
+        // Health vector goes in order of canonical sites array
         assertEquals(query.getStateVector()[0], 1);
         assertEquals(query.getStateVector()[1], 1);
         assertEquals(query.getStateVector()[2], 2);
     }
 
-    public void testGetFitnessVector() {
+    public void testGetHealthVector() {
         query.put(c[0], f0);
         query.put(c[1], f1);
         query.put(c[2], f2);
 
-        // Fitness vector goes in order of canonical sites array
-        assertEquals(query.getFitnessVector()[0], 0.5, epsilon);
-        assertEquals(query.getFitnessVector()[1], 0.5, epsilon);
-        assertEquals(query.getFitnessVector()[2], 0.7, epsilon);
+        // Health vector goes in order of canonical sites array
+        assertEquals(query.getHealthVector()[0], 0.5, epsilon);
+        assertEquals(query.getHealthVector()[1], 0.5, epsilon);
+        assertEquals(query.getHealthVector()[2], 0.7, epsilon);
     }
 
     public void testHasCanonicalForm() {

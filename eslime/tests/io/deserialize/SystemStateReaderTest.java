@@ -95,11 +95,11 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
 
         // Check cell state
         assertEquals(5, state.getState(x));
-        assertEquals(2.0, state.getFitness(x), epsilon);
+        assertEquals(2.0, state.getHealth(x), epsilon);
 
         // Empty cells should be 0 and 0.0
         assertEquals(0, state.getState(origin));
-        assertEquals(0.0, state.getFitness(origin), epsilon);
+        assertEquals(0.0, state.getHealth(origin), epsilon);
 
         // Check time and frame
         assertEquals(2, state.getFrame());
@@ -174,9 +174,9 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
         return ret;
     }
 
-    private MockCell placeCell(Coordinate coord, double fitness, int state) {
+    private MockCell placeCell(Coordinate coord, double health, int state) {
         MockCell cell = new MockCell();
-        cell.setFitness(fitness);
+        cell.setHealth(health);
         cell.setState(state);
         cellLayer.getUpdateManager().place(cell, coord);
 

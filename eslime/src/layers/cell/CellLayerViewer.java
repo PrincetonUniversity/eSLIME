@@ -73,12 +73,12 @@ public class CellLayerViewer {
     }
 
     /**
-     * Returns a vector of fitness values, in canonical site order.
+     * Returns a vector of health values, in canonical site order.
      *
      * @return
      */
-    public double[] getFitnessVector() {
-        return content.getFitnessVector();
+    public double[] getHealthVector() {
+        return content.getHealthVector();
     }
 
     public StateMapViewer getStateMapViewer() {

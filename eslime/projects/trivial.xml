@@ -76,12 +76,12 @@
             <cell-descriptor>
                 <class>BehaviorCell</class>
                 <state>1</state>
-                <initial-fitness>
+                <initial-health>
                     <uniform>
                         <min>0.25</min>
                         <max>0.5</max>
                     </uniform>
-                </initial-fitness>
+                </initial-health>
                 <threshold>1.0</threshold>
             </cell-descriptor>
 
@@ -97,12 +97,12 @@
             <cell-descriptor>
                 <class>BehaviorCell</class>
                 <state>2</state>
-                <initial-fitness>
+                <initial-health>
                     <uniform>
                         <min>0.25</min>
                         <max>0.5</max>
                     </uniform>
-                </initial-fitness>
+                </initial-health>
                 <threshold>1.0</threshold>
             </cell-descriptor>
 

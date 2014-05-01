@@ -35,7 +35,7 @@ public class BehaviorCell extends Cell {
 
     // State
     private int considerCount;
-    private double nextFitness;
+    private double nextHealth;
     private double threshold;
 
     // Helpers
@@ -46,15 +46,15 @@ public class BehaviorCell extends Cell {
     public BehaviorCell() {
     }
 
-    public BehaviorCell(LayerManager layerManager, int state, double initialFitness, double threshold) {
+    public BehaviorCell(LayerManager layerManager, int state, double initialHealth, double threshold) {
         this.threshold = threshold;
         callbackManager = new CallbackManager(this, layerManager);
 
         setState(state);
 
-        // We use the superclass setFitness here so it doesn't try to update
+        // We use the superclass setHealth here so it doesn't try to update
         // the location, as the cell is usually created before being placed.
-        setFitness(initialFitness);
+        setHealth(initialHealth);
 
         considerCount = 0;
 
@@ -68,7 +68,7 @@ public class BehaviorCell extends Cell {
 
     @Override
     public void apply() {
-//        setFitness(nextFitness);
+//        setHealth(nextHealth);
 //        checkDivisibility();
         considerCount = 0;
     }
@@ -80,9 +80,9 @@ public class BehaviorCell extends Cell {
         }
 
         LayerManager layerManager = callbackManager.getLayerManager();
-        BehaviorCell daughter = new BehaviorCell(layerManager, getState(), getFitness() / 2, threshold);
-        double halfFitness = getFitness() / 2.0D;
-        setFitness(halfFitness);
+        BehaviorCell daughter = new BehaviorCell(layerManager, getState(), getHealth() / 2, threshold);
+        double halfHealth = getHealth() / 2.0D;
+        setHealth(halfHealth);
         daughter.setDispatcher(dispatcher.clone(daughter));
         checkDivisibility();
         return daughter;
@@ -90,12 +90,12 @@ public class BehaviorCell extends Cell {
 
     @Override
     public Cell clone(int childState) {
-        double fitness = getFitness();
+        double health = getHealth();
 
         LayerManager layerManager = callbackManager.getLayerManager();
-        BehaviorCell child = new BehaviorCell(layerManager, childState, fitness, threshold);
+        BehaviorCell child = new BehaviorCell(layerManager, childState, health, threshold);
         child.considerCount = considerCount;
-        child.nextFitness = nextFitness;
+        child.nextHealth = nextHealth;
         child.setDispatcher(dispatcher.clone(child));
         child.setDivisible(isDivisible());
 
@@ -108,11 +108,11 @@ public class BehaviorCell extends Cell {
     }
 
     @Override
-    public void adjustFitness(double delta) {
-        double current = getFitness();
+    public void adjustHealth(double delta) {
+        double current = getHealth();
         double next = current + delta;
-//        System.out.println("      Adjusting fitness of cell at " + callbackManager.getMyLocation() + " from " + current + " to " + next);
-        setFitness(next);
+//        System.out.println("      Adjusting health of cell at " + callbackManager.getMyLocation() + " from " + current + " to " + next);
+        setHealth(next);
     }
 
     @Override
@@ -132,8 +132,8 @@ public class BehaviorCell extends Cell {
     }
 
     private void checkDivisibility() {
-        //System.out.println("   " + getFitness() + " -- " + threshold);
-        if (getFitness() > threshold) {
+        //System.out.println("   " + getHealth() + " -- " + threshold);
+        if (getHealth() > threshold) {
             setDivisible(true);
         } else {
             setDivisible(false);
@@ -145,9 +145,9 @@ public class BehaviorCell extends Cell {
     }
 
     @Override
-    public void setFitness(double fitness) {
-        super.setFitness(fitness);
-//        if (fitness <= 0.0) {
+    public void setHealth(double health) {
+        super.setHealth(health);
+//        if (health <= 0.0) {
 //            try {
 //                throw new RuntimeException();
 //            } catch (Exception ex) {
