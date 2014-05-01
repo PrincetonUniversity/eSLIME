@@ -221,12 +221,13 @@ public class GeneralParameters {
 
     private void loadPaths(Element g) {
         basePath = get(g, "path");
+        String projectName = XmlUtil.getString(g, "project", "");
         boolean isStamp = XmlUtil.getBoolean(g, "date-stamp");
 
         if (isStamp) {
-            path = basePath + '/' + date() + '/';
+            path = basePath + '/' + date() + '/' + projectName + '/';
         } else {
-            path = basePath;
+            path = basePath + projectName;
         }
     }
 
