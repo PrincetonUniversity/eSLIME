@@ -43,7 +43,8 @@ public class UniformInteger extends Argument<Integer> {
     @Override
     public Integer next() {
         int o = random.nextInt(range);
-        return o + offset;
+        int result = o + offset;
+        return result;
     }
 
     @Override
