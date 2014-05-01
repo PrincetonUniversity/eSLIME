@@ -77,7 +77,7 @@ public class NeighborSwap extends CellProcess {
             SwapTuple target = (SwapTuple) tObj;
             layer.getUpdateManager().swap(target.p, target.q);
         }
-        candidates = null;
+        this.candidates = null;
     }
 
     private Object[] selectTargets() {
@@ -128,9 +128,10 @@ public class NeighborSwap extends CellProcess {
 
         // Weight is defined in terms of number of swappable cells,
         // whereas event count is defined in terms of number of possible
-        // swaps.
+        // swaps. Since every swap can occur in one of two directions,
+        // we halve the number of swaps.
         if (gs != null) {
-            gs.add(getID(), candidates.size(), coords.size() * 1.0D);
+            gs.add(getID(), candidates.size() / 2, coords.size() * 1.0D);
         }
     }
 }

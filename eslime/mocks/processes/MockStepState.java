@@ -23,6 +23,7 @@ package processes;
 
 import control.identifiers.Coordinate;
 import io.serialize.SerializationManager;
+import layers.cell.CellLayer;
 
 import java.util.HashMap;
 
@@ -48,6 +49,18 @@ public class MockStepState extends StepState {
     @Override
     public Coordinate[] getHighlights(Integer channel) {
         return highlightMap.get(channel);
+    }
+
+    boolean isRecord = false;
+
+    @Override
+    public void record(CellLayer cellLayer) {
+        super.record(cellLayer);
+        isRecord = true;
+    }
+
+    public boolean isRecord() {
+        return isRecord;
     }
 
     public void setHighlights(Integer channel, Coordinate[] highlights) {

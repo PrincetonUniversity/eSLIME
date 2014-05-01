@@ -178,7 +178,7 @@ public class RangeMap<T> {
         return true;
     }
 
-    private boolean binsEqual(RangeMap p, RangeMap q, double midpoint) {
+    protected boolean binsEqual(RangeMap p, RangeMap q, double midpoint) {
         Object pResult = p.selectTarget(midpoint);
         Object qResult = q.selectTarget(midpoint);
 
@@ -212,5 +212,9 @@ public class RangeMap<T> {
     public int getNumBins() {
         // The first bin is a dummy, so we want one fewer
         return floors.size() - 1;
+    }
+
+    public ArrayList<T> getKeys() {
+        return new ArrayList<>(keys);
     }
 }

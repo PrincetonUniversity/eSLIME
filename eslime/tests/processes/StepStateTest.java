@@ -21,8 +21,11 @@
 
 package processes;
 
+import cells.MockCell;
 import control.identifiers.Coordinate;
 import io.serialize.MockSerializationManager;
+import layers.cell.CellLayer;
+import layers.cell.CellUpdateManager;
 import test.EslimeLatticeTestCase;
 
 /**
@@ -65,11 +68,49 @@ public class StepStateTest extends EslimeLatticeTestCase {
         assertEquals(1.3, query.getTime(), epsilon);
     }
 
-    public void testGetState() throws Exception {
-        fail("Not yet implemented");
+    public void testGetFrame() throws Exception {
+        assertEquals(1, query.getFrame());
     }
 
     public void testRecord() throws Exception {
-        fail("Not yet implemented");
+        query.record(cellLayer);
+        CellLayer actual = query.getRecordedCellLayer();
+        assertEquals(cellLayer, actual);
+        assertFalse(actual == cellLayer);
+    }
+
+    /**
+     * Integration test verifying that deferral of state works
+     * as expected -- namely, that highlighting is always captured,
+     * but the state reflects whatever it was when record() was called.
+     */
+    public void testDeferral() {
+        // Place a cell at origin
+        put(origin, 1);
+
+        // Record state
+        query.record(cellLayer);
+
+        // Perform a highlight at coordinate x
+        query.highlight(x, 1);
+
+        // Remove cell at origin
+        cellLayer.getUpdateManager().banish(origin);
+
+        // CellLayer should not report a cell at origin
+        assertFalse(cellLayer.getViewer().isOccupied(origin));
+
+        // StepState should report a cell at origin and highlight at coordinate x
+        assertTrue(query.getRecordedCellLayer().getViewer().isOccupied(origin));
+
+        Coordinate[] expectedHighlights = new Coordinate[] {x};
+        Coordinate[] actualHighlights = query.getHighlights(1);
+        assertArraysEqual(expectedHighlights, actualHighlights, false);
+    }
+
+    private void put(Coordinate c, int state) {
+        MockCell cell = new MockCell(state);
+        CellUpdateManager u = cellLayer.getUpdateManager();
+        u.place(cell, c);
     }
 }
