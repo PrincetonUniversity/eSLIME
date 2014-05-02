@@ -22,6 +22,7 @@ package io.factory;
 import agent.action.*;
 import agent.targets.TargetRule;
 import agent.targets.TargetSelf;
+import agent.targets.TargetVacantNeighbors;
 import cells.MockCell;
 import layers.MockLayerManager;
 import org.dom4j.Element;
@@ -82,8 +83,15 @@ public class ActionFactoryTest extends EslimeTestCase {
         Element e = fixtureRoot.element("trigger");
         TargetRule rule = new TargetSelf(callback, layerManager, -1, null);
         Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
-
         Action expected = new Trigger(callback, layerManager, "test", rule, null, null);
+        assertEquals(expected, actual);
+    }
+
+    public void testClone() throws Exception {
+        Element e = fixtureRoot.element("clone");
+        TargetRule rule = new TargetVacantNeighbors(callback, layerManager, 1, null);
+        Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
+        Action expected = new CloneTo(callback, layerManager, rule, null, null);
         assertEquals(expected, actual);
     }
 
@@ -92,6 +100,5 @@ public class ActionFactoryTest extends EslimeTestCase {
         Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
         Action expected = new AdjustHealth(callback, layerManager, 0.5);
         assertEquals(expected, actual);
-
     }
 }

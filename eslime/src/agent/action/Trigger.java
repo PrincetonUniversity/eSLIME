@@ -61,8 +61,8 @@ public class Trigger extends Action {
     public void run(Coordinate caller) {
         BehaviorCell callerCell = resolveCaller(caller);
 
-        // Since the Trigger behavior is the cause of the triggered behaviors, the caller for the
-        // triggered behaviors is this cell.
+        // Since the Trigger behavior is the cause of the triggered behaviors,
+        // the caller for the triggered behaviors is this cell.
         Coordinate self = getOwnLocation();
 
         Coordinate[] targets = targetRule.report(callerCell);
@@ -78,51 +78,6 @@ public class Trigger extends Action {
     private void highlight(Coordinate target, Coordinate ownLocation) {
         doHighlight(targetChannel, target);
         doHighlight(selfChannel, ownLocation);
-    }
-
-    /**
-     * Returns the location of the cell whose behavior this is.
-     *
-     * @return
-     */
-    private Coordinate getOwnLocation() {
-        CellLookupManager lookup = getLayerManager().getCellLayer().getLookupManager();
-        BehaviorCell self = getCallback();
-        Coordinate location = lookup.getCellLocation(self);
-        return location;
-    }
-
-    private BehaviorCell resolveCaller(Coordinate caller) {
-        // The caller is null, indicating that the call came from
-        // a top-down process. Return null.
-        if (caller == null) {
-            return null;
-        }
-
-        // Blow up unless target coordinate contains a behavior cell.
-        // In that case, return that cell.
-        BehaviorCell callerCell = getWithCast(caller);
-
-        return callerCell;
-    }
-
-    private BehaviorCell getWithCast(Coordinate coord) {
-        CellLayerViewer viewer = getLayerManager().getCellLayer().getViewer();
-
-        if (!viewer.isOccupied(coord)) {
-            throw new IllegalStateException("Expected, but did not find, an occupied site at " + coord
-                    + ".");
-        }
-
-        Cell putative = viewer.getCell(coord);
-
-        if (!(putative instanceof BehaviorCell)) {
-            throw new UnsupportedOperationException("Only BehaviorCells and top-down processes may trigger behaviors.");
-        }
-
-        BehaviorCell result = (BehaviorCell) putative;
-
-        return result;
     }
 
     @Override

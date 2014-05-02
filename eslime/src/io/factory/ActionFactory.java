@@ -46,6 +46,8 @@ public class ActionFactory {
                 return adjustHealth(e, callback, layerManager);
             case "trigger":
                 return trigger(e, callback, layerManager, p);
+            case "clone":
+                return cloneTo(e, callback, layerManager, p);
             case "stochastic-choice":
                 return stochasticChoice(e, callback, layerManager, p);
             case "null":
@@ -86,6 +88,16 @@ public class ActionFactory {
         Argument<Integer> selfChannel = IntegerArgumentFactory.instantiate(e, "actor-highlight", -1, p.getRandom());
         Argument<Integer> targetChannel = IntegerArgumentFactory.instantiate(e, "target-highlight", -1, p.getRandom());
         return new Trigger(callback, layerManager, behaviorName, targetRule, selfChannel, targetChannel);
+    }
+
+    private static Action cloneTo(Element e, BehaviorCell callback, LayerManager layerManager, GeneralParameters p) {
+        Random random = p.getRandom();
+        Element descriptor = e.element("target");
+        TargetRule targetRule = TargetFactory.instantiate(callback, layerManager, descriptor, random);
+        Argument<Integer> selfChannel = IntegerArgumentFactory.instantiate(e, "actor-highlight", -1, p.getRandom());
+        Argument<Integer> targetChannel = IntegerArgumentFactory.instantiate(e, "target-highlight", -1, p.getRandom());
+        CloneTo ret = new CloneTo(callback, layerManager, targetRule, selfChannel, targetChannel);
+        return ret;
     }
 
     private static Action adjustHealth(Element e, BehaviorCell callback, LayerManager layerManager) {

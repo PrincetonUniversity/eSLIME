@@ -32,6 +32,13 @@
         </target>
     </trigger>
 
+    <clone>
+        <target>
+            <class>vacant-neighbors</class>
+            <max>1</max>
+        </target>
+    </clone>
+
     <adjust-health>
         <delta>0.5</delta>
     </adjust-health>
