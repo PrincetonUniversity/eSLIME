@@ -91,7 +91,7 @@ public class ActionFactoryTest extends EslimeTestCase {
         Element e = fixtureRoot.element("clone");
         TargetRule rule = new TargetVacantNeighbors(callback, layerManager, 1, null);
         Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
-        Action expected = new CloneTo(callback, layerManager, rule, null, null);
+        Action expected = new CloneTo(callback, layerManager, rule, false, null, null);
         assertEquals(expected, actual);
     }
 

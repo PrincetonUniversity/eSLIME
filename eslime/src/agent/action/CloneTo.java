@@ -27,6 +27,7 @@ import cells.Cell;
 import control.arguments.Argument;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
+import layers.cell.CellLayerViewer;
 import layers.cell.CellUpdateManager;
 
 /**
@@ -40,15 +41,18 @@ public class CloneTo extends Action{
 
     private TargetRule targetRule;
 
+    // Replace occupied sites?
+    private boolean noReplace;
+
     // Highlight channels for the targeting and targeted cells
     private Argument<Integer> selfChannel;
     private Argument<Integer> targetChannel;
-
-    public CloneTo(BehaviorCell callback, LayerManager layerManager, TargetRule targetRule, Argument<Integer> selfChannel, Argument<Integer> targetChannel) {
+    public CloneTo(BehaviorCell callback, LayerManager layerManager, TargetRule targetRule, boolean noReplace, Argument<Integer> selfChannel, Argument<Integer> targetChannel) {
         super(callback, layerManager);
         this.targetRule = targetRule;
         this.selfChannel = selfChannel;
         this.targetChannel = targetChannel;
+        this.noReplace = noReplace;
     }
 
     @Override
@@ -60,28 +64,28 @@ public class CloneTo extends Action{
         Coordinate[] targets = targetRule.report(callerCell);
 
         CellUpdateManager u = getLayerManager().getCellLayer().getUpdateManager();
+        CellLayerViewer v = getLayerManager().getCellLayer().getViewer();
 
         for (Coordinate target : targets) {
-            doSanityCheck(target);
 
             // Make clone
             Cell child = getCallback().clone();
 
             // Place clone at target site
-            u.place(child, target);
-
+            if (!v.isOccupied(target)) {
+                u.place(child, target);
+            } else if (noReplace) {
+                throw new IllegalStateException("Illegal state: a cell is" +
+                        " attempting to clone itself into an occupied site," +
+                        " but this has been prohibited.");
+            } else {
+                u.banish(target);
+                u.place(child, target);
+            }
             // Highlight sites
             highlight(target, self);
         }
 
-    }
-
-    private void doSanityCheck(Coordinate target) {
-        // Sanity check: target should be vacant
-        if (getLayerManager().getCellLayer().getViewer().isOccupied(target)) {
-            throw new IllegalStateException("Illegal state: a cell is" +
-                    " attempting to clone itself into an occupied site.");
-        }
     }
 
     private void highlight(Coordinate target, Coordinate ownLocation) {
@@ -114,6 +118,6 @@ public class CloneTo extends Action{
     @Override
     public Action clone(BehaviorCell child) {
         TargetRule clonedTargeter = targetRule.clone(child);
-        return new CloneTo(child, getLayerManager(), clonedTargeter, selfChannel, targetChannel);
+        return new CloneTo(child, getLayerManager(), clonedTargeter, noReplace, selfChannel, targetChannel);
     }
 }

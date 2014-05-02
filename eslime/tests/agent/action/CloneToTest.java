@@ -52,7 +52,7 @@ public class CloneToTest extends EslimeLatticeTestCase {
         cellLayer.getUpdateManager().place(original, origin);
 
         // Create query.
-        query = new CloneTo(original, layerManager, targetRule, null, null);
+        query = new CloneTo(original, layerManager, targetRule, false, null, null);
     }
 
     public void testLifeCycle() throws Exception {
@@ -67,5 +67,9 @@ public class CloneToTest extends EslimeLatticeTestCase {
         assertEquals(original, cellLayer.getViewer().getCell(x));
         assertEquals(original, cellLayer.getViewer().getCell(y));
         assertFalse(original == cellLayer.getViewer().getCell(y));
+    }
+
+    public void testReplacement() throws Exception {
+        fail("Not yet implemented.");
     }
 }

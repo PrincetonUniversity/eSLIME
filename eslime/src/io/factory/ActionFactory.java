@@ -26,6 +26,7 @@ import control.GeneralParameters;
 import control.arguments.Argument;
 import layers.LayerManager;
 import org.dom4j.Element;
+import structural.utilities.XmlUtil;
 
 import java.util.Random;
 
@@ -96,7 +97,8 @@ public class ActionFactory {
         TargetRule targetRule = TargetFactory.instantiate(callback, layerManager, descriptor, random);
         Argument<Integer> selfChannel = IntegerArgumentFactory.instantiate(e, "actor-highlight", -1, p.getRandom());
         Argument<Integer> targetChannel = IntegerArgumentFactory.instantiate(e, "target-highlight", -1, p.getRandom());
-        CloneTo ret = new CloneTo(callback, layerManager, targetRule, selfChannel, targetChannel);
+        boolean noReplace = XmlUtil.getBoolean(e, "no-replacement");
+        CloneTo ret = new CloneTo(callback, layerManager, targetRule, noReplace, selfChannel, targetChannel);
         return ret;
     }
 

@@ -31,7 +31,7 @@ import java.util.*;
  */
 public class CellIndex implements Set<Coordinate> {
 
-    private Set<Coordinate> contents = new HashSet<Coordinate>();
+    private Set<Coordinate> contents = new HashSet<>();
 
     public CellIndex() {
     }
@@ -102,8 +102,8 @@ public class CellIndex implements Set<Coordinate> {
         return contents.iterator();
     }
 
-    public CellIndex set() {
-        CellIndex copy = new CellIndex(contents);
+    public CellIndexViewer set() {
+        CellIndexViewer copy = new CellIndexViewer(this);
         return copy;
     }
 

@@ -55,7 +55,6 @@ public class XmlUtilTest extends EslimeTestCase {
         assertEquals(expected, actual);
     }
 
-    // FOO
     private void doDoubleTest(Element testRoot, String childName, double expected) {
         Element child = testRoot.element(childName);
         double actual = XmlUtil.getDouble(child, "test", -1.0);
