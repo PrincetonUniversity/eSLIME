@@ -20,9 +20,12 @@
 package agent.action;
 
 import cells.BehaviorCell;
+import cells.Cell;
 import control.arguments.Argument;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
+import layers.cell.CellLayerViewer;
+import layers.cell.CellLookupManager;
 import processes.StepState;
 
 /**
@@ -52,6 +55,51 @@ public abstract class Action {
     }
 
     public abstract void run(Coordinate caller);
+
+    /**
+     * Returns the location of the cell whose behavior this is.
+     *
+     * @return
+     */
+    protected Coordinate getOwnLocation() {
+        CellLookupManager lookup = getLayerManager().getCellLayer().getLookupManager();
+        BehaviorCell self = getCallback();
+        Coordinate location = lookup.getCellLocation(self);
+        return location;
+    }
+
+    protected BehaviorCell resolveCaller(Coordinate caller) {
+        // The caller is null, indicating that the call came from
+        // a top-down process. Return null.
+        if (caller == null) {
+            return null;
+        }
+
+        // Blow up unless target coordinate contains a behavior cell.
+        // In that case, return that cell.
+        BehaviorCell callerCell = getWithCast(caller);
+
+        return callerCell;
+    }
+
+    protected BehaviorCell getWithCast(Coordinate coord) {
+        CellLayerViewer viewer = getLayerManager().getCellLayer().getViewer();
+
+        if (!viewer.isOccupied(coord)) {
+            throw new IllegalStateException("Expected, but did not find, an occupied site at " + coord
+                    + ".");
+        }
+
+        Cell putative = viewer.getCell(coord);
+
+        if (!(putative instanceof BehaviorCell)) {
+            throw new UnsupportedOperationException("Only BehaviorCells and top-down processes may trigger behaviors.");
+        }
+
+        BehaviorCell result = (BehaviorCell) putative;
+
+        return result;
+    }
 
     /**
      * Actions should be considered equal if they perform

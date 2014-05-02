@@ -33,7 +33,7 @@ import structural.utilities.EpsilonUtil;
 public class MockCell extends BehaviorCell {
 
     private int considerCount;
-    private Cell child;
+    private MockCell child;
     private int state = 1;
     private double health = 0.0;
     private double production;
@@ -64,12 +64,12 @@ public class MockCell extends BehaviorCell {
     }
 
     @Override
-    public Cell divide() {
+    public MockCell divide() {
         return child;
     }
 
     @Override
-    public Cell clone(int state) {
+    public MockCell clone(int state) {
         return child;
     }
 
@@ -95,7 +95,7 @@ public class MockCell extends BehaviorCell {
         this.production = production;
     }
 
-    public void setChild(Cell child) {
+    public void setChild(MockCell child) {
         this.child = child;
     }
 

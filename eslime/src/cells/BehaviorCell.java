@@ -89,7 +89,7 @@ public class BehaviorCell extends Cell {
     }
 
     @Override
-    public Cell clone(int childState) {
+    public BehaviorCell clone(int childState) {
         double health = getHealth();
 
         LayerManager layerManager = callbackManager.getLayerManager();
@@ -147,14 +147,6 @@ public class BehaviorCell extends Cell {
     @Override
     public void setHealth(double health) {
         super.setHealth(health);
-//        if (health <= 0.0) {
-//            try {
-//                throw new RuntimeException();
-//            } catch (Exception ex) {
-//                ex.printStackTrace();
-//                System.exit(0);
-//            }
-//        }
         checkDivisibility();
     }
 

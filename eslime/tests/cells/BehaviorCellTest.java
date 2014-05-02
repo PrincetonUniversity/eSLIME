@@ -63,13 +63,20 @@ public class BehaviorCellTest extends EslimeLatticeTestCase {
         assertEquals(0.5, child.getHealth(), epsilon);
     }
 
-    public void testClone() throws Exception {
+    public void testCloneNoArgument() throws Exception {
         Cell clone = query.clone();
         assertEquals(clone, query);
 
         // Since no division took place, health should be original for each
         assertEquals(1.0, query.getHealth(), epsilon);
         assertEquals(1.0, clone.getHealth(), epsilon);
+    }
+
+    public void testClone() throws Exception {
+        Cell clone = query.clone(6);
+        assertNotEquals(clone, query);
+        Cell cloneOfClone = clone.clone(query.getState());
+        assertEquals(query, cloneOfClone);
     }
 
     public void testTrigger() throws Exception {
