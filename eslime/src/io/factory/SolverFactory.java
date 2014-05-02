@@ -17,8 +17,10 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package continuum.solvers;
+package io.factory;
 
+import continuum.solvers.SimpleCgsSolver;
+import continuum.solvers.Solver;
 import geometry.Geometry;
 import org.dom4j.Element;
 

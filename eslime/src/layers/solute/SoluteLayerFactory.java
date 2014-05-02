@@ -20,7 +20,7 @@
 package layers.solute;
 
 import continuum.solvers.EquilibriumSolver;
-import continuum.solvers.SolverFactory;
+import io.factory.SolverFactory;
 import geometry.Geometry;
 import io.factory.GeometryFactory;
 import layers.LayerManager;

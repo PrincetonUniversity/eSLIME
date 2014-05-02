@@ -42,7 +42,7 @@ public class ProcessLoader {
     private ArrayList<Element> elems;
 
     public ProcessLoader(Element root) {
-        elems = new ArrayList<Element>();
+        elems = new ArrayList<>();
 
         for (Object o : root.elements()) {
             Element e = (Element) o;

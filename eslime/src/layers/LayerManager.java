@@ -54,7 +54,7 @@ public class LayerManager {
 
         // Build solute layers, if present
         List<Object> slElemObjs = layerRoot.elements("solute-layer");
-        soluteLayers = new HashMap<String, SoluteLayer>();
+        soluteLayers = new HashMap<>();
         for (Object o : slElemObjs) {
             Element e = (Element) o;
             initSoluteLayer(e, factory);
