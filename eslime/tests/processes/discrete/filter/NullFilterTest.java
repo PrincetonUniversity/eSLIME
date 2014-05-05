@@ -21,21 +21,11 @@
 
 package processes.discrete.filter;
 
-import control.identifiers.Coordinate;
+import junit.framework.TestCase;
 
-import java.util.Collection;
+public class NullFilterTest extends TestCase {
 
-/**
- * Created by dbborens on 5/5/14.
- */
-public abstract class Filter {
-    /**
-     * Applies filter, in place, to input array.
-     *
-     * @param toFilter
-     */
-    public abstract void apply(Collection<Coordinate> toFilter);
-
-    @Override
-    public abstract boolean equals(Object o);
+    public void testApply() throws Exception {
+        fail("Should verify that the set is unmodified");
+    }
 }

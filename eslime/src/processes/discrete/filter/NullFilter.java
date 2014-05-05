@@ -26,16 +26,18 @@ import control.identifiers.Coordinate;
 import java.util.Collection;
 
 /**
+ * NullFilter passes all entries through unaffected.
  * Created by dbborens on 5/5/14.
  */
-public abstract class Filter {
-    /**
-     * Applies filter, in place, to input array.
-     *
-     * @param toFilter
-     */
-    public abstract void apply(Collection<Coordinate> toFilter);
+public class NullFilter extends Filter {
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        return true;
+    }
 
     @Override
-    public abstract boolean equals(Object o);
+    public void apply(Collection<Coordinate> toFilter) {
+    }
 }

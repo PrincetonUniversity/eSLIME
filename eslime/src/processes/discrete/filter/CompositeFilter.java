@@ -23,19 +23,40 @@ package processes.discrete.filter;
 
 import control.identifiers.Coordinate;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
  * Created by dbborens on 5/5/14.
  */
-public abstract class Filter {
-    /**
-     * Applies filter, in place, to input array.
-     *
-     * @param toFilter
-     */
-    public abstract void apply(Collection<Coordinate> toFilter);
+public class CompositeFilter extends Filter {
+    private Filter[] children;
+
+    public CompositeFilter(Filter[] children) {
+        this.children = children;
+    }
 
     @Override
-    public abstract boolean equals(Object o);
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        CompositeFilter that = (CompositeFilter) o;
+
+        if (!Arrays.equals(children, that.children)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return children != null ? Arrays.hashCode(children) : 0;
+    }
+
+    @Override
+    public void apply(Collection<Coordinate> toFilter) {
+        for (Filter child : children) {
+            child.apply(toFilter);
+        }
+    }
 }
