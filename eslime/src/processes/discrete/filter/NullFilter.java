@@ -38,6 +38,7 @@ public class NullFilter extends Filter {
     }
 
     @Override
-    public void apply(Collection<Coordinate> toFilter) {
+    public Collection<Coordinate> apply(Collection<Coordinate> toFilter) {
+        return toFilter;
     }
 }

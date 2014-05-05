@@ -23,6 +23,7 @@ package processes.discrete.filter;
 
 import control.identifiers.Coordinate;
 
+import java.util.Arrays;
 import java.util.Collection;
 
 /**
@@ -30,11 +31,15 @@ import java.util.Collection;
  */
 public abstract class Filter {
     /**
-     * Applies filter, in place, to input array.
-     *
-     * @param toFilter
+     * Applies filter to input collection. Original collection should not be
+     * modified.
      */
-    public abstract void apply(Collection<Coordinate> toFilter);
+    public abstract Collection<Coordinate> apply(Collection<Coordinate> toFilter);
+
+    public Collection<Coordinate> apply(Coordinate[] toFilter) {
+        Collection<Coordinate> asCollection = Arrays.asList(toFilter);
+        return apply(asCollection);
+    }
 
     @Override
     public abstract boolean equals(Object o);

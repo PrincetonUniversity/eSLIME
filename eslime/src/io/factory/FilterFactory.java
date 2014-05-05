@@ -21,7 +21,11 @@
 
 package io.factory;
 
+import control.GeneralParameters;
+import control.arguments.Argument;
+import layers.LayerManager;
 import org.dom4j.Element;
+import processes.discrete.filter.CellStateFilter;
 import processes.discrete.filter.CompositeFilter;
 import processes.discrete.filter.Filter;
 import processes.discrete.filter.NullFilter;
@@ -31,7 +35,22 @@ import processes.discrete.filter.NullFilter;
  */
 public abstract class FilterFactory {
 
-    public static Filter instantiate(Element e) {
+    private static Filter singleton(Element e, LayerManager layerManager, GeneralParameters p) {
+        String name = e.getName();
+
+        if (name.equalsIgnoreCase("null")) {
+            return new NullFilter();
+        } else if (name.equalsIgnoreCase("composite")) {
+            return composite(e, layerManager, p);
+        } else if (name.equalsIgnoreCase("cell-state")) {
+            return cellStateFilter(e, layerManager, p);
+        } else {
+            String msg = "Unrecognized filter '" + name + "'.";
+            throw new IllegalArgumentException(msg);
+        }
+    }
+
+    public static Filter instantiate(Element e, LayerManager layerManager, GeneralParameters p) {
         // No arguments? No problem; we take it to mean the the user didn't
         // want any filters. Similarly, if there are no child elements, then
         // the default filter is applied.
@@ -43,8 +62,11 @@ public abstract class FilterFactory {
 
         if (nChildren == 0) {
             return new NullFilter();
+        } else if (nChildren == 1) {
+            Object child = e.elements().iterator().next();
+            return singleton((Element) child, layerManager, p);
         } else {
-            return compositeFilter(e);
+            return composite(e, layerManager, p);
         }
     }
 
@@ -52,13 +74,13 @@ public abstract class FilterFactory {
         return new NullFilter();
     }
 
-    private static Filter compositeFilter(Element e) {
+    private static Filter composite(Element e, LayerManager layerManager, GeneralParameters p) {
         int nChildren = e.elements().size();
         Filter[] children = new Filter[nChildren];
 
         int i = 0;
         for (Object o : e.elements()) {
-            Filter child = processChild((Element) o);
+            Filter child = singleton((Element) o, layerManager, p);
             children[i] = child;
             i++;
         }
@@ -67,16 +89,9 @@ public abstract class FilterFactory {
         return ret;
     }
 
-    private static Filter processChild(Element e) {
-        String name = e.getName();
-
-        if (name.equalsIgnoreCase("null")) {
-            return new NullFilter();
-        } else if (name.equalsIgnoreCase("composite")) {
-            return compositeFilter(e);
-        } else {
-            String msg = "Unrecognized filter '" + name + "'.";
-            throw new IllegalArgumentException(msg);
-        }
+    private static Filter cellStateFilter(Element e, LayerManager layerManager, GeneralParameters p) {
+        Argument<Integer> toChoose = IntegerArgumentFactory.instantiate(e, "state", p.getRandom());
+        CellStateFilter ret = new CellStateFilter(layerManager.getCellLayer(), toChoose);
+        return ret;
     }
 }

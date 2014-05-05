@@ -38,4 +38,9 @@
         <null />
     </nested-composite-case>
 
+    <state-filter-case>
+        <cell-state>
+            <state>1</state>
+        </cell-state>
+    </state-filter-case>
 </fixture>
