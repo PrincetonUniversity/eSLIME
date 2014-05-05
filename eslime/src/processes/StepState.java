@@ -39,6 +39,8 @@ import java.util.Set;
 public class StepState {
 
     private CellLayer recordedCellLayer;
+    private boolean recorded;
+
     private HashMap<Integer, Set<Coordinate>> highlights;
     private double dt;
     private double startTime;
@@ -49,6 +51,7 @@ public class StepState {
         dt = 0;
         this.startTime = startTime;
         this.frame = frame;
+        this.recorded = false;
     }
 
     public void highlight(Coordinate c, Integer channel) {
@@ -77,8 +80,14 @@ public class StepState {
         return set.toArray(new Coordinate[set.size()]);
     }
 
+    public boolean isRecorded() {
+        return recorded;
+    }
+
     public void record(CellLayer cellLayer) {
         recordedCellLayer = cellLayer.clone();
+        recorded = true;
+
     }
 
     public double getTime() {

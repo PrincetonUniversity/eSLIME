@@ -113,4 +113,10 @@ public class StepStateTest extends EslimeLatticeTestCase {
         CellUpdateManager u = cellLayer.getUpdateManager();
         u.place(cell, c);
     }
+
+    public void testIsRecorded() {
+        assertFalse(query.isRecorded());
+        query.record(cellLayer);
+        assertTrue(query.isRecorded());
+    }
 }

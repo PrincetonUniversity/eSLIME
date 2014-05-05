@@ -35,11 +35,8 @@ import java.util.List;
 public class SerializationManager {
 
     private List<Serializer> writers;
-    private GeneralParameters p;
 
     public SerializationManager(Element we, GeneralParameters p) {
-        this.p = p;
-
 
         writers = new ArrayList<>();
 
@@ -61,10 +58,11 @@ public class SerializationManager {
     }
 
     public void flush(StepState stepState) {
-        for (Serializer tw : writers) {
-            tw.flush(stepState);
+        if (stepState.isRecorded()) {
+            for (Serializer tw : writers) {
+                tw.flush(stepState);
+            }
         }
-
     }
     /**
      * Conclude the entire simulation project.
