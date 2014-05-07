@@ -66,7 +66,7 @@ public class FilterFactoryTest extends EslimeLatticeTestCase {
 
     public void testCompositeFilter() throws Exception {
         Element e = root.element("composite-case");
-        
+
         Filter[] children = new Filter[] {
                 new NullFilter(),
                 new NullFilter()

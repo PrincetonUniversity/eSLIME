@@ -20,6 +20,7 @@
 package processes;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import java.util.Random;
 
@@ -66,7 +67,7 @@ public abstract class MaxTargetHelper {
         arr[i] = temp;
     }
 
-    public static Object[] respectMaxTargets(List<Object> candidates, int maxTargets, Random random) {
+    public static Object[] respectMaxTargets(Collection<? extends Object> candidates, int maxTargets, Random random) {
         // This method is a target for optimization.
         Object[] candidateArr = candidates.toArray(new Object[0]);
         return respectMaxTargets(candidateArr, maxTargets, random);

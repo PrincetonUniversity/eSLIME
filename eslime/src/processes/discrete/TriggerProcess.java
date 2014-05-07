@@ -28,10 +28,12 @@ import layers.LayerManager;
 import org.dom4j.Element;
 import processes.MaxTargetHelper;
 import processes.StepState;
+import processes.discrete.filter.Filter;
 import processes.gillespie.GillespieState;
 import structural.utilities.XmlUtil;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Causes cells within the active area to perform the specified behavior.
@@ -41,36 +43,26 @@ public class TriggerProcess extends CellProcess {
     private String behaviorName;
     private boolean skipVacant;
     private boolean requireNeighbors;
-//    private boolean recordAfterTargeting;
     private int maxTargets;
+    private Filter filter;
 
     // We use a cell array because triggering may also move cells
     private Cell[] targets;
-
-//    public TriggerProcess(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
-//        super(loader, layerManager, id, p);
-//        behaviorName = get("behavior");
-//        Element e = loader.getProcess(id);
-//        skipVacant = XmlUtil.getBoolean(e, "skip-vacant-sites");
-//        maxTargets = XmlUtil.getInteger(e, "max-targets", -1);
-//        requireNeighbors = XmlUtil.getBoolean(e, "require-neighbors");
-//    }
 
     public TriggerProcess(LayerManager layerManager,
                           int id,
                           String behaviorName,
                           GeneralParameters p,
+                          Filter filter,
                           boolean skipVacant,
                           boolean requireNeighbors,
                           int maxTargets) {
-//                          int maxTargets,
-//                          boolean recordAfterTargeting) {
         super(null, layerManager, id, p);
         this.behaviorName = behaviorName;
         this.skipVacant = skipVacant;
         this.maxTargets = maxTargets;
         this.requireNeighbors = requireNeighbors;
-//        this.recordAfterTargeting = recordAfterTargeting;
+        this.filter = filter;
     }
 
     @Override
@@ -85,8 +77,9 @@ public class TriggerProcess extends CellProcess {
     }
 
     private Cell[] resolveTargets() {
-        ArrayList<Object> vacancyFiltered = respectVacancyRequirements(activeSites);
-        ArrayList<Object> neighborFiltered = respectNeighborhoodRequirements(vacancyFiltered);
+        ArrayList<Coordinate> vacancyFiltered = respectVacancyRequirements(activeSites);
+        Collection<Coordinate> stateFiltered = filter.apply(vacancyFiltered);
+        Collection<? extends Object> neighborFiltered = respectNeighborhoodRequirements(stateFiltered);
         Object[] selectedCoords = MaxTargetHelper.respectMaxTargets(neighborFiltered, maxTargets, p.getRandom());
 
         Cell[] selectedCells = new Cell[selectedCoords.length];
@@ -102,7 +95,7 @@ public class TriggerProcess extends CellProcess {
      * If require-neighbors is set, removes any candidates that don't have any
      * occupied neighbors.
      */
-    private ArrayList<Object> respectNeighborhoodRequirements(ArrayList<Object> unfiltered) {
+    private Collection<? extends Object> respectNeighborhoodRequirements(Collection<? extends Object> unfiltered) {
         ArrayList<Object> filtered = new ArrayList<>(unfiltered.size());
         if (!requireNeighbors) {
             return unfiltered;
@@ -136,8 +129,8 @@ public class TriggerProcess extends CellProcess {
      *
      * @param unfiltered
      */
-    private ArrayList<Object> respectVacancyRequirements(Coordinate[] unfiltered) {
-        ArrayList<Object> candidates = new ArrayList<>(unfiltered.length);
+    private ArrayList<Coordinate> respectVacancyRequirements(Coordinate[] unfiltered) {
+        ArrayList<Coordinate> candidates = new ArrayList<>(unfiltered.length);
 
 
         for (Coordinate c : unfiltered) {

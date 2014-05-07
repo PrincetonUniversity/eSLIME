@@ -1,11 +1,11 @@
 library(ggplot2)
 
-basepath <- '/Users/dbborens/projects/T6SS/instigator_vs_pacifist/2014-04-28/11h14m48s'
+basepath <- '/Users/dbborens/projects/T6SS_deathbirth//2014-05-07/11h12m46s/instigator_vs_pacifist/'
 iterates <- 3
 
-#census.long <- data.frame(nrow=0, ncol=3)
-#print(colnames(census.long))
-#cols <- c("frame", "instigators", "pacifists")
+census.long <- data.frame(nrow=0, ncol=3)
+print(colnames(census.long))
+cols <- c("frame", "instigators", "pacifists")
 #colnames(census.long) <- cols
 census.long <- data.frame(frame=numeric(), instigators=numeric(), pacifists=numeric())
 print(census.long)
