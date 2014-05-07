@@ -20,6 +20,7 @@
 package geometry.boundaries;
 
 import control.identifiers.Coordinate;
+import geometry.boundaries.helpers.PlaneRingHelper;
 import geometry.lattice.Lattice;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;

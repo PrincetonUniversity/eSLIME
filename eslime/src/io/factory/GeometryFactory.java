@@ -74,6 +74,8 @@ public class GeometryFactory {
             return new PlaneRingReflecting(shape, lattice);
         } else if (className.equalsIgnoreCase("Absorbing")) {
             return new Absorbing(shape, lattice);
+        } else if (className.equalsIgnoreCase("periodic")) {
+            return new Periodic(shape, lattice);
         } else {
             String msg = "Unrecognized boundary class '" +
                     className + "'.";

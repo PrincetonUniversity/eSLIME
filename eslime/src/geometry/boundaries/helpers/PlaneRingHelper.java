@@ -17,7 +17,7 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package geometry.boundaries;
+package geometry.boundaries.helpers;
 
 import control.identifiers.Coordinate;
 import control.identifiers.Flags;

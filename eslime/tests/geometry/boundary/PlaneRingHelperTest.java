@@ -21,7 +21,7 @@ package geometry.boundary;
 
 import control.identifiers.Coordinate;
 import control.identifiers.Flags;
-import geometry.boundaries.PlaneRingHelper;
+import geometry.boundaries.helpers.PlaneRingHelper;
 import geometry.lattice.Lattice;
 import geometry.lattice.RectangularLattice;
 import test.EslimeTestCase;
