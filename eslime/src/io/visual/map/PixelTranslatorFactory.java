@@ -37,7 +37,7 @@ public class PixelTranslatorFactory {
 
             // Triangular lattice
         } else if (d == 2 && c == 3) {
-            return new HexPixelTranslator();
+            return new TriPixelTranslator();
 
             // Cubic lattide
         } else if (d == 2 && c == 3) {

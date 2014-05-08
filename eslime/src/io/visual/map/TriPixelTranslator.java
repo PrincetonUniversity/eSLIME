@@ -28,7 +28,7 @@ import java.awt.*;
 /**
  * Created by dbborens on 4/1/14.
  */
-public class HexPixelTranslator extends PixelTranslator {
+public class TriPixelTranslator extends PixelTranslator {
 
     private int yOffset;
 
@@ -39,7 +39,7 @@ public class HexPixelTranslator extends PixelTranslator {
 
     @Override
     public boolean equals(Object obj) {
-        return (obj instanceof HexPixelTranslator);
+        return (obj instanceof TriPixelTranslator);
     }
 
     @Override

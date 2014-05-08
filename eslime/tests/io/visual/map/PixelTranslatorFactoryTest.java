@@ -40,7 +40,7 @@ public class PixelTranslatorFactoryTest extends EslimeTestCase {
         geom.setConnectivity(3);
 
         PixelTranslator actual = PixelTranslatorFactory.instantiate(geom);
-        PixelTranslator expected = new HexPixelTranslator();
+        PixelTranslator expected = new TriPixelTranslator();
 
         assertEquals(expected, actual);
     }

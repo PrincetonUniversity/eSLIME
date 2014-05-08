@@ -27,9 +27,9 @@ import test.EslimeTestCase;
 /**
  * Created by dbborens on 4/1/14.
  */
-public class HexPixelTranslatorTest extends EslimeTestCase {
+public class TriPixelTranslatorTest extends EslimeTestCase {
 
-    private HexPixelTranslator query;
+    private TriPixelTranslator query;
     private Coordinate c0, c1;
 
     @Override
@@ -41,7 +41,7 @@ public class HexPixelTranslatorTest extends EslimeTestCase {
         Coordinate[] cc = new Coordinate[]{c0, c1};
         MapState mapState = new MapState(null, 10.0);
         mapState.setCoordinates(cc);
-        query = new HexPixelTranslator();
+        query = new TriPixelTranslator();
         query.init(mapState);
     }
 
