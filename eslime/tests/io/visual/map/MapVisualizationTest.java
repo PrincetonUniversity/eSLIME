@@ -25,8 +25,10 @@ import geometry.Geometry;
 import geometry.boundaries.Arena;
 import geometry.boundaries.Boundary;
 import geometry.lattice.Lattice;
+import geometry.lattice.RectangularLattice;
 import geometry.lattice.TriangularLattice;
 import geometry.shape.Hexagon;
+import geometry.shape.Rectangle;
 import geometry.shape.Shape;
 import io.visual.color.ColorManager;
 import io.visual.color.DefaultColorManager;
@@ -87,6 +89,26 @@ public class MapVisualizationTest extends GlyphTest {
         ImageIO.write(result, "png", file);
 
         assertBinaryFilesEqual("glyphs/HexagonalMap.png", "HexagonalMap.png");
+    }
+
+    // As above, but for rectangular geometry.
+    public void testRectangle() throws Exception {
+        Lattice lattice = new RectangularLattice();
+        Shape shape = new Rectangle(lattice, 5, 5);
+        Boundary boundary = new Arena(shape, lattice);
+        Geometry geom = new Geometry(lattice, shape, boundary);
+        ColorManager colorManager = new DefaultColorManager();
+        MapState mapState = new MapState(colorManager, 25.0);
+        HighlightManager highlightManager = new HighlightManager();
+        mapState.setHighlightManager(highlightManager);
+        MapVisualization map = new MapVisualization(mapState);
+        map.init(geom);
+        systemState = makeSystemState(geom);
+        BufferedImage result = map.render(systemState);
+        File file = new File(outputPath + "RectangularMap.png");
+        ImageIO.write(result, "png", file);
+
+        assertBinaryFilesEqual("glyphs/RectangularMap.png", "RectangularMap.png");
 
     }
 }

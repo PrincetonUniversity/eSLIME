@@ -60,8 +60,8 @@ public class RectPixelTranslator extends PixelTranslator {
             }
         }
 
-        int dy = yMax - yMin;
-        int dx = xMax - xMin;
+        int dy = (int) edge * (yMax - yMin + 1);
+        int dx = (int) edge * (xMax - xMin + 1);
         imageDims = new Coordinate(dx, dy, 0);
     }
 

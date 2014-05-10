@@ -33,7 +33,7 @@ public class PixelTranslatorFactory {
 
         // Rectangular lattice
         if (d == 2 && c == 2) {
-            throw new UnsupportedOperationException("Support for rectangular lattice has not yet been ported from predecessors of eSLIME.");
+            return new RectPixelTranslator();
 
             // Triangular lattice
         } else if (d == 2 && c == 3) {
