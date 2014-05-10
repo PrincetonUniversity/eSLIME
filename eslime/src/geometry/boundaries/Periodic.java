@@ -35,7 +35,7 @@ import geometry.shape.Shape;
  * Created by dbborens on 5/7/14.
  */
 public class Periodic extends Boundary {
-    private WrapHelper helper;
+    protected WrapHelper helper;
     public Periodic(Shape shape, Lattice lattice) {
         super(shape, lattice);
         if (lattice.getDimensionality() == 2) {

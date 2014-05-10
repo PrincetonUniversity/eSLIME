@@ -45,6 +45,8 @@ public abstract class WrapHelper {
 
     public abstract Coordinate zWrap(Coordinate toWrap);
 
+    protected abstract void checkValid(Coordinate toWrap);
+
     @Override
     public boolean equals(Object o) {
         return (o.getClass() == this.getClass());

@@ -22,7 +22,9 @@
 package geometry.boundaries.helpers;
 
 import control.identifiers.Coordinate;
+import control.identifiers.Flags;
 import geometry.lattice.Lattice;
+import geometry.shape.Cuboid;
 import geometry.shape.Shape;
 
 /**
@@ -30,29 +32,47 @@ import geometry.shape.Shape;
  */
 public class WrapHelper3D extends WrapHelper {
 
-    private Lattice lattice;
-    private Shape shape;
+    private final int width, height, depth;
 
     public WrapHelper3D(Shape shape, Lattice lattice) {
         super(shape, lattice);
+
+        if (shape.getClass() != Cuboid.class) {
+            throw new UnsupportedOperationException("WrapHelper3D only supports Cuboid arenas.");
+        }
+
+        Cuboid cuboid = (Cuboid) shape;
+
+        width = cuboid.getDimensions()[0];
+        height = cuboid.getDimensions()[1];
+        depth = cuboid.getDimensions()[2];
     }
 
     public Coordinate wrapAll(Coordinate toWrap) {
+        checkValid(toWrap);
         Coordinate xWrapped = xWrap(toWrap);
-        Coordinate xyWrapped = yWrap(xWrapped);
-        Coordinate wrapped = zWrap(xyWrapped);
+        Coordinate yWrapped = yWrap(xWrapped);
+        Coordinate wrapped = zWrap(yWrapped);
         return wrapped;
     }
 
     public Coordinate xWrap(Coordinate toWrap) {
+        checkValid(toWrap);
         // Remove any x-adjustment from y.
         Coordinate ret = lattice.invAdjust(toWrap);
 
         // Wrap x.
         int over = shape.getOverbounds(ret).x();
 
-        while (over > 0) {
-            ret = new Coordinate(over, ret.y(), ret.z(), ret.flags());
+        while (over != 0) {
+            if (over > 0) {
+                // over == 1 --> wrap to 0
+                ret = new Coordinate(over - 1, ret.y(), ret.z(), ret.flags());
+
+            } else {
+                // over == -1 --> wrap to xMax (which is width - 1)
+                ret = new Coordinate(width + over, ret.y(), ret.z(), ret.flags());
+            }
             over = shape.getOverbounds(ret).x();
         }
 
@@ -64,13 +84,22 @@ public class WrapHelper3D extends WrapHelper {
     }
 
     public Coordinate yWrap(Coordinate toWrap) {
+        checkValid(toWrap);
         Coordinate ret = toWrap;
 
         // Wrap y.
-        int over = shape.getOverbounds(ret).x();
+        int over = shape.getOverbounds(ret).y();
 
-        while (over > 0) {
-            ret = new Coordinate(ret.x(), over, ret.z(), ret.flags());
+        while (over != 0) {
+            if (over > 0) {
+                // over == 1 --> wrap to 0
+                ret = new Coordinate(ret.x(), over - 1, ret.z(), ret.flags());
+
+            } else {
+                // over == -1 --> wrap to xMax (which is width - 1)
+                ret = new Coordinate(ret.x(), height + over, ret.z(), ret.flags());
+            }
+
             over = shape.getOverbounds(ret).y();
         }
 
@@ -78,18 +107,35 @@ public class WrapHelper3D extends WrapHelper {
         return ret;
     }
 
+
     public Coordinate zWrap(Coordinate toWrap) {
+        checkValid(toWrap);
         Coordinate ret = toWrap;
 
-        // Wrap y.
+        // Wrap z.
         int over = shape.getOverbounds(ret).z();
 
-        while (over > 0) {
-            ret = new Coordinate(ret.x(), ret.y(), over, ret.flags());
+        while (over != 0) {
+            if (over > 0) {
+                // over == 1 --> wrap to 0
+                ret = new Coordinate(ret.x(), ret.y(), over - 1, ret.flags());
+
+            } else {
+                // over == -1 --> wrap to xMax (which is width - 1)
+                ret = new Coordinate(ret.x(), ret.y(), depth + over, ret.flags());
+            }
+
             over = shape.getOverbounds(ret).z();
         }
 
         // Return.
         return ret;
+    }
+
+    @Override
+    protected void checkValid(Coordinate toWrap) {
+        if (toWrap.hasFlag(Flags.PLANAR)) {
+            throw new IllegalArgumentException("WrapHelper3D requires a 3D coordinate.");
+        }
     }
 }
