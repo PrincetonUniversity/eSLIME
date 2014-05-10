@@ -41,23 +41,35 @@ import java.util.TreeSet;
 public class CensusWriter extends Serializer {
 
     private static final String FILENAME = "census.txt";
-    ArrayList<Integer> frames = new ArrayList<>();
+
+    // It is necessary to flush all data at the end of each iteration, rather
+    // than after each flush event, because a state may appear for the first
+    // time in the middle of the simulation, and we want an accurate column
+    // for every observed state in the census table.
+
+//    ArrayList<Integer> frames = new ArrayList<>();
+
+    ArrayList<Integer> frames;
     // The keys to this map are FRAMES. The values are a mapping from STATE
     // number to count. If a state number does not appear, that means the
     // count was zero at that time.
     HashMap<Integer, HashMap<Integer, Integer>> histo;
-    HashSet<Integer> observedStates = new HashSet<>();
+//    HashSet<Integer> observedStates = new HashSet<>();
+    HashSet<Integer> observedStates;
+
     private BufferedWriter bw;
 
     public CensusWriter(GeneralParameters p) {
         super(p);
-
-        histo = new HashMap<>();
     }
 
     @Override
     public void init(LayerManager lm) {
         super.init(lm);
+        histo = new HashMap<>();
+        frames = new ArrayList<>();
+        observedStates = new HashSet<>();
+
         String filename = p.getInstancePath() + '/' + FILENAME;
         mkDir(p.getInstancePath(), true);
         bw = makeBufferedWriter(filename);
@@ -69,7 +81,7 @@ public class CensusWriter extends Serializer {
         frames.add(stepState.getFrame());
 
         // Create a bucket for this frame.
-        HashMap<Integer, Integer> observations = new HashMap<Integer, Integer>();
+        HashMap<Integer, Integer> observations = new HashMap<>();
         histo.put(stepState.getFrame(), observations);
 
         // Iterate over all observed states for this frame.

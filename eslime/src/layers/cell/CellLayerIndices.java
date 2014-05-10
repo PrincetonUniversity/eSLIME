@@ -154,7 +154,11 @@ public class CellLayerIndices {
     private void decrStateCount(Cell cell) {
         Integer currentState = cell.getState();
         Integer currentCount = stateMap.get(currentState);
-        stateMap.put(currentState, currentCount - 1);
+        if (currentCount == 1) {
+            stateMap.remove(currentState);
+        } else {
+            stateMap.put(currentState, currentCount - 1);
+        }
     }
 
     private void add(Coordinate coord, Cell cell) {
