@@ -137,6 +137,9 @@ public class ProcessFactory {
         } else if (processClass.equalsIgnoreCase("check-for-fixation")) {
             return new CheckForFixation(loader, layerManager, id, p);
 
+        } else if (processClass.equalsIgnoreCase("check-for-complete-fixation")) {
+            return new CheckForCompleteFixation(loader, layerManager, id, p);
+
         } else if (processClass.equalsIgnoreCase("check-for-extinction")) {
             return new CheckForExtinction(loader, layerManager, id, p);
 
