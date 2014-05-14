@@ -34,6 +34,7 @@ import geometry.lattice.RectangularLattice;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
 import junit.framework.TestCase;
+import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import test.EslimeTestCase;
 
@@ -53,12 +54,14 @@ public class ShoveHelperTest extends EslimeTestCase {
         Shape shape = new Rectangle(lattice, 10, 1);
         Boundary boundary = new Periodic(shape, lattice);
         Geometry geom = new Geometry(lattice, shape, boundary);
+        MockLayerManager lm = new MockLayerManager();
         layer = new CellLayer(geom);
+        lm.setCellLayer(layer);
         placeCells();
 
         Random random = new Random(RANDOM_SEED);
 
-        query = new ShoveHelper(layer, random);
+        query = new ShoveHelper(lm, random);
     }
 
     /**
@@ -103,6 +106,10 @@ public class ShoveHelperTest extends EslimeTestCase {
         fail("Not yet implemented. Requires a MockRandom that always returns " +
                 "the maximum value in a range, which creates a deterministic" +
                 " sequence.");
+    }
+
+    public void testGetTarget() throws Exception {
+        fail("Not yet implemented.");
     }
 
     private void placeCells() {

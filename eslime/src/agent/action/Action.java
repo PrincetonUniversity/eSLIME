@@ -22,6 +22,7 @@ package agent.action;
 import cells.BehaviorCell;
 import cells.Cell;
 import control.arguments.Argument;
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
 import layers.cell.CellLayerViewer;
@@ -54,7 +55,7 @@ public abstract class Action {
         return callback;
     }
 
-    public abstract void run(Coordinate caller);
+    public abstract void run(Coordinate caller) throws HaltCondition;
 
     /**
      * Returns the location of the cell whose behavior this is.

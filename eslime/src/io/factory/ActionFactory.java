@@ -98,7 +98,7 @@ public class ActionFactory {
         Argument<Integer> selfChannel = IntegerArgumentFactory.instantiate(e, "actor-highlight", -1, p.getRandom());
         Argument<Integer> targetChannel = IntegerArgumentFactory.instantiate(e, "target-highlight", -1, p.getRandom());
         boolean noReplace = XmlUtil.getBoolean(e, "no-replacement");
-        CloneTo ret = new CloneTo(callback, layerManager, targetRule, noReplace, selfChannel, targetChannel);
+        CloneTo ret = new CloneTo(callback, layerManager, targetRule, noReplace, selfChannel, targetChannel, p.getRandom());
         return ret;
     }
 

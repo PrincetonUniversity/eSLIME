@@ -96,7 +96,7 @@ public class SourceCellTest extends CellTest {
         assertEquals(0.5, b.getProduction("beta"));
     }
 
-    public void testTriggerThrowsException() {
+    public void testTriggerThrowsException() throws Exception {
         boolean thrown = false;
 
         try {
@@ -104,7 +104,6 @@ public class SourceCellTest extends CellTest {
         } catch (UnsupportedOperationException ex) {
             thrown = true;
         }
-
         assertTrue(thrown);
     }
 

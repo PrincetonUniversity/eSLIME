@@ -21,10 +21,14 @@
 
 package processes.discrete;
 
+import control.halt.HaltCondition;
+import control.halt.LatticeFullEvent;
 import control.identifiers.Coordinate;
 import control.identifiers.Flags;
 import geometry.Geometry;
+import layers.LayerManager;
 import layers.cell.CellLayer;
+import processes.StepState;
 
 import java.util.HashSet;
 import java.util.Random;
@@ -34,11 +38,11 @@ import java.util.Random;
  */
 public class ShoveHelper {
 
-    private CellLayer layer;
+    private LayerManager layerManager;
     private Random random;
 
-    public ShoveHelper(CellLayer layer, Random random) {
-        this.layer = layer;
+    public ShoveHelper(LayerManager layerManager, Random random) {
+        this.layerManager = layerManager;
         this.random = random;
     }
 
@@ -57,11 +61,27 @@ public class ShoveHelper {
     public HashSet<Coordinate> shove(Coordinate origin, Coordinate target) {
         HashSet<Coordinate> affectedSites = new HashSet<>();
 
-        Coordinate displacement = layer.getGeometry().getDisplacement(origin,
-                target, Geometry.APPLY_BOUNDARIES);
+        Coordinate displacement = layerManager.getCellLayer().getGeometry().
+                getDisplacement(origin,
+                        target, Geometry.APPLY_BOUNDARIES);
 
         doShove(origin, displacement, affectedSites);
         return affectedSites;
+    }
+
+    public Coordinate getTarget(Coordinate origin) throws HaltCondition {
+        StepState state = layerManager.getStepState();
+        Coordinate target;
+        // Get nearest vacancies to the cell
+        Coordinate[] targets = layerManager.getCellLayer().getLookupManager().getNearestVacancies(origin, -1);
+        if (targets.length == 0) {
+            throw new LatticeFullEvent(state.getTime());
+        } else {
+            int i = random.nextInt(targets.length);
+            target = targets[i];
+        }
+
+        return target;
     }
 
     /**
@@ -109,7 +129,8 @@ public class ShoveHelper {
         Coordinate du = new Coordinate(nextDisplacement, d.flags());
         doShove(nextLocation, du, sites);
 
-        layer.getUpdateManager().swap(currentLocation, nextLocation);
+        layerManager.getCellLayer().getUpdateManager().swap(currentLocation,
+                nextLocation);
 
         sites.add(nextLocation);
     }
@@ -118,7 +139,8 @@ public class ShoveHelper {
         Coordinate nextLoc;
         int n = random.nextInt(nv);
         Coordinate disp = calcDisp(d, dNext, rel, n);
-        nextLoc = layer.getGeometry().rel2abs(curLoc, disp, Geometry.APPLY_BOUNDARIES);
+        nextLoc = layerManager.getCellLayer().getGeometry().rel2abs(curLoc,
+                disp, Geometry.APPLY_BOUNDARIES);
         return nextLoc;
     }
 

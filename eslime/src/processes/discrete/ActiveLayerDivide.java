@@ -67,7 +67,7 @@ public class ActiveLayerDivide extends BulkDivisionProcess {
     public void fire(StepState state) throws HaltCondition {
 
 
-        execute(state, candidates);
+        execute(candidates);
     }
 
 }

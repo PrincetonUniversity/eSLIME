@@ -19,6 +19,7 @@
 
 package cells;
 
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import structural.utilities.EpsilonUtil;
 
@@ -127,7 +128,7 @@ public class MockCell extends BehaviorCell {
     }
 
     @Override
-    public void trigger(String behaviorName, Coordinate caller) {
+    public void trigger(String behaviorName, Coordinate caller) throws HaltCondition {
         lastTriggeredBehaviorName = behaviorName;
         lastTriggeredCaller = caller;
         triggerCount++;

@@ -19,6 +19,7 @@
 
 package cells;
 
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import structural.utilities.EpsilonUtil;
 
@@ -43,7 +44,7 @@ public class SourceCell extends Cell {
     }
 
     @Override
-    public void trigger(String behaviorName, Coordinate caller) {
+    public void trigger(String behaviorName, Coordinate caller) throws HaltCondition {
         throw new UnsupportedOperationException("Behaviors are not supported in the SourceCell class.");
     }
 

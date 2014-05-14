@@ -19,6 +19,7 @@
 
 package cells;
 
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 
 /**
@@ -114,12 +115,10 @@ public abstract class Cell {
      * behavior are defined by the cell's class. As of 1/24/2014, only the
      * BehaviorCell class will have an instantiated trigger(...) method; other
      * classes of cells will throw an UnsupportedOperationException.
-     *
-     * @param behaviorName the name of the behavior to trigger.
+     *  @param behaviorName the name of the behavior to trigger.
      * @param caller       the coordinate of the triggering site. If invoked from a
-     *                     top-down Process, the caller will be null.
      */
-    public abstract void trigger(String behaviorName, Coordinate caller);
+    public abstract void trigger(String behaviorName, Coordinate caller) throws HaltCondition;
 
     public abstract void die();
 }

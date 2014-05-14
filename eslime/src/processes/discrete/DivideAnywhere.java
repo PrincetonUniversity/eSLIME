@@ -50,7 +50,7 @@ public class DivideAnywhere extends BulkDivisionProcess {
     }
 
     public void fire(StepState state) throws HaltCondition {
-        execute(state, candidates);
+        execute(candidates);
         candidates = null;
     }
 

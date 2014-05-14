@@ -23,7 +23,6 @@ import cells.Cell;
 import control.GeneralParameters;
 import control.arguments.Argument;
 import control.halt.HaltCondition;
-import control.halt.LatticeFullEvent;
 import control.identifiers.Coordinate;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
@@ -48,17 +47,17 @@ public abstract class BulkDivisionProcess extends CellProcess {
         random = p.getRandom();
         this.maxTargets = maxTargets;
 
-        shoveHelper = new ShoveHelper(layerManager.getCellLayer(), random);
+        shoveHelper = new ShoveHelper(layerManager, random);
     }
 
-    protected void execute(StepState state, Coordinate[] candidates) throws HaltCondition {
+    protected void execute(Coordinate[] candidates) throws HaltCondition {
         Object[] chosen = MaxTargetHelper.respectMaxTargets(candidates, maxTargets.next(), p.getRandom());
         Cell[] chosenCells = toCellArray(chosen);
         for (int i = 0; i < chosenCells.length; i++) {
             Cell cell = chosenCells[i];
             CellLookupManager lm = layer.getLookupManager();
             Coordinate currentLocation = lm.getCellLocation(cell);
-            doDivision(state, currentLocation);
+            doDivision(currentLocation);
         }
 
         // The shoving process complete, look for cells that have gotten pushed
@@ -85,26 +84,13 @@ public abstract class BulkDivisionProcess extends CellProcess {
     }
 
 
-    private Coordinate getTarget(StepState state, Coordinate origin) throws HaltCondition {
-        Coordinate target;
-        // Get nearest vacancies to the cell
-        Coordinate[] targets = layer.getLookupManager().getNearestVacancies(origin, -1);
-        if (targets.length == 0) {
-            throw new LatticeFullEvent(state.getTime());
-        } else {
-            int i = random.nextInt(targets.length);
-            target = targets[i];
-        }
 
-        return target;
-    }
-
-    protected void doDivision(StepState state, Coordinate origin) throws HaltCondition {
+    protected void doDivision(Coordinate origin) throws HaltCondition {
         // Get child cell
         CellUpdateManager um = layer.getUpdateManager();
         Cell child = um.divide(origin);
 
-        Coordinate target = getTarget(state, origin);
+        Coordinate target = shoveHelper.getTarget(origin);
 
         shoveHelper.shove(origin, target);
 

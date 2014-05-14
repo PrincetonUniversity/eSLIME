@@ -22,6 +22,7 @@ package agent.action;
 import cells.BehaviorCell;
 import cells.Cell;
 import cells.MockCell;
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
 import layers.MockLayerManager;
@@ -109,7 +110,7 @@ public class CompoundActionTest extends EslimeTestCase {
         }
 
         @Override
-        public void run(Coordinate caller) {
+        public void run(Coordinate caller) throws HaltCondition {
             super.run(caller);
         }
 

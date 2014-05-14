@@ -25,10 +25,14 @@ import agent.targets.TargetRule;
 import cells.BehaviorCell;
 import cells.Cell;
 import control.arguments.Argument;
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
 import layers.cell.CellLayerViewer;
 import layers.cell.CellUpdateManager;
+import processes.discrete.ShoveHelper;
+
+import java.util.Random;
 
 /**
  * Places a copy or copies of the current cell at the target site(s).
@@ -47,16 +51,30 @@ public class CloneTo extends Action{
     // Highlight channels for the targeting and targeted cells
     private Argument<Integer> selfChannel;
     private Argument<Integer> targetChannel;
-    public CloneTo(BehaviorCell callback, LayerManager layerManager, TargetRule targetRule, boolean noReplace, Argument<Integer> selfChannel, Argument<Integer> targetChannel) {
+
+    // Displaces cells along a trajectory in the event that the cell is
+    // divided into an occupied site and replace is disabled.
+    private ShoveHelper shoveHelper;
+
+    private Random random;
+
+    public CloneTo(BehaviorCell callback, LayerManager layerManager,
+                   TargetRule targetRule, boolean noReplace,
+                   Argument<Integer> selfChannel,
+                   Argument<Integer> targetChannel, Random random) {
+
         super(callback, layerManager);
         this.targetRule = targetRule;
         this.selfChannel = selfChannel;
         this.targetChannel = targetChannel;
         this.noReplace = noReplace;
+        this.random = random;
+
+        shoveHelper = new ShoveHelper(layerManager, random);
     }
 
     @Override
-    public void run(Coordinate caller) {
+    public void run(Coordinate caller) throws HaltCondition {
         BehaviorCell callerCell = resolveCaller(caller);
 
         Coordinate self = getOwnLocation();
@@ -75,9 +93,7 @@ public class CloneTo extends Action{
             if (!v.isOccupied(target)) {
                 u.place(child, target);
             } else if (noReplace) {
-                throw new IllegalStateException("Illegal state: a cell is" +
-                        " attempting to clone itself into an occupied site," +
-                        " but this has been prohibited.");
+
             } else {
                 u.banish(target);
                 u.place(child, target);
@@ -86,6 +102,16 @@ public class CloneTo extends Action{
             highlight(target, self);
         }
 
+    }
+
+    private void placeWithShoving(Coordinate target, Cell child) throws
+            HaltCondition {
+
+        Coordinate vacancy = shoveHelper.getTarget(target);
+        shoveHelper.shove(target, vacancy);
+
+        CellUpdateManager u = getLayerManager().getCellLayer().getUpdateManager();
+        u.place(child, target);
     }
 
     private void highlight(Coordinate target, Coordinate ownLocation) {
@@ -118,6 +144,7 @@ public class CloneTo extends Action{
     @Override
     public Action clone(BehaviorCell child) {
         TargetRule clonedTargeter = targetRule.clone(child);
-        return new CloneTo(child, getLayerManager(), clonedTargeter, noReplace, selfChannel, targetChannel);
+        return new CloneTo(child, getLayerManager(), clonedTargeter, noReplace,
+                selfChannel, targetChannel, random);
     }
 }

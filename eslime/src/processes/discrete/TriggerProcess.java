@@ -23,14 +23,11 @@ import cells.Cell;
 import control.GeneralParameters;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
-import io.loader.ProcessLoader;
 import layers.LayerManager;
-import org.dom4j.Element;
 import processes.MaxTargetHelper;
 import processes.StepState;
 import processes.discrete.filter.Filter;
 import processes.gillespie.GillespieState;
-import structural.utilities.XmlUtil;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -158,9 +155,7 @@ public class TriggerProcess extends CellProcess {
 
     @Override
     public void fire(StepState state) throws HaltCondition {
-//        System.out.println("Executing Trigger. " + targets.length);
         for (Cell target : targets) {
-//            System.out.println("   Triggering behavior '" + behaviorName + "' in cell of type" + target.getState());
             // A null caller on the trigger method means that the caller is
             // a process rather than a cell.
             target.trigger(behaviorName, null);

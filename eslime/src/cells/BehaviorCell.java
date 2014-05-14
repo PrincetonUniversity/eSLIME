@@ -20,6 +20,7 @@
 package cells;
 
 import agent.control.BehaviorDispatcher;
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
 import structural.utilities.EpsilonUtil;
@@ -116,7 +117,7 @@ public class BehaviorCell extends Cell {
     }
 
     @Override
-    public void trigger(String behaviorName, Coordinate caller) {
+    public void trigger(String behaviorName, Coordinate caller) throws HaltCondition {
         dispatcher.trigger(behaviorName, caller);
     }
 

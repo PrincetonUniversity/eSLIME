@@ -22,6 +22,7 @@ package agent.action;
 import agent.targets.TargetRule;
 import cells.BehaviorCell;
 import control.arguments.Argument;
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
 
@@ -55,7 +56,7 @@ public class Trigger extends Action {
     }
 
     @Override
-    public void run(Coordinate caller) {
+    public void run(Coordinate caller) throws HaltCondition {
         BehaviorCell callerCell = resolveCaller(caller);
 
         // Since the Trigger behavior is the cause of the triggered behaviors,

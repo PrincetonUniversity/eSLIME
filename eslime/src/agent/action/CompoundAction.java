@@ -20,6 +20,7 @@
 package agent.action;
 
 import cells.BehaviorCell;
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
 
@@ -52,7 +53,7 @@ public class CompoundAction extends Action {
         this.actionSequence = actionSequence;
     }
 
-    public void run(Coordinate caller) {
+    public void run(Coordinate caller) throws HaltCondition {
         for (Action action : actionSequence) {
             action.run(caller);
         }

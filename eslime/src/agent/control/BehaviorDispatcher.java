@@ -22,6 +22,7 @@ package agent.control;
 import agent.Behavior;
 import cells.BehaviorCell;
 import control.GeneralParameters;
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import io.loader.BehaviorLoader;
 import layers.LayerManager;
@@ -75,7 +76,7 @@ public class BehaviorDispatcher {
      *                     the call originated with a top-down process, the
      *                     caller will be null.
      */
-    public void trigger(String behaviorName, Coordinate caller) {
+    public void trigger(String behaviorName, Coordinate caller) throws HaltCondition {
         if (!behaviors.containsKey(behaviorName)) {
             throw new IllegalArgumentException("Behavior '" + behaviorName + "' not found.");
         }

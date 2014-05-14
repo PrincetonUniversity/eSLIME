@@ -22,12 +22,12 @@
 package agent.action;
 
 import agent.control.BehaviorDispatcher;
-import agent.control.MockBehaviorDispatcher;
 import agent.targets.MockTargetRule;
 import cells.BehaviorCell;
 import control.identifiers.Coordinate;
 import test.EslimeLatticeTestCase;
-import test.EslimeTestCase;
+
+import java.util.Random;
 
 public class CloneToTest extends EslimeLatticeTestCase {
 
@@ -51,8 +51,10 @@ public class CloneToTest extends EslimeLatticeTestCase {
 
         cellLayer.getUpdateManager().place(original, origin);
 
+        Random random = new Random(RANDOM_SEED);
         // Create query.
-        query = new CloneTo(original, layerManager, targetRule, false, null, null);
+        query = new CloneTo(original, layerManager, targetRule, false, null,
+                null, random);
     }
 
     public void testLifeCycle() throws Exception {
@@ -70,6 +72,10 @@ public class CloneToTest extends EslimeLatticeTestCase {
     }
 
     public void testReplacement() throws Exception {
+        fail("Not yet implemented.");
+    }
+
+    public void testShoving() throws Exception {
         fail("Not yet implemented.");
     }
 }

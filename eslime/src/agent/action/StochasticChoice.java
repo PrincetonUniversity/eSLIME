@@ -20,6 +20,7 @@
 package agent.action;
 
 import cells.BehaviorCell;
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
 import structural.RangeMap;
@@ -46,7 +47,7 @@ public class StochasticChoice extends Action {
     }
 
     @Override
-    public void run(Coordinate caller) {
+    public void run(Coordinate caller) throws HaltCondition {
         double range = chooser.getTotalWeight();
         double x = random.nextDouble() * range;
         Action choice = chooser.selectTarget(x);
