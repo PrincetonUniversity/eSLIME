@@ -32,6 +32,7 @@ import processes.StepState;
 
 import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 /**
  * Created by dbborens on 5/14/14.
@@ -69,6 +70,17 @@ public class ShoveHelper {
         return affectedSites;
     }
 
+    /**
+     * Remove all out-of-bounds cells from the system. Useful after a shoving
+     * operation.
+     */
+    public void removeImaginary() {
+        Set<Coordinate> imaginarySites = layerManager.getCellLayer().getViewer().getImaginarySites();
+
+        for (Coordinate c : imaginarySites) {
+            layerManager.getCellLayer().getUpdateManager().banish(c);
+        }
+    }
     public Coordinate getTarget(Coordinate origin) throws HaltCondition {
         StepState state = layerManager.getStepState();
         Coordinate target;

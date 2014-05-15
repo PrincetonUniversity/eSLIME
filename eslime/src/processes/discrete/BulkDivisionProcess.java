@@ -63,11 +63,6 @@ public abstract class BulkDivisionProcess extends CellProcess {
         // The shoving process complete, look for cells that have gotten pushed
         // out of bounds and remove them. If such a situation is not permitted
         // in this geometry, this loop merely iterates over an empty set.
-        Set<Coordinate> imaginarySites = layer.getViewer().getImaginarySites();
-
-        for (Coordinate c : imaginarySites) {
-            layer.getUpdateManager().banish(c);
-        }
 
     }
 

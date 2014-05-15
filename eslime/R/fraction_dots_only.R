@@ -1,10 +1,14 @@
 library(ggplot2)
 
 #basepath <- '/Users/dbborens/projects/T6SS_deathbirth//2014-05-10/23h44m41s/instigator_vs_pacifist_periodic_movie/'
-basepath <- '/Users/dbborens/projects/T6SS_deathbirth//2014-05-10/23h45m07s/instigator_vs_pacifist_arena_movie/'
+#basepath <- '/Users/dbborens/projects/T6SS/simplified/2014-05-15/14h06m13s/IvP/'
+#basepath <- '/Users/dbborens/projects/T6SS/simplified/2014-05-15/14h07m48s/IvI/'
+#basepath <- '/Users/dbborens/projects/T6SS/simplified/2014-05-15/14h04m12s/PvP/'
+basepath <- '/Users/dbborens/projects/T6SS/simplified//2014-05-15/15h13m04s/IvP_variant/'
+#basepath <- '/Users/dbborens/projects/T6SS_deathbirth//2014-05-10/23h45m07s/instigator_vs_pacifist_arena_movie/'
 #basepath <- '/Users/dbborens/projects/T6SS_deathbirth//2014-05-10/23h42m58s/instigator_vs_pacifist_arena/'
 #basepath <- '/Users/dbborens/projects/T6SS_deathbirth//2014-05-10/23h43m18s/instigator_vs_pacifist_periodic/'
-iterates <- 2
+iterates <- 5
 
 census.long <- data.frame(nrow=0, ncol=3)
 cols <- c("instance", "frame", "instigators", "pacifists")
@@ -24,5 +28,9 @@ p.frac <- census.long$pacifists / (census.long$pacifists + census.long$instigato
 #print(p.frac)
 
 census.long <- cbind(census.long, p.frac)
-qplot(frame, p.frac, data = census.long, xlab='Time (frames)', ylab='Pacifist fraction', main='Pacifist fraction', geom = c("point", "line"), facets=instance ~ .)
-ggsave(path=basepath, file="pacifist fraction.pdf")
+pdf(sprintf("%s/plots.pdf", basepath), onefile = TRUE)
+print(qplot(frame, p.frac, data = census.long, xlab='Time (frames)', ylab='Red fraction', main='Red fraction', geom = c("point", "line"), facets=instance ~ .))
+print(qplot(frame, pacifists, data = census.long, xlab='Time (frames)', ylab='Red population', main='Red population', geom = c("point", "line"), facets=instance ~ .))
+print(qplot(frame, instigators, data = census.long, xlab='Time (frames)', ylab='Blue population', main='Blue population', geom = c("point", "line"), facets=instance ~ .))
+dev.off()
+#ggsave(path=basepath, file="plots.pdf")

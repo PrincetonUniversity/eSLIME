@@ -93,7 +93,8 @@ public class CloneTo extends Action{
             if (!v.isOccupied(target)) {
                 u.place(child, target);
             } else if (noReplace) {
-
+                placeWithShoving(target, child);
+                shoveHelper.removeImaginary();
             } else {
                 u.banish(target);
                 u.place(child, target);

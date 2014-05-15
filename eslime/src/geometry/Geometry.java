@@ -349,4 +349,9 @@ public class Geometry {
         // They are similar if all of these things were true.
         return true;
     }
+
+    public boolean contains(Coordinate coordinate) {
+        Coordinate canonicalized = coordinate.canonicalize();
+        return (coordinateIndex.containsKey(canonicalized));
+    }
 }

@@ -112,6 +112,9 @@ public class ShoveHelperTest extends EslimeTestCase {
         fail("Not yet implemented.");
     }
 
+    public void testRemoveImaginary() throws Exception {
+        fail("Not yet implemented.");
+    }
     private void placeCells() {
         for (int x = 0; x < 7; x++) {
             placeNumberedCell(x);
