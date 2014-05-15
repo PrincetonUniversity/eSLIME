@@ -21,6 +21,7 @@ package io.factory;
 
 import control.GeneralParameters;
 import control.arguments.Argument;
+import io.serialize.SerializationManager;
 import io.serialize.Serializer;
 import io.serialize.binary.ContinuumStateWriter;
 import io.serialize.binary.HighlightWriter;
@@ -31,6 +32,9 @@ import io.serialize.text.*;
 import io.visual.Visualization;
 import org.dom4j.Element;
 import structural.utilities.XmlUtil;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by dbborens on 1/17/14.
@@ -84,6 +88,19 @@ public abstract class SerializationFactory {
         } else {
             throw new IllegalArgumentException("Unrecognized serialization '" + writerClass + "'");
         }
+    }
+
+    public static SerializationManager makeManager(Element we, GeneralParameters p) {
+        List<Serializer> writers = new ArrayList<>();
+
+        for (Object o : we.elements()) {
+            Element e = (Element) o;
+            Serializer w = SerializationFactory.instantiate(e, p);
+            writers.add(w);
+        }
+
+        SerializationManager manager = new SerializationManager(p, writers);
+        return manager;
     }
 
     private static CorrelationWriter correlationWriter(Element e, GeneralParameters p) {

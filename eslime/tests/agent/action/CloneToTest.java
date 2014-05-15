@@ -21,10 +21,23 @@
 
 package agent.action;
 
+import agent.Behavior;
 import agent.control.BehaviorDispatcher;
 import agent.targets.MockTargetRule;
 import cells.BehaviorCell;
+import cells.Cell;
+import cells.MockCell;
 import control.identifiers.Coordinate;
+import geometry.Geometry;
+import geometry.MockGeometry;
+import geometry.boundaries.Boundary;
+import geometry.boundaries.Periodic;
+import geometry.lattice.Lattice;
+import geometry.lattice.RectangularLattice;
+import geometry.shape.Rectangle;
+import geometry.shape.Shape;
+import layers.MockLayerManager;
+import layers.cell.CellLayer;
 import test.EslimeLatticeTestCase;
 
 import java.util.Random;
@@ -34,7 +47,7 @@ public class CloneToTest extends EslimeLatticeTestCase {
     private BehaviorCell original;
     private MockTargetRule targetRule;
     private CloneTo query;
-
+    private Random random;
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -51,7 +64,7 @@ public class CloneToTest extends EslimeLatticeTestCase {
 
         cellLayer.getUpdateManager().place(original, origin);
 
-        Random random = new Random(RANDOM_SEED);
+        random = new Random(RANDOM_SEED);
         // Create query.
         query = new CloneTo(original, layerManager, targetRule, false, null,
                 null, random);
@@ -71,11 +84,89 @@ public class CloneToTest extends EslimeLatticeTestCase {
         assertFalse(original == cellLayer.getViewer().getCell(y));
     }
 
+    /**
+     * Integration test using replacement process.
+     *
+     * @throws Exception
+     */
     public void testReplacement() throws Exception {
-        fail("Not yet implemented.");
+        CellLayer layer = linearLayer(false);
+        Cell cell = layer.getViewer().getCell(new Coordinate(4, 0, 0));
+
+        // Divide cell at position 4 toward 5
+        cell.trigger("clone-self", null);
+
+        // New configuration: _123446_89
+        assertEquals(4, layer.getViewer().getState(new Coordinate(4, 0, 0)));
+        assertEquals(4, layer.getViewer().getState(new Coordinate(5, 0, 0)));
+        assertEquals(6, layer.getViewer().getState(new Coordinate(6, 0, 0)));
+        assertFalse(layer.getViewer().isOccupied(new Coordinate(7, 0, 0)));
     }
 
+    /**
+     * Integration test using shoving process.
+     *
+     * @throws Exception
+     */
     public void testShoving() throws Exception {
-        fail("Not yet implemented.");
+        CellLayer layer = linearLayer(true);
+        Cell cell = layer.getViewer().getCell(new Coordinate(4, 0, 0));
+
+        // Divide cell at position 4 toward 5
+        cell.trigger("clone-self", null);
+
+        // New configuration: _1234456789
+        assertEquals(4, layer.getViewer().getState(new Coordinate(4, 0, 0)));
+        assertEquals(4, layer.getViewer().getState(new Coordinate(5, 0, 0)));
+        assertEquals(5, layer.getViewer().getState(new Coordinate(6, 0, 0)));
+        assertEquals(9, layer.getViewer().getState(new Coordinate(9, 0, 0)));
     }
+
+
+    /**
+     *
+     *   _123456_89  Initial condition
+     *       ^       (Cell to be divided)
+     */
+    private CellLayer linearLayer(boolean shoving) {
+        Lattice lattice = new RectangularLattice();
+        Shape shape = new Rectangle(lattice, 10, 1);
+        Boundary boundary = new Periodic(shape, lattice);
+        Geometry geom = new Geometry(lattice, shape, boundary);
+        CellLayer layer = new CellLayer(geom);
+        layerManager.setCellLayer(layer);
+        placeCells(layer, shoving);
+
+        return layer;
+    }
+    private void placeNumberedCell(int x, CellLayer layer, boolean shoving) {
+        BehaviorCell cell = new BehaviorCell(layerManager, x, x, x);
+        Coordinate coord = new Coordinate(x, 0, 0);
+        layer.getUpdateManager().place(cell, coord);
+        BehaviorDispatcher bd = new BehaviorDispatcher();
+        cell.setDispatcher(bd);
+
+        MockTargetRule mtr = new MockTargetRule();
+
+        // Cells always divide to the right
+        mtr.setTargets(new Coordinate[] {new Coordinate(x + 1, 0, 0)});
+
+        CloneTo cloneTo = new CloneTo(cell, layerManager, mtr,
+                shoving, null, null, random);
+
+        Behavior behavior = new Behavior(cell, layerManager, new Action[] {cloneTo});
+        bd.map("clone-self", behavior);
+
+    }
+
+    private void placeCells(CellLayer layer, boolean shoving) {
+        for (int x = 1; x < 7; x++) {
+            placeNumberedCell(x, layer, shoving);
+        }
+
+        for (int x = 8; x <= 9; x++) {
+            placeNumberedCell(x, layer, shoving);
+        }
+    }
+
 }

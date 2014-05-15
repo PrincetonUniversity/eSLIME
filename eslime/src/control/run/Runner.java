@@ -25,6 +25,7 @@ import control.ProcessManager;
 import control.halt.HaltCondition;
 import io.factory.GeometryFactory;
 import io.factory.ProcessFactory;
+import io.factory.SerializationFactory;
 import io.loader.ProcessLoader;
 import io.loader.ProjectLoader;
 import io.serialize.SerializationManager;
@@ -66,7 +67,7 @@ public class Runner implements Runnable {
             p = new GeneralParameters(pp);
             gm = new GeometryFactory(pp.getElement("geometry"));
             Element writers = pp.getElement("writers");
-            mgr = new SerializationManager(writers, p);
+            mgr = SerializationFactory.makeManager(writers, p);
         } catch (Exception ex) {
             throw new RuntimeException(ex);
         }

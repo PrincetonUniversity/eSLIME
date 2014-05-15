@@ -22,7 +22,6 @@
 package processes;
 
 import control.identifiers.Coordinate;
-import io.serialize.SerializationManager;
 import layers.cell.CellLayer;
 
 import java.util.HashMap;
@@ -31,6 +30,7 @@ import java.util.HashMap;
  * Created by David B Borenstein on 4/20/14.
  */
 public class MockStepState extends StepState {
+
     public MockStepState() {
         this(0.0);
     }
@@ -51,19 +51,23 @@ public class MockStepState extends StepState {
         return highlightMap.get(channel);
     }
 
-    boolean isRecord = false;
+    boolean record = false;
 
     @Override
     public void record(CellLayer cellLayer) {
         super.record(cellLayer);
-        isRecord = true;
+        record = true;
     }
 
-    public boolean isRecord() {
-        return isRecord;
+    public boolean isRecorded() {
+        return record;
     }
 
     public void setHighlights(Integer channel, Coordinate[] highlights) {
         highlightMap.put(channel, highlights);
+    }
+
+    public void setRecord(boolean record) {
+        this.record = record;
     }
 }

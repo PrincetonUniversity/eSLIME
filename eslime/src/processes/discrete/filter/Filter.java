@@ -30,6 +30,8 @@ import java.util.Collection;
  * Created by dbborens on 5/5/14.
  */
 public abstract class Filter {
+    private boolean called;
+
     /**
      * Applies filter to input collection. Original collection should not be
      * modified.
@@ -43,4 +45,8 @@ public abstract class Filter {
 
     @Override
     public abstract boolean equals(Object o);
+
+    public boolean isCalled() {
+        return called;
+    }
 }

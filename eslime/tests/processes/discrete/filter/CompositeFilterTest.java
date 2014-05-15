@@ -21,11 +21,18 @@
 
 package processes.discrete.filter;
 
+import control.identifiers.Coordinate;
 import junit.framework.TestCase;
 
 public class CompositeFilterTest extends TestCase {
 
     public void testApply() throws Exception {
-        fail("Should make sure each of two children get called");
+        Filter child1 = new MockFilter();
+        Filter child2 = new MockFilter();
+        Filter[] children = new Filter[] {child1, child2};
+        CompositeFilter query = new CompositeFilter(children);
+        query.apply(new Coordinate[0]);
+        assertTrue(child1.isCalled());
+        assertTrue(child2.isCalled());
     }
 }

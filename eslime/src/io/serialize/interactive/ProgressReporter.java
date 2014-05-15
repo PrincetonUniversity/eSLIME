@@ -53,7 +53,7 @@ public class ProgressReporter extends Serializer {
 
     @Override
     public void dispatchHalt(HaltCondition ex) {
-        System.out.println("  Instance halted. Cause type: " + ex.getClass().getSimpleName());
+        System.out.println("Simulation ended. Cause: " + ex.getClass().getSimpleName());
     }
 
     @Override

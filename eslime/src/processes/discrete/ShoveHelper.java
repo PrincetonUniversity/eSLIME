@@ -149,14 +149,14 @@ public class ShoveHelper {
 
     private Coordinate getNextLocation(Coordinate curLoc, Coordinate d, int nv, int[] dNext, int[] rel) {
         Coordinate nextLoc;
-        int n = random.nextInt(nv);
-        Coordinate disp = calcDisp(d, dNext, rel, n);
+        int o = random.nextInt(nv);
+        Coordinate disp = calcDisp(d, dNext, rel, o);
         nextLoc = layerManager.getCellLayer().getGeometry().rel2abs(curLoc,
                 disp, Geometry.APPLY_BOUNDARIES);
         return nextLoc;
     }
 
-    private Coordinate calcDisp(Coordinate d, int[] dNext, int[] rel, int n) {
+    private Coordinate calcDisp(Coordinate d, int[] dNext, int[] rel, int o) {
         // Initialize rel vector
         for (int i = 0; i < 3; i++) {
             rel[i] = 0;
@@ -164,10 +164,10 @@ public class ShoveHelper {
 
         // Decrement the displacement vector by one unit in a randomly chosen
         // direction, weighted so that the path is, on average, straight.
-        if (n < Math.abs(d.x())) {
+        if (o < Math.abs(d.x())) {
             dNext[0] -= (int) Math.signum(d.x());
             rel[0] += (int) Math.signum(d.x());
-        } else if (n < (Math.abs(d.x()) + Math.abs(d.y()))) {
+        } else if (o < (Math.abs(d.x()) + Math.abs(d.y()))) {
             dNext[1] -= (int) Math.signum(d.y());
             rel[1] += (int) Math.signum(d.y());
         } else {

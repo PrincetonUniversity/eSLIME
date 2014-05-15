@@ -19,22 +19,36 @@
  * /
  */
 
-package processes.discrete;
+package processes.discrete.filter;
 
-import junit.framework.TestCase;
-import processes.MockStepState;
-import test.EslimeLatticeTestCase;
+import control.identifiers.Coordinate;
+
+import java.util.Collection;
 
 /**
- * Created by dbborens on 4/24/14.
+ * Created by dbborens on 5/15/14.
  */
-public class RecordTest extends EslimeLatticeTestCase {
+public class MockFilter extends Filter{
+    private boolean called;
 
-    public void testLifeCycle() throws Exception {
-        MockStepState stepState = new MockStepState();
-        Record query = new Record(null, layerManager, 0, null);
-        query.target(null);
-        query.fire(stepState);
-        assertTrue(stepState.isRecorded());
+    public MockFilter() {
+        called = false;
+    }
+
+    public boolean isCalled() {
+        return called;
+    }
+
+    @Override
+    public Collection<Coordinate> apply(Collection<Coordinate> toFilter) {
+        called = true;
+        return toFilter;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        return true;
     }
 }

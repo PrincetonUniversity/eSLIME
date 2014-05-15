@@ -32,19 +32,13 @@ import java.util.List;
 /**
  * @untested
  */
-public class SerializationManager {
+public class SerializationManager extends Serializer {
 
     private List<Serializer> writers;
 
-    public SerializationManager(Element we, GeneralParameters p) {
-
-        writers = new ArrayList<>();
-
-        for (Object o : we.elements()) {
-            Element e = (Element) o;
-            Serializer w = SerializationFactory.instantiate(e, p);
-            writers.add(w);
-        }
+    public SerializationManager(GeneralParameters p, List<Serializer> writers) {
+        super(p);
+        this.writers = writers;
     }
 
     /**
@@ -74,8 +68,6 @@ public class SerializationManager {
     }
 
     public void dispatchHalt(HaltCondition ex) {
-        System.out.println("Simulation ended. Cause: " + ex.getClass().getSimpleName());
-
         for (Serializer tw : writers) {
             tw.dispatchHalt(ex);
         }

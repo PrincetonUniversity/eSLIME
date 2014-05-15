@@ -19,22 +19,16 @@
  * /
  */
 
-package processes.discrete;
+package structural;
 
-import junit.framework.TestCase;
-import processes.MockStepState;
-import test.EslimeLatticeTestCase;
+import java.util.Random;
 
 /**
- * Created by dbborens on 4/24/14.
+ * Created by dbborens on 5/15/14.
  */
-public class RecordTest extends EslimeLatticeTestCase {
-
-    public void testLifeCycle() throws Exception {
-        MockStepState stepState = new MockStepState();
-        Record query = new Record(null, layerManager, 0, null);
-        query.target(null);
-        query.fire(stepState);
-        assertTrue(stepState.isRecorded());
+public class MockRandom extends Random {
+    @Override
+    public int nextInt(int n) {
+        return n - 1;
     }
 }

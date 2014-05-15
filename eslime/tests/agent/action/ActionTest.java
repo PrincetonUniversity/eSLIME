@@ -24,8 +24,11 @@ import cells.Cell;
 import control.arguments.Argument;
 import control.arguments.ConstantInteger;
 import control.identifiers.Coordinate;
+import geometry.Geometry;
+import geometry.MockGeometry;
 import layers.LayerManager;
 import layers.MockLayerManager;
+import layers.cell.CellLayer;
 import processes.StepState;
 import test.EslimeTestCase;
 
@@ -73,6 +76,11 @@ public class ActionTest extends EslimeTestCase {
     }
 
     public void testDoHighlight() throws Exception {
+        Coordinate[] cc = new Coordinate[] {caller};
+        MockGeometry geom = new MockGeometry();
+        geom.setCanonicalSites(cc);
+        CellLayer layer = new CellLayer(geom);
+        layerManager.setCellLayer(layer);
         StepState stepState = new StepState(0.0, 0);
         layerManager.setStepState(stepState);
         query.doHighlight(new ConstantInteger(1), caller);

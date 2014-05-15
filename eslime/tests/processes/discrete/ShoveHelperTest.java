@@ -25,26 +25,26 @@ import cells.Cell;
 import cells.MockCell;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
-import geometry.boundaries.Absorbing;
-import geometry.boundaries.Boundary;
-import geometry.boundaries.Periodic;
-import geometry.boundaries.PlaneRingHard;
+import geometry.boundaries.*;
+import geometry.lattice.CubicLattice;
 import geometry.lattice.Lattice;
 import geometry.lattice.RectangularLattice;
+import geometry.shape.Cuboid;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
 import junit.framework.TestCase;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
+import structural.MockRandom;
 import test.EslimeTestCase;
 
+import java.util.HashSet;
 import java.util.Random;
 
 public class ShoveHelperTest extends EslimeTestCase {
 
     private CellLayer layer;
     private ShoveHelper query;
-
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -103,18 +103,71 @@ public class ShoveHelperTest extends EslimeTestCase {
     }
 
     public void test3Dshove() throws Exception {
-        fail("Not yet implemented. Requires a MockRandom that always returns " +
-                "the maximum value in a range, which creates a deterministic" +
-                " sequence.");
+        // Create a 10x1 rectangular, 2D geometry
+        Lattice lattice = new CubicLattice();
+        Shape shape = new Cuboid(lattice, 5, 5, 5);
+        Boundary boundary = new Absorbing(shape, lattice);
+        Geometry geom = new Geometry(lattice, shape, boundary);
+        MockLayerManager lm = new MockLayerManager();
+        layer = new CellLayer(geom);
+        lm.setCellLayer(layer);
+        Random random = new MockRandom();
+        query = new ShoveHelper(lm, random);
+
+        for (int x = 0 ; x < 4; x++) {
+            for (int y = 0; y < 4; y++) {
+                for (int z = 0; z < 4; z++) {
+                    Cell cell = new MockCell(1);
+                    Coordinate coord = new Coordinate(x, y, z, 0);
+                    layer.getUpdateManager().place(cell, coord);
+                }
+            }
+        }
+
+        Coordinate origin = new Coordinate(1, 2, 3, 0);
+        Coordinate target = new Coordinate(4, 4, 4, 0);
+
+        HashSet<Coordinate> affected = query.shove(origin, target);
+
+        // Algorithm will prefer z, then y, then x. So the shoving should
+        // progress like this:
+        assertTrue(affected.contains(new Coordinate(1, 2, 4, 0)));
+        assertTrue(affected.contains(new Coordinate(1, 3, 4, 0)));
+        assertTrue(affected.contains(new Coordinate(1, 4, 4, 0)));
+        assertTrue(affected.contains(new Coordinate(2, 4, 4, 0)));
+        assertTrue(affected.contains(new Coordinate(3, 4, 4, 0)));
+        assertTrue(affected.contains(new Coordinate(4, 4, 4, 0)));
+
+        // Having shoved, the origin should now be vacant.
+        assertFalse(layer.getViewer().isOccupied(origin));
     }
 
     public void testGetTarget() throws Exception {
-        fail("Not yet implemented.");
+        Coordinate origin = new Coordinate(4, 0, 0);
+
+        Coordinate expected = new Coordinate(7, 0, 0);
+        Coordinate actual = query.getTarget(origin);
+        assertEquals(expected, actual);
     }
 
     public void testRemoveImaginary() throws Exception {
-        fail("Not yet implemented.");
+        Lattice lattice = new RectangularLattice();
+        Shape shape = new Rectangle(lattice, 10, 1);
+        Boundary boundary = new Arena(shape, lattice);
+        Geometry geom = new Geometry(lattice, shape, boundary);
+        MockLayerManager lm = new MockLayerManager();
+        layer = new CellLayer(geom);
+        lm.setCellLayer(layer);
+        placeCells();
+        Random random = new Random(RANDOM_SEED);
+        query = new ShoveHelper(lm, random);
+        MockCell cell = new MockCell(1);
+        layer.getUpdateManager().place(cell, new Coordinate(-1, 0, 0));
+        assertEquals(1, layer.getViewer().getImaginarySites().size());
+        query.removeImaginary();
+        assertEquals(0, layer.getViewer().getImaginarySites().size());
     }
+
     private void placeCells() {
         for (int x = 0; x < 7; x++) {
             placeNumberedCell(x);
