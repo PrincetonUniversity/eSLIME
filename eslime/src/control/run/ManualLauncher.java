@@ -30,7 +30,7 @@ public class ManualLauncher {
 
     public static void main(String[] args) {
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/pacifist_vs_pacifist.xml";
-        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/instigator_vs_pacifist.xml"; // THIS IS NOT THE SAME GITHUB
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/instigator_vs_pacifist.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/correlation_test.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/debug.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/instigator_vs_pacifist_lite.xml";
@@ -41,7 +41,7 @@ public class ManualLauncher {
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/simplified/instigator_vs_instigator.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/simplified/instigator_vs_pacifist_variant.xml";
 
-//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/deathbirth/db_instigator_vs_pacifist_arena.xml";
+        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/deathbirth/db_instigator_vs_pacifist_arena.xml";
 //        String p
 // ath = "/Users/dbborens/IdeaProjects/t6ss/xml/instigator_vs_instigator.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/retaliator_vs_retaliator.xml";
