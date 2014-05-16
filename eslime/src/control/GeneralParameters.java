@@ -48,8 +48,7 @@ public class GeneralParameters {
     // Output flags
     private String instancePath;    // Includes instance number�(if applies)
     private boolean stateMap;                // Visualize lineages as they grow
-    // Output frames (blank means all)
-    private Set<Integer> frames;
+
     // Instantiated members
     private double epsilon;            // Minimum measurable FP delta
     private long randomSeed;
@@ -121,9 +120,6 @@ public class GeneralParameters {
         // Load output flags
         loadFlags(g);
 
-        // Load output frames (or none)
-        loadOutputFrames(g);
-
         // Initialize random-number generator
         loadRandom(g);
 
@@ -143,75 +139,6 @@ public class GeneralParameters {
             randomSeed = Long.valueOf(rseed);
             random = new Random(randomSeed);
 
-        }
-    }
-
-    private void loadOutputFrames(Element g) {
-        Element fElem = g.element("output-frames");
-
-        frames = new HashSet<Integer>();
-
-        // Did we specify an automatic frame pattern?
-        if (fElem.element("auto") != null) {
-            Element auto = fElem.element("auto");
-
-            // All -- render every frame. IF YOU USE A HUGE MAX STEP, THIS
-            // *WILL* CRASH THE PROGRAM.
-            if (auto.attribute("mode").getData().toString().equalsIgnoreCase("all")) {
-                for (int i = 0; i <= maxStep; i++) {
-                    frames.add(i);
-                }
-                System.out.println();
-                // Linear mode -- step n frames from the first one
-            } else if (auto.attribute("mode").getData().toString().equalsIgnoreCase("linear")) {
-                Attribute stepAttr = auto.attribute("step");
-                if (stepAttr == null) {
-                    throw new IllegalArgumentException("Linear mode requires a 'step' argument.");
-                }
-
-                int step = Integer.valueOf(stepAttr.getData().toString());
-
-                for (int i = 0; i <= maxStep; i += step) {
-                    frames.add(i);
-                }
-
-                // Log mode -- 1 frame per OOM
-            } else if (auto.attribute("mode").getData().toString().equalsIgnoreCase("log")) {
-                frames.add(0);
-                for (int i = 1; i <= maxStep; i *= 10) {
-                    frames.add(i);
-                }
-
-                // Decilog mode -- 10 frames per OOM
-            } else if (auto.attribute("mode").getData().toString().equalsIgnoreCase("decilog")) {
-                frames.add(0);
-                int i = 1;
-                int magnitude = 1;
-                while (i <= maxStep) {
-                    for (int j = 1; i <= maxStep && j < 10; j++) {
-                        frames.add(i);
-                        i += magnitude;
-                    }
-                    magnitude *= 10;
-                }
-
-                // Unrecognized auto mode
-            } else {
-                throw new IllegalArgumentException("Automatic frameset mode '" +
-                        auto.attribute("mode").getData().toString()
-                        + "' not recognized.");
-            }
-        }
-
-        for (Object o : fElem.elements("frame")) {
-            Element e = (Element) o;
-
-            Integer frame = Integer.valueOf(e.getData().toString());
-            frames.add(frame);
-        }
-
-        if (frames.size() == 0) {
-            System.err.println("WARNING! No frames specified.");
         }
     }
 
@@ -351,21 +278,6 @@ public class GeneralParameters {
 
     public int getInstance() {
         return instance;
-    }
-
-    public HashSet<Integer> getFrames() {
-        return new HashSet<>(frames);
-    }
-
-    /**
-     * Returns true if the specified frame is contained
-     * in the list of frames for visualization.
-     *
-     * @param frame
-     * @return
-     */
-    public boolean isFrame(Integer frame) {
-        return frames.contains(frame);
     }
 
     /**

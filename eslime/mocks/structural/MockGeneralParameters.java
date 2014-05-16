@@ -78,11 +78,6 @@ public class MockGeneralParameters extends GeneralParameters {
     }
 
     @Override
-    public boolean isFrame(Integer frame) {
-        return isFrameValue;
-    }
-
-    @Override
     public int getNumInstances() {
         return numInstances;
     }
