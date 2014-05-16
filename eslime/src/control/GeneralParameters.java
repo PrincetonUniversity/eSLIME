@@ -225,7 +225,7 @@ public class GeneralParameters {
         boolean isStamp = XmlUtil.getBoolean(g, "date-stamp");
 
         if (isStamp) {
-            path = basePath + '/' + date() + '/' + projectName + '/';
+            path = basePath + '/' + date() + '/' + projectName + '/' + time() + '/';
         } else {
             path = basePath + projectName;
         }
@@ -273,7 +273,13 @@ public class GeneralParameters {
     }
 
     private String date() {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd/HH'h'mm'm'ss's'");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        return sdf.format(date);
+    }
+
+    public String time() {
+        SimpleDateFormat sdf = new SimpleDateFormat("HH'h'mm'm'ss's'");
         Date date = new Date();
         return sdf.format(date);
     }
