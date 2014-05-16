@@ -28,32 +28,42 @@ import processes.StepState;
 /**
  * Outputs some basic information about simulation progress.
  * Without this (or similar), eSLIME does not write to stdout.
+ * Note that flush(...) reports time since last flush(...), not
+ * the time since the last cycle!
  *
  * @author David Bruce Borenstein
  * @untested
  */
 public class ProgressReporter extends Serializer {
 
-    private long start;
+    private long projectStart;
+    private long instanceStart;
+    private long cycleStart;
 
     public ProgressReporter(GeneralParameters p) {
         super(p);
+        projectStart = System.currentTimeMillis();
     }
 
     public void init(LayerManager lm) {
-        start = System.currentTimeMillis();
+        instanceStart = System.currentTimeMillis();
+        cycleStart = System.currentTimeMillis();
         System.out.println("Instance " + p.getInstance() + ": " + p.getInstancePath());
         System.out.println("Random key: " + p.getRandomSeed());
     }
 
     @Override
     public void flush(StepState stepState) {
-            System.out.println("   Frame " + stepState.getFrame() + ".");
+            long cycleTime = System.currentTimeMillis() - cycleStart;
+            System.out.println("   Frame " + stepState.getFrame() + " (" + cycleTime + "ms).");
+            cycleStart = System.currentTimeMillis();
     }
 
     @Override
     public void dispatchHalt(HaltCondition ex) {
         System.out.println("Simulation ended. Cause: " + ex.getClass().getSimpleName());
+        long instanceTime = (System.currentTimeMillis() - instanceStart) / 1000;
+        System.out.print("Instance running time: " + instanceTime + " seconds.");
     }
 
     @Override
@@ -61,9 +71,11 @@ public class ProgressReporter extends Serializer {
         System.out.println(" " + p.getBasePath());
         System.out.println("Project concluded.");
 
-        long totalTime = (System.currentTimeMillis() - start) / 1000;
+        long totalTime = (System.currentTimeMillis() - projectStart) / 1000;
 
+        System.out.println("=================================================");
         System.out.println("Total running time: " + totalTime + " seconds.");
+        System.out.println("=================================================");
     }
 
 }
