@@ -119,17 +119,9 @@ public abstract class SerializationFactory {
             prefix = prefixElement.getTextTrim();
         }
 
-        String mode;
-        Element modeElement = e.element("mode");
-        if (modeElement == null) {
-            mode = "png";
-        } else {
-            mode = modeElement.getTextTrim();
-        }
-
         Element visElement = e.element("visualization");
         Visualization visualization = VisualizationFactory.instantiate(visElement);
 
-        return new VisualizationSerializer(p, visualization, prefix, mode);
+        return new VisualizationSerializer(p, visualization, prefix);
     }
 }

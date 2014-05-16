@@ -21,6 +21,7 @@
 
 package io.serialize.binary;
 
+import com.objectplanet.image.PngEncoder;
 import control.GeneralParameters;
 import control.halt.HaltCondition;
 import geometry.Geometry;
@@ -32,8 +33,10 @@ import layers.SystemState;
 import processes.StepState;
 
 import javax.imageio.ImageIO;
+import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
 
 /**
@@ -53,19 +56,23 @@ public class VisualizationSerializer extends Serializer {
 
     private Geometry geometry;
 
+    private PngEncoder pngEncoder;
+
     @Override
     public void init(LayerManager layerManager) {
         super.init(layerManager);
         geometry = layerManager.getCellLayer().getGeometry();
+
+
+        pngEncoder = new PngEncoder();
     }
 
     public VisualizationSerializer(GeneralParameters p,
                                    Visualization visualization,
-                                   String prefix, String mode) {
+                                   String prefix) {
         super(p);
         this.visualization = visualization;
         this.prefix = prefix;
-        this.mode = mode;
     }
 
     @Override
@@ -84,7 +91,7 @@ public class VisualizationSerializer extends Serializer {
         // Scan through the frames...
         for (SystemState systemState : reader) {
             // Render the frame.
-            BufferedImage image = visualization.render(systemState);
+            Image image = visualization.render(systemState);
 
             // Export the frame to the disk.
             generateFile(systemState, image);
@@ -93,11 +100,14 @@ public class VisualizationSerializer extends Serializer {
         visualization.conclude();
     }
 
-    private void generateFile(SystemState systemState, BufferedImage image) {
+    private void generateFile(SystemState systemState, Image image) {
         String fileName = buildFileName(systemState.getTime());
         File file = new File(fileName);
         try {
-            ImageIO.write(image, mode, file);
+            FileOutputStream fos = new FileOutputStream(file);
+            pngEncoder.encode(image, fos);
+            fos.close();
+//            ImageIO.write(image, mode, file);
         } catch (IOException ex) {
             throw new RuntimeException(ex);
         }
@@ -108,8 +118,7 @@ public class VisualizationSerializer extends Serializer {
         builder.append(p.getInstancePath());
         builder.append(prefix);
         builder.append(time);
-        builder.append(".");
-        builder.append(mode.toLowerCase());
+        builder.append(".png");
         return builder.toString();
     }
 

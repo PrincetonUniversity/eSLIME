@@ -57,8 +57,7 @@ public class VisualizationSerializerTest extends EslimeTestCase {
         // because it exists.
         p.setInstancePath(fixturePath + "SystemStateReader/");
         String prefix = "../../output/test";
-        String mode = "png";
-        query = new VisualizationSerializer(p, visualization, prefix, mode);
+        query = new VisualizationSerializer(p, visualization, prefix);
         query.init(lm);
     }
 

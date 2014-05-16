@@ -45,7 +45,7 @@ public class MapVisualization implements Visualization {
     @Override
     public BufferedImage render(SystemState systemState) {
         Coordinate pDims = translator.getImageDims();
-        BufferedImage img = new BufferedImage(pDims.x(), pDims.y(), BufferedImage.TYPE_INT_ARGB);
+        BufferedImage img = new BufferedImage(pDims.x(), pDims.y(), BufferedImage.TYPE_INT_RGB);
 
         Graphics2D g = (Graphics2D) img.getGraphics();
         g.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);

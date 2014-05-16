@@ -24,6 +24,7 @@ package io.visual;
 import geometry.Geometry;
 import layers.SystemState;
 
+import java.awt.*;
 import java.awt.image.BufferedImage;
 
 /**
@@ -52,7 +53,7 @@ public interface Visualization {
      *
      * @param systemState
      */
-    public abstract BufferedImage render(SystemState systemState);
+    public abstract Image render(SystemState systemState);
 
     /**
      * Perform any actions necessary for finalizing the current visualization.
