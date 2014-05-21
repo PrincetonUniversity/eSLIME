@@ -49,9 +49,9 @@ public class DotGlyph extends Glyph {
     }
 
     @Override
-    public void overlay(Coordinate target) {
+    public void overlay(Coordinate target, int frame, double time) {
         // First, get the center of the cell (in pixels).
-        Coordinate center = translator.indexToPixels(target);
+        Coordinate center = translator.resolve(target, frame, time);
 
         int x = center.x() - radius;
         int y = center.y() - radius;

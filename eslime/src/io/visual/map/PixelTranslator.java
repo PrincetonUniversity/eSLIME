@@ -22,6 +22,7 @@
 package io.visual.map;
 
 import control.identifiers.Coordinate;
+import io.visual.VisualizationProperties;
 
 import java.awt.*;
 
@@ -45,17 +46,17 @@ public abstract class PixelTranslator {
      * Load required state from the map and construct coordinate to pixel
      * translations.
      *
-     * @param mapState
+     * @param properties
      */
-    public void init(MapState mapState) {
-        edge = mapState.getEdge();
-        Coordinate[] coordinates = mapState.getCoordinates();
-        mapState.setCoordinates(coordinates);
-        calcLimits(mapState);
+    public void init(VisualizationProperties properties) {
+        edge = properties.getEdge();
+        Coordinate[] coordinates = properties.getCoordinates();
+        properties.setCoordinates(coordinates);
+        calcLimits(properties);
         calcOrigin();
     }
 
-    protected abstract void calcLimits(MapState mapState);
+    protected abstract void calcLimits(VisualizationProperties mapState);
 
     // Provide the coordinate of the lower-leftmost coordinate to be included in.
     // the field of view. This may not be a coordinate that exists in this
@@ -66,10 +67,9 @@ public abstract class PixelTranslator {
      * Convert coordinate (in the cell-based coordinate system of the model)
      * to the pixel coordinate of the center of the coordinate.
      *
-     * @param c the coordinate to be converted.
      * @return
      */
-    public abstract Coordinate indexToPixels(Coordinate c);
+    public abstract Coordinate resolve(Coordinate c, int frame, double time);
 
     public Coordinate getImageDims() {
         return imageDims;
@@ -78,7 +78,7 @@ public abstract class PixelTranslator {
     @Override
     public abstract boolean equals(Object obj);
 
-    public abstract Polygon makePolygon(Coordinate c);
+    public abstract Polygon makePolygon(Coordinate c, int frame, double time);
 
     /**
      * Return the length of the diagonal of a polygon, based on the geometry

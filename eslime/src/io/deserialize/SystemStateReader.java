@@ -74,6 +74,13 @@ public class SystemStateReader implements Iterable<LightweightSystemState> {
         frames = timeReader.getFrames();
     }
 
+    public double[] getTimes() {
+        return times;
+    }
+
+    public int[] getFrames() {
+        return frames;
+    }
 
     private void setTimeAndFrame(LightweightSystemState state) {
         double time = times[cursor];

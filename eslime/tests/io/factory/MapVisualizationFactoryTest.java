@@ -19,13 +19,15 @@
  * /
  */
 
-package io.visual.map;
+package io.factory;
 
 import io.factory.MapVisualizationFactory;
+import io.visual.VisualizationProperties;
 import io.visual.color.ColorManager;
 import io.visual.color.DefaultColorManager;
 import io.visual.glyph.MockGlyph;
 import io.visual.highlight.HighlightManager;
+import io.visual.map.MapVisualization;
 import org.dom4j.Element;
 import test.EslimeLatticeTestCase;
 
@@ -50,7 +52,7 @@ public class MapVisualizationFactoryTest extends EslimeLatticeTestCase {
     public void testTypicalCase() throws Exception {
         Element typicalCase = root.element("typical-case");
         MapVisualization actual = MapVisualizationFactory.instantiate(typicalCase);
-        actual.init(geom);
+        actual.init(geom, null, null);
 
         MapVisualization expected = makeTypicalCase();
         assertEquals(expected, actual);
@@ -59,7 +61,7 @@ public class MapVisualizationFactoryTest extends EslimeLatticeTestCase {
     public void testMinimalCase() throws Exception {
         Element minimalCase = root.element("minimal-case");
         MapVisualization actual = MapVisualizationFactory.instantiate(minimalCase);
-        actual.init(geom);
+        actual.init(geom, null, null);
 
         MapVisualization expected = makeMinimalCase();
         assertEquals(expected, actual);
@@ -70,11 +72,11 @@ public class MapVisualizationFactoryTest extends EslimeLatticeTestCase {
         HighlightManager highlightManager = new HighlightManager();
         double edge = 10.0;
 
-        MapState mapState = new MapState(colorManager, edge);
+        VisualizationProperties mapState = new VisualizationProperties(colorManager, edge);
         mapState.setHighlightManager(highlightManager);
 
         MapVisualization mapVisualization = new MapVisualization(mapState);
-        mapVisualization.init(geom);
+        mapVisualization.init(geom, null, null);
         return mapVisualization;
     }
 
@@ -84,11 +86,12 @@ public class MapVisualizationFactoryTest extends EslimeLatticeTestCase {
         highlightManager.setGlyph(0, new MockGlyph());
         double edge = 5.0;
 
-        MapState mapState = new MapState(colorManager, edge);
+        VisualizationProperties mapState = new VisualizationProperties(colorManager, edge);
         mapState.setHighlightManager(highlightManager);
 
         MapVisualization mapVisualization = new MapVisualization(mapState);
-        mapVisualization.init(geom);
+        mapVisualization.init(geom, null, null);
         return mapVisualization;
     }
+
 }

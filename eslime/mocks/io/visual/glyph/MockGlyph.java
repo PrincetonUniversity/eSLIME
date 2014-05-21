@@ -53,7 +53,7 @@ public class MockGlyph extends Glyph {
     }
 
     @Override
-    public void overlay(Coordinate c) {
+    public void overlay(Coordinate c, int frame, double time) {
         this.lastOverlaid = c;
     }
 

@@ -19,7 +19,7 @@
  * /
  */
 
-package io.visual.map;
+package io.visual;
 
 import control.identifiers.Coordinate;
 import io.visual.color.ColorManager;
@@ -33,7 +33,7 @@ import java.util.Arrays;
  * <p/>
  * Created by dbborens on 4/1/14.
  */
-public class MapState {
+public class VisualizationProperties {
 
     // Set of all coordinates to be considered.
     private Coordinate[] coordinates;
@@ -47,7 +47,27 @@ public class MapState {
     // How long each edge should be. Sets visual scale.
     private double edge;
 
-    public MapState(ColorManager colorManager, double edge) {
+    public void setFrames(int[] frames) {
+        this.frames = frames;
+    }
+
+    public void setTimes(double[] times) {
+        this.times = times;
+    }
+
+    public int[] getFrames() {
+        return frames;
+    }
+
+    public double[] getTimes() {
+        return times;
+    }
+
+    // Temporal information
+    private int[] frames;
+    private double[] times;
+
+    public VisualizationProperties(ColorManager colorManager, double edge) {
         this.colorManager = colorManager;
         this.edge = edge;
     }
@@ -62,11 +82,11 @@ public class MapState {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof MapState)) {
+        if (!(obj instanceof VisualizationProperties)) {
             return false;
         }
 
-        MapState other = (MapState) obj;
+        VisualizationProperties other = (VisualizationProperties) obj;
 
         if (!Arrays.equals(coordinates, other.coordinates)) {
             return false;

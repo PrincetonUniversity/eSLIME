@@ -54,7 +54,7 @@ public class HighlightManager {
         for (int channel : glyphMap.keySet()) {
             if (systemState.isHighlighted(channel, c)) {
                 Glyph glyph = glyphMap.get(channel);
-                glyph.overlay(c);
+                glyph.overlay(c, systemState.getFrame(), systemState.getTime());
             }
         }
     }

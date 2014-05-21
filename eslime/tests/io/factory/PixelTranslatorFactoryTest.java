@@ -19,9 +19,12 @@
  * /
  */
 
-package io.visual.map;
+package io.factory;
 
 import geometry.MockGeometry;
+import io.visual.map.PixelTranslator;
+import io.visual.map.PixelTranslatorFactory;
+import io.visual.map.TriPixelTranslator;
 import test.EslimeTestCase;
 
 /**

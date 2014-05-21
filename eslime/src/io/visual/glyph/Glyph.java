@@ -59,7 +59,7 @@ public abstract class Glyph {
      * @param c Coordinate (in units of cells) of the site to be overlaid
      *          with the image.
      */
-    public abstract void overlay(Coordinate c);
+    public abstract void overlay(Coordinate c, int frame, double time);
 
     @Override
     public abstract boolean equals(Object obj);

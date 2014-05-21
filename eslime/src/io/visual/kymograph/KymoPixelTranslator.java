@@ -19,19 +19,25 @@
  * /
  */
 
-package io.visual.map;
+package io.visual.kymograph;
 
 import control.identifiers.Coordinate;
 import io.visual.VisualizationProperties;
+import io.visual.map.PixelTranslator;
 
 import java.awt.*;
 
 /**
- * Created by David B Borenstein on 5/8/14.
+ *
+ * A 2D rectangular plot with X axis as time,
+ * and Y axis as a 1-dimensional system state.
+ *
+ * Created by dbborens on 5/20/14.
  */
-public class RectPixelTranslator extends PixelTranslator {
+public class KymoPixelTranslator extends PixelTranslator {
+
     @Override
-    protected void calcLimits(VisualizationProperties mapState) {
+    protected void calcLimits(VisualizationProperties properties) {
         int xMin, xMax, yMin, yMax;
 
         xMin = 2147483647;
@@ -40,7 +46,7 @@ public class RectPixelTranslator extends PixelTranslator {
         yMin = 2147483647;
         yMax = -2147483648;
 
-        for (Coordinate c : mapState.getCoordinates()) {
+        for (Coordinate c : properties.getCoordinates()) {
             int x = c.x();
             int y = c.y();
 
@@ -61,20 +67,30 @@ public class RectPixelTranslator extends PixelTranslator {
             }
         }
 
+        if ((xMin != 0) || (xMax != 0)) {
+            throw new IllegalArgumentException("Received a non-zero x " +
+                    "coordinate in kymograph. Kymograph requires a 1D system.");
+        }
+
         int dy = (int) edge * (yMax - yMin + 1);
-        int dx = (int) edge * (xMax - xMin + 1);
-        imageDims = new Coordinate(dx, dy, 0);
+
+        int n = properties.getFrames().length;
+        int lastFrame = properties.getFrames()[n - 1];
+        int dt = (int) edge * (lastFrame + 1);
+        imageDims = new Coordinate(dt, dy, 0);
     }
 
     @Override
     protected void calcOrigin() {
-        int x = (int) Math.round(edge / 2);
+        int t = (int) Math.round(edge / 2);
         int y = (int) Math.round(edge / 2);
-        origin = new Coordinate(x, y, 0);
+        origin = new Coordinate(t, y, 0);
+
     }
 
-    protected Coordinate indexToPixels(Coordinate c) {
-        int x = c.x();
+    @Override
+    public Coordinate resolve(Coordinate c, int frame, double time) {
+        int x = frame;
         int y = c.y();
 
         int xPixels = (int) Math.round(x * edge);
@@ -91,12 +107,7 @@ public class RectPixelTranslator extends PixelTranslator {
 
     @Override
     public boolean equals(Object obj) {
-        return (obj instanceof RectPixelTranslator);
-    }
-
-    @Override
-    public Coordinate resolve(Coordinate c, int frame, double time) {
-        return indexToPixels(c);
+        return (obj instanceof KymoPixelTranslator);
     }
 
     @Override

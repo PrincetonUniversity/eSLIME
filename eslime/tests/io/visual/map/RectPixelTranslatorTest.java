@@ -22,7 +22,7 @@
 package io.visual.map;
 
 import control.identifiers.Coordinate;
-import junit.framework.TestCase;
+import io.visual.VisualizationProperties;
 import test.EslimeTestCase;
 
 public class RectPixelTranslatorTest extends EslimeTestCase {
@@ -36,7 +36,7 @@ public class RectPixelTranslatorTest extends EslimeTestCase {
         c1 = new Coordinate(1, 0, 0);
 
         Coordinate[] cc = new Coordinate[]{c0, c1};
-        MapState mapState = new MapState(null, 10.0);
+        VisualizationProperties mapState = new VisualizationProperties(null, 10.0);
         mapState.setCoordinates(cc);
         query = new RectPixelTranslator();
         query.init(mapState);

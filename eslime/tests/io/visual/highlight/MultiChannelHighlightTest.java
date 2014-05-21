@@ -56,7 +56,7 @@ import io.visual.color.DefaultColorManager;
 import io.visual.glyph.BullseyeGlyph;
 import io.visual.glyph.CrosshairsGlyph;
 import io.visual.glyph.Glyph;
-import io.visual.map.MapState;
+import io.visual.VisualizationProperties;
 import io.visual.map.MapVisualization;
 import layers.LightweightSystemState;
 import layers.SystemState;
@@ -88,7 +88,7 @@ public class MultiChannelHighlightTest extends EslimeTestCase {
         ColorManager colorManager = new DefaultColorManager();
 
         // Create a 10 x 10 hexagonal map.
-        MapState mapState = new MapState(colorManager, 50.0);
+        VisualizationProperties mapState = new VisualizationProperties(colorManager, 50.0);
 
         // Create highlight manager.
         highlightManager = new HighlightManager();
@@ -103,7 +103,7 @@ public class MultiChannelHighlightTest extends EslimeTestCase {
 
         // Create map visualization.
         map = new MapVisualization(mapState);
-        map.init(geometry);
+        map.init(geometry, null, null);
 
         // Create system state
         systemState = makeSystemState(geometry);

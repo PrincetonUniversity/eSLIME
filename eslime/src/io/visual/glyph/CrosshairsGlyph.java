@@ -54,9 +54,9 @@ public class CrosshairsGlyph extends Glyph {
     }
 
     @Override
-    public void overlay(Coordinate target) {
+    public void overlay(Coordinate target, int frame, double time) {
         // First, get the center of the cell (in pixels).
-        Coordinate center = translator.indexToPixels(target);
+        Coordinate center = translator.resolve(target, frame, time);
 
         graphics.setColor(color);
 

@@ -22,6 +22,7 @@
 package io.visual.map;
 
 import control.identifiers.Coordinate;
+import io.visual.VisualizationProperties;
 import io.visual.highlight.HighlightManager;
 import layers.SystemState;
 
@@ -34,9 +35,9 @@ public class CoordinateRenderer {
 
     private Graphics2D graphics;
     private PixelTranslator translator;
-    private MapState mapState;
+    private VisualizationProperties mapState;
 
-    public CoordinateRenderer(Graphics2D graphics, PixelTranslator translator, MapState mapState) {
+    public CoordinateRenderer(Graphics2D graphics, PixelTranslator translator, VisualizationProperties mapState) {
         this.graphics = graphics;
         this.translator = translator;
         this.mapState = mapState;
@@ -50,7 +51,7 @@ public class CoordinateRenderer {
 
     private void renderFill(Coordinate toRender, SystemState systemState) {
         Color color = mapState.getColorManager().getColor(toRender, systemState);
-        Polygon p = translator.makePolygon(toRender);
+        Polygon p = translator.makePolygon(toRender, systemState.getFrame(), systemState.getTime());
 
         // Flood region with background color
         graphics.setColor(color);
@@ -59,7 +60,7 @@ public class CoordinateRenderer {
 
     private void renderOutline(Coordinate toRender, SystemState systemState) {
         Color color = mapState.getColorManager().getBorderColor();
-        Polygon p = translator.makePolygon(toRender);
+        Polygon p = translator.makePolygon(toRender, systemState.getFrame(), systemState.getTime());
 
         // Flood region with background color
         graphics.setColor(color);

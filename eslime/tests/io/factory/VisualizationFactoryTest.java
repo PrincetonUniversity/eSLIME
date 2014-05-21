@@ -19,7 +19,7 @@
  * /
  */
 
-package io.visual;
+package io.factory;
 
 import junit.framework.TestCase;
 
@@ -29,6 +29,10 @@ import junit.framework.TestCase;
 public class VisualizationFactoryTest extends TestCase {
 
     public void testMapCase() {
+        fail("Not yet implemented");
+    }
 
+    public void testKymographCase() {
+        fail("Not yet implemented");
     }
 }

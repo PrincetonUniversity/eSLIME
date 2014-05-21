@@ -33,7 +33,7 @@ import io.deserialize.MockCoordinateDeindexer;
 import io.visual.color.ColorManager;
 import io.visual.color.DefaultColorManager;
 import io.visual.highlight.HighlightManager;
-import io.visual.map.MapState;
+import io.visual.VisualizationProperties;
 import io.visual.map.MapVisualization;
 import layers.LightweightSystemState;
 import layers.SystemState;
@@ -65,7 +65,7 @@ public abstract class GlyphTest extends EslimeTestCase {
         ColorManager colorManager = new DefaultColorManager();
 
         // Create a 10 x 10 hexagonal map.
-        MapState mapState = new MapState(colorManager, 50.0);
+        VisualizationProperties mapState = new VisualizationProperties(colorManager, 50.0);
 
         // Create highlight manager.
         highlightManager = new HighlightManager();
@@ -77,7 +77,7 @@ public abstract class GlyphTest extends EslimeTestCase {
 
         // Create map visualization.
         map = new MapVisualization(mapState);
-        map.init(geometry);
+        map.init(geometry, null, null);
 
         // Create system state
         systemState = makeSystemState(geometry);

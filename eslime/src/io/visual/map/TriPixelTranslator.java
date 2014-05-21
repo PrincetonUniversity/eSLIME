@@ -22,6 +22,7 @@
 package io.visual.map;
 
 import control.identifiers.Coordinate;
+import io.visual.VisualizationProperties;
 
 import java.awt.*;
 
@@ -42,8 +43,7 @@ public class TriPixelTranslator extends PixelTranslator {
         return (obj instanceof TriPixelTranslator);
     }
 
-    @Override
-    public Coordinate indexToPixels(Coordinate c) {
+    protected Coordinate indexToPixels(Coordinate c) {
         int x = c.x();
         int y = c.y();
 
@@ -57,7 +57,12 @@ public class TriPixelTranslator extends PixelTranslator {
     }
 
     @Override
-    protected void calcLimits(MapState mapState) {
+    public Coordinate resolve(Coordinate c, int frame, double time) {
+        return indexToPixels(c);
+    }
+
+    @Override
+    protected void calcLimits(VisualizationProperties mapState) {
         int xMin, xMax, yMin, yMax;
 
         xMin = 2147483647;
@@ -118,8 +123,8 @@ public class TriPixelTranslator extends PixelTranslator {
         return (ret);
     }
 
-    public Polygon makePolygon(Coordinate coord) {
-        Coordinate centerPx = indexToPixels(coord);
+    public Polygon makePolygon(Coordinate coord, int frame, double time) {
+        Coordinate centerPx = resolve(coord, frame, time);
         Polygon p = new Polygon();
         for (double theta = 0d; theta < 360d; theta += 60d) {
             double rad = (theta / 180) * Math.PI;

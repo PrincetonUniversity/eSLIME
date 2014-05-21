@@ -35,6 +35,8 @@ public abstract class VisualizationFactory {
 
         if (className.equalsIgnoreCase("map")) {
             return MapVisualizationFactory.instantiate(root);
+        } else if (className.equalsIgnoreCase("kymograph")) {
+                return KymographFactory.instantiate(root);
         } else if (className.equalsIgnoreCase("mock")) {
             return new MockVisualization();
         } else {

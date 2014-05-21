@@ -36,7 +36,9 @@ import java.awt.image.BufferedImage;
  *
  * Created by David B Borenstein on 3/23/14.
  */
-public interface Visualization {
+public abstract class Visualization {
+
+    protected VisualizationProperties properties;
 
     /**
      * Perform any actions necessary before frames may be written, but
@@ -46,7 +48,7 @@ public interface Visualization {
      *                 connectivity, size and shape will be drawn.
      *                 Boundary conditions should be ignored.
      */
-    public abstract void init(Geometry geometry);
+    public abstract void init(Geometry geometry, double[] times, int[] frames);
 
     /**
      * Render a frame.

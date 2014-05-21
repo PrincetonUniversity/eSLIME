@@ -37,11 +37,12 @@ public class ManualLauncher {
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/deathbirth/db_instigator_vs_pacifist_periodic.xml";
 
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/simplified/pacifist_vs_pacifist.xml";
+        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/basler/cholera_vs_ecoli.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/simplified/instigator_vs_pacifist.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/simplified/instigator_vs_instigator.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/simplified/instigator_vs_pacifist_variant.xml";
 
-        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/deathbirth/db_instigator_vs_pacifist_arena.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/deathbirth/db_instigator_vs_pacifist_arena.xml";
 //        String p
 // ath = "/Users/dbborens/IdeaProjects/t6ss/xml/instigator_vs_instigator.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/retaliator_vs_retaliator.xml";

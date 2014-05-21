@@ -29,7 +29,7 @@ import java.awt.image.BufferedImage;
 /**
  * Created by David B Borenstein on 4/9/14.
  */
-public class MockVisualization implements Visualization {
+public class MockVisualization extends Visualization {
     private boolean isRender;
     private boolean isConclude;
     private boolean isInit;
@@ -53,7 +53,7 @@ public class MockVisualization implements Visualization {
     }
 
     @Override
-    public void init(Geometry geometry) {
+    public void init(Geometry geometry, double[] time, int[] frames) {
         isInit = true;
     }
 

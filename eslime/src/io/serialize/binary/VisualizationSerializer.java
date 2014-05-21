@@ -77,8 +77,6 @@ public class VisualizationSerializer extends Serializer {
 
     @Override
     public void dispatchHalt(HaltCondition ex) {
-        // Initialize the visualization to this simulation.
-        visualization.init(geometry);
 
         // Get expected fields.
         String[] soluteIds = visualization.getSoluteIds();
@@ -87,14 +85,20 @@ public class VisualizationSerializer extends Serializer {
         // Create a SystemStateReader.
         SystemStateReader reader = new SystemStateReader(soluteIds,
                 highlightChannels, p.getInstancePath());
+        // Initialize the visualization to this simulation.
+        visualization.init(geometry, reader.getTimes(), reader.getFrames());
 
         // Scan through the frames...
         for (SystemState systemState : reader) {
             // Render the frame.
             Image image = visualization.render(systemState);
 
-            // Export the frame to the disk.
-            generateFile(systemState, image);
+            // Image can be null if the visualization only outputs at
+            // certain frames (eg kymograph, only returns image at end)
+            if (image != null) {
+                // Export the frame to the disk.
+                generateFile(systemState, image);
+            }
         }
 
         visualization.conclude();
