@@ -156,6 +156,13 @@ public class TriggerProcess extends CellProcess {
     @Override
     public void fire(StepState state) throws HaltCondition {
         for (Cell target : targets) {
+
+            // If the cell has been removed as a result of firing the trigger
+            // process in a previous target, skip it.
+            if (!layer.getViewer().exists(target)) {
+                continue;
+            }
+
             // A null caller on the trigger method means that the caller is
             // a process rather than a cell.
             target.trigger(behaviorName, null);

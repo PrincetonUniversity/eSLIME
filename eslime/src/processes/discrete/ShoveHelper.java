@@ -81,7 +81,16 @@ public class ShoveHelper {
             layerManager.getCellLayer().getUpdateManager().banish(c);
         }
     }
-    public Coordinate getTarget(Coordinate origin) throws HaltCondition {
+
+    /**
+     * Gets the set of all nearest vacancies to the cell, and chooses randomly
+     * between them.
+     *
+     * @param origin
+     * @return
+     * @throws HaltCondition
+     */
+    public Coordinate chooseVacancy(Coordinate origin) throws HaltCondition {
         StepState state = layerManager.getStepState();
         Coordinate target;
         // Get nearest vacancies to the cell

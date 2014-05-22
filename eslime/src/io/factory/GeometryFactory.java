@@ -68,6 +68,10 @@ public class GeometryFactory {
 
         if (className.equalsIgnoreCase("Arena")) {
             return new Arena(shape, lattice);
+        } else if (className.equalsIgnoreCase("XHardYArena")) {
+            return new XHardYArena(shape, lattice);
+        } else if (className.equalsIgnoreCase("XHardYPeriodic")) {
+                return new XHardYPeriodic(shape, lattice);
         } else if (className.equalsIgnoreCase("PlaneRingHard")) {
             return new PlaneRingHard(shape, lattice);
         } else if (className.equalsIgnoreCase("PlaneRingReflecting")) {

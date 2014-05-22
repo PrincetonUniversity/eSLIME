@@ -64,7 +64,6 @@ public class Scatter extends CellProcess {
                 candidates.add(c);
             }
         }
-
         if (gs != null) {
             gs.add(this.getID(), candidates.size(), candidates.size() * 1.0D);
         }

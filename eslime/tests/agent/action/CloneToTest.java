@@ -104,26 +104,6 @@ public class CloneToTest extends EslimeLatticeTestCase {
     }
 
     /**
-     * Integration test using shoving process.
-     *
-     * @throws Exception
-     */
-    public void testShoving() throws Exception {
-        CellLayer layer = linearLayer(true);
-        Cell cell = layer.getViewer().getCell(new Coordinate(4, 0, 0));
-
-        // Divide cell at position 4 toward 5
-        cell.trigger("clone-self", null);
-
-        // New configuration: _1234456789
-        assertEquals(4, layer.getViewer().getState(new Coordinate(4, 0, 0)));
-        assertEquals(4, layer.getViewer().getState(new Coordinate(5, 0, 0)));
-        assertEquals(5, layer.getViewer().getState(new Coordinate(6, 0, 0)));
-        assertEquals(9, layer.getViewer().getState(new Coordinate(9, 0, 0)));
-    }
-
-
-    /**
      *
      *   _123456_89  Initial condition
      *       ^       (Cell to be divided)

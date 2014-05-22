@@ -32,7 +32,6 @@ import geometry.lattice.RectangularLattice;
 import geometry.shape.Cuboid;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
-import junit.framework.TestCase;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import structural.MockRandom;
@@ -146,7 +145,7 @@ public class ShoveHelperTest extends EslimeTestCase {
         Coordinate origin = new Coordinate(4, 0, 0);
 
         Coordinate expected = new Coordinate(7, 0, 0);
-        Coordinate actual = query.getTarget(origin);
+        Coordinate actual = query.chooseVacancy(origin);
         assertEquals(expected, actual);
     }
 

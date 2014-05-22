@@ -29,10 +29,8 @@ import layers.LayerManager;
 import layers.cell.CellLookupManager;
 import layers.cell.CellUpdateManager;
 import processes.MaxTargetHelper;
-import processes.StepState;
 
 import java.util.Random;
-import java.util.Set;
 
 public abstract class BulkDivisionProcess extends CellProcess {
 
@@ -85,7 +83,7 @@ public abstract class BulkDivisionProcess extends CellProcess {
         CellUpdateManager um = layer.getUpdateManager();
         Cell child = um.divide(origin);
 
-        Coordinate target = shoveHelper.getTarget(origin);
+        Coordinate target = shoveHelper.chooseVacancy(origin);
 
         shoveHelper.shove(origin, target);
 

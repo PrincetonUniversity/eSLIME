@@ -36,68 +36,58 @@ import java.util.Random;
 
 /**
  * Places a copy or copies of the current cell at the target site(s).
- * This uses the "clone" method, meaning that the state of the cell is
- * exactly preserved.
+ * This uses the "clone" method, rather than the "divide" method, meaning
+ * that the state of the cell is exactly preserved.
  *
  * Created by dbborens on 5/2/14.
  */
-public class CloneTo extends Action{
-
-    private TargetRule targetRule;
-
-    // Replace occupied sites?
-    private boolean noReplace;
+public class Expand extends Action{
 
     // Highlight channels for the targeting and targeted cells
     private Argument<Integer> selfChannel;
     private Argument<Integer> targetChannel;
 
+    // Displaces cells along a trajectory in the event that the cell is
+    // divided into an occupied site and replace is disabled.
+    private ShoveHelper shoveHelper;
+
     private Random random;
 
-    public CloneTo(BehaviorCell callback, LayerManager layerManager,
-                   TargetRule targetRule, boolean noReplace,
-                   Argument<Integer> selfChannel,
-                   Argument<Integer> targetChannel, Random random) {
+    public Expand(BehaviorCell callback, LayerManager layerManager,
+                  Argument<Integer> selfChannel, Argument<Integer> targetChannel, Random random) {
 
         super(callback, layerManager);
-        this.targetRule = targetRule;
         this.selfChannel = selfChannel;
         this.targetChannel = targetChannel;
-        this.noReplace = noReplace;
         this.random = random;
+
+        shoveHelper = new ShoveHelper(layerManager, random);
     }
 
     @Override
     public void run(Coordinate caller) throws HaltCondition {
-        BehaviorCell callerCell = resolveCaller(caller);
-
-        Coordinate self = getOwnLocation();
-
-        Coordinate[] targets = targetRule.report(callerCell);
+        Coordinate parentLocation = getOwnLocation();
 
         CellUpdateManager u = getLayerManager().getCellLayer().getUpdateManager();
         CellLayerViewer v = getLayerManager().getCellLayer().getViewer();
 
-        for (Coordinate target : targets) {
+        // Step 1: identify nearest vacant site.
+        Coordinate target = shoveHelper.chooseVacancy(parentLocation);
 
-            // Make clone
-            Cell child = getCallback().clone();
+        // Step 2: shove parent toward nearest vacant site.
+        shoveHelper.shove(parentLocation, target);
 
-            // Place clone at target site
-            if (!v.isOccupied(target)) {
-                u.place(child, target);
-            } else if (noReplace) {
-                throw new IllegalStateException("In CloneTo: Attempted to " +
-                        "place child at occupied position (leading to " +
-                        "replacement), but <no-replacment /> flag is set.");
-            } else {
-                u.banish(target);
-                u.place(child, target);
-            }
-            // Highlight sites
-            highlight(target, self);
-        }
+        // Step 3: Clone parent.
+        Cell child = getCallback().clone();
 
+        // Step 4: Place child in parent location.
+        u.place(child, parentLocation);
+
+        // Step 5: Clean up out-of-bounds cells.
+        shoveHelper.removeImaginary();
+
+        // Step 6: Highlight the parent and target locations.
+        highlight(target, parentLocation);
     }
 
     private void highlight(Coordinate target, Coordinate ownLocation) {
@@ -111,26 +101,12 @@ public class CloneTo extends Action{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        CloneTo cloneTo = (CloneTo) o;
-
-        if (targetRule != null ? !targetRule.equals(cloneTo.targetRule) : cloneTo.targetRule != null)
-            return false;
-
         return true;
     }
 
     @Override
-    public int hashCode() {
-        int result = targetRule != null ? targetRule.hashCode() : 0;
-        result = 31 * result + (selfChannel != null ? selfChannel.hashCode() : 0);
-        result = 31 * result + (targetChannel != null ? targetChannel.hashCode() : 0);
-        return result;
-    }
-
-    @Override
     public Action clone(BehaviorCell child) {
-        TargetRule clonedTargeter = targetRule.clone(child);
-        return new CloneTo(child, getLayerManager(), clonedTargeter, noReplace,
-                selfChannel, targetChannel, random);
+        return new Expand(child, getLayerManager(), selfChannel, targetChannel,
+                random);
     }
 }
