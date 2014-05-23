@@ -69,7 +69,6 @@ public class CheckForCompleteFixation extends CellProcess {
 
     @Override
     public void fire(StepState state) throws HaltCondition {
-//        System.out.println("Executing check for fixation.");
         StateMapViewer smv = layer.getViewer().getStateMapViewer();
 
         for (Integer s : smv.getStates()) {

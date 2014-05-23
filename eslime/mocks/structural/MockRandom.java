@@ -31,4 +31,14 @@ public class MockRandom extends Random {
     public int nextInt(int n) {
         return n - 1;
     }
+
+    private boolean booleanValue;
+    public void setBooleanValue(boolean booleanValue) {
+        this.booleanValue = booleanValue;
+    }
+
+    @Override
+    public boolean nextBoolean() {
+        return booleanValue;
+    }
 }

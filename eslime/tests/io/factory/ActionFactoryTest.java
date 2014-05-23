@@ -101,4 +101,12 @@ public class ActionFactoryTest extends EslimeTestCase {
         Action expected = new AdjustHealth(callback, layerManager, 0.5);
         assertEquals(expected, actual);
     }
+
+    public void testExpand() throws Exception {
+        fail("Not yet implemented");
+    }
+
+    public void testExpandTo() throws Exception {
+        fail("Not yet implemented");
+    }
 }

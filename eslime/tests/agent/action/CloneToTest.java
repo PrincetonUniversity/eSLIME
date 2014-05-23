@@ -48,6 +48,7 @@ public class CloneToTest extends EslimeLatticeTestCase {
     private MockTargetRule targetRule;
     private CloneTo query;
     private Random random;
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();

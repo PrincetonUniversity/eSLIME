@@ -69,7 +69,6 @@ public class Expand extends Action{
         Coordinate parentLocation = getOwnLocation();
 
         CellUpdateManager u = getLayerManager().getCellLayer().getUpdateManager();
-        CellLayerViewer v = getLayerManager().getCellLayer().getViewer();
 
         // Step 1: identify nearest vacant site.
         Coordinate target = shoveHelper.chooseVacancy(parentLocation);

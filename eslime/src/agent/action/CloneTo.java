@@ -30,7 +30,6 @@ import control.identifiers.Coordinate;
 import layers.LayerManager;
 import layers.cell.CellLayerViewer;
 import layers.cell.CellUpdateManager;
-import processes.discrete.ShoveHelper;
 
 import java.util.Random;
 

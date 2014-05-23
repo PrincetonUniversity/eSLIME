@@ -51,6 +51,8 @@ public class ActionFactory {
                 return cloneTo(e, callback, layerManager, p);
             case "expand":
                 return expand(e, callback, layerManager, p);
+            case "expand-to":
+                return expand(e, callback, layerManager, p);
             case "stochastic-choice":
                 return stochasticChoice(e, callback, layerManager, p);
             case "null":
@@ -101,6 +103,16 @@ public class ActionFactory {
         Argument<Integer> targetChannel = IntegerArgumentFactory.instantiate(e, "target-highlight", -1, p.getRandom());
         boolean noReplace = XmlUtil.getBoolean(e, "no-replacement");
         CloneTo ret = new CloneTo(callback, layerManager, targetRule, noReplace, selfChannel, targetChannel, p.getRandom());
+        return ret;
+    }
+
+    private static Action expandTo(Element e, BehaviorCell callback, LayerManager layerManager, GeneralParameters p) {
+        Random random = p.getRandom();
+        Element descriptor = e.element("target");
+        TargetRule targetRule = TargetFactory.instantiate(callback, layerManager, descriptor, random);
+        Argument<Integer> selfChannel = IntegerArgumentFactory.instantiate(e, "actor-highlight", -1, p.getRandom());
+        Argument<Integer> targetChannel = IntegerArgumentFactory.instantiate(e, "target-highlight", -1, p.getRandom());
+        ExpandTo ret = new ExpandTo(callback, layerManager, targetRule, selfChannel, targetChannel, p.getRandom());
         return ret;
     }
 
