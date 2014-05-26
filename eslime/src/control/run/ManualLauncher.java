@@ -29,6 +29,19 @@ package control.run;
 public class ManualLauncher {
 
     public static void main(String[] args) {
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/growth_ivp_arena_huge.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/db_ivp_periodic_huge.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/growth_ivp_arena_1D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/growth_ivp_arena_2D.xml";
+        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/growth_ivps_arena_1D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/growth_ivps_arena_2D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/db_ivpk_periodic_1D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/db_ivpk_periodic_2D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/db_ivps_periodic_1D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/db_ivps_periodic_2D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/growth_ivpks_arena_1D.xml";
+
+
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/pacifist_vs_pacifist.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/instigator_vs_pacifist.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/correlation_test.xml";
@@ -39,7 +52,7 @@ public class ManualLauncher {
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/deathbirth/db_instigator_vs_pacifist_linear.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/simplified/pacifist_vs_pacifist.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/basler/cholera_vs_ecoli.xml";
-        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/simplified/instigator_vs_pacifist_old_paradigm.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/simplified/instigator_vs_pacifist_old_paradigm.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/simplified/growth_linear.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/simplified/instigator_vs_pacifist_linear.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/simplified/instigator_vs_instigator.xml";
