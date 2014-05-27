@@ -137,8 +137,12 @@ public class ProcessFactoryTest extends TestCase {
 
     }
 
-    public void testNeighborSwap() {
-        doTest("neighbor-swap", NeighborSwap.class);
+    public void testOccupiedNeighborSwap() {
+        doTest("occupied-neighbor-swap", OccupiedNeighborSwap.class);
+    }
+
+    public void testGeneralNeighborSwap() {
+        doTest("general-neighbor-swap", GeneralNeighborSwap.class);
     }
 
     public void testScatter() {

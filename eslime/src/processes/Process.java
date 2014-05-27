@@ -215,12 +215,13 @@ public abstract class Process {
     }
 
     protected Coordinate[] coordinateRectangle(Element siteElement) {
-        ArrayList<Coordinate> coordinates = new ArrayList<Coordinate>();
+        ArrayList<Coordinate> coordinates = new ArrayList<>();
 
         // Specifies one corner of the rectangle/prism.
         Element originElem = siteElement.element("origin");
 
-        // Specifies the delta in each direction to be used. May be negative.
+        // Specifies the number of sites to skip as the rectangle is built in
+        // each direction. 1 means a solid rectangle.  May be negative.
         Element displacementElem = siteElement.element("displacement");
 
         // Specifies the total offset in each direction.

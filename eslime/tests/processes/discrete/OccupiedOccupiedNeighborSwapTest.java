@@ -41,9 +41,9 @@ import test.EslimeTestCase;
 /**
  * Created by dbborens on 4/21/14.
  */
-public class NeighborSwapTest extends EslimeTestCase {
+public class OccupiedOccupiedNeighborSwapTest extends EslimeTestCase {
 
-    private NeighborSwap query;
+    private OccupiedNeighborSwap query;
     private MockLayerManager layerManager;
     private MockCell a, b, c;
     private Coordinate ac, bc, cc;
@@ -60,7 +60,7 @@ public class NeighborSwapTest extends EslimeTestCase {
         layerManager.setCellLayer(cellLayer);
 
         MockGeneralParameters p = makeMockGeneralParameters();
-        query = new NeighborSwap(null, layerManager, 0, p, new ConstantInteger(1));
+        query = new OccupiedNeighborSwap(null, layerManager, 0, p, new ConstantInteger(1));
 
         /*
          * Cell layout:

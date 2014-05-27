@@ -109,4 +109,8 @@ public class ActionFactoryTest extends EslimeTestCase {
     public void testExpandTo() throws Exception {
         fail("Not yet implemented");
     }
+
+    public void testSwap() throws Exception {
+        fail("Not yet implemented");
+    }
 }

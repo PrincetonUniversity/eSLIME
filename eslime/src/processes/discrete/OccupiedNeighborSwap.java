@@ -40,14 +40,14 @@ import java.util.Set;
  *
  * @author dbborens
  */
-public class NeighborSwap extends CellProcess {
+public class OccupiedNeighborSwap extends CellProcess {
 
     private List<Object> candidates = null;
     private Argument<Integer> maxTargets;
     private Geometry geom;
 
-    public NeighborSwap(ProcessLoader loader, LayerManager layerManager, int id,
-                        GeneralParameters p, Argument<Integer> maxTargets) {
+    public OccupiedNeighborSwap(ProcessLoader loader, LayerManager layerManager, int id,
+                                GeneralParameters p, Argument<Integer> maxTargets) {
 
         super(loader, layerManager, id, p);
         geom = layer.getGeometry();

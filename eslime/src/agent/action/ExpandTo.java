@@ -79,7 +79,6 @@ public class ExpandTo extends Action{
 
     public ExpandTo(BehaviorCell callback, LayerManager layerManager, TargetRule targetRule,
                     Argument<Integer> selfChannel, Argument<Integer> targetChannel, Random random) {
-
         super(callback, layerManager);
         this.selfChannel = selfChannel;
         this.targetChannel = targetChannel;

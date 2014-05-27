@@ -19,7 +19,6 @@
 
 package io.factory;
 
-import com.sun.javafx.image.impl.General;
 import control.GeneralParameters;
 import control.arguments.Argument;
 import io.loader.ProcessLoader;
@@ -84,9 +83,13 @@ public class ProcessFactory {
             Argument<Integer> maxTargets = getMaxTargets(e, p);
             return new ActiveLayerDivide(loader, layerManager, id, p, maxTargets);
 
-        } else if (processClass.equalsIgnoreCase("neighbor-swap")) {
+        } else if (processClass.equalsIgnoreCase("occupied-neighbor-swap")) {
             Argument<Integer> maxTargets = getMaxTargets(e, p);
-            return new NeighborSwap(loader, layerManager, id, p, maxTargets);
+            return new OccupiedNeighborSwap(loader, layerManager, id, p, maxTargets);
+
+        } else if (processClass.equalsIgnoreCase("general-neighbor-swap")) {
+            Argument<Integer> count = getCount(e, p);
+            return new GeneralNeighborSwap(loader, layerManager, id, p, count);
 
         } else if (processClass.equalsIgnoreCase("scatter")) {
             return new Scatter(loader, layerManager, id, p);
@@ -162,13 +165,9 @@ public class ProcessFactory {
 
     private Argument<Integer> getMaxTargets(Element e, GeneralParameters p) {
         return IntegerArgumentFactory.instantiate(e, "max-targets", -1, p.getRandom());
-//        Element maxElem = e.element("max-targets");
-//        if (maxElem == null) {
-//            return -1;
-//        }
-//
-//        String maxStr = maxElem.getTextTrim();
-//        Integer maxTargets = Integer.valueOf(maxStr);
-//        return maxTargets;
+    }
+
+    private Argument<Integer> getCount(Element e, GeneralParameters p) {
+        return IntegerArgumentFactory.instantiate(e, "count", p.getRandom());
     }
 }
