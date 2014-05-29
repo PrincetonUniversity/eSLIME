@@ -69,7 +69,7 @@ public class RectangularLattice extends Lattice {
         }
 
         // All other cases
-        HashSet<Coordinate> ring = new HashSet<Coordinate>(n);
+        HashSet<Coordinate> ring = new HashSet<>(n);
 
         for (int dx = 0; dx <= r; dx++) {
             int dy = r - dx;

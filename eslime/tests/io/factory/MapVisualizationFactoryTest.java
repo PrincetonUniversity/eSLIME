@@ -72,7 +72,7 @@ public class MapVisualizationFactoryTest extends EslimeLatticeTestCase {
         HighlightManager highlightManager = new HighlightManager();
         double edge = 10.0;
 
-        VisualizationProperties mapState = new VisualizationProperties(colorManager, edge);
+        VisualizationProperties mapState = new VisualizationProperties(colorManager, edge, 1);
         mapState.setHighlightManager(highlightManager);
 
         MapVisualization mapVisualization = new MapVisualization(mapState);
@@ -86,7 +86,7 @@ public class MapVisualizationFactoryTest extends EslimeLatticeTestCase {
         highlightManager.setGlyph(0, new MockGlyph());
         double edge = 5.0;
 
-        VisualizationProperties mapState = new VisualizationProperties(colorManager, edge);
+        VisualizationProperties mapState = new VisualizationProperties(colorManager, edge, 1);
         mapState.setHighlightManager(highlightManager);
 
         MapVisualization mapVisualization = new MapVisualization(mapState);
