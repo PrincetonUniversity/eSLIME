@@ -61,66 +61,76 @@
  * /
  */
 
-package geometry.boundaries;
+package geometry.boundaries.helpers;
 
 import control.identifiers.Coordinate;
 import control.identifiers.Flags;
-import geometry.boundaries.helpers.WrapHelper;
-import geometry.boundaries.helpers.WrapHelper2D;
 import geometry.lattice.Lattice;
-import geometry.lattice.RectangularLattice;
+import geometry.shape.Rectangle;
 import geometry.shape.Shape;
 
 /**
  * Created by dbborens on 5/7/14.
  */
-public class XHardYArena extends Boundary {
-    public XHardYArena(Shape shape, Lattice lattice) {
+public class WrapHelper1D extends WrapHelper {
+
+    private final int length;
+
+    public WrapHelper1D(Shape shape, Lattice lattice) {
         super(shape, lattice);
+
+        if (shape.getClass() != Rectangle.class) {
+            throw new UnsupportedOperationException("WrapHelper2D only supports Rectangle arenas.");
+        }
+
+        Rectangle rect = (Rectangle) shape;
+
+        length = rect.getDimensions()[0];
     }
 
-    @Override
-    protected void verify(Shape shape, Lattice lattice) {
-        if (lattice.getClass() != RectangularLattice.class) {
-            throw new IllegalArgumentException("X-hard/Y-arena BC requires a 2D rectangular lattice.");
-        }
+    public Coordinate wrapAll(Coordinate toWrap) {
+        checkValid(toWrap);
+        Coordinate wrapped = yWrap(toWrap);
+        return wrapped;
     }
 
-    @Override
-    public Coordinate apply(Coordinate c) {
-        Coordinate ob = shape.getOverbounds(c);
+    public Coordinate xWrap(Coordinate toWrap) {
+        throw new UnsupportedOperationException();
+    }
 
-        Coordinate ret;
+    public Coordinate yWrap(Coordinate toWrap) {
+        checkValid(toWrap);
+        Coordinate ret = toWrap;
 
-        if (ob.x() != 0) {
-            return null;
+        // Wrap y.
+        int over = shape.getOverbounds(ret).y();
+
+        while (over != 0) {
+            if (over > 0) {
+                // over == 1 --> wrap to 0
+                ret = new Coordinate(ret.x(), over - 1, ret.flags());
+
+            } else {
+                // over == -1 --> wrap to xMax (which is width - 1)
+                ret = new Coordinate(ret.x(), length + over, ret.flags());
+            }
+
+            over = shape.getOverbounds(ret).y();
         }
 
-        if (ob.y() != 0) {
-            ret = c.addFlags(Flags.END_OF_WORLD | Flags.BOUNDARY_APPLIED);
-        } else {
-            ret = c;
-        }
-
+        // Return.
         return ret;
     }
 
-    @Override
-    public boolean isInfinite() {
-        return true;
+
+    public Coordinate zWrap(Coordinate toWrap) {
+        throw new UnsupportedOperationException();
     }
 
     @Override
-    public Boundary clone(Shape scaledShape, Lattice clonedLattice) {
-        return new XHardYArena(scaledShape, clonedLattice);
-    }
-
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        return true;
+    protected void checkValid(Coordinate toWrap) {
+        if (toWrap.x() != 0 || toWrap.y() != 0) {
+            throw new IllegalStateException("WrapHelper1D requires strictly 0 x and z values.");
+        }
     }
 }

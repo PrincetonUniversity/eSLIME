@@ -21,14 +21,8 @@ package io.factory;
 
 import geometry.Geometry;
 import geometry.boundaries.*;
-import geometry.lattice.CubicLattice;
-import geometry.lattice.Lattice;
-import geometry.lattice.RectangularLattice;
-import geometry.lattice.TriangularLattice;
-import geometry.shape.Cuboid;
-import geometry.shape.Hexagon;
-import geometry.shape.Rectangle;
-import geometry.shape.Shape;
+import geometry.lattice.*;
+import geometry.shape.*;
 import org.dom4j.Element;
 
 /**
@@ -68,10 +62,6 @@ public class GeometryFactory {
 
         if (className.equalsIgnoreCase("Arena")) {
             return new Arena(shape, lattice);
-        } else if (className.equalsIgnoreCase("XHardYArena")) {
-            return new XHardYArena(shape, lattice);
-        } else if (className.equalsIgnoreCase("XHardYPeriodic")) {
-                return new XHardYPeriodic(shape, lattice);
         } else if (className.equalsIgnoreCase("PlaneRingHard")) {
             return new PlaneRingHard(shape, lattice);
         } else if (className.equalsIgnoreCase("PlaneRingReflecting")) {
@@ -91,7 +81,9 @@ public class GeometryFactory {
         Element latticeElem = root.element("lattice");
         String className = latticeElem.element("class").getTextTrim();
 
-        if (className.equalsIgnoreCase("Rectangular")) {
+        if (className.equalsIgnoreCase("Linear")) {
+            return new LinearLattice();
+        } else if (className.equalsIgnoreCase("Rectangular")) {
             return new RectangularLattice();
         } else if (className.equalsIgnoreCase("Triangular")) {
             return new TriangularLattice();
@@ -108,7 +100,9 @@ public class GeometryFactory {
         Element shapeElem = root.element("shape");
         String className = shapeElem.element("class").getTextTrim();
 
-        if (className.equalsIgnoreCase("Rectangle")) {
+        if (className.equalsIgnoreCase("Line")) {
+            return new Line(lattice, shapeElem);
+        } if (className.equalsIgnoreCase("Rectangle")) {
             return new Rectangle(lattice, shapeElem);
         } else if (className.equalsIgnoreCase("Hexagon")) {
             return new Hexagon(lattice, shapeElem);
