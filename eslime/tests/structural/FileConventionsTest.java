@@ -48,4 +48,8 @@ public class FileConventionsTest extends TestCase {
         String actual = FileConventions.makeHighlightFilename(channel);
         assertEquals(expected, actual);
     }
+
+    public void testMakeInterfaceFilename() throws Exception {
+        fail("Not yet implemented");
+    }
 }

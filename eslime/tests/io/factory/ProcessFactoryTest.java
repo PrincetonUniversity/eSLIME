@@ -34,6 +34,8 @@ import processes.MockProcess;
 import processes.Process;
 import processes.continuum.FieldUpdateProcess;
 import processes.discrete.*;
+import processes.discrete.check.CheckForExtinction;
+import processes.discrete.check.CheckForFixation;
 import processes.gillespie.GillespieProcess;
 import processes.temporal.ExponentialInverse;
 import processes.temporal.Tick;
@@ -113,6 +115,18 @@ public class ProcessFactoryTest extends TestCase {
 
     public void testCheckForExtinction() {
         doTest("check-for-extinction", CheckForExtinction.class);
+    }
+
+    public void testCheckForCompleteFixation() {
+        doTest("check-for-fixation", CheckForFixation.class);
+    }
+
+    public void testCheckForPopulationThreshold() {
+        doTest("check-for-fixation", CheckForFixation.class);
+    }
+
+    public void testCheckForThresholdOccupancy() {
+        doTest("check-for-fixation", CheckForFixation.class);
     }
 
     public void testForRecord() {

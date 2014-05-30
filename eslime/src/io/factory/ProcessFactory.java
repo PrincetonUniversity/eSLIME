@@ -28,6 +28,7 @@ import processes.MockProcess;
 import processes.Process;
 import processes.continuum.FieldUpdateProcess;
 import processes.discrete.*;
+import processes.discrete.check.*;
 import processes.discrete.filter.Filter;
 import processes.gillespie.GillespieProcess;
 import processes.temporal.ExponentialInverse;
@@ -139,6 +140,16 @@ public class ProcessFactory {
 
         } else if (processClass.equalsIgnoreCase("check-for-fixation")) {
             return new CheckForFixation(loader, layerManager, id, p);
+
+        } else if (processClass.equalsIgnoreCase("check-threshold-occupancy")) {
+            Argument<Double> thresholdOccupancy = DoubleArgumentFactory.instantiate(e, "threshold", 1.0, p.getRandom());
+            return new CheckForThresholdOccupancy(loader, layerManager, id, p, thresholdOccupancy);
+
+        } else if (processClass.equalsIgnoreCase("check-population-fraction")) {
+            Argument<Double> thresholdFraction = DoubleArgumentFactory.instantiate(e, "threshold", p.getRandom());
+            Argument<Integer> targetState = IntegerArgumentFactory.instantiate(e, "target", p.getRandom());
+
+            return new CheckForPopulationFraction(loader, layerManager, id, p, targetState, thresholdFraction);
 
         } else if (processClass.equalsIgnoreCase("check-for-complete-fixation")) {
             return new CheckForCompleteFixation(loader, layerManager, id, p);

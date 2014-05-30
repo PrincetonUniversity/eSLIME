@@ -34,6 +34,7 @@ import structural.utilities.XmlUtil;
 public abstract class MapVisualizationFactory {
 
     public static final double DEFAULT_EDGE = 10.0;
+    public static final int DEFAULT_OUTLINE = 1;
 
     public static MapVisualization instantiate(Element mapElement) {
         // Make highlight manager
@@ -45,8 +46,10 @@ public abstract class MapVisualizationFactory {
         // Get edge size
         double edge = getEdge(mapElement);
 
+        int outline = getOutline(mapElement);
+
         // Construct map state object
-        VisualizationProperties mapState = makeMapState(highlightManager, colorManager, edge);
+        VisualizationProperties mapState = makeMapState(highlightManager, colorManager, edge, outline);
 
         // Construct map
         MapVisualization map = new MapVisualization(mapState);
@@ -56,9 +59,9 @@ public abstract class MapVisualizationFactory {
 
     private static VisualizationProperties makeMapState(HighlightManager highlightManager,
                                          ColorManager colorManager,
-                                         double edge) {
+                                         double edge, int outline) {
 
-        VisualizationProperties mapState = new VisualizationProperties(colorManager, edge);
+        VisualizationProperties mapState = new VisualizationProperties(colorManager, edge, outline);
         mapState.setHighlightManager(highlightManager);
         return mapState;
     }
@@ -78,5 +81,10 @@ public abstract class MapVisualizationFactory {
     private static double getEdge(Element root) {
         double edge = XmlUtil.getDouble(root, "edge", DEFAULT_EDGE);
         return edge;
+    }
+
+    private static int getOutline(Element root) {
+        int outline = XmlUtil.getInteger(root, "outline", DEFAULT_OUTLINE);
+        return outline;
     }
 }

@@ -27,6 +27,7 @@ import geometry.MockGeometry;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import processes.MockStepState;
+import processes.discrete.check.CheckForFixation;
 import processes.gillespie.GillespieState;
 import test.EslimeTestCase;
 

@@ -56,6 +56,9 @@ public abstract class KymographFactory {
 
     public static final double DEFAULT_EDGE = 10.0;
 
+    // You often don't want a cell outline for a kymograph. Default to 0.
+    public static final int DEFAULT_OUTLINE = 0;
+
     public static Kymograph instantiate(Element mapElement) {
         // Make highlight manager
         HighlightManager highlightManager = makeHighlightManager(mapElement);
@@ -66,8 +69,11 @@ public abstract class KymographFactory {
         // Get edge size
         double edge = getEdge(mapElement);
 
+        // Get outline thickness
+        int outline = getOutline(mapElement);
+
         // Construct map state object
-        VisualizationProperties properties = makeProperties(highlightManager, colorManager, edge);
+        VisualizationProperties properties = makeProperties(highlightManager, colorManager, edge, outline);
 
         // Construct map
         Kymograph kymograph = new Kymograph(properties);
@@ -77,9 +83,9 @@ public abstract class KymographFactory {
 
     private static VisualizationProperties makeProperties(HighlightManager highlightManager,
                                                           ColorManager colorManager,
-                                                          double edge) {
+                                                          double edge, int outline) {
 
-        VisualizationProperties properties = new VisualizationProperties(colorManager, edge);
+        VisualizationProperties properties = new VisualizationProperties(colorManager, edge, outline);
         properties.setHighlightManager(highlightManager);
         return properties;
     }
@@ -99,5 +105,10 @@ public abstract class KymographFactory {
     private static double getEdge(Element root) {
         double edge = XmlUtil.getDouble(root, "edge", DEFAULT_EDGE);
         return edge;
+    }
+
+    private static int getOutline(Element root) {
+        int outline = XmlUtil.getInteger(root, "outline", DEFAULT_OUTLINE);
+        return outline;
     }
 }

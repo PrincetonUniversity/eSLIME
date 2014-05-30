@@ -79,7 +79,7 @@ public class MapVisualizationTest extends GlyphTest {
         Boundary boundary = new Arena(shape, lattice);
         Geometry geom = new Geometry(lattice, shape, boundary);
         ColorManager colorManager = new DefaultColorManager();
-        VisualizationProperties mapState = new VisualizationProperties(colorManager, 25.0);
+        VisualizationProperties mapState = new VisualizationProperties(colorManager, 25.0, 1);
         HighlightManager highlightManager = new HighlightManager();
         mapState.setHighlightManager(highlightManager);
         MapVisualization map = new MapVisualization(mapState);
@@ -99,7 +99,7 @@ public class MapVisualizationTest extends GlyphTest {
         Boundary boundary = new Arena(shape, lattice);
         Geometry geom = new Geometry(lattice, shape, boundary);
         ColorManager colorManager = new DefaultColorManager();
-        VisualizationProperties mapState = new VisualizationProperties(colorManager, 25.0);
+        VisualizationProperties mapState = new VisualizationProperties(colorManager, 25.0, 1);
         HighlightManager highlightManager = new HighlightManager();
         mapState.setHighlightManager(highlightManager);
         MapVisualization map = new MapVisualization(mapState);
@@ -111,5 +111,9 @@ public class MapVisualizationTest extends GlyphTest {
 
         assertBinaryFilesEqual("glyphs/RectangularMap.png", "RectangularMap.png");
 
+    }
+
+    public void testOutlines() throws Exception {
+        fail("Not yet implemented");
     }
 }

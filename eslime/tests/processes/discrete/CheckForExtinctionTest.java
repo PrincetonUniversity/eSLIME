@@ -28,6 +28,7 @@ import junit.framework.TestCase;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import processes.MockStepState;
+import processes.discrete.check.CheckForExtinction;
 
 /**
  * Created by dbborens on 3/5/14.

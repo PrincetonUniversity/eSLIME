@@ -48,8 +48,8 @@ public abstract class SerializationFactory {
         if (writerClass.equalsIgnoreCase("cell-state-writer")) {
             LegacyCellStateWriter bsw = new LegacyCellStateWriter(p);
             return bsw;
-        } else if (writerClass.equalsIgnoreCase("fixation-time")) {
-            FixationTimeWriter ftw = new FixationTimeWriter(p);
+        } else if (writerClass.equalsIgnoreCase("halt-time-writer")) {
+            HaltTimeWriter ftw = new HaltTimeWriter(p);
             return ftw;
         } else if (writerClass.equalsIgnoreCase("parameter-writer")) {
             ParameterWriter pw = new ParameterWriter(p);

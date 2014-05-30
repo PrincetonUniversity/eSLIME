@@ -17,15 +17,15 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package processes.discrete;
+package processes.discrete.check;
 
 import control.GeneralParameters;
-import control.halt.FixationEvent;
+import control.halt.ExtinctionEvent;
 import control.halt.HaltCondition;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
-import layers.cell.StateMapViewer;
 import processes.StepState;
+import processes.discrete.CellProcess;
 import processes.gillespie.GillespieState;
 
 /**
@@ -33,8 +33,8 @@ import processes.gillespie.GillespieState;
  * <p/>
  * Created by dbborens on 1/13/14.
  */
-public class CheckForFixation extends CellProcess {
-    public CheckForFixation(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
+public class CheckForExtinction extends CellProcess {
+    public CheckForExtinction(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
         super(loader, layerManager, id, p);
     }
 
@@ -48,13 +48,9 @@ public class CheckForFixation extends CellProcess {
 
     @Override
     public void fire(StepState state) throws HaltCondition {
-//        System.out.println("Executing check for fixation.");
-        StateMapViewer smv = layer.getViewer().getStateMapViewer();
 
-        for (Integer s : smv.getStates()) {
-            if (smv.getCount(s) == layer.getViewer().getOccupiedSites().size()) {
-                throw new FixationEvent(state.getTime(), s);
-            }
+        if (layer.getViewer().getOccupiedSites().size() == 0) {
+            throw new ExtinctionEvent(state.getTime());
         }
     }
 }

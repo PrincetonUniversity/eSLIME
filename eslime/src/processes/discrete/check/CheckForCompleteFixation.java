@@ -38,7 +38,7 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package processes.discrete;
+package processes.discrete.check;
 
 import control.GeneralParameters;
 import control.halt.FixationEvent;
@@ -47,6 +47,7 @@ import io.loader.ProcessLoader;
 import layers.LayerManager;
 import layers.cell.StateMapViewer;
 import processes.StepState;
+import processes.discrete.CellProcess;
 import processes.gillespie.GillespieState;
 
 /**

@@ -38,6 +38,9 @@ public abstract class FileConventions {
 
     public static final String TIME_FILENAME = "clock.bin";
 
+    public static final String INTERFACE_PREFIX = "interface_";
+    public static final String INTERFACE_SUFFIX = ".txt";
+
     public static String makeContinuumStateFilename(String soluteId) {
         StringBuilder sb = new StringBuilder();
         sb.append(CONTINUUM_STATE_PREFIX);
@@ -46,6 +49,13 @@ public abstract class FileConventions {
         return sb.toString();
     }
 
+    public static String makeInterfaceFilename(Integer focalState) {
+        StringBuilder sb = new StringBuilder();
+        sb.append(INTERFACE_PREFIX);
+        sb.append(focalState);
+        sb.append(INTERFACE_SUFFIX);
+        return sb.toString();
+    }
     public static String makeContinuumMetadataFilename(String soluteId) {
         StringBuilder sb = new StringBuilder();
         sb.append(CONTINUUM_STATE_PREFIX);

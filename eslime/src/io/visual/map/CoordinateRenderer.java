@@ -45,7 +45,11 @@ public class CoordinateRenderer {
 
     public void render(Coordinate c, SystemState systemState) {
         renderFill(c, systemState);
-        renderOutline(c, systemState);
+
+        if (mapState.getOutline() != 0) {
+            renderOutline(c, systemState);
+        }
+
         renderHighlights(c, systemState);
     }
 

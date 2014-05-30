@@ -28,13 +28,13 @@ import processes.StepState;
 
 import java.io.BufferedWriter;
 
-public class FixationTimeWriter extends Serializer {
+public class HaltTimeWriter extends Serializer {
 
     private static final String FILENAME = "ttf.txt";
     private boolean closed = true;
     private BufferedWriter bw;
 
-    public FixationTimeWriter(GeneralParameters p) {
+    public HaltTimeWriter(GeneralParameters p) {
         super(p);
 
         // We use the non-instance path because this metric aggregates over
@@ -43,7 +43,7 @@ public class FixationTimeWriter extends Serializer {
         mkDir(p.getInstancePath(), true);
         bw = makeBufferedWriter(filename);
 
-        hAppend(bw, new StringBuilder("gillespie\tfix_state\n"));
+        hAppend(bw, new StringBuilder("gillespie\thalt_info\n"));
     }
 
     @Override

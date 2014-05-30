@@ -47,29 +47,37 @@ public class VisualizationProperties {
     // How long each edge should be. Sets visual scale.
     private double edge;
 
-    public void setFrames(int[] frames) {
-        this.frames = frames;
-    }
+    // How wide should any outlines be?
+    private int outline;
 
-    public void setTimes(double[] times) {
-        this.times = times;
+    // Temporal information
+    private int[] frames;
+    private double[] times;
+
+    public VisualizationProperties(ColorManager colorManager, double edge,
+                                   int outline) {
+        if (outline > 1) {
+            throw new UnsupportedOperationException("Thick outlines not " +
+                    "yet supported");
+        }
+        this.colorManager = colorManager;
+        this.edge = edge;
     }
 
     public int[] getFrames() {
         return frames;
     }
 
+    public void setFrames(int[] frames) {
+        this.frames = frames;
+    }
+
     public double[] getTimes() {
         return times;
     }
 
-    // Temporal information
-    private int[] frames;
-    private double[] times;
-
-    public VisualizationProperties(ColorManager colorManager, double edge) {
-        this.colorManager = colorManager;
-        this.edge = edge;
+    public void setTimes(double[] times) {
+        this.times = times;
     }
 
     public HighlightManager getHighlightManager() {
@@ -125,5 +133,13 @@ public class VisualizationProperties {
 
     public int[] getChannels() {
         return new int[0];
+    }
+
+    public int getOutline() {
+        return outline;
+    }
+
+    public void setOutline(int outline) {
+        this.outline = outline;
     }
 }

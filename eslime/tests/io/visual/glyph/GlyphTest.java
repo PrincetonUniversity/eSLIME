@@ -65,7 +65,7 @@ public abstract class GlyphTest extends EslimeTestCase {
         ColorManager colorManager = new DefaultColorManager();
 
         // Create a 10 x 10 hexagonal map.
-        VisualizationProperties mapState = new VisualizationProperties(colorManager, 50.0);
+        VisualizationProperties mapState = new VisualizationProperties(colorManager, 50.0, 1);
 
         // Create highlight manager.
         highlightManager = new HighlightManager();
