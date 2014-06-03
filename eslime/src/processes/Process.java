@@ -20,12 +20,14 @@
 package processes;
 
 import control.GeneralParameters;
+import control.arguments.Argument;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import control.identifiers.Flags;
 import geometry.Geometry;
 import io.factory.CellFactory;
 import io.factory.CoordinateFactory;
+import io.factory.IntegerArgumentFactory;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import org.dom4j.Element;
@@ -209,9 +211,36 @@ public abstract class Process {
             return coordinateLine(siteElement);
         } else if (modeString.equalsIgnoreCase("rectangle")) {
             return coordinateRectangle(siteElement);
+        } else if (modeString.equalsIgnoreCase("disc")) {
+            return coordinateDisc(siteElement);
         } else {
             throw new IllegalArgumentException("Coordinate mode '" + modeString + "' not recognized.");
         }
+    }
+
+    protected Coordinate[] coordinateDisc(Element siteElement) {
+        ArrayList<Coordinate> coordinates = new ArrayList<>();
+
+        // Specifies one corner of the rectangle/prism.
+        Element originElem = siteElement.element("offset");
+
+        Argument<Integer> radiusArg = IntegerArgumentFactory.instantiate(siteElement, "radius", 1, p.getRandom());
+
+        Coordinate offset = CoordinateFactory.instantiate(originElem);
+        Geometry geom = layerManager.getCellLayer().getGeometry();
+        Coordinate origin = geom.rel2abs(geom.getCenter(), offset, Geometry.APPLY_BOUNDARIES);
+
+        int radius = radiusArg.next();
+
+        for (int r = 0; r < radius; r++) {
+            Coordinate[] annulus = geom.getAnnulus(origin, r, Geometry.APPLY_BOUNDARIES);
+            for (Coordinate c : annulus) {
+                coordinates.add(c);
+            }
+        }
+
+        Coordinate[] ret = new Coordinate[coordinates.size()];
+        return coordinates.toArray(ret);
     }
 
     protected Coordinate[] coordinateRectangle(Element siteElement) {

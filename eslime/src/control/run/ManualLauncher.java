@@ -29,7 +29,7 @@ package control.run;
 public class ManualLauncher {
 
     public static void main(String[] args) {
-        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-06-01/cubetest.xml";
+        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-06-01/growth_ivi_2d.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-29/growth_ivpi_arena_halt_1D.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-29/growth_ivpi_range_arena_1D.xml";
 
