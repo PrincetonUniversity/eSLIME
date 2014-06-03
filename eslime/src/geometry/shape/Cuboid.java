@@ -45,7 +45,7 @@ public class Cuboid extends Shape {
 
         height = Integer.valueOf(descriptor.element("height").getTextTrim());
         width = Integer.valueOf(descriptor.element("width").getTextTrim());
-        width = Integer.valueOf(descriptor.element("depth").getTextTrim());
+        depth = Integer.valueOf(descriptor.element("depth").getTextTrim());
 
         init();
     }
@@ -107,7 +107,7 @@ public class Cuboid extends Shape {
 
     @Override
     protected Coordinate[] calcSites() {
-        ArrayList<Coordinate> coords = new ArrayList<Coordinate>(height * width * depth);
+        ArrayList<Coordinate> coords = new ArrayList<>(height * width * depth);
 
         for (int z = 0; z < depth; z++) {
             for (int y = 0; y < height; y++) {

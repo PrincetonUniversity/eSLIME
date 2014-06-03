@@ -30,4 +30,9 @@ public class HaltCondition extends Exception {
     public double getGillespie() {
         return gillespie;
     }
+
+    @Override
+    public String toString() {
+        return this.getClass().getSimpleName();
+    }
 }

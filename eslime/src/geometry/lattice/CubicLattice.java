@@ -93,7 +93,7 @@ public class CubicLattice extends Lattice {
     @Override
     public Coordinate getDisplacement(Coordinate pCoord, Coordinate qCoord) {
         if (pCoord.hasFlag(Flags.PLANAR) || qCoord.hasFlag(Flags.PLANAR)) {
-            throw new IllegalArgumentException("Expect 3D coordinates in rectangular lattice.");
+            throw new IllegalArgumentException("Expect 3D coordinates in cubic lattice.");
         }
 
         int dx = qCoord.x() - pCoord.x();
@@ -106,7 +106,7 @@ public class CubicLattice extends Lattice {
     @Override
     public Coordinate rel2abs(Coordinate coord, Coordinate displacement) {
         if (displacement.hasFlag(Flags.PLANAR)) {
-            throw new IllegalArgumentException("Expected three arguments to rectangular lattice rel2abs.");
+            throw new IllegalArgumentException("Expected three arguments to cubic lattice rel2abs.");
         }
 
         int x = coord.x();

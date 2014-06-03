@@ -318,6 +318,7 @@
       <w>agreg.fit</w>
       <w>agrep</w>
       <w>agrepl</w>
+      <w>akima</w>
       <w>alarm</w>
       <w>alias</w>
       <w>alist</w>
@@ -604,6 +605,8 @@
       <w>bezierPoints</w>
       <w>bibentry</w>
       <w>bibstyle</w>
+      <w>bicubic</w>
+      <w>bicubic.grid</w>
       <w>bindingIsActive</w>
       <w>bindingIsLocked</w>
       <w>bindtextdomain</w>
@@ -1704,7 +1707,12 @@
       <w>interaction</w>
       <w>interaction.plot</w>
       <w>interactive</w>
+      <w>interp</w>
+      <w>interp.new</w>
+      <w>interp.old</w>
+      <w>interp2xyz</w>
       <w>interpSpline</w>
+      <w>interpp</w>
       <w>interpret.gam</w>
       <w>intersect</w>
       <w>intervals</w>

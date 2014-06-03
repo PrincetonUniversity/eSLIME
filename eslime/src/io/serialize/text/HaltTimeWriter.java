@@ -59,35 +59,14 @@ public class HaltTimeWriter extends Serializer {
 
     @Override
     public void dispatchHalt(HaltCondition ex) {
-        StringBuilder line;
-        if (ex.getClass().equals(FixationEvent.class)) {
-            FixationEvent fix = (FixationEvent) ex;
-            line = fixationLine(fix);
-        } else if (ex.getClass().equals(StepMaxReachedEvent.class)) {
-            line = maxStepLine(ex);
-        } else {
-            line = errorLine(ex);
-        }
-
+        StringBuilder line = new StringBuilder();
+        line.append(ex.getGillespie());
+        line.append("\t");
+        line.append(ex.toString());
+        line.append("\n");
         hAppend(bw, line);
-
         closed = true;
     }
-
-    private StringBuilder errorLine(HaltCondition ex) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(ex.getGillespie());
-        sb.append("\tERR\n");
-        return sb;
-    }
-
-    private StringBuilder maxStepLine(HaltCondition ex) {
-        StringBuilder sb = new StringBuilder();
-        sb.append(ex.getGillespie());
-        sb.append("\tMAX\n");
-        return sb;
-    }
-
     private StringBuilder fixationLine(FixationEvent fix) {
         StringBuilder sb = new StringBuilder();
         sb.append(fix.getGillespie());

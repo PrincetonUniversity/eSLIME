@@ -32,4 +32,13 @@ public class FixationEvent extends HaltCondition {
     public int getFixationState() {
         return fixationState;
     }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("FixationEvent (");
+        sb.append(fixationState);
+        sb.append(")");
+        return sb.toString();
+    }
 }
