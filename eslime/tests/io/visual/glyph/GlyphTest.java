@@ -131,6 +131,7 @@ public abstract class GlyphTest extends EslimeTestCase {
         BufferedImage result = map.render(systemState);
 
         File file = new File(outputPath + getFileName());
+        System.out.println(file.getAbsolutePath());
         ImageIO.write(result, "png", file);
 
         assertBinaryFilesEqual("glyphs/" + getFileName(), getFileName());

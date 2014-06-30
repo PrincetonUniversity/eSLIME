@@ -24,16 +24,25 @@ package control.halt;
 /**
  * Created by dbborens on 5/29/14.
  */
-public class PopulationFractionReachedEvent extends HaltCondition {
+public class DominationEvent extends HaltCondition {
 
-    private Integer state;
+    private Integer cellState;
 
-    public PopulationFractionReachedEvent(double gillespie, Integer cellState) {
+    public DominationEvent(double gillespie, Integer cellState) {
         super(gillespie);
-        this.state = state;
+        this.cellState = cellState;
     }
 
-    public Integer getState() {
-        return state;
+    public Integer getCellState() {
+        return cellState;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder sb = new StringBuilder();
+        sb.append("DominationEvent (");
+        sb.append(cellState);
+        sb.append(")");
+        return sb.toString();
     }
 }

@@ -145,17 +145,18 @@ public class ProcessFactory {
             Argument<Double> thresholdOccupancy = DoubleArgumentFactory.instantiate(e, "threshold", 1.0, p.getRandom());
             return new CheckForThresholdOccupancy(loader, layerManager, id, p, thresholdOccupancy);
 
-        } else if (processClass.equalsIgnoreCase("check-population-fraction")) {
+        } else if (processClass.equalsIgnoreCase("check-for-domination")) {
             Argument<Double> thresholdFraction = DoubleArgumentFactory.instantiate(e, "threshold", p.getRandom());
-            Argument<Integer> targetState = IntegerArgumentFactory.instantiate(e, "target", p.getRandom());
+            Argument<Integer> targetState = IntegerArgumentFactory.instantiate(e, "target", -1, p.getRandom());
 
-            return new CheckForPopulationFraction(loader, layerManager, id, p, targetState, thresholdFraction);
+            return new CheckForDomination(loader, layerManager, id, p, targetState, thresholdFraction);
 
         } else if (processClass.equalsIgnoreCase("check-for-complete-fixation")) {
             return new CheckForCompleteFixation(loader, layerManager, id, p);
 
         } else if (processClass.equalsIgnoreCase("check-for-extinction")) {
-            return new CheckForExtinction(loader, layerManager, id, p);
+            Argument<Double> threshold = DoubleArgumentFactory.instantiate(e, "threshold", 0.0, p.getRandom());
+            return new CheckForExtinction(loader, layerManager, id, threshold, p);
 
         } else if (processClass.equalsIgnoreCase("record")) {
             return new Record(loader, layerManager, id, p);

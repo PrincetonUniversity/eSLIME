@@ -20,6 +20,7 @@
 package processes.discrete.check;
 
 import control.GeneralParameters;
+import control.arguments.Argument;
 import control.halt.ExtinctionEvent;
 import control.halt.HaltCondition;
 import io.loader.ProcessLoader;
@@ -34,8 +35,12 @@ import processes.gillespie.GillespieState;
  * Created by dbborens on 1/13/14.
  */
 public class CheckForExtinction extends CellProcess {
-    public CheckForExtinction(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
+
+    private double threshold;
+
+    public CheckForExtinction(ProcessLoader loader, LayerManager layerManager, int id, Argument<Double> thresholdArg, GeneralParameters p) {
         super(loader, layerManager, id, p);
+        threshold = thresholdArg.next();
     }
 
     @Override
@@ -48,8 +53,17 @@ public class CheckForExtinction extends CellProcess {
 
     @Override
     public void fire(StepState state) throws HaltCondition {
+        // Handle true extinction exactly
+        if (p.epsilonEquals(threshold, 0.0) && layer.getViewer().getOccupiedSites().size() == 0) {
+            throw new ExtinctionEvent(state.getTime());
+        }
 
-        if (layer.getViewer().getOccupiedSites().size() == 0) {
+        double totalSites = layer.getGeometry().getCanonicalSites().length * 1.0;
+        double sitesOccupied = layer.getViewer().getOccupiedSites().size() * 1.0;
+
+        double occupancy = sitesOccupied / totalSites;
+
+        if (occupancy < threshold) {
             throw new ExtinctionEvent(state.getTime());
         }
     }

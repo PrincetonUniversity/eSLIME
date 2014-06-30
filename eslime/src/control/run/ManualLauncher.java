@@ -29,7 +29,12 @@ package control.run;
 public class ManualLauncher {
 
     public static void main(String[] args) {
-        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-06-01/growth_ivi_2d.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-06-06/0.50_0.70.xml";
+        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-06-05/AvA_RE_2D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-06-05/AvP_kymograph.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-06-04/growth_ivp_range_2D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-06-03/AvA/0.50_1.00.xml";
+        //String path = "/Users/dbborens/projects/T6SS/scripts/AvA/range_2d/0.05_0.40.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-29/growth_ivpi_arena_halt_1D.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-29/growth_ivpi_range_arena_1D.xml";
 
@@ -41,7 +46,7 @@ public class ManualLauncher {
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/growth_ivp_arena_huge.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/db_ivp_periodic_huge.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/growth_ivp_arena_1D.xml";
-//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/growth_ivp_arena_2D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-06-01/growth_ivi_2d.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/growth_ivps_arena_1D.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/growth_ivps_arena_2D.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-05-23/db_ivpk_periodic_1D.xml";

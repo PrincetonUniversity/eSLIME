@@ -84,8 +84,8 @@ package processes.discrete.check;
 
 import control.GeneralParameters;
 import control.arguments.Argument;
+import control.halt.DominationEvent;
 import control.halt.HaltCondition;
-import control.halt.PopulationFractionReachedEvent;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
@@ -100,14 +100,19 @@ import processes.gillespie.GillespieState;
  * <p/>
  * Created by dbborens on 1/13/14.
  */
-public class CheckForPopulationFraction extends CellProcess {
+public class CheckForDomination extends CellProcess {
     private double targetFraction;
     private int targetState;
 
-    public CheckForPopulationFraction(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p, Argument<Integer> targetStateArg, Argument<Double> targetFractionArg) {
+    public CheckForDomination(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p, Argument<Integer> targetStateArg, Argument<Double> targetFractionArg) {
         super(loader, layerManager, id, p);
         targetFraction = targetFractionArg.next();
+
         targetState = targetStateArg.next();
+
+        if (targetState == 0) {
+            throw new IllegalArgumentException("Dead state (0) set as domination target. Use CheckForExtinction instead.");
+        }
     }
 
     @Override
@@ -119,14 +124,36 @@ public class CheckForPopulationFraction extends CellProcess {
     }
 
     @Override
-    public void fire(StepState state) throws HaltCondition {
-        double numTargetCells = layer.getViewer().getStateMapViewer().getCount(targetState);
+    public void fire(StepState stepState) throws HaltCondition {
+        if (targetState == -1) {
+            checkAllStates(stepState);
+        } else {
+            doCheck(targetState, stepState);
+        }
+    }
+
+    private void checkAllStates(StepState stepState) throws HaltCondition {
+        Integer[] states = layer.getViewer().getStateMapViewer().getStates();
+
+        for (Integer targetState : states) {
+            // The dead state cannot "dominate" the system (that's extinction)
+            if (targetState == 0) {
+                continue;
+            }
+            doCheck(targetState, stepState);
+        }
+
+    }
+
+    private void doCheck(int target, StepState stepState) throws HaltCondition {
+        double numTargetCells = layer.getViewer().getStateMapViewer().getCount(target);
         double numCells = layer.getViewer().getOccupiedSites().size();
 
         double fraction = numTargetCells / numCells;
 
         if (fraction >= targetFraction) {
-            throw new PopulationFractionReachedEvent(state.getTime(), targetState);
+            throw new DominationEvent(stepState.getTime(), target);
         }
+
     }
 }

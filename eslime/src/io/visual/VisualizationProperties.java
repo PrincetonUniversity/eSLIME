@@ -62,6 +62,7 @@ public class VisualizationProperties {
         }
         this.colorManager = colorManager;
         this.edge = edge;
+        this.outline = outline;
     }
 
     public int[] getFrames() {
@@ -139,7 +140,4 @@ public class VisualizationProperties {
         return outline;
     }
 
-    public void setOutline(int outline) {
-        this.outline = outline;
-    }
 }
