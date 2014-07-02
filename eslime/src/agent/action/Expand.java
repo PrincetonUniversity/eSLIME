@@ -35,7 +35,8 @@ import processes.discrete.ShoveHelper;
 import java.util.Random;
 
 /**
- * Places a copy or copies of the current cell at the target site(s).
+ * Places a copy or copies of the current cell toward any vacant location.
+ *
  * This uses the "clone" method, rather than the "divide" method, meaning
  * that the state of the cell is exactly preserved.
  *
