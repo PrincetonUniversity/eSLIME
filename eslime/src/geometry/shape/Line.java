@@ -116,15 +116,15 @@ public class Line extends Shape {
         Coordinate d = lattice.getOrthoDisplacement(origin, coord);
 
         int ob;
-        if (d.y() > length) {
-            ob = (length - d.y());
+        if (d.y() >= length) {
+            ob = d.y() - length + 1;
         } else if (d.y() < 0) {
-            ob = -1 * d.y();
+            ob = d.y();
         } else {
             ob = 0;
         }
 
-        return new Coordinate(0, ob, 0);
+        return new Coordinate(0, ob, Flags.VECTOR);
     }
 
     @Override
