@@ -27,8 +27,6 @@ import layers.cell.CellLayer;
 import processes.Process;
 
 public abstract class CellProcess extends Process {
-    protected GeneralParameters p;
-
     // This set represents the sites where the process
     // is allowed to take place. By default, it is set
     // to all canonical sites.
@@ -44,7 +42,6 @@ public abstract class CellProcess extends Process {
 
         super(loader, layerManager, p, id);
 
-        this.p = p;
         layer = layerManager.getCellLayer();
         activeSites = this.loadSiteList("active-sites");
     }

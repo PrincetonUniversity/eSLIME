@@ -37,7 +37,6 @@ import processes.gillespie.GillespieState;
 public class CheckForExtinction extends CellProcess {
 
     private double threshold;
-
     public CheckForExtinction(ProcessLoader loader, LayerManager layerManager, int id, Argument<Double> thresholdArg, GeneralParameters p) {
         super(loader, layerManager, id, p);
         threshold = thresholdArg.next();
@@ -54,7 +53,9 @@ public class CheckForExtinction extends CellProcess {
     @Override
     public void fire(StepState state) throws HaltCondition {
         // Handle true extinction exactly
-        if (p.epsilonEquals(threshold, 0.0) && layer.getViewer().getOccupiedSites().size() == 0) {
+        boolean thresholdIsZero = p.epsilonEquals(threshold, 0.0);
+        boolean noOccupiedSites = layer.getViewer().getOccupiedSites().size() == 0;
+        if (thresholdIsZero && noOccupiedSites) {
             throw new ExtinctionEvent(state.getTime());
         }
 
