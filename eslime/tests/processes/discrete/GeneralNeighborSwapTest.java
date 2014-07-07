@@ -21,11 +21,79 @@
 
 package processes.discrete;
 
-import junit.framework.TestCase;
+import cells.MockCell;
+import control.arguments.ConstantInteger;
+import control.identifiers.Coordinate;
+import geometry.Geometry;
+import geometry.boundaries.Arena;
+import geometry.boundaries.Boundary;
+import geometry.lattice.Lattice;
+import geometry.lattice.RectangularLattice;
+import geometry.shape.Rectangle;
+import geometry.shape.Shape;
+import layers.MockLayerManager;
+import layers.cell.CellLayer;
+import processes.MockStepState;
+import processes.gillespie.GillespieState;
+import structural.MockGeneralParameters;
+import test.EslimeTestCase;
 
-public class GeneralNeighborSwapTest extends TestCase {
+/**
+ * Created by dbborens on 4/21/14.
+ */
+public class GeneralNeighborSwapTest extends EslimeTestCase {
 
-    public void testNothing() {
-        fail("Test me!");
+    private GeneralNeighborSwap query;
+    private MockLayerManager layerManager;
+    private MockCell a, b, c;
+    private Coordinate ac, bc, cc;
+
+    @Override
+    protected void setUp() throws Exception {
+        Lattice lattice = new RectangularLattice();
+        Shape shape = new Rectangle(lattice, 2, 2);
+        Boundary boundary = new Arena(shape, lattice);
+        Geometry geom = new Geometry(lattice, shape, boundary);
+        CellLayer cellLayer = new CellLayer(geom);
+
+        layerManager = new MockLayerManager();
+        layerManager.setCellLayer(cellLayer);
+
+        MockGeneralParameters p = makeMockGeneralParameters();
+        query = new GeneralNeighborSwap(null, layerManager, 0, p, new ConstantInteger(1));
+
+        /*
+         * Cell layout:
+         *     0 1
+         *  1  a .
+         *  0  b c
+         */
+        a = new MockCell(1);
+        b = new MockCell(2);
+        c = new MockCell(3);
+
+        ac = new Coordinate(0, 1, 0);
+        bc = new Coordinate(0, 0, 0);
+        cc = new Coordinate(1, 1, 0);
+        cellLayer.getUpdateManager().place(a, ac);
+        cellLayer.getUpdateManager().place(b, bc);
+        cellLayer.getUpdateManager().place(c, cc);
+    }
+
+    public void testCellsReflectSwap() throws Exception {
+        query.target(null);
+        MockStepState state = new MockStepState();
+        query.fire(state);
+
+        CellLayer cl = layerManager.getCellLayer();
+
+        // No matter what, B should no longer be at (0, 0)
+        assertFalse(cl.getViewer().getCell(bc).equals(b));
+
+        // It so happens that, with this random seed, b and a are swapped
+        assertTrue(cl.getViewer().getCell(bc).equals(a));
+        assertTrue(cl.getViewer().getCell(ac).equals(b));
+        assertTrue(cl.getViewer().getCell(cc).equals(c));
+
     }
 }

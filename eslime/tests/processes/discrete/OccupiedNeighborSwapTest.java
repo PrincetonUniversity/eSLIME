@@ -41,7 +41,7 @@ import test.EslimeTestCase;
 /**
  * Created by dbborens on 4/21/14.
  */
-public class OccupiedOccupiedNeighborSwapTest extends EslimeTestCase {
+public class OccupiedNeighborSwapTest extends EslimeTestCase {
 
     private OccupiedNeighborSwap query;
     private MockLayerManager layerManager;
