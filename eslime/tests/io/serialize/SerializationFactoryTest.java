@@ -56,8 +56,8 @@ public class SerializationFactoryTest extends EslimeTestCase {
         doTest("cell-state-writer", LegacyCellStateWriter.class);
     }
 
-    public void testFixationTimeWriter() {
-        doTest("fixation-time", HaltTimeWriter.class);
+    public void testHaltTimeWriter() {
+        doTest("halt-time-writer", HaltTimeWriter.class);
     }
 
     public void testParameterWriter() {

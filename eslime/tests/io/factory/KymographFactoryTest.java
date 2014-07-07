@@ -15,7 +15,7 @@
  *  Licensed Material, whether express, implied, statutory, or other.
  *
  *  For the full license, please visit:
- *  http://creativecommons.org/licenses/by/4.0/legalcode
+ *  http:creativecommons.org/licenses/by/4.0/legalcode
  * /
  */
 
@@ -36,84 +36,95 @@
  *  Licensed Material, whether express, implied, statutory, or other.
  *
  *  For the full license, please visit:
- *  http://creativecommons.org/licenses/by/4.0/legalcode
+ *  http:creativecommons.org/licenses/by/4.0/legalcode
  * /
  */
 
 package io.factory;
 
+import geometry.Geometry;
+import geometry.boundaries.Boundary;
+import geometry.boundaries.Periodic;
+import geometry.lattice.Lattice;
+import geometry.lattice.LinearLattice;
+import geometry.shape.Line;
+import geometry.shape.Shape;
 import io.visual.VisualizationProperties;
 import io.visual.color.ColorManager;
 import io.visual.color.DefaultColorManager;
 import io.visual.glyph.MockGlyph;
 import io.visual.highlight.HighlightManager;
-import io.visual.map.MapVisualization;
+import io.visual.kymograph.Kymograph;
+import layers.LayerManager;
+import layers.MockLayerManager;
+import layers.cell.CellLayer;
 import org.dom4j.Element;
 import test.EslimeLatticeTestCase;
+import test.EslimeTestCase;
 
 /**
  * Created by dbborens on 4/3/14.
  */
-public class KymographFactoryTest extends EslimeLatticeTestCase {
+public class KymographFactoryTest extends EslimeTestCase {
     private Element root;
 
+    private Geometry geom;
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        setUpGeometry();
-        root = readXmlFile("factories/MapVisualizationFactoryTest.xml");
+        Lattice lattice = new LinearLattice();
+        MockLayerManager layerManager = new MockLayerManager();
+        Shape shape = new Line(lattice, 10);
+        Boundary boundary = new Periodic(shape, lattice);
+        geom = new Geometry(lattice, shape, boundary);
+        CellLayer layer = new CellLayer(geom);
+        layerManager.setCellLayer(layer);
+        root = readXmlFile("factories/KymographFactoryTest.xml");
     }
 
-    private void setUpGeometry() {
-//        geom.setDimensionality(2);
-//        geom.setConnectivity(3);
-    }
 
     public void testTypicalCase() throws Exception {
-        fail("Not yet implemented");
-//        Element typicalCase = root.element("typical-case");
-//        MapVisualization actual = MapVisualizationFactory.instantiate(typicalCase);
-//        actual.init(geom, null, null);
-//
-//        MapVisualization expected = makeTypicalCase();
-//        assertEquals(expected, actual);
+        Element typicalCase = root.element("typical-case");
+        Kymograph actual = KymographFactory.instantiate(typicalCase);
+        actual.init(geom, new double[1], new int[1]);
+
+        Kymograph expected = makeTypicalCase();
+        assertEquals(expected, actual);
     }
 
     public void testMinimalCase() throws Exception {
-        fail("Not yet implemented");
-//        Element minimalCase = root.element("minimal-case");
-//        MapVisualization actual = MapVisualizationFactory.instantiate(minimalCase);
-//        actual.init(geom, null, null);
-//
-//        MapVisualization expected = makeMinimalCase();
-//        assertEquals(expected, actual);
+        Element minimalCase = root.element("minimal-case");
+        Kymograph actual = KymographFactory.instantiate(minimalCase);
+        actual.init(geom, new double[1], new int[1]);
+
+        Kymograph expected = makeMinimalCase();
+        assertEquals(expected, actual);
     }
 
-//    private MapVisualization makeMinimalCase() {
-//        ColorManager colorManager = new DefaultColorManager();
-//        HighlightManager highlightManager = new HighlightManager();
-//        double edge = 10.0;
-//
-//        VisualizationProperties mapState = new VisualizationProperties(colorManager, edge);
-//        mapState.setHighlightManager(highlightManager);
-//
-//        MapVisualization mapVisualization = new MapVisualization(mapState);
-//        mapVisualization.init(geom, null, null);
-//        return mapVisualization;
-//    }
+    private Kymograph makeMinimalCase() {
+        ColorManager colorManager = new DefaultColorManager();
+        HighlightManager highlightManager = new HighlightManager();
+        double edge = 10.0;
 
-//    private MapVisualization makeTypicalCase() {
-//        ColorManager colorManager = new DefaultColorManager();
-//        HighlightManager highlightManager = new HighlightManager();
-//        highlightManager.setGlyph(0, new MockGlyph());
-//        double edge = 5.0;
-//
-//        VisualizationProperties mapState = new VisualizationProperties(colorManager, edge);
-//        mapState.setHighlightManager(highlightManager);
-//
-//        MapVisualization mapVisualization = new MapVisualization(mapState);
-//        mapVisualization.init(geom, null, null);
-//        return mapVisualization;
-//    }
+        VisualizationProperties mapState = new VisualizationProperties(colorManager, edge, 0);
+        mapState.setHighlightManager(highlightManager);
+        Kymograph kymograph = new Kymograph(mapState);
+        kymograph.init(geom, new double[1], new int[1]);
+        return kymograph;
+    }
+
+    private Kymograph makeTypicalCase() {
+        ColorManager colorManager = new DefaultColorManager();
+        HighlightManager highlightManager = new HighlightManager();
+        highlightManager.setGlyph(0, new MockGlyph());
+        double edge = 5.0;
+
+        VisualizationProperties mapState = new VisualizationProperties(colorManager, edge, 0);
+        mapState.setHighlightManager(highlightManager);
+
+        Kymograph kymograph = new Kymograph(mapState);
+        kymograph.init(geom, new double[1], new int[1]);
+        return kymograph;
+    }
 
 }
