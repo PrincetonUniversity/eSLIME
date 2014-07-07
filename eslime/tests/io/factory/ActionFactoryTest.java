@@ -103,14 +103,25 @@ public class ActionFactoryTest extends EslimeTestCase {
     }
 
     public void testExpand() throws Exception {
-        fail("Not yet implemented");
+        Element e = fixtureRoot.element("expand");
+        Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
+        Action expected = new Expand(callback, layerManager, null, null, p.getRandom());
+        assertEquals(expected, actual);
     }
 
     public void testExpandTo() throws Exception {
-        fail("Not yet implemented");
+        Element e = fixtureRoot.element("expand-to");
+        TargetRule rule = new TargetVacantNeighbors(callback, layerManager, 1, null);
+        Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
+        Action expected = new ExpandTo(callback, layerManager, rule, null, null, p.getRandom());
+        assertEquals(expected, actual);
     }
 
     public void testSwap() throws Exception {
-        fail("Not yet implemented");
+        Element e = fixtureRoot.element("swap");
+        TargetRule rule = new TargetVacantNeighbors(callback, layerManager, 1, null);
+        Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
+        Action expected = new Swap(callback, layerManager, rule, null, null);
+        assertEquals(expected, actual);
     }
 }

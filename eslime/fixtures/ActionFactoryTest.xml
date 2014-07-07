@@ -39,6 +39,26 @@
         </target>
     </clone>
 
+    <expand>
+        <behavior>expand</behavior>
+    </expand>
+
+    <expand-to>
+        <behavior>expand-to</behavior>
+        <target>
+            <class>vacant-neighbors</class>
+            <max>1</max>
+        </target>
+    </expand-to>
+    
+    <swap>
+        <behavior>swap</behavior>
+        <target>
+            <class>vacant-neighbors</class>
+            <max>1</max>
+        </target>
+    </swap>
+
     <adjust-health>
         <delta>0.5</delta>
     </adjust-health>
