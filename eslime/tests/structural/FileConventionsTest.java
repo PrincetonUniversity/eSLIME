@@ -50,6 +50,9 @@ public class FileConventionsTest extends TestCase {
     }
 
     public void testMakeInterfaceFilename() throws Exception {
-        fail("Not yet implemented");
+        int state = 0;
+        String expected = "interface_0.txt";
+        String actual = FileConventions.makeInterfaceFilename(state);
+        assertEquals(expected, actual);
     }
 }
