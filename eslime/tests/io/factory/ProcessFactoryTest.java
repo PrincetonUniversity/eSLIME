@@ -156,7 +156,9 @@ public class ProcessFactoryTest extends TestCase {
     }
 
     public void testGeneralNeighborSwap() {
-        doTest("general-neighbor-swap", GeneralNeighborSwap.class);
+        Element child = new BaseElement("count");
+        child.setText("1");
+        doTest("general-neighbor-swap", GeneralNeighborSwap.class, child);
     }
 
     public void testScatter() {
