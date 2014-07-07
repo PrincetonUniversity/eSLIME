@@ -75,9 +75,9 @@ import processes.discrete.CellProcess;
 import processes.gillespie.GillespieState;
 
 /**
- * Checks for extinction or fixation events.
- * <p/>
- * Created by dbborens on 1/13/14.
+ * Throws a halt event when the system's total occupancy exceeds a specified
+ * threshold.
+ *
  */
 public class CheckForThresholdOccupancy extends CellProcess {
     private int thresholdCount;

@@ -43,7 +43,6 @@ public class SwapTest extends EslimeTestCase {
 
     private MockLayerManager layerManager;
     private BehaviorCell parent;
-    private MockRandom random;
     private CellLayer layer;
     private MockTargetRule parentTargetRule;
 
@@ -58,7 +57,6 @@ public class SwapTest extends EslimeTestCase {
         Geometry geom = new Geometry(lattice, shape, boundary);
         layer = new CellLayer(geom);
         layerManager.setCellLayer(layer);
-        random = new MockRandom();
 
         // Place the parent at site 4 and get its target rule
         parentTargetRule = placeNumberedCell(4);
