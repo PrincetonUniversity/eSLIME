@@ -94,26 +94,30 @@ public class MapVisualizationTest extends GlyphTest {
 
     // As above, but for rectangular geometry.
     public void testRectangle() throws Exception {
+        doRectangleTest(1, "RectangularMap.png");
+    }
+
+    public void testNoOutline() throws Exception {
+        doRectangleTest(0, "RectangularMapNoOutline.png");
+    }
+
+    private void doRectangleTest(int outline, String filename) throws Exception {
         Lattice lattice = new RectangularLattice();
         Shape shape = new Rectangle(lattice, 5, 5);
         Boundary boundary = new Arena(shape, lattice);
         Geometry geom = new Geometry(lattice, shape, boundary);
         ColorManager colorManager = new DefaultColorManager();
-        VisualizationProperties mapState = new VisualizationProperties(colorManager, 25.0, 1);
+        VisualizationProperties mapState = new VisualizationProperties(colorManager, 25.0, outline);
         HighlightManager highlightManager = new HighlightManager();
         mapState.setHighlightManager(highlightManager);
         MapVisualization map = new MapVisualization(mapState);
         map.init(geom, null, null);
         systemState = makeSystemState(geom);
         BufferedImage result = map.render(systemState);
-        File file = new File(outputPath + "RectangularMap.png");
+        File file = new File(outputPath + filename);
         ImageIO.write(result, "png", file);
 
-        assertBinaryFilesEqual("glyphs/RectangularMap.png", "RectangularMap.png");
+        assertBinaryFilesEqual("glyphs/" + filename, filename);
 
-    }
-
-    public void testOutlines() throws Exception {
-        fail("Not yet implemented");
     }
 }
