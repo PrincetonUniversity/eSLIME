@@ -20,14 +20,15 @@
 package control;
 
 import io.loader.ProjectLoader;
-import org.dom4j.*;
+import org.dom4j.Document;
+import org.dom4j.DocumentException;
+import org.dom4j.DocumentHelper;
+import org.dom4j.Element;
 import structural.utilities.XmlUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Random;
-import java.util.Set;
 
 /**
  * The parameter object returns general parameters for the simulation.
@@ -67,8 +68,9 @@ public class GeneralParameters {
 
     }
 
-    // Do-nothing constructor for mock testing.
+    // Minimal constructor for mock testing.
     public GeneralParameters() {
+        calcEpsilon();
     }
 
     private void updateInstancePath() {
