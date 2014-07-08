@@ -49,17 +49,17 @@ public abstract class MapVisualizationFactory {
         int outline = getOutline(mapElement);
 
         // Construct map state object
-        VisualizationProperties mapState = makeMapState(highlightManager, colorManager, edge, outline);
+        VisualizationProperties visualizationProperties = makeVisualizationProperties(highlightManager, colorManager, edge, outline);
 
         // Construct map
-        MapVisualization map = new MapVisualization(mapState);
+        MapVisualization map = new MapVisualization(visualizationProperties);
 
         return map;
     }
 
-    private static VisualizationProperties makeMapState(HighlightManager highlightManager,
-                                         ColorManager colorManager,
-                                         double edge, int outline) {
+    private static VisualizationProperties makeVisualizationProperties(HighlightManager highlightManager,
+                                                                       ColorManager colorManager,
+                                                                       double edge, int outline) {
 
         VisualizationProperties mapState = new VisualizationProperties(colorManager, edge, outline);
         mapState.setHighlightManager(highlightManager);

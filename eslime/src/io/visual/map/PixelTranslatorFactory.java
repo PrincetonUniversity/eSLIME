@@ -43,6 +43,9 @@ public class PixelTranslatorFactory {
         } else if (d == 2 && c == 3) {
             throw new UnsupportedOperationException("Support for cubic lattice not yet implemented. (Hint: it should consist of a grid of rectangular grids.");
 
+        } else if (d == 1 && c == 1)  {
+            return new RectPixelTranslator();
+
         } else {
             throw new IllegalArgumentException("Unrecognized geometry " +
                     "(dimensionality = " + d + "; connectivity = " + c + ")");
