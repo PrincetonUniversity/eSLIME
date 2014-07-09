@@ -85,7 +85,7 @@ public class CubicLatticeTest extends EslimeTestCase {
 
     public void testGetAnnulus() {
         Coordinate[] actual, expected;
-        Coordinate origin = new Coordinate(0, 0, 0);
+        Coordinate origin = new Coordinate(0, 0, 0, 0);
 
         // r=0
         actual = lattice.getAnnulus(origin, 0);

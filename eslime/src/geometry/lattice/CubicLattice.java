@@ -62,7 +62,7 @@ public class CubicLattice extends Lattice {
 
         // r=0 case (a point)
         if (r == 0) {
-            return new Coordinate[]{new Coordinate(x0, y0, 0)};
+            return new Coordinate[]{new Coordinate(x0, y0, z0, 0)};
         }
 
         // All other cases

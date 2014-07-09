@@ -98,4 +98,8 @@ public class MockGeneralParameters extends GeneralParameters {
     public void setFrameValue(boolean isFrameValue) {
         this.isFrameValue = isFrameValue;
     }
+
+    public void setRandom(MockRandom random) {
+        this.random = random;
+    }
 }

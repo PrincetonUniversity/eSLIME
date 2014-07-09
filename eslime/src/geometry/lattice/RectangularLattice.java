@@ -22,8 +22,6 @@ package geometry.lattice;
 import control.identifiers.Coordinate;
 import control.identifiers.Flags;
 
-import java.util.HashSet;
-
 public class RectangularLattice extends Lattice {
 
     @Override
@@ -61,27 +59,26 @@ public class RectangularLattice extends Lattice {
         int x0 = coord.x();
         int y0 = coord.y();
 
-        int n = getAnnulusSize(r);
-
         // r=0 case (a point)
         if (r == 0) {
             return new Coordinate[]{new Coordinate(x0, y0, 0)};
         }
 
         // All other cases
-        HashSet<Coordinate> ring = new HashSet<>(n);
+        Coordinate[] ret = new Coordinate[4*r];
 
-        for (int dx = 0; dx <= r; dx++) {
-            int dy = r - dx;
+        for (int i = 0; i < r; i++) {
+            int j = r - i;
 
-            // TODO: This is redundant and may be inefficient
-            ring.add(new Coordinate(x0 + dx, y0 + dy, 0));
-            ring.add(new Coordinate(x0 - dx, y0 + dy, 0));
-            ring.add(new Coordinate(x0 + dx, y0 - dy, 0));
-            ring.add(new Coordinate(x0 - dx, y0 - dy, 0));
+            int base = 4 * i;
+
+            ret[base + 0] = new Coordinate(x0 + i, y0 + j, 0);
+            ret[base + 1] = new Coordinate(x0 + j, y0 - i, 0);
+            ret[base + 2] = new Coordinate(x0 - i, y0 - j, 0);
+            ret[base + 3] = new Coordinate(x0 - j, y0 + i, 0);
         }
 
-        return ring.toArray(new Coordinate[0]);
+        return ret;
     }
 
     /* Get (naive) size of an annulus of the specified L1 radius from a

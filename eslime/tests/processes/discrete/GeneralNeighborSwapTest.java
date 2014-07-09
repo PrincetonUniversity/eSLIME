@@ -34,8 +34,8 @@ import geometry.shape.Shape;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import processes.MockStepState;
-import processes.gillespie.GillespieState;
 import structural.MockGeneralParameters;
+import structural.MockRandom;
 import test.EslimeTestCase;
 
 /**
@@ -60,13 +60,15 @@ public class GeneralNeighborSwapTest extends EslimeTestCase {
         layerManager.setCellLayer(cellLayer);
 
         MockGeneralParameters p = makeMockGeneralParameters();
+        MockRandom random = new MockRandom();
+        p.setRandom(random);
         query = new GeneralNeighborSwap(null, layerManager, 0, p, new ConstantInteger(1));
 
         /*
          * Cell layout:
          *     0 1
-         *  1  a .
-         *  0  b c
+         *  0  b .
+         *  1  a c
          */
         a = new MockCell(1);
         b = new MockCell(2);
@@ -83,17 +85,18 @@ public class GeneralNeighborSwapTest extends EslimeTestCase {
     public void testCellsReflectSwap() throws Exception {
         query.target(null);
         MockStepState state = new MockStepState();
-        query.fire(state);
 
         CellLayer cl = layerManager.getCellLayer();
 
-        // No matter what, B should no longer be at (0, 0)
-        assertFalse(cl.getViewer().getCell(bc).equals(b));
+        // a should move
+        assertTrue(cl.getViewer().getCell(ac).equals(a));
+        query.fire(state);
+        assertFalse(cl.getViewer().getCell(ac).equals(a));
 
-        // It so happens that, with this random seed, b and a are swapped
-        assertTrue(cl.getViewer().getCell(bc).equals(a));
-        assertTrue(cl.getViewer().getCell(ac).equals(b));
-        assertTrue(cl.getViewer().getCell(cc).equals(c));
+        // specifically, a should be swapped with c
+        assertTrue(cl.getViewer().getCell(bc).equals(b));
+        assertTrue(cl.getViewer().getCell(ac).equals(c));
+        assertTrue(cl.getViewer().getCell(cc).equals(a));
 
     }
 }
