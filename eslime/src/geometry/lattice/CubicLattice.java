@@ -22,8 +22,6 @@ package geometry.lattice;
 import control.identifiers.Coordinate;
 import control.identifiers.Flags;
 
-import java.util.HashSet;
-
 public class CubicLattice extends Lattice {
 
     protected void defineBasis() {
@@ -65,29 +63,113 @@ public class CubicLattice extends Lattice {
             return new Coordinate[]{new Coordinate(x0, y0, z0, 0)};
         }
 
-        // All other cases
-        HashSet<Coordinate> ring = new HashSet<Coordinate>();
+        /* I'm so bad at series. Let's see...
+         *
+         * r = 1 --> n = 1 + 4 + 1                  = 2 + 4(1)              = 6
+         * r = 2 --> n = 1 + 4 + 8 + 4 + 1          = 2 + 4(2) + 2(4)       = 18
+         * r = 3 --> n = 1 + 4 + 8 + 12 + 8 + 4 + 1 = 2 + 4(3) + 2(4 + 8)   = 38
+         *                                          = 2 + 4(3) + 8(1 + 2)   = 66
+         *
+         * Generalizing, I find that
+         * n(R) = 2 + 4R + 8*sum_(i=0)^(i=R-2){i+1}.
+         *
+         * Which is
+         * n(R) = -6 + 12R + 8*sum_(i=0)^(i=R-2){i}.
+         *
+         * Solving that sum (by technology, of course), I get
+         * n(R) = -6 + 12R + (4R^2 - 12R + 8)
+         *      = 4R^2 + 2.
+         *
+         * That took me an hour and should have been totally obvious.
+         */
+        Coordinate[] ret = new Coordinate[(4 * r * r) + 2];
 
-        for (int dx = 0; dx <= r; dx++) {
-            for (int dy = 0; dy <= r - dx; dy++) {
-                int dz = r - dx - dy;
-                //System.out.println("r=" + r + " dx=" + dx + " dy=" + dy + " dz=" + dz);
-
-                // TODO: This is redundant and may be inefficient
-                ring.add(new Coordinate(x0 + dx, y0 + dy, z0 + dz, 0));
-                ring.add(new Coordinate(x0 + dx, y0 + dy, z0 - dz, 0));
-                ring.add(new Coordinate(x0 + dx, y0 - dy, z0 + dz, 0));
-                ring.add(new Coordinate(x0 + dx, y0 - dy, z0 - dz, 0));
-                ring.add(new Coordinate(x0 - dx, y0 + dy, z0 + dz, 0));
-                ring.add(new Coordinate(x0 - dx, y0 + dy, z0 - dz, 0));
-                ring.add(new Coordinate(x0 - dx, y0 - dy, z0 + dz, 0));
-                ring.add(new Coordinate(x0 - dx, y0 - dy, z0 - dz, 0));
-
-            }
-
+        int offset = 0;
+        // Scan from the top of the shell to the bottom.
+        for (int dz = 0; dz <= r; dz++) {
+            // For a given height z, the points in the plane are just the 2D
+            // annulus with radius r-z.
+            offset = populateSlices(coord, ret, r, dz, offset);
         }
 
-        return ring.toArray(new Coordinate[0]);
+        return ret;
+    }
+
+//    private int getOffsetForSlices(int rShell, int dz) {
+//        // The radius of the 2D annulus decreases with dz.
+//        int r = rShell - dz;
+//
+//        // A 2D annulus has circumfrence 4r.
+//        int circumfrence = 4*r;
+//
+//        // The middle slice is counted once; all others have a top and bottom.
+//        if (dz == 0) {
+//            return circumfrence;
+//        } else {
+//            return 2 * circumfrence;
+//        }
+//    }
+
+    /**
+     * Populate an array, starting at some offset, with the slice of a 3D
+     * shell at +dz and -dz.
+     *
+     * @param origin  The center coordinate of the annulus, in 3D space.
+     * @param shell   The array to populate.
+     * @param r       The radius of the 3D shell.
+     * @param dz      The absolute value offset from the z coordinate of the center.
+     * @param offset  The first index to populate.
+     */
+    private int populateSlices(Coordinate origin, Coordinate[] shell, int r, int dz, int offset) {
+
+        // Middle slice: only one of them.
+        if (dz == 0) {
+            return populateSlice(origin, shell, r, 0, offset);
+        }
+
+        // Otherwise, there are two: top and bottom.
+        offset = populateSlice(origin, shell, r, dz, offset);
+        return populateSlice(origin, shell, r, -dz, offset);
+    }
+
+    /**
+     * Populate a slice, at height dz, of a 3D shell of radius rShell centered at
+     * origin, inside of array shell, starting at array position offset.
+     *
+     * @param origin  The center The center coordinate of the annulus, in 3D space.
+     * @param shell   The array to populate.
+     * @param rShell  The radius of the shell.
+     * @param dz      The z-offset of the slice.
+     * @param offset  The index offset at which to start writing to the array.
+     */
+    private int populateSlice(Coordinate origin, Coordinate[] shell, int rShell, int dz, int offset) {
+        // De-index coordinate.
+        int x0 = origin.x();
+        int y0 = origin.y();
+        int z  = origin.z() + dz;
+
+        // The middle slice (dz=0) has the radius of the shell. The top and bottom
+        // slices (dz = +/- rShell) have a radius 0.
+        int r = rShell - Math.abs(dz);
+
+        // r=0 case (a point)
+        if (r == 0) {
+            shell[offset] = new Coordinate(x0, y0, z, 0);
+            return offset + 1;
+        }
+
+        for (int i = 0; i < r; i++) {
+            int j = r - i;
+
+            int base = 4 * i;
+
+            shell[offset + base + 0] = new Coordinate(x0 + i, y0 + j, z, 0);
+            shell[offset + base + 1] = new Coordinate(x0 + j, y0 - i, z, 0);
+            shell[offset + base + 2] = new Coordinate(x0 - i, y0 - j, z, 0);
+            shell[offset + base + 3] = new Coordinate(x0 - j, y0 + i, z, 0);
+        }
+
+        return offset + 4*r;
     }
 
     @Override

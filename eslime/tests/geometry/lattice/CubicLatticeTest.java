@@ -94,7 +94,8 @@ public class CubicLatticeTest extends EslimeTestCase {
 
         // r=1
         actual = lattice.getAnnulus(origin, 1);
-        expected = new Coordinate[]{new Coordinate(1, 0, 0, 0),
+        expected = new Coordinate[]{
+                new Coordinate(1, 0, 0, 0),
                 new Coordinate(-1, 0, 0, 0),
                 new Coordinate(0, 1, 0, 0),
                 new Coordinate(0, -1, 0, 0),
