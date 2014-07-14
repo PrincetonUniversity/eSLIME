@@ -60,6 +60,10 @@ public abstract class SerializationFactory {
         } else if (writerClass.equalsIgnoreCase("census-writer")) {
             CensusWriter freq = new CensusWriter(p);
             return freq;
+        } else if (writerClass.equalsIgnoreCase("interface-census-writer")) {
+            Argument<Integer> focalStateArg = IntegerArgumentFactory.instantiate(e, "focal-state", p.getRandom());
+            InterfaceCensusWriter freq = new InterfaceCensusWriter(p, focalStateArg);
+            return freq;
         } else if (writerClass.equalsIgnoreCase("interval-writer")) {
             IntervalWriter iw = new IntervalWriter(p);
             return iw;

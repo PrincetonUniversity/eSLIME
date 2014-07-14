@@ -51,8 +51,8 @@ public class CellLookupManagerTest extends TestCase {
         content.put(c[2], f2);
 
         CellLookupManager lookup = new CellLookupManager(geometry, content);
-        assertEquals(lookup.getNeighborStates(c[1]).length, 2);
-        assertEquals(lookup.getNeighborStates(c[1])[0], 4);
-        assertEquals(lookup.getNeighborStates(c[1])[1], 6);
+        assertEquals(lookup.getNeighborStates(c[1], true).length, 2);
+        assertEquals(lookup.getNeighborStates(c[1], true)[0], 4);
+        assertEquals(lookup.getNeighborStates(c[1], true)[1], 6);
     }
 }
