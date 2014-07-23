@@ -29,8 +29,14 @@ package control.run;
 public class ManualLauncher {
 
     public static void main(String[] args) {
+        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/manuscript/figure4/AvP_immune_2D_sweep_sample.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/manuscript/figure3/AvP_immune_2D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/manuscript/figure3/AvP_non-immune_2D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/manuscript/figure3/AvP_non-immune_no-glyphs_2D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-07-08/2D_test.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-07-08/3D_test.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-06-06/0.50_0.70.xml";
-        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-06-05/AvA_RE_2D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-06-05/AvA_RE_2D.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-06-05/AvP_kymograph.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-06-04/growth_ivp_range_2D.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-06-03/AvA/0.50_1.00.xml";
