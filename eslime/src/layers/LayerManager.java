@@ -36,14 +36,15 @@ import java.util.List;
 public class LayerManager {
 
 //    private static final int GEOMETRY_ID = 0;
-    private CellLayer cellLayer;
-    private HashMap<String, SoluteLayer> soluteLayers;
+    protected CellLayer cellLayer;
+    protected HashMap<String, SoluteLayer> soluteLayers;
     private StepState stepState;
 
     public LayerManager() {
-        // Null default constructor, used in mock testing
+        soluteLayers = new HashMap<>();
     }
 
+    @Deprecated
     public LayerManager(Element layerRoot, GeometryFactory factory) {
         // Build the Cell layer, if present
         if (hasCellElement(layerRoot)) {
@@ -61,6 +62,15 @@ public class LayerManager {
         }
     }
 
+    public void setCellLayer(CellLayer cellLayer) {
+        this.cellLayer = cellLayer;
+    }
+
+    public void addSoluteLayer(String id, SoluteLayer soluteLayer) {
+        soluteLayers.put(id, soluteLayer);
+    }
+
+    @Deprecated
     private void initSoluteLayer(Element e, GeometryFactory factory) {
         String id = e.element("id").getTextTrim();
         SoluteLayer layer = SoluteLayerFactory.instantiate(e, factory, this);
@@ -101,6 +111,43 @@ public class LayerManager {
 
     public void setStepState(StepState stepState) {
         this.stepState = stepState;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (!(o instanceof LayerManager)) {
+            return false;
+        }
+
+        LayerManager that = (LayerManager) o;
+
+        if (cellLayer != null ? !cellLayer.equals(that.cellLayer) : that.cellLayer != null)
+            return false;
+
+        if (soluteLayers.size() != that.soluteLayers.size()) {
+            return false;
+        }
+
+        for (String s : soluteLayers.keySet()) {
+            if (!that.soluteLayers.containsKey(s)) {
+                return false;
+            }
+
+            SoluteLayer p = soluteLayers.get(s);
+            SoluteLayer q = that.soluteLayers.get(s);
+            if (!p.equals(q)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = cellLayer != null ? cellLayer.hashCode() : 0;
+        result = 31 * result + (soluteLayers != null ? soluteLayers.hashCode() : 0);
+        return result;
     }
 
     public StepState getStepState() {

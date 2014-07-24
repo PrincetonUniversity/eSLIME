@@ -95,8 +95,7 @@ public abstract class GlyphTest extends EslimeTestCase {
             health[i] = 0;
             state[i] = 0;
         }
-        systemState.setHealthVector(health);
-        systemState.setStateVector(state);
+        systemState.initCellLayer(state, health);
 
     }
 
@@ -105,7 +104,7 @@ public abstract class GlyphTest extends EslimeTestCase {
         deindexer.setUnderlying(geom.getCanonicalSites());
 
 
-        LightweightSystemState ret = new LightweightSystemState(deindexer);
+        LightweightSystemState ret = new LightweightSystemState(geom);
         populateStateAndHealth(geom, ret);
         Set<Coordinate> highlights = new HashSet<>();
         for (Coordinate c : geom.getCanonicalSites()) {

@@ -36,31 +36,12 @@ import control.identifiers.Coordinate;
 public abstract class SystemState {
 
     /**
-     * Returns the health of the cell at the specified coordinate
-     * of the discrete layer. Value is 0.0 if the position is
-     * vacant.
-     *
-     * @param coord The coordinate whose health is to be retrieved.
+     * Retrieves a reconstructed LayerManager object, through which the state of
+     * cell layers and solute layers can be accessed. Note that mutating this
+     * CellLayer object will have undefined results.
+     * @return
      */
-    public abstract double getHealth(Coordinate coord);
-
-    /**
-     * Returns the state of the cell at the specified coordinate of
-     * the discrete layer. Value is 0 if the position is vacant.
-     *
-     * @param coord The coordinate whose state is to be retrieved.
-     */
-    public abstract int getState(Coordinate coord);
-
-    /**
-     * Returns the value (concentration, intensity, etc) of the
-     * specified coordinate within the context of the specified
-     * continuum layer.
-     *
-     * @param id    The layer ID of the continuum layer to be reported.
-     * @param coord The coordinate whose value is to be retrieved.
-     */
-    public abstract double getValue(String id, Coordinate coord);
+    public abstract LayerManager getLayerManager();
 
     /**
      * Returns the system time associated with this state.

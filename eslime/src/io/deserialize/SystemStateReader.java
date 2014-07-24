@@ -21,6 +21,7 @@
 
 package io.deserialize;
 
+import geometry.Geometry;
 import layers.LightweightSystemState;
 
 import java.util.Iterator;
@@ -48,7 +49,10 @@ public class SystemStateReader implements Iterable<LightweightSystemState> {
     private LegacyCellStateReader cellStateReader;
     private ContinuumStateReaderManager continuumStateReaderManager;
 
-    public SystemStateReader(String[] soluteIds, int[] channelIds, String fileRoot) {
+    private Geometry geometry;
+
+    public SystemStateReader(String[] soluteIds, int[] channelIds,
+                             String fileRoot, Geometry geometry) {
         cursor = 0;
 
         // Load coordinate de-indexer.
@@ -65,6 +69,8 @@ public class SystemStateReader implements Iterable<LightweightSystemState> {
 
         // Open handle to data file for cell state vector.
         cellStateReader = new LegacyCellStateReader(fileRoot, deindexer);
+
+        this.geometry = geometry;
     }
 
 
@@ -100,7 +106,7 @@ public class SystemStateReader implements Iterable<LightweightSystemState> {
         public LightweightSystemState next() {
 
             // Construct display object
-            LightweightSystemState state = new LightweightSystemState(deindexer);
+            LightweightSystemState state = new LightweightSystemState(geometry);
 
             // Populate time and frame
             setTimeAndFrame(state);

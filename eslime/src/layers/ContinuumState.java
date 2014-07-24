@@ -23,7 +23,10 @@ import no.uib.cipr.matrix.DenseVector;
 
 /**
  * Created by dbborens on 12/11/13.
+ *
+ * This class seeems redundant with SolutionViewer. One of them should go.
  */
+@Deprecated
 public class ContinuumState {
 
     private final int frame;

@@ -21,7 +21,6 @@
 
 package io.deserialize;
 
-import layers.ContinuumState;
 import layers.LightweightSystemState;
 import structural.utilities.FileConventions;
 
@@ -42,18 +41,19 @@ public class ContinuumStateReaderManager {
         for (String id : ids) {
             String filename = FileConventions.makeContinuumStateFilename(id);
             String absoluteFilename = root + filename;
+            System.out.println(absoluteFilename);
             File file = new File(absoluteFilename);
             ContinuumStateReader reader = new ContinuumStateReader(file);
             readers.put(id, reader);
         }
     }
 
-    public Map<String, ContinuumState> next() {
-        Map<String, ContinuumState> ret = new HashMap<>(readers.size());
+    public Map<String, double[]> next() {
+        Map<String, double[]> ret = new HashMap<>(readers.size());
 
         for (String id : readers.keySet()) {
             ContinuumStateReader reader = readers.get(id);
-            ContinuumState state = reader.next();
+            double[] state = reader.next();
             ret.put(id, state);
         }
 
@@ -64,7 +64,11 @@ public class ContinuumStateReaderManager {
      * Load next frame into lightweight system state object.
      */
     public void populate(LightweightSystemState systemState) {
-        Map<String, ContinuumState> continuumStateMap = next();
-        systemState.setContinuumStates(continuumStateMap);
+        Map<String, double[]> continuumStateMap = next();
+
+        for (String id : continuumStateMap.keySet()) {
+            double[] soluteVector = continuumStateMap.get(id);
+            systemState.initSoluteLayer(id, soluteVector);
+        }
     }
 }

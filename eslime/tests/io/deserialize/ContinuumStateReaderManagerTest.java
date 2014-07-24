@@ -23,7 +23,6 @@ package io.deserialize;
 
 import geometry.MockGeometry;
 import io.serialize.binary.ContinuumStateWriter;
-import layers.ContinuumState;
 import layers.LightweightSystemState;
 import layers.MockLayerManager;
 import layers.MockSoluteLayer;
@@ -55,32 +54,31 @@ public class ContinuumStateReaderManagerTest extends EslimeLatticeTestCase {
     }
 
     public void testNext() throws Exception {
-        Map<String, ContinuumState> actual = query.next();
+        Map<String, double[]> actual = query.next();
         assertEquals(2, actual.size());
         assertTrue(actual.containsKey("42"));
 
         // 43 is the reverse of 42
-        double[] expectedValues = new double[]{1.0, 2.0, 3.0, 4.0, 5.0};
-
-        DenseVector actual42 = actual.get("42").getData();
-        DenseVector actual43 = actual.get("43").getData();
-
-        for (int i = 0; i < 5; i++) {
-            double expected = expectedValues[i];
-            assertEquals(expected, actual42.get(i));
-            assertEquals(expected, actual43.get(4 - i));
-        }
+        double[] expected42 = new double[]{1.0, 2.0, 3.0, 4.0, 5.0};
+        double[] expected43 = new double[]{5.0, 4.0, 3.0, 2.0, 1.0};
+        double[] actual42 = actual.get("42");
+        double[] actual43 = actual.get("43");
+        assertArraysEqual(expected42, actual42, false);
+        assertArraysEqual(expected43, actual43, false);
     }
 
     public void testPopulate() throws Exception {
         MockCoordinateDeindexer deindexer = new MockCoordinateDeindexer();
         deindexer.setUnderlying(cc);
-        LightweightSystemState state = new LightweightSystemState(deindexer);
+        LightweightSystemState state = new LightweightSystemState(geom);
         query.populate(state);
 
         // Origin corresponds to an index of 0.
-        assertEquals(1.0, state.getValue("42", origin), epsilon);
-        assertEquals(5.0, state.getValue("43", origin), epsilon);
+        double actual = state.getLayerManager().getSoluteLayer("42").getState().getAbsolute(origin);
+        assertEquals(1.0, actual, epsilon);
+
+        actual = state.getLayerManager().getSoluteLayer("43").getState().getAbsolute(origin);
+        assertEquals(5.0, actual, epsilon);
     }
 
     /**

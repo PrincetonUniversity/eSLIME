@@ -232,7 +232,8 @@ public class LegacyCellStateReader {
 
     public void populate(LightweightSystemState state) {
         ConditionViewer viewer = next();
-        state.setHealthVector(viewer.getHealthVector());
-        state.setStateVector(viewer.getStateVector());
+        double[] healthVector = viewer.getHealthVector();
+        int[] stateVector = viewer.getStateVector();
+        state.initCellLayer(stateVector, healthVector);
     }
 }

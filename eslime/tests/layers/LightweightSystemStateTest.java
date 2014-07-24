@@ -21,72 +21,78 @@
 
 package layers;
 
+import cells.BehaviorCell;
+import cells.Cell;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
 import io.deserialize.MockCoordinateDeindexer;
-import no.uib.cipr.matrix.DenseVector;
+import layers.cell.CellLayer;
+import layers.solute.LightweightSoluteLayer;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Created by dbborens on 3/26/14.
+ *
+ * TODO This class should be totally rewritten now that LSS has been refactored
  */
 public class LightweightSystemStateTest extends SystemStateTest {
 
     private LightweightSystemState query;
     private Coordinate[] canonicals;
+    private int[] stateVector = new int[]{1, 0, 2, 3, 2};
+    private double[] healthVector = new double[]{1.0, 0.0, -0.1, 2.0, 1};
+    private Geometry g;
 
+    private String id = "id";
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         MockCoordinateDeindexer deindexer = new MockCoordinateDeindexer();
-        Geometry g = buildMockGeometry();
+        g = buildMockGeometry();
         canonicals = g.getCanonicalSites();
         deindexer.setUnderlying(canonicals);
-        query = new LightweightSystemState(deindexer);
+        query = new LightweightSystemState(g);
+        query.initCellLayer(stateVector, healthVector);
+
+        query.initSoluteLayer(id, healthVector);
     }
 
     @Override
     public void testGetHealth() throws Exception {
-        double[] healthVector = new double[]{1.0, 0.0, -0.1, 2.0};
-        query.setHealthVector(healthVector);
         for (int i = 0; i < 4; i++) {
             Coordinate coord = canonicals[i];
             double expected = healthVector[i];
-            double actual = query.getHealth(coord);
+            Cell cell = query.getLayerManager().getCellLayer().getViewer().getCell(coord);
+            double actual;
+            if (cell == null) {
+                actual = 0.0;
+            } else {
+                actual = cell.getHealth();
+            }
             assertEquals(expected, actual, epsilon);
         }
     }
 
     @Override
     public void testGetState() throws Exception {
-        int[] stateVector = new int[]{1, 0, 2, 3};
-        query.setStateVector(stateVector);
         for (int i = 0; i < 4; i++) {
             Coordinate coord = canonicals[i];
             int expected = stateVector[i];
-            int actual = query.getState(coord);
+            int actual = query.getLayerManager().getCellLayer().getViewer().getState(coord);
             assertEquals(expected, actual);
         }
     }
 
     @Override
+    // This test has been made stupid by the refactor of LightweightSystemState and should be rethought.
     public void testGetValue() throws Exception {
-        double[] values = new double[]{1.0, 0.0, 0.1, 2.0};
-        DenseVector stateVector = new DenseVector(values);
-        ContinuumState state = new ContinuumState(stateVector, 0.5, 2);
-        String id = "id";
-        HashMap<String, ContinuumState> stateMap = new HashMap<>(1);
-        stateMap.put(id, state);
-        query.setContinuumStates(stateMap);
-        for (int i = 0; i < 4; i++) {
-            Coordinate coord = canonicals[i];
-            double expected = values[i];
-            double actual = query.getValue(id, coord);
-            assertEquals(expected, actual, epsilon);
-        }
+
+        // Yuck.
+        double[] data = query.getLayerManager().getSoluteLayer(id).getState().getSolution().getData();
+
+        assertArraysEqual(healthVector, data, false);
     }
 
     @Override
@@ -114,5 +120,29 @@ public class LightweightSystemStateTest extends SystemStateTest {
 
         assertTrue(query.isHighlighted(channelId, canonicals[2]));
         assertFalse(query.isHighlighted(channelId, canonicals[0]));
+    }
+
+    public void testGetLayerManager() throws Exception {
+        MockLayerManager expected = new MockLayerManager();
+
+        CellLayer cellLayer = new CellLayer(g);
+        LightweightSoluteLayer soluteLayer = new LightweightSoluteLayer(g, expected, id);
+        expected.setCellLayer(cellLayer);
+        expected.addSoluteLayer(id, soluteLayer);
+
+        for (int i = 0; i < g.getCanonicalSites().length; i++) {
+            Coordinate c = g.getCanonicalSites()[i];
+            int state = stateVector[i];
+            double health = healthVector[i];
+
+            if (state != 0) {
+                BehaviorCell cell = new BehaviorCell(expected, state, health, 0.0);
+                cellLayer.getUpdateManager().place(cell, c);
+            }
+            soluteLayer.set(c, health);
+        }
+
+        LayerManager actual = query.getLayerManager();
+        assertEquals(expected, actual);
     }
 }

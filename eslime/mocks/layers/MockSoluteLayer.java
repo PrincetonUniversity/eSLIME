@@ -86,6 +86,11 @@ public class MockSoluteLayer extends SoluteLayer {
     private Geometry geometry;
 
     @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof MockSoluteLayer);
+    }
+
+    @Override
     public void push(SolutionViewer state) {
         super.push(state);
     }

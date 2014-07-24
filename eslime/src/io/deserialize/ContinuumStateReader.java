@@ -19,20 +19,18 @@
 
 package io.deserialize;
 
-import layers.ContinuumState;
-import no.uib.cipr.matrix.DenseVector;
-
 import java.io.*;
 import java.util.Iterator;
 
 /**
  * Created by dbborens on 12/11/13.
+ *
  */
-public class ContinuumStateReader implements Iterator<ContinuumState> {
+public class ContinuumStateReader implements Iterator<double[]> {
 
     private DataInputStream input;
 
-    private ContinuumState current;
+    private double[] current;
 
     public ContinuumStateReader(File file) {
         // Open the file.
@@ -56,7 +54,7 @@ public class ContinuumStateReader implements Iterator<ContinuumState> {
     private void advance() {
         try {
             // Typical case -- read a record and load it
-            ContinuumState observed = read();
+            double[] observed = read();
             current = observed;
         } catch (EOFException ex) {
             // End of file? Fine, stop
@@ -81,9 +79,9 @@ public class ContinuumStateReader implements Iterator<ContinuumState> {
 
 
     @Override
-    public ContinuumState next() {
+    public double[] next() {
         // Store the current record for return
-        ContinuumState ret = current;
+        double[] ret = current;
 
         // Advance to the next record
         advance();
@@ -92,7 +90,7 @@ public class ContinuumStateReader implements Iterator<ContinuumState> {
         return ret;
     }
 
-    private ContinuumState read() throws IOException {
+    private double[] read() throws IOException {
         // Check start sequence
         checkStartParitySequence();
 
@@ -101,22 +99,18 @@ public class ContinuumStateReader implements Iterator<ContinuumState> {
         int frame = input.readInt();
 
         // Read data sequence
-        DenseVector data = readData();
+        double[] data = readData();
 
         // Check end sequence
         checkEndParitySequence();
 
-        // Construct state object
-        ContinuumState ret = new ContinuumState(data, gillespie, frame);
-
         // Return state object
-        return ret;
+        return data;
     }
 
-    private DenseVector readData() throws IOException {
+    private double[] readData() throws IOException {
         double[] data = PrimitiveDeserializer.readDoubleVector(input);
-        DenseVector ret = new DenseVector(data);
-        return ret;
+        return data;
     }
 
     @Override

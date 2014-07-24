@@ -23,37 +23,24 @@ package layers;
 
 import control.identifiers.Coordinate;
 
-import java.util.HashMap;
-
 /**
  * Created by dbborens on 4/2/14.
  */
 public class MockSystemState extends SystemState {
 
-    private HashMap<Coordinate, Integer> stateMap;
     private boolean highlighted;
 
+    public LayerManager getLayerManager() {
+        return layerManager;
+    }
+
+    public void setLayerManager(LayerManager layerManager) {
+        this.layerManager = layerManager;
+    }
+
+    private LayerManager layerManager;
+
     public MockSystemState() {
-        stateMap = new HashMap<>();
-    }
-
-    @Override
-    public double getHealth(Coordinate coord) {
-        return 0;
-    }
-
-    public void setState(Coordinate coord, int state) {
-        stateMap.put(coord, state);
-    }
-
-    @Override
-    public int getState(Coordinate coord) {
-        return stateMap.get(coord);
-    }
-
-    @Override
-    public double getValue(String id, Coordinate coord) {
-        return 0;
     }
 
     @Override

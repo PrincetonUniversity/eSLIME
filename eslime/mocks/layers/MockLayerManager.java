@@ -41,11 +41,6 @@ public class MockLayerManager extends LayerManager {
         this.cellLayer = cellLayer;
     }
 
-    private CellLayer cellLayer;
-
-    private HashMap<String, SoluteLayer> soluteLayers;
-
-
     public void addSoluteLayer(String s, SoluteLayer layer) {
         soluteLayers.put(s, layer);
     }

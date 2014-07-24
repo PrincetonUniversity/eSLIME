@@ -22,6 +22,8 @@
 package io.visual.color;
 
 /**
+ * A single color for each state, dictated by a file specifying the mapping.
+ *
  * Created by dbborens on 4/1/14.
  */
 public class FileBackedColorManager {

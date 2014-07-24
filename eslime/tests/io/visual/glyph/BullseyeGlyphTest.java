@@ -98,9 +98,8 @@ public class BullseyeGlyphTest extends EslimeTestCase {
             state[i] = 0;
         }
 
-        LightweightSystemState ret = new LightweightSystemState(deindexer);
-        ret.setHealthVector(health);
-        ret.setStateVector(state);
+        LightweightSystemState ret = new LightweightSystemState(geometry);
+        ret.initCellLayer(state, health);
 
         Set<Coordinate> highlights = new HashSet<>();
         for (Coordinate c : geometry.getCanonicalSites()) {

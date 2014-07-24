@@ -63,7 +63,7 @@ public class HighlightReaderTest extends EslimeLatticeTestCase {
     }
 
     public void testPopulate() throws Exception {
-        LightweightSystemState state = new LightweightSystemState(deindexer);
+        LightweightSystemState state = new LightweightSystemState(geom);
         query.populate(state);
         assertTrue(state.isHighlighted(0, x));
         assertTrue(state.isHighlighted(0, y));

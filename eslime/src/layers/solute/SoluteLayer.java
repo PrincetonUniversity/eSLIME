@@ -20,23 +20,22 @@
 package layers.solute;
 
 import continuum.solvers.Solver;
-import control.identifiers.Coordinate;
 import geometry.Geometry;
 import layers.Layer;
 import layers.LayerManager;
 import no.uib.cipr.matrix.DenseVector;
 import structural.postprocess.SolutionViewer;
 
-import java.util.HashMap;
-
+/**
+ * This entire subsystem probably deserves a bit of a rethink.
+ *
+ */
 public abstract class SoluteLayer extends Layer {
 
     // Current model state
     protected SolutionViewer state;
 
     protected String id;
-
-    protected HashMap<Coordinate, Integer> coordToIndex;
 
     protected LayerManager manager;
 
@@ -73,10 +72,6 @@ public abstract class SoluteLayer extends Layer {
         return geometry;
     }
 
-    public HashMap<Coordinate, Integer> getCoordToIndex() {
-        return coordToIndex;
-    }
-
     public Solver getSolver() {
         return solver;
     }
@@ -93,4 +88,6 @@ public abstract class SoluteLayer extends Layer {
      */
     public abstract void integrate();
 
+    @Override
+    public abstract boolean equals(Object obj);
 }

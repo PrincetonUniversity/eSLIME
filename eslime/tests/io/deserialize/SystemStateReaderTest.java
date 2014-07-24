@@ -64,7 +64,7 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
 
         soluteIds = new String[]{"0"};
         channelIds = new int[]{0};
-        SystemStateReader parent = new SystemStateReader(soluteIds, channelIds, path);
+        SystemStateReader parent = new SystemStateReader(soluteIds, channelIds, path, geom);
         query = parent.iterator();
     }
 
@@ -91,15 +91,14 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
         LightweightSystemState state = query.next();
 
         // Check solute state
-        assertEquals(1.0, state.getValue("0", origin), epsilon);
+        assertEquals(1.0, state.getLayerManager().getSoluteLayer("0").getState().getAbsolute(origin), epsilon);
 
         // Check cell state
-        assertEquals(5, state.getState(x));
-        assertEquals(2.0, state.getHealth(x), epsilon);
+        assertEquals(5, state.getLayerManager().getCellLayer().getViewer().getState(x));
+        assertEquals(2.0, state.getLayerManager().getCellLayer().getViewer().getCell(x).getHealth(), epsilon);
 
-        // Empty cells should be 0 and 0.0
-        assertEquals(0, state.getState(origin));
-        assertEquals(0.0, state.getHealth(origin), epsilon);
+        // Origin is vacant
+        assertEquals(0, state.getLayerManager().getCellLayer().getViewer().getState(origin));
 
         // Check time and frame
         assertEquals(2, state.getFrame());

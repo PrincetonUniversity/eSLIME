@@ -67,8 +67,7 @@ public class MapVisualizationTest extends GlyphTest {
             health[i] = (i % 2) + 1;
             state[i] = ((i + 1) % 2) + 1;
         }
-        systemState.setHealthVector(health);
-        systemState.setStateVector(state);
+        systemState.initCellLayer(state, health);
     }
 
     // Regression test for issues with incorrect bounds for hexagonal

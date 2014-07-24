@@ -21,9 +21,12 @@
 
 package layers;
 
+import cells.BehaviorCell;
+import cells.Cell;
 import control.identifiers.Coordinate;
-import io.deserialize.CoordinateDeindexer;
-import no.uib.cipr.matrix.DenseVector;
+import geometry.Geometry;
+import layers.cell.CellLayer;
+import layers.solute.LightweightSoluteLayer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -34,51 +37,27 @@ import java.util.Set;
  */
 public class LightweightSystemState extends SystemState {
 
-    private double[] healthVector;
-    private Map<String, ContinuumState> continuumStates;
     private double time;
     private int frame;
     private Map<Integer, Set<Coordinate>> highlights;
-    private CoordinateDeindexer deindexer;
-    private int[] stateVector;
 
-    public LightweightSystemState(CoordinateDeindexer deindexer) {
-        continuumStates = new HashMap<>();
+    private LayerManager layerManager;
+    private Geometry geometry;
+
+    public LightweightSystemState(Geometry geometry) {
+        layerManager = new LayerManager();
         highlights = new HashMap<>();
-        this.deindexer = deindexer;
+        this.geometry = geometry;
     }
 
-    public void setContinuumStates(Map<String, ContinuumState> continuumStates) {
-        this.continuumStates = continuumStates;
-    }
 
     public void setHighlights(Integer channelId, Set<Coordinate> sites) {
         highlights.put(channelId, sites);
     }
 
-
-    public void setHealthVector(double[] healthVector) {
-        this.healthVector = healthVector;
-    }
-
     @Override
-    public double getHealth(Coordinate coord) {
-        int index = deindexer.getIndex(coord);
-        return healthVector[index];
-    }
-
-    @Override
-    public int getState(Coordinate coord) {
-        int index = deindexer.getIndex(coord);
-        return stateVector[index];
-    }
-
-    @Override
-    public double getValue(String id, Coordinate coord) {
-        int index = deindexer.getIndex(coord);
-        ContinuumState state = continuumStates.get(id);
-        DenseVector vector = state.getData();
-        return vector.get(index);
+    public LayerManager getLayerManager() {
+        return layerManager;
     }
 
     @Override
@@ -105,7 +84,51 @@ public class LightweightSystemState extends SystemState {
         return highlightedSites.contains(coord);
     }
 
-    public void setStateVector(int[] stateVector) {
-        this.stateVector = stateVector;
+    public void initCellLayer(int[] stateVector, double[] healthVector) {
+        if (stateVector.length != geometry.getCanonicalSites().length) {
+            throw new IllegalStateException("Actual number of data points not equal to expected number");
+        }
+        if (healthVector.length != geometry.getCanonicalSites().length) {
+            throw new IllegalStateException("Actual number of data points not equal to expected number");
+        }
+        // Build cell layer.
+        CellLayer cellLayer = new CellLayer(geometry);
+        layerManager.setCellLayer(cellLayer);
+
+        // Iterate over state vector.
+        for (int i = 0; i < stateVector.length; i++) {
+
+            // Convert index to coordinate.
+            Coordinate coord = geometry.getCanonicalSites()[i];
+
+            double health = healthVector[i];
+
+            // If site is vacant, don't place anything
+            int state = stateVector[i];
+            if (state == 0) {
+                continue;
+            }
+
+            // Build a dummy cell with the correct state and health.
+            Cell cell = new BehaviorCell(layerManager, state, health, 0.0);
+
+            // Place it in the cell layer.
+            cellLayer.getUpdateManager().place(cell, coord);
+        }
+
+    }
+
+    public void initSoluteLayer(String id, double[] soluteVector) {
+        if (soluteVector.length != geometry.getCanonicalSites().length) {
+            throw new IllegalStateException("Actual number of data points not equal to expected number");
+        }
+        LightweightSoluteLayer soluteLayer = new LightweightSoluteLayer(geometry, layerManager, id);
+        for (int i = 0; i < soluteVector.length; i++) {
+            Coordinate coord = geometry.getCanonicalSites()[i];
+            double value = soluteVector[i];
+            soluteLayer.set(coord, value);
+        }
+
+        layerManager.addSoluteLayer(id, soluteLayer);
     }
 }

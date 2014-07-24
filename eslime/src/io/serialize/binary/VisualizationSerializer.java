@@ -32,9 +32,7 @@ import layers.LayerManager;
 import layers.SystemState;
 import processes.StepState;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -84,7 +82,7 @@ public class VisualizationSerializer extends Serializer {
 
         // Create a SystemStateReader.
         SystemStateReader reader = new SystemStateReader(soluteIds,
-                highlightChannels, p.getInstancePath());
+                highlightChannels, p.getInstancePath(), geometry);
         // Initialize the visualization to this simulation.
         visualization.init(geometry, reader.getTimes(), reader.getFrames());
 

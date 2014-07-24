@@ -119,8 +119,7 @@ public class MultiChannelHighlightTest extends EslimeTestCase {
             health[i] = 0;
             state[i] = 0;
         }
-        systemState.setHealthVector(health);
-        systemState.setStateVector(state);
+        systemState.initCellLayer(state, health);
 
     }
 
@@ -129,7 +128,7 @@ public class MultiChannelHighlightTest extends EslimeTestCase {
         deindexer.setUnderlying(geom.getCanonicalSites());
 
 
-        LightweightSystemState ret = new LightweightSystemState(deindexer);
+        LightweightSystemState ret = new LightweightSystemState(geom);
         populateStateAndHealth(geom, ret);
 
         Set<Coordinate> highlights0 = new HashSet<>();
