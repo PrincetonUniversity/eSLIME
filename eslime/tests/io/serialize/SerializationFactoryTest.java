@@ -118,4 +118,15 @@ public class SerializationFactoryTest extends EslimeTestCase {
         assertEquals(VisualizationSerializer.class, actual);
     }
 
+    public void testIndividualHaltWriter() {
+        fail("Implement me");
+    }
+
+    public void testRunningTimeWriter() {
+        fail("Implement me");
+    }
+
+    public void testRandomSeedWriter() {
+        fail("Implement me");
+    }
 }

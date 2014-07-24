@@ -41,28 +41,41 @@ public class CellLookupManager {
     }
 
     /**
-     * Get the state of neighboring cells. Vacant cells are ignored.
+     * Get the state of neighboring cells. Vacant cells are returned as zero.
      *
      * @param coord
      * @return
      */
-    public int[] getNeighborStates(Coordinate coord) {
+    public int[] getNeighborStates(Coordinate coord, boolean ignoreVacancies) {
         content.sanityCheck(coord);
 
         // Get set of neighbors
         Coordinate[] neighbors = geom.getNeighbors(coord, Geometry.APPLY_BOUNDARIES);
 
         // Allocate return vector
-        int[] states = new int[neighbors.length];
+        ArrayList<Integer> states = new ArrayList<>(neighbors.length);
 
         // Check state of each neighbor
         for (int i = 0; i < neighbors.length; i++) {
             Coordinate query = neighbors[i];
-            states[i] = content.get(query).getState();
+            Cell neighbor = content.get(query);
+            if (ignoreVacancies && neighbor == null) {
+                continue;
+            } else if (neighbor == null) {
+                states.add(0);
+            } else {
+                states.add(content.get(query).getState());
+            }
         }
 
-        // Return
-        return states;
+        // Convert to array and return
+        int[] ret = new int[states.size()];
+        int i = 0;
+        for (Integer state : states) {
+            ret[i] = state;
+            i++;
+        }
+        return ret;
     }
 
     /**
@@ -108,8 +121,7 @@ public class CellLookupManager {
                 Coordinate query = annulus[i];
 
                 if (query.hasFlag(Flags.UNDEFINED)) {
-                    System.err.println("WARNING: Cleaning undefined coordinate " + query + ". Undefined coordinates should not be returned in getAnnulus(...).");
-                    continue;
+                    throw new IllegalStateException("Undefined coordinate returned in getAnnulus(...).");
                 }
                 // Sanity check
 

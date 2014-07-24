@@ -100,7 +100,7 @@ public class TriggerProcess extends CellProcess {
 
         for (Object cObj : unfiltered) {
             Coordinate candidate = (Coordinate) cObj;
-            int[] neighborStates = layer.getLookupManager().getNeighborStates(candidate);
+            int[] neighborStates = layer.getLookupManager().getNeighborStates(candidate, true);
 
             // Count up the number of vacant neighbors.
             int numVacantNeighbors = 0;

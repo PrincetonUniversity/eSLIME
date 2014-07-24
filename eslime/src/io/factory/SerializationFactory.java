@@ -60,15 +60,25 @@ public abstract class SerializationFactory {
         } else if (writerClass.equalsIgnoreCase("census-writer")) {
             CensusWriter freq = new CensusWriter(p);
             return freq;
+        } else if (writerClass.equalsIgnoreCase("individual-halt-writer")) {
+            IndividualHaltWriter writer = new IndividualHaltWriter(p);
+            return writer;
+        } else if (writerClass.equalsIgnoreCase("interface-census-writer")) {
+            Argument<Integer> focalStateArg = IntegerArgumentFactory.instantiate(e, "focal-state", p.getRandom());
+            InterfaceCensusWriter freq = new InterfaceCensusWriter(p, focalStateArg);
+            return freq;
         } else if (writerClass.equalsIgnoreCase("interval-writer")) {
             IntervalWriter iw = new IntervalWriter(p);
             return iw;
-
-            // General writers
+        } else if (writerClass.equalsIgnoreCase("random-seed-writer")) {
+            RandomSeedWriter rs = new RandomSeedWriter(p);
+            return rs;
+        } else if (writerClass.equalsIgnoreCase("running-time-writer")) {
+            RunningTimeWriter rt = new RunningTimeWriter(p);
+            return rt;
         } else if (writerClass.equalsIgnoreCase("coordinate-indexer")) {
             CoordinateIndexer ce = new CoordinateIndexer(p);
             return ce;
-
         } else if (writerClass.equalsIgnoreCase("continuum-state-writer")) {
             ContinuumStateWriter csw = new ContinuumStateWriter(p);
             return csw;
