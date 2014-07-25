@@ -24,6 +24,7 @@ import agent.targets.TargetRule;
 import agent.targets.TargetSelf;
 import agent.targets.TargetVacantNeighbors;
 import cells.MockCell;
+import factory.agent.action.ActionFactory;
 import layers.MockLayerManager;
 import org.dom4j.Element;
 import structural.MockGeneralParameters;

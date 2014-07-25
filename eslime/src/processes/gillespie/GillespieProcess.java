@@ -21,7 +21,7 @@ package processes.gillespie;
 
 import control.GeneralParameters;
 import control.halt.HaltCondition;
-import io.factory.ProcessFactory;
+import factory.processes.ProcessFactory;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import org.dom4j.Element;

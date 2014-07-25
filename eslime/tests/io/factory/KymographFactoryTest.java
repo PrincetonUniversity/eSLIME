@@ -43,6 +43,7 @@
 package io.factory;
 
 import control.GeneralParameters;
+import factory.io.visual.kymograph.KymographFactory;
 import geometry.Geometry;
 import geometry.boundaries.Boundary;
 import geometry.boundaries.Periodic;

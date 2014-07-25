@@ -24,6 +24,7 @@ package io.factory;
 import control.arguments.Argument;
 import control.arguments.ConstantInteger;
 import control.arguments.UniformInteger;
+import factory.control.arguments.IntegerArgumentFactory;
 import org.dom4j.Element;
 import test.EslimeTestCase;
 

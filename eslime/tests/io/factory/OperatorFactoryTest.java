@@ -22,6 +22,7 @@ package io.factory;
 import continuum.operations.*;
 import control.identifiers.Coordinate;
 import control.identifiers.Flags;
+import factory.continuum.operations.OperatorFactory;
 import geometry.CubicMockGeometry;
 import geometry.LinearMockGeometry;
 import no.uib.cipr.matrix.Matrix;

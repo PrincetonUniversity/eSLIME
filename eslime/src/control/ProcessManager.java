@@ -20,7 +20,7 @@
 package control;
 
 import control.halt.HaltCondition;
-import io.factory.ProcessFactory;
+import factory.processes.ProcessFactory;
 import layers.LayerManager;
 import processes.Process;
 import processes.StepState;

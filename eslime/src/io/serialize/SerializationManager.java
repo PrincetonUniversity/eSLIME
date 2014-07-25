@@ -21,12 +21,9 @@ package io.serialize;
 
 import control.GeneralParameters;
 import control.halt.HaltCondition;
-import io.factory.SerializationFactory;
 import layers.LayerManager;
-import org.dom4j.Element;
 import processes.StepState;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**

@@ -19,6 +19,7 @@
 
 package io.factory;
 
+import factory.processes.ProcessFactory;
 import processes.Process;
 
 /**

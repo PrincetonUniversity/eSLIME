@@ -19,7 +19,7 @@
 
 package layers;
 
-import io.factory.GeometryFactory;
+import factory.geometry.GeometryFactory;
 import layers.solute.SoluteLayer;
 import org.dom4j.Element;
 import test.EslimeTestCase;

@@ -20,9 +20,9 @@
 package layers.solute;
 
 import continuum.solvers.EquilibriumSolver;
-import io.factory.SolverFactory;
+import factory.continuum.solvers.SolverFactory;
 import geometry.Geometry;
-import io.factory.GeometryFactory;
+import factory.geometry.GeometryFactory;
 import layers.LayerManager;
 import org.dom4j.Element;
 

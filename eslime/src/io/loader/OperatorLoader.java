@@ -21,7 +21,7 @@ package io.loader;
 
 import continuum.operations.Operator;
 import geometry.Geometry;
-import io.factory.OperatorFactory;
+import factory.continuum.operations.OperatorFactory;
 import org.dom4j.Element;
 
 import java.util.ArrayList;

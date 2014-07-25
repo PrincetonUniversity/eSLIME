@@ -22,6 +22,7 @@ package io.factory;
 import agent.action.Action;
 import agent.action.CompoundAction;
 import agent.action.MockAction;
+import factory.agent.action.ActionRangeMapFactory;
 import org.dom4j.Element;
 import structural.RangeMap;
 import test.EslimeTestCase;
@@ -87,7 +88,7 @@ public class ActionChooserFactoryTest extends EslimeTestCase {
 
     private RangeMap<Action> getChooser(String rootName) {
         Element singletonCase = root.element(rootName);
-        RangeMap<Action> chooser = ActionChooserFactory.instantiate(singletonCase, null, null, null);
+        RangeMap<Action> chooser = ActionRangeMapFactory.instantiate(singletonCase, null, null, null);
         return chooser;
     }
 }

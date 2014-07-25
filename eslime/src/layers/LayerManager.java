@@ -20,7 +20,7 @@
 package layers;
 
 import geometry.Geometry;
-import io.factory.GeometryFactory;
+import factory.geometry.GeometryFactory;
 import layers.cell.CellLayer;
 import layers.solute.SoluteLayer;
 import layers.solute.SoluteLayerFactory;

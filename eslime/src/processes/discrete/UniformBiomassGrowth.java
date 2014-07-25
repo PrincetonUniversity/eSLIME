@@ -25,7 +25,7 @@ import control.arguments.Argument;
 import control.arguments.ConstantDouble;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
-import io.factory.DoubleArgumentFactory;
+import factory.control.arguments.DoubleArgumentFactory;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;

@@ -22,6 +22,9 @@
 package io.factory;
 
 import control.identifiers.Coordinate;
+import factory.io.visual.VisualizationFactory;
+import factory.io.visual.kymograph.KymographFactory;
+import factory.io.visual.map.MapVisualizationFactory;
 import geometry.Geometry;
 import geometry.MockGeometry;
 import io.visual.Visualization;

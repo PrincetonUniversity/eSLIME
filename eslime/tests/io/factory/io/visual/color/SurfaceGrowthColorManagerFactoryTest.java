@@ -23,6 +23,7 @@ package io.factory.io.visual.color;
 
 import control.arguments.Argument;
 import control.arguments.ConstantDouble;
+import factory.io.visual.color.SurfaceGrowthColorManagerFactory;
 import io.visual.color.ColorManager;
 import io.visual.color.DefaultColorManager;
 import io.visual.color.SurfaceGrowthColorManager;

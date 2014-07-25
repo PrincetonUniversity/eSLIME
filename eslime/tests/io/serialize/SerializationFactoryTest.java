@@ -19,7 +19,7 @@
 
 package io.serialize;
 
-import io.factory.SerializationFactory;
+import factory.io.serialize.SerializationFactory;
 import io.serialize.binary.ContinuumStateWriter;
 import io.serialize.binary.HighlightWriter;
 import io.serialize.binary.TimeWriter;

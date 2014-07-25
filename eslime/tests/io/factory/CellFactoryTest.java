@@ -20,6 +20,7 @@
 package io.factory;
 
 import cells.Cell;
+import factory.cell.CellFactory;
 import geometry.MockGeometry;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;

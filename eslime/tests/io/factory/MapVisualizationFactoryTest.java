@@ -21,6 +21,7 @@
 
 package io.factory;
 
+import factory.io.visual.map.MapVisualizationFactory;
 import io.visual.VisualizationProperties;
 import io.visual.color.ColorManager;
 import io.visual.color.DefaultColorManager;

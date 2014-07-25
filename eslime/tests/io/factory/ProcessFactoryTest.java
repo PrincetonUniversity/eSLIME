@@ -20,6 +20,7 @@
 package io.factory;
 
 import control.identifiers.Coordinate;
+import factory.processes.ProcessFactory;
 import geometry.MockGeometry;
 import junit.framework.TestCase;
 import layers.MockLayerManager;

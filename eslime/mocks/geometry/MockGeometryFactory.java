@@ -19,7 +19,7 @@
 
 package geometry;
 
-import io.factory.GeometryFactory;
+import factory.geometry.GeometryFactory;
 import org.dom4j.Element;
 
 /**

@@ -23,7 +23,7 @@ import agent.Behavior;
 import agent.control.BehaviorDispatcher;
 import cells.BehaviorCell;
 import control.GeneralParameters;
-import io.factory.BehaviorFactory;
+import factory.agent.BehaviorFactory;
 import layers.LayerManager;
 import org.dom4j.Element;
 

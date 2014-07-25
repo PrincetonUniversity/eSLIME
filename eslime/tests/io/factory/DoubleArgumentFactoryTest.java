@@ -24,6 +24,7 @@ package io.factory;
 import control.arguments.Argument;
 import control.arguments.ConstantDouble;
 import control.arguments.UniformDouble;
+import factory.control.arguments.DoubleArgumentFactory;
 import org.dom4j.Element;
 import test.EslimeTestCase;
 

@@ -21,7 +21,7 @@
 
 package io.visual.highlight;
 
-import io.factory.HighlightManagerFactory;
+import factory.io.visual.highlight.HighlightManagerFactory;
 import io.visual.glyph.MockGlyph;
 import org.dom4j.Element;
 import test.EslimeTestCase;

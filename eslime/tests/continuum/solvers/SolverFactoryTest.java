@@ -20,7 +20,7 @@
 package continuum.solvers;
 
 import geometry.MockGeometry;
-import io.factory.SolverFactory;
+import factory.continuum.solvers.SolverFactory;
 import org.dom4j.Element;
 import test.EslimeTestCase;
 

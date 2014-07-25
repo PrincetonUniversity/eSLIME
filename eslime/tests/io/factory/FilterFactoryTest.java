@@ -23,14 +23,13 @@ package io.factory;
 
 import control.GeneralParameters;
 import control.arguments.ConstantInteger;
-import junit.framework.TestCase;
+import factory.processes.discrete.filter.FilterFactory;
 import org.dom4j.Element;
 import processes.discrete.filter.CellStateFilter;
 import processes.discrete.filter.CompositeFilter;
 import processes.discrete.filter.Filter;
 import processes.discrete.filter.NullFilter;
 import test.EslimeLatticeTestCase;
-import test.EslimeTestCase;
 
 public class FilterFactoryTest extends EslimeLatticeTestCase {
     private Element root;

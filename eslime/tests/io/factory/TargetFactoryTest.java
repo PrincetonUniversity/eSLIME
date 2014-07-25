@@ -20,6 +20,7 @@
 package io.factory;
 
 import agent.targets.*;
+import factory.agent.targets.TargetFactory;
 import junit.framework.TestCase;
 import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;

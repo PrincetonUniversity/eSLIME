@@ -23,7 +23,7 @@ import cells.Cell;
 import control.GeneralParameters;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
-import io.factory.CellFactory;
+import factory.cell.CellFactory;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import org.dom4j.Element;

@@ -23,8 +23,8 @@ package io.visual.color;
 
 import control.arguments.Argument;
 import control.arguments.ConstantDouble;
-import io.factory.io.visual.color.ColorManagerFactory;
-import io.factory.io.visual.color.SurfaceGrowthColorManagerFactory;
+import factory.io.visual.color.ColorManagerFactory;
+import factory.io.visual.color.SurfaceGrowthColorManagerFactory;
 import org.dom4j.Element;
 import structural.MockGeneralParameters;
 import test.EslimeTestCase;

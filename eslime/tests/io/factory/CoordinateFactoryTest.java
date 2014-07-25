@@ -21,6 +21,7 @@ package io.factory;
 
 import control.identifiers.Coordinate;
 import control.identifiers.Flags;
+import factory.control.identifiers.CoordinateFactory;
 import geometry.CubicMockGeometry;
 import geometry.MockGeometry;
 import geometry.SquareMockGeometry;
