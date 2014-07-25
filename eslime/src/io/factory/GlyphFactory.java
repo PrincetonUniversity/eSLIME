@@ -21,7 +21,7 @@
 
 package io.factory;
 
-import io.factory.ColorFactory;
+import io.factory.io.visual.color.ColorFactory;
 import io.visual.glyph.*;
 import org.dom4j.Element;
 import structural.utilities.XmlUtil;

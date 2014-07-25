@@ -19,8 +19,9 @@
  * /
  */
 
-package io.factory;
+package io.factory.io.visual.color;
 
+import control.GeneralParameters;
 import io.visual.color.ColorManager;
 import io.visual.color.DefaultColorManager;
 import org.dom4j.Element;
@@ -30,7 +31,7 @@ import org.dom4j.Element;
  */
 public abstract class ColorManagerFactory {
 
-    public static ColorManager instantiate(Element element) {
+    public static ColorManager instantiate(Element element, GeneralParameters p) {
         // If no color manager is specified, use the default color manager.
 
         if (element == null) {
@@ -40,6 +41,8 @@ public abstract class ColorManagerFactory {
         String className = getClassName(element);
         if (className.equalsIgnoreCase("default")) {
             return new DefaultColorManager();
+        } else if (className.equalsIgnoreCase("surface-growth")) {
+            return SurfaceGrowthColorManagerFactory.instantiate(element, p);
         } else {
             throw new IllegalArgumentException("Unrecognized color manager class '" + className + "'");
         }

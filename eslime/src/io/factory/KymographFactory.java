@@ -42,6 +42,8 @@
 
 package io.factory;
 
+import control.GeneralParameters;
+import io.factory.io.visual.color.ColorManagerFactory;
 import io.visual.VisualizationProperties;
 import io.visual.color.ColorManager;
 import io.visual.highlight.HighlightManager;
@@ -59,12 +61,12 @@ public abstract class KymographFactory {
     // You often don't want a cell outline for a kymograph. Default to 0.
     public static final int DEFAULT_OUTLINE = 0;
 
-    public static Kymograph instantiate(Element mapElement) {
+    public static Kymograph instantiate(Element mapElement, GeneralParameters p) {
         // Make highlight manager
         HighlightManager highlightManager = makeHighlightManager(mapElement);
 
         // Make color manager
-        ColorManager colorManager = makeColorManager(mapElement);
+        ColorManager colorManager = makeColorManager(mapElement, p);
 
         // Get edge size
         double edge = getEdge(mapElement);
@@ -96,9 +98,9 @@ public abstract class KymographFactory {
         return ret;
     }
 
-    private static ColorManager makeColorManager(Element root) {
+    private static ColorManager makeColorManager(Element root, GeneralParameters p) {
         Element colorRoot = root.element("color");
-        ColorManager ret = ColorManagerFactory.instantiate(colorRoot);
+        ColorManager ret = ColorManagerFactory.instantiate(colorRoot, p);
         return ret;
     }
 

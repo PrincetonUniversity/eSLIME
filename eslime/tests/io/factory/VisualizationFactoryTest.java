@@ -32,6 +32,7 @@ import io.visual.highlight.HighlightManager;
 import io.visual.kymograph.Kymograph;
 import io.visual.map.MapVisualization;
 import org.dom4j.Element;
+import structural.MockGeneralParameters;
 import test.EslimeTestCase;
 
 /**
@@ -42,6 +43,7 @@ public class VisualizationFactoryTest extends EslimeTestCase {
     private int[] frames;
     private Element fixtureRoot;
     private Geometry geom;
+    private MockGeneralParameters p;
 
     @Override
     protected void setUp() throws Exception {
@@ -49,11 +51,12 @@ public class VisualizationFactoryTest extends EslimeTestCase {
         times = new double[] {0.0};
         frames = new int[] {0};
         geom = makeMockGeometry();
+        p = makeMockGeneralParameters();
     }
 
     public void testMapCase() {
         Element root = fixtureRoot.element("map-case");
-        Visualization actual = VisualizationFactory.instantiate(root);
+        Visualization actual = VisualizationFactory.instantiate(root, p);
         double edge = MapVisualizationFactory.DEFAULT_EDGE;
         int outline = MapVisualizationFactory.DEFAULT_OUTLINE;
         VisualizationProperties properties = makeProperties(edge, outline);
@@ -67,7 +70,7 @@ public class VisualizationFactoryTest extends EslimeTestCase {
 
     public void testKymographCase() {
         Element root = fixtureRoot.element("kymograph-case");
-        Visualization actual = VisualizationFactory.instantiate(root);
+        Visualization actual = VisualizationFactory.instantiate(root, p);
         double edge = KymographFactory.DEFAULT_EDGE;
         int outline = KymographFactory.DEFAULT_OUTLINE;
         VisualizationProperties properties = makeProperties(edge, outline);

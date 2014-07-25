@@ -21,6 +21,8 @@
 
 package io.factory;
 
+import control.GeneralParameters;
+import io.factory.io.visual.color.ColorManagerFactory;
 import io.visual.color.ColorManager;
 import io.visual.highlight.HighlightManager;
 import io.visual.VisualizationProperties;
@@ -36,12 +38,12 @@ public abstract class MapVisualizationFactory {
     public static final double DEFAULT_EDGE = 10.0;
     public static final int DEFAULT_OUTLINE = 1;
 
-    public static MapVisualization instantiate(Element mapElement) {
+    public static MapVisualization instantiate(Element mapElement, GeneralParameters p) {
         // Make highlight manager
         HighlightManager highlightManager = makeHighlightManager(mapElement);
 
         // Make color manager
-        ColorManager colorManager = makeColorManager(mapElement);
+        ColorManager colorManager = makeColorManager(mapElement, p);
 
         // Get edge size
         double edge = getEdge(mapElement);
@@ -72,9 +74,9 @@ public abstract class MapVisualizationFactory {
         return ret;
     }
 
-    private static ColorManager makeColorManager(Element root) {
+    private static ColorManager makeColorManager(Element root, GeneralParameters p) {
         Element colorRoot = root.element("color");
-        ColorManager ret = ColorManagerFactory.instantiate(colorRoot);
+        ColorManager ret = ColorManagerFactory.instantiate(colorRoot, p);
         return ret;
     }
 

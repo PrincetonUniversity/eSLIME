@@ -21,6 +21,7 @@
 
 package io.factory;
 
+import control.GeneralParameters;
 import io.visual.MockVisualization;
 import io.visual.Visualization;
 import org.dom4j.Element;
@@ -30,13 +31,13 @@ import org.dom4j.Element;
  */
 public abstract class VisualizationFactory {
 
-    public static Visualization instantiate(Element root) {
+    public static Visualization instantiate(Element root, GeneralParameters p) {
         String className = getClassName(root);
 
         if (className.equalsIgnoreCase("map")) {
-            return MapVisualizationFactory.instantiate(root);
+            return MapVisualizationFactory.instantiate(root, p);
         } else if (className.equalsIgnoreCase("kymograph")) {
-                return KymographFactory.instantiate(root);
+                return KymographFactory.instantiate(root, p);
         } else if (className.equalsIgnoreCase("mock")) {
             return new MockVisualization();
         } else {

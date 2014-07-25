@@ -122,7 +122,6 @@ public class HSLColor {
         //  Calculate the Luminance
 
         float l = (max + min) / 2;
-        System.out.println(max + " : " + min + " : " + l);
 
         //  Calculate the Saturation
 

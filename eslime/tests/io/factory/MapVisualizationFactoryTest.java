@@ -21,7 +21,6 @@
 
 package io.factory;
 
-import io.factory.MapVisualizationFactory;
 import io.visual.VisualizationProperties;
 import io.visual.color.ColorManager;
 import io.visual.color.DefaultColorManager;
@@ -29,6 +28,7 @@ import io.visual.glyph.MockGlyph;
 import io.visual.highlight.HighlightManager;
 import io.visual.map.MapVisualization;
 import org.dom4j.Element;
+import structural.MockGeneralParameters;
 import test.EslimeLatticeTestCase;
 
 /**
@@ -36,12 +36,14 @@ import test.EslimeLatticeTestCase;
  */
 public class MapVisualizationFactoryTest extends EslimeLatticeTestCase {
     private Element root;
+    private MockGeneralParameters p;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         setUpGeometry();
         root = readXmlFile("factories/MapVisualizationFactoryTest.xml");
+        p = makeMockGeneralParameters();
     }
 
     private void setUpGeometry() {
@@ -51,7 +53,7 @@ public class MapVisualizationFactoryTest extends EslimeLatticeTestCase {
 
     public void testTypicalCase() throws Exception {
         Element typicalCase = root.element("typical-case");
-        MapVisualization actual = MapVisualizationFactory.instantiate(typicalCase);
+        MapVisualization actual = MapVisualizationFactory.instantiate(typicalCase, p);
         actual.init(geom, null, null);
 
         MapVisualization expected = makeTypicalCase();
@@ -60,7 +62,7 @@ public class MapVisualizationFactoryTest extends EslimeLatticeTestCase {
 
     public void testMinimalCase() throws Exception {
         Element minimalCase = root.element("minimal-case");
-        MapVisualization actual = MapVisualizationFactory.instantiate(minimalCase);
+        MapVisualization actual = MapVisualizationFactory.instantiate(minimalCase, p);
         actual.init(geom, null, null);
 
         MapVisualization expected = makeMinimalCase();

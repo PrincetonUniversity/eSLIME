@@ -130,7 +130,7 @@ public abstract class SerializationFactory {
         }
 
         Element visElement = e.element("visualization");
-        Visualization visualization = VisualizationFactory.instantiate(visElement);
+        Visualization visualization = VisualizationFactory.instantiate(visElement, p);
 
         return new VisualizationSerializer(p, visualization, prefix);
     }

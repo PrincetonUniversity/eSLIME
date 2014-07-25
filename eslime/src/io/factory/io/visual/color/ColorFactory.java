@@ -19,7 +19,7 @@
  * /
  */
 
-package io.factory;
+package io.factory.io.visual.color;
 
 import org.dom4j.Element;
 

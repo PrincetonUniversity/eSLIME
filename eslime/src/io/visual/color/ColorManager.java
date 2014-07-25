@@ -1,7 +1,6 @@
 package io.visual.color;
 
 import control.identifiers.Coordinate;
-import geometry.Geometry;
 import layers.SystemState;
 
 import java.awt.*;
@@ -11,11 +10,6 @@ import java.awt.*;
  */
 public abstract class ColorManager {
 
-    private Geometry geometry;
-
-    public void init(Geometry geometry) {
-        this.geometry = geometry;
-    }
 
     public abstract Color getColor(Coordinate c, SystemState systemState);
 
@@ -23,9 +17,4 @@ public abstract class ColorManager {
 
     @Override
     public abstract boolean equals(Object obj);
-
-    protected Geometry getGeometry() {
-        return geometry;
-    }
-
 }

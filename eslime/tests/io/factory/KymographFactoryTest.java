@@ -42,6 +42,7 @@
 
 package io.factory;
 
+import control.GeneralParameters;
 import geometry.Geometry;
 import geometry.boundaries.Boundary;
 import geometry.boundaries.Periodic;
@@ -55,11 +56,9 @@ import io.visual.color.DefaultColorManager;
 import io.visual.glyph.MockGlyph;
 import io.visual.highlight.HighlightManager;
 import io.visual.kymograph.Kymograph;
-import layers.LayerManager;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import org.dom4j.Element;
-import test.EslimeLatticeTestCase;
 import test.EslimeTestCase;
 
 /**
@@ -67,8 +66,9 @@ import test.EslimeTestCase;
  */
 public class KymographFactoryTest extends EslimeTestCase {
     private Element root;
-
     private Geometry geom;
+    private GeneralParameters p;
+
     @Override
     protected void setUp() throws Exception {
         super.setUp();
@@ -80,12 +80,13 @@ public class KymographFactoryTest extends EslimeTestCase {
         CellLayer layer = new CellLayer(geom);
         layerManager.setCellLayer(layer);
         root = readXmlFile("factories/KymographFactoryTest.xml");
+        p = makeMockGeneralParameters();
     }
 
 
     public void testTypicalCase() throws Exception {
         Element typicalCase = root.element("typical-case");
-        Kymograph actual = KymographFactory.instantiate(typicalCase);
+        Kymograph actual = KymographFactory.instantiate(typicalCase, p);
         actual.init(geom, new double[1], new int[1]);
 
         Kymograph expected = makeTypicalCase();
@@ -94,7 +95,7 @@ public class KymographFactoryTest extends EslimeTestCase {
 
     public void testMinimalCase() throws Exception {
         Element minimalCase = root.element("minimal-case");
-        Kymograph actual = KymographFactory.instantiate(minimalCase);
+        Kymograph actual = KymographFactory.instantiate(minimalCase, p);
         actual.init(geom, new double[1], new int[1]);
 
         Kymograph expected = makeMinimalCase();

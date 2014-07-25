@@ -20,10 +20,18 @@
   -->
 
 <fixture>
-    <default-case>
-        <class>default</class>
-    </default-case>
-    <surface-growth-case>
+
+    <explicit-case>
         <class>surface-growth</class>
-    </surface-growth-case>
+        <base>
+            <class>default</class>
+        </base>
+        <saturation-scale>0.75</saturation-scale>
+        <luminance-scale>0.25</luminance-scale>
+    </explicit-case>
+
+    <implicit-case>
+        <class>surface-growth</class>
+    </implicit-case>
+
 </fixture>

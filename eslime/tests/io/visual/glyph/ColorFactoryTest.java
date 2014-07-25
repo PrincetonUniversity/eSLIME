@@ -21,7 +21,7 @@
 
 package io.visual.glyph;
 
-import io.factory.ColorFactory;
+import io.factory.io.visual.color.ColorFactory;
 import org.dom4j.Element;
 import test.EslimeTestCase;
 

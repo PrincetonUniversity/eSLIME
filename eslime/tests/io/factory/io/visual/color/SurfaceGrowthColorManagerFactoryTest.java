@@ -19,52 +19,50 @@
  * /
  */
 
-package io.visual.color;
+package io.factory.io.visual.color;
 
 import control.arguments.Argument;
 import control.arguments.ConstantDouble;
-import io.factory.io.visual.color.ColorManagerFactory;
-import io.factory.io.visual.color.SurfaceGrowthColorManagerFactory;
+import io.visual.color.ColorManager;
+import io.visual.color.DefaultColorManager;
+import io.visual.color.SurfaceGrowthColorManager;
 import org.dom4j.Element;
 import structural.MockGeneralParameters;
 import test.EslimeTestCase;
 
-/**
- * Created by dbborens on 4/2/14.
- */
-public class ColorManagerFactoryTest extends EslimeTestCase {
-    private Element fixtureRoot;
+public class SurfaceGrowthColorManagerFactoryTest extends EslimeTestCase {
+    private Element root;
     private MockGeneralParameters p;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        fixtureRoot = readXmlFile("ColorManagerFactoryTest.xml");
+
+        root = readXmlFile("factories/io/visual/color/SurfaceGrowthColorManagerFactoryTest.xml");
         p = makeMockGeneralParameters();
     }
 
-    public void testDefaultColorCase() {
-        Element element = fixtureRoot.element("default-case");
-        ColorManager actual = ColorManagerFactory.instantiate(element, p);
-        ColorManager expected = new DefaultColorManager();
-        assertEquals(expected, actual);
-    }
-
-    public void testSurfaceGrowthCase() {
-        Element element = fixtureRoot.element("surface-growth-case");
+    public void testImplicit() throws Exception {
+        Element e = root.element("implicit-case");
+        SurfaceGrowthColorManager actual = SurfaceGrowthColorManagerFactory.instantiate(e, p);
 
         ColorManager base = new DefaultColorManager();
         Argument<Double> saturationScaling = new ConstantDouble(SurfaceGrowthColorManagerFactory.DEFAULT_SATURATION_SCALING);
         Argument<Double> luminanceScaling = new ConstantDouble(SurfaceGrowthColorManagerFactory.DEFAULT_LUMINANCE_SCALING);
         SurfaceGrowthColorManager expected = new SurfaceGrowthColorManager(base, luminanceScaling, saturationScaling);
 
-        ColorManager actual = ColorManagerFactory.instantiate(element, p);
-
         assertEquals(expected, actual);
     }
-    public void testNullCase() {
-        ColorManager actual = ColorManagerFactory.instantiate(null, p);
-        ColorManager expected = new DefaultColorManager();
+
+    public void testExplicit() throws Exception {
+        Element e = root.element("explicit-case");
+        SurfaceGrowthColorManager actual = SurfaceGrowthColorManagerFactory.instantiate(e, p);
+
+        ColorManager base = new DefaultColorManager();
+        Argument<Double> saturationScaling = new ConstantDouble(0.75);
+        Argument<Double> luminanceScaling = new ConstantDouble(0.25);
+        SurfaceGrowthColorManager expected = new SurfaceGrowthColorManager(base, luminanceScaling, saturationScaling);
+
         assertEquals(expected, actual);
     }
 }
