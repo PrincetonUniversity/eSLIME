@@ -119,14 +119,14 @@ public class SerializationFactoryTest extends EslimeTestCase {
     }
 
     public void testIndividualHaltWriter() {
-        fail("Implement me");
+        doTest("individual-halt-writer", IndividualHaltWriter.class);
     }
 
     public void testRunningTimeWriter() {
-        fail("Implement me");
+        doTest("running-time-writer", RunningTimeWriter.class);
     }
 
     public void testRandomSeedWriter() {
-        fail("Implement me");
+        doTest("random-seed-writer", RandomSeedWriter.class);
     }
 }

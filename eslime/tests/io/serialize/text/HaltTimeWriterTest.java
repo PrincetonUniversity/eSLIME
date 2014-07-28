@@ -27,12 +27,15 @@ import io.serialize.Serializer;
 import processes.StepState;
 import test.EslimeLatticeTestCase;
 
-public class IndividualHaltWriterTest extends EslimeLatticeTestCase {
+public class HaltTimeWriterTest extends EslimeLatticeTestCase {
     public void testLifeCycle() {
         GeneralParameters p = makeMockGeneralParameters();
-        IndividualHaltWriter writer = new IndividualHaltWriter(p);
-        runCycle(writer, 0.0);
-        assertFilesEqual("serializations/halt.txt", "halt.txt");
+        HaltTimeWriter writer = new HaltTimeWriter(p);
+        for (double t = 0; t < 10.0; t += 1.0) {
+            runCycle(writer, t);
+        }
+        writer.close();
+        assertFilesEqual("serializations/tth.txt", "tth.txt");
     }
 
     private void runCycle(Serializer writer, double time) {
@@ -43,10 +46,10 @@ public class IndividualHaltWriterTest extends EslimeLatticeTestCase {
 
         ManualHaltEvent haltEvent = createHaltEvent(time);
         writer.dispatchHalt(haltEvent);
-        writer.close();
     }
 
     private ManualHaltEvent createHaltEvent(double time) {
         return new ManualHaltEvent(time, "TestSuccessful" + Math.round(time));
     }
+
 }

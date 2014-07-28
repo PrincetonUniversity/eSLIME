@@ -26,7 +26,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -76,9 +75,8 @@ public class CoordinateDeindexer {
     }
 
     protected void deindex() throws IOException {
-        ArrayList<Coordinate> coordList = new ArrayList<Coordinate>();
-        indexToCoord = new HashMap<Integer, Coordinate>();
-        coordToIndex = new HashMap<Coordinate, Integer>();
+        indexToCoord = new HashMap<>();
+        coordToIndex = new HashMap<>();
 
         String fn = path + '/' + FileConventions.COORDINATE_FILENAME;
         FileReader mfr = new FileReader(fn);

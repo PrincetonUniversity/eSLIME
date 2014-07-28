@@ -52,7 +52,7 @@ public class GeneralParameters {
 
     // Instantiated members
     private double epsilon;            // Minimum measurable FP delta
-    private long randomSeed;
+    protected long randomSeed;
     // State members
     private int instance;
 

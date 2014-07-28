@@ -21,11 +21,25 @@
 
 package io.serialize.text;
 
-import junit.framework.TestCase;
+import processes.StepState;
+import structural.MockGeneralParameters;
+import test.EslimeLatticeTestCase;
 
-public class RandomSeedWriterTest extends TestCase {
-    public void testNothing() {
-        fail("Implement me");
+public class RandomSeedWriterTest extends EslimeLatticeTestCase {
+    public void testLifeCycle() throws Exception {
+        makeFiles();
+        assertFilesEqual("serializations/random.txt", "random.txt");
     }
 
+    private void makeFiles() throws Exception {
+        MockGeneralParameters p = makeMockGeneralParameters();
+        p.initializeRandom(1234567890);
+        RandomSeedWriter writer = new RandomSeedWriter(p);
+        writer.init(layerManager);
+        StepState state = new StepState(0.0, 0);
+        state.record(cellLayer);
+        writer.flush(state);
+        writer.dispatchHalt(null);
+        writer.close();
+    }
 }

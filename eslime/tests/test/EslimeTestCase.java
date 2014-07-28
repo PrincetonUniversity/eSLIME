@@ -174,6 +174,15 @@ public abstract class EslimeTestCase extends TestCase {
         FileAssert.assertEquals(fixtureFile, outputFile);
     }
 
+    protected void assertFilesEqual(String fixtureFilename, String outputFilename) {
+        String fixture = fixturePath + fixtureFilename;
+        String output = outputPath + outputFilename;
+
+        File fixtureFile = new File(fixture);
+        File outputFile = new File(output);
+
+        FileAssert.assertEquals(fixtureFile, outputFile);
+    }
     protected void assertBinaryFilesEqual(String filename) {
         String fixture = fixturePath + filename;
         String output = outputPath + filename;

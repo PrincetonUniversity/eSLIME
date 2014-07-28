@@ -22,7 +22,6 @@ package io.serialize.text;
 import control.GeneralParameters;
 import control.halt.FixationEvent;
 import control.halt.HaltCondition;
-import control.halt.StepMaxReachedEvent;
 import io.serialize.Serializer;
 import processes.StepState;
 
@@ -30,8 +29,7 @@ import java.io.BufferedWriter;
 
 public class HaltTimeWriter extends Serializer {
 
-    private static final String FILENAME = "ttf.txt";
-    private boolean closed = true;
+    private static final String FILENAME = "tth.txt";
     private BufferedWriter bw;
 
     public HaltTimeWriter(GeneralParameters p) {

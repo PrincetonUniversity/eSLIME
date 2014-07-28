@@ -71,6 +71,7 @@ public class MockGeneralParameters extends GeneralParameters {
 
     public void initializeRandom(long randomSeed) {
         random = new Random(randomSeed);
+        this.randomSeed = randomSeed;
     }
 
     public void setIsFrameValue(boolean isFrameValue) {
