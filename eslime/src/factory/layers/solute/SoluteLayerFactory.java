@@ -17,13 +17,16 @@
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
 
-package layers.solute;
+package factory.layers.solute;
 
 import continuum.solvers.EquilibriumSolver;
 import factory.continuum.solvers.SolverFactory;
 import geometry.Geometry;
 import factory.geometry.GeometryFactory;
 import layers.LayerManager;
+import layers.MockSoluteLayer;
+import layers.solute.EquilibriumSoluteLayer;
+import layers.solute.SoluteLayer;
 import org.dom4j.Element;
 
 import java.util.Arrays;
@@ -48,9 +51,11 @@ public abstract class SoluteLayerFactory {
 
     public static SoluteLayer instantiate(Element layerRoot, GeometryFactory geometryFactory, LayerManager layerManager) {
         String layerClass = layerRoot.element("class").getTextTrim();
-        Geometry geometry = geometryFactory.make(layerRoot);
         if (layerClass.equalsIgnoreCase("equilibrium")) {
+            Geometry geometry = geometryFactory.make(layerRoot);
             return equilibriumLayer(layerRoot, geometry, layerManager);
+        } else if (layerClass.equalsIgnoreCase("mock")) {
+            return new MockSoluteLayer();
         } else if (layerClass.equalsIgnoreCase("integration")) {
             throw new UnsupportedOperationException("Finite time integration not yet implemented.");
         } else {

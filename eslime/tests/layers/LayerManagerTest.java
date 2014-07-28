@@ -20,6 +20,7 @@
 package layers;
 
 import factory.geometry.GeometryFactory;
+import factory.layers.LayerManagerFactory;
 import layers.solute.SoluteLayer;
 import org.dom4j.Element;
 import test.EslimeTestCase;
@@ -43,10 +44,10 @@ public class LayerManagerTest extends EslimeTestCase {
 
         // Construct layer manager instances
         Element lr1 = root.element("first-case");
-        case1 = new LayerManager(lr1, gm);
+        case1 = LayerManagerFactory.instantiate(lr1, gm);
 
         Element lr2 = root.element("second-case");
-        case2 = new LayerManager(lr2, gm);
+        case2 = LayerManagerFactory.instantiate(lr2, gm);
     }
 
     public void testHasCellLayer() throws Exception {

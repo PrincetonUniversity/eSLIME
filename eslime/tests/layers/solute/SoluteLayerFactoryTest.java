@@ -19,6 +19,7 @@
 
 package layers.solute;
 
+import factory.layers.solute.SoluteLayerFactory;
 import geometry.MockGeometry;
 import geometry.MockGeometryFactory;
 import junit.framework.TestCase;

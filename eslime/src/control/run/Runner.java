@@ -24,6 +24,7 @@ import control.Integrator;
 import control.ProcessManager;
 import control.halt.HaltCondition;
 import factory.geometry.GeometryFactory;
+import factory.layers.LayerManagerFactory;
 import factory.processes.ProcessFactory;
 import factory.io.serialize.SerializationFactory;
 import io.loader.ProcessLoader;
@@ -74,7 +75,7 @@ public class Runner implements Runnable {
 
         int n = p.getNumInstances();
         for (int i = 0; i < n; i++) {
-            lm = new LayerManager(pp.getElement("layers"), gm);
+            lm = LayerManagerFactory.instantiate(pp.getElement("layers"), gm);
             factory = new ProcessFactory(loader, lm, p);
             pm = new ProcessManager(factory, lm);
             Integrator integrator = new Integrator(p, pm, mgr);
