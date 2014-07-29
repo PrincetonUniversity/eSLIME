@@ -23,6 +23,7 @@ package processes.discrete;
 
 import control.GeneralParameters;
 import control.halt.HaltCondition;
+import geometry.set.CoordinateSet;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
@@ -32,8 +33,8 @@ import processes.gillespie.GillespieState;
  * Created by dbborens on 4/24/14.
  */
 public class Record extends CellProcess {
-    public Record(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
-        super(loader, layerManager, id, p);
+    public Record(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id, GeneralParameters p) {
+        super(loader, layerManager, activeSites, id, p);
     }
 
     @Override

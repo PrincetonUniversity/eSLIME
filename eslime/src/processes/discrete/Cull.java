@@ -23,6 +23,7 @@ import cells.Cell;
 import control.GeneralParameters;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
+import geometry.set.CoordinateSet;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import layers.cell.CellUpdateManager;
@@ -41,16 +42,15 @@ public class Cull extends CellProcess {
     private Coordinate[] targetsArr = null;
     private double threshold;
 
-    public Cull(ProcessLoader loader, LayerManager layerManager, int id,
+    public Cull(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id,
                 GeneralParameters p, double threshold) {
-        super(loader, layerManager, id, p);
+        super(loader, layerManager, activeSites, id, p);
         this.threshold = threshold;
     }
 
     public void target(GillespieState gs) throws HaltCondition {
 
-        ArrayList<Coordinate> targets = new ArrayList<Coordinate>();
-
+        ArrayList<Coordinate> targets = new ArrayList<>();
         for (Coordinate candidate : activeSites) {
             if (!layer.getViewer().isOccupied(candidate)) {
                 continue;

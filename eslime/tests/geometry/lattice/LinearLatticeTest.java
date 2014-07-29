@@ -23,7 +23,6 @@ package geometry.lattice;
 
 import control.identifiers.Coordinate;
 import control.identifiers.Flags;
-import junit.framework.TestCase;
 import test.EslimeTestCase;
 
 public class LinearLatticeTest extends EslimeTestCase {
@@ -190,5 +189,11 @@ public class LinearLatticeTest extends EslimeTestCase {
         Object cloned = lattice.clone();
         assertEquals(lattice.getClass(), cloned.getClass());
         assertFalse(lattice == cloned);
+    }
+
+    public void testGetZeroVector() {
+        Coordinate expected = new Coordinate(0, 0, 0);
+        Coordinate actual = lattice.getZeroVector();
+        assertEquals(expected, actual);
     }
 }

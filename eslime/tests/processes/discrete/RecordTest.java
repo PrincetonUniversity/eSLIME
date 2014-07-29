@@ -21,7 +21,7 @@
 
 package processes.discrete;
 
-import junit.framework.TestCase;
+import geometry.set.CompleteSet;
 import processes.MockStepState;
 import test.EslimeLatticeTestCase;
 
@@ -32,7 +32,7 @@ public class RecordTest extends EslimeLatticeTestCase {
 
     public void testLifeCycle() throws Exception {
         MockStepState stepState = new MockStepState();
-        Record query = new Record(null, layerManager, 0, null);
+        Record query = new Record(null, layerManager, new CompleteSet(geom), 0, null);
         query.target(null);
         query.fire(stepState);
         assertTrue(stepState.isRecorded());

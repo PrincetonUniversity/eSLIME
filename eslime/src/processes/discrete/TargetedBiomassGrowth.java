@@ -22,6 +22,7 @@ package processes.discrete;
 import control.GeneralParameters;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
+import geometry.set.CoordinateSet;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
@@ -48,9 +49,9 @@ public class TargetedBiomassGrowth extends CellProcess {
     // Only adjustHealth cells if they are of the target type.
     private int targetCellType;
 
-    public TargetedBiomassGrowth(ProcessLoader loader, LayerManager layerManager, int id,
+    public TargetedBiomassGrowth(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id,
                                  GeneralParameters p) {
-        super(loader, layerManager, id, p);
+        super(loader, layerManager, activeSites, id, p);
 
         delta = Double.valueOf(get("delta"));
 
@@ -60,9 +61,9 @@ public class TargetedBiomassGrowth extends CellProcess {
 
     }
 
-    public TargetedBiomassGrowth(LayerManager layerManager,
+    public TargetedBiomassGrowth(LayerManager layerManager, CoordinateSet activeSites,
                                  double delta, boolean defer, int target) {
-        super(null, layerManager, 0, null);
+        super(null, layerManager, activeSites, 0, null);
 
         this.delta = delta;
         this.defer = defer;

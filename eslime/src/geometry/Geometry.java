@@ -354,4 +354,8 @@ public class Geometry {
         Coordinate canonicalized = coordinate.canonicalize();
         return (coordinateIndex.containsKey(canonicalized));
     }
+
+    public Coordinate getZeroVector() {
+        return lattice.getZeroVector();
+    }
 }

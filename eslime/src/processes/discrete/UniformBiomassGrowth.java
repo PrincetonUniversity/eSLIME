@@ -26,6 +26,7 @@ import control.arguments.ConstantDouble;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import factory.control.arguments.DoubleArgumentFactory;
+import geometry.set.CoordinateSet;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
@@ -47,9 +48,9 @@ public class UniformBiomassGrowth extends CellProcess {
     // a cell before the new biomass accumulates.
     private boolean defer;
 
-    public UniformBiomassGrowth(ProcessLoader loader, LayerManager layerManager, int id,
+    public UniformBiomassGrowth(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id,
                                 GeneralParameters p) {
-        super(loader, layerManager, id, p);
+        super(loader, layerManager, activeSites, id, p);
 
 //        delta = Double.valueOf(get("delta"));
         delta = DoubleArgumentFactory.instantiate(e, "delta", p.getRandom());
@@ -60,9 +61,9 @@ public class UniformBiomassGrowth extends CellProcess {
         }
     }
 
-    public UniformBiomassGrowth(LayerManager layerManager,
+    public UniformBiomassGrowth(LayerManager layerManager, CoordinateSet activeSites,
                                 double delta, boolean defer) {
-        super(null, layerManager, 0, null);
+        super(null, layerManager, activeSites, 0, null);
 
         this.delta = new ConstantDouble(delta);
         this.defer = defer;

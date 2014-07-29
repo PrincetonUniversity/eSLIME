@@ -336,4 +336,9 @@ public class TriangularLatticeTest extends EslimeTestCase {
         assertEquals(lattice.getClass(), cloned.getClass());
         assertFalse(lattice == cloned);
     }
+    public void testGetZeroVector() {
+        Coordinate expected = new Coordinate(0, 0, 0);
+        Coordinate actual = lattice.getZeroVector();
+        assertEquals(expected, actual);
+    }
 }

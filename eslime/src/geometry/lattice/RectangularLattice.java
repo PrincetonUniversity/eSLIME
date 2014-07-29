@@ -139,4 +139,9 @@ public class RectangularLattice extends Lattice {
     public Lattice clone() {
         return new RectangularLattice();
     }
+
+    @Override
+    public Coordinate getZeroVector() {
+        return new Coordinate(0, 0, 0);
+    }
 }

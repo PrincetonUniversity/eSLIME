@@ -29,6 +29,7 @@ import geometry.boundaries.Arena;
 import geometry.boundaries.Boundary;
 import geometry.lattice.Lattice;
 import geometry.lattice.RectangularLattice;
+import geometry.set.CompleteSet;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
 import layers.MockLayerManager;
@@ -60,7 +61,7 @@ public class OccupiedNeighborSwapTest extends EslimeTestCase {
         layerManager.setCellLayer(cellLayer);
 
         MockGeneralParameters p = makeMockGeneralParameters();
-        query = new OccupiedNeighborSwap(null, layerManager, 0, p, new ConstantInteger(1));
+        query = new OccupiedNeighborSwap(null, layerManager, new CompleteSet(geom), 0, p, new ConstantInteger(1));
 
         /*
          * Cell layout:

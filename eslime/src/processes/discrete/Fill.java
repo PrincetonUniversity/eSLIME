@@ -24,6 +24,7 @@ import control.GeneralParameters;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import factory.cell.CellFactory;
+import geometry.set.CoordinateSet;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import org.dom4j.Element;
@@ -46,9 +47,9 @@ public class Fill extends CellProcess {
     // that it expected to fill.
     boolean skipFilled;
 
-    public Fill(ProcessLoader loader, LayerManager layerManager, int id,
+    public Fill(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id,
                 GeneralParameters p) {
-        super(loader, layerManager, id, p);
+        super(loader, layerManager, activeSites, id, p);
 
         Element e = loader.getProcess(id);
         skipFilled = XmlUtil.getBoolean(e, "skip-filled-sites");

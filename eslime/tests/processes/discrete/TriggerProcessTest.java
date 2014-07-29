@@ -22,11 +22,10 @@ package processes.discrete;
 import cells.MockCell;
 import control.identifiers.Coordinate;
 import geometry.MockGeometry;
-import io.factory.MockProcessLoader;
+import geometry.set.CompleteSet;
+import geometry.set.CoordinateSet;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
-import org.dom4j.Element;
-import org.dom4j.tree.BaseElement;
 import processes.discrete.filter.NullFilter;
 import processes.gillespie.GillespieState;
 import structural.MockGeneralParameters;
@@ -56,10 +55,10 @@ public class TriggerProcessTest extends EslimeTestCase {
         layer = new CellLayer(geom);
         layerManager = new MockLayerManager();
         layerManager.setCellLayer(layer);
-
+        CoordinateSet activeSites = new CompleteSet(geom);
 
 //        trigger = new TriggerProcess(layerManager, 0, "test", p, true, false, -1, false);
-        trigger = new TriggerProcess(layerManager, 0, "test", p, new NullFilter(), true, false, -1);
+        trigger = new TriggerProcess(layerManager, activeSites, 0, "test", p, new NullFilter(), true, false, -1);
     }
 
     /**
@@ -118,7 +117,7 @@ public class TriggerProcessTest extends EslimeTestCase {
         // cells to have at least one occupied neighbor in order to be
         // triggered.
 //        trigger = new TriggerProcess(layerManager, 0, "test", p, true, true, -1, false);
-        trigger = new TriggerProcess(layerManager, 0, "test", p, new NullFilter(), true, true, -1);
+        trigger = new TriggerProcess(layerManager, new CompleteSet(layer.getGeometry()), 0, "test", p, new NullFilter(), true, true, -1);
 
         // Set up two neighboring cells and one isolated cell.
         MockCell neighbor1 = new MockCell();

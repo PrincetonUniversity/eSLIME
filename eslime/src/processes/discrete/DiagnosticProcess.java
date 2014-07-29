@@ -21,6 +21,7 @@ package processes.discrete;
 
 import control.GeneralParameters;
 import control.halt.HaltCondition;
+import geometry.set.CoordinateSet;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import layers.cell.StateMapViewer;
@@ -33,8 +34,8 @@ import processes.gillespie.GillespieState;
  * Created by dbborens on 3/7/14.
  */
 public class DiagnosticProcess extends CellProcess {
-    public DiagnosticProcess(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
-        super(loader, layerManager, id, p);
+    public DiagnosticProcess(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id, GeneralParameters p) {
+        super(loader, layerManager, activeSites, id, p);
     }
 
     @Override

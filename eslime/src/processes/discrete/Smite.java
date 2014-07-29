@@ -22,6 +22,8 @@ package processes.discrete;
 import control.GeneralParameters;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
+import geometry.set.CompleteSet;
+import geometry.set.CoordinateSet;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
@@ -36,15 +38,15 @@ public class Smite extends CellProcess {
 
     private boolean skipDead;
 
-    public Smite(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p) {
-        super(loader, layerManager, id, p);
+    public Smite(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id, GeneralParameters p) {
+        super(loader, layerManager, activeSites, id, p);
 
         skipDead = Boolean.valueOf(get("skip-dead-sites"));
     }
 
     // Minimal constructor for mock tests
     public Smite(LayerManager layerManager, boolean skipDead) {
-        super(null, layerManager, 0, null);
+        super(null, layerManager, new CompleteSet(layerManager.getCellLayer().getGeometry()), 0, null);
         this.skipDead = skipDead;
     }
 

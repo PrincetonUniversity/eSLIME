@@ -24,6 +24,7 @@ import control.GeneralParameters;
 import control.arguments.Argument;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
+import geometry.set.CoordinateSet;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import layers.cell.CellLookupManager;
@@ -39,9 +40,9 @@ public abstract class BulkDivisionProcess extends CellProcess {
     private Argument<Integer> maxTargets;
     private ShoveHelper shoveHelper;
 
-    public BulkDivisionProcess(ProcessLoader loader, LayerManager layerManager, int id,
+    public BulkDivisionProcess(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id,
                                GeneralParameters p, Argument<Integer> maxTargets) {
-        super(loader, layerManager, id, p);
+        super(loader, layerManager, activeSites, id, p);
         random = p.getRandom();
         this.maxTargets = maxTargets;
 

@@ -23,6 +23,7 @@ import control.GeneralParameters;
 import control.arguments.Argument;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
+import geometry.set.CoordinateSet;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
@@ -35,9 +36,10 @@ public class ActiveLayerDivide extends BulkDivisionProcess {
     int depth;
     private Coordinate[] candidates = null;
 
-    public ActiveLayerDivide(ProcessLoader loader, LayerManager layerManager, int id,
+    public ActiveLayerDivide(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites,
+                             int id,
                              GeneralParameters p, Argument<Integer> maxTargets) {
-        super(loader, layerManager, id, p, maxTargets);
+        super(loader, layerManager, activeSites, id, p, maxTargets);
 
         depth = Integer.valueOf(get("depth"));
     }

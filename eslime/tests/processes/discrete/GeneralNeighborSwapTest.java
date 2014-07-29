@@ -29,6 +29,7 @@ import geometry.boundaries.Arena;
 import geometry.boundaries.Boundary;
 import geometry.lattice.Lattice;
 import geometry.lattice.RectangularLattice;
+import geometry.set.CompleteSet;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
 import layers.MockLayerManager;
@@ -47,11 +48,12 @@ public class GeneralNeighborSwapTest extends EslimeTestCase {
     private MockLayerManager layerManager;
     private MockCell a, b, c;
     private Coordinate ac, bc, cc;
+    private MockRandom random;
 
     @Override
     protected void setUp() throws Exception {
         Lattice lattice = new RectangularLattice();
-        Shape shape = new Rectangle(lattice, 2, 2);
+        Shape shape = new Rectangle(lattice, 3, 3);
         Boundary boundary = new Arena(shape, lattice);
         Geometry geom = new Geometry(lattice, shape, boundary);
         CellLayer cellLayer = new CellLayer(geom);
@@ -60,15 +62,16 @@ public class GeneralNeighborSwapTest extends EslimeTestCase {
         layerManager.setCellLayer(cellLayer);
 
         MockGeneralParameters p = makeMockGeneralParameters();
-        MockRandom random = new MockRandom();
+        random = new MockRandom();
         p.setRandom(random);
-        query = new GeneralNeighborSwap(null, layerManager, 0, p, new ConstantInteger(1));
+        query = new GeneralNeighborSwap(null, layerManager, new CompleteSet(geom), 0, p, new ConstantInteger(1));
 
         /*
          * Cell layout:
-         *     0 1
-         *  0  b .
-         *  1  a c
+         *     0 1 2
+         *  0  b . .
+         *  1  a c .
+         *  2  . . .
          */
         a = new MockCell(1);
         b = new MockCell(2);
@@ -88,6 +91,8 @@ public class GeneralNeighborSwapTest extends EslimeTestCase {
 
         CellLayer cl = layerManager.getCellLayer();
 
+        // Enforce that the desired random event happens
+        random.setNextIntValue(1);
         // a should move
         assertTrue(cl.getViewer().getCell(ac).equals(a));
         query.fire(state);

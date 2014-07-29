@@ -59,7 +59,6 @@ public class SmiteTest extends EslimeTestCase {
 
         // Construct process
         smite = new Smite(layerManager, false);
-        smite.setActiveSites(cc);
     }
 
     /**

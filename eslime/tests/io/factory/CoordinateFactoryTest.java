@@ -85,6 +85,10 @@ public class CoordinateFactoryTest extends EslimeTestCase {
         assertEquals(expected, actual);
     }
 
+//    public void testOffsetNullCase() {
+//        fail("not yet implemented");
+//    }
+
     private void doTest(Element o, int x, int y, int z, int flags) {
         Coordinate c = CoordinateFactory.instantiate(o);
         assertEquals(x, c.x());

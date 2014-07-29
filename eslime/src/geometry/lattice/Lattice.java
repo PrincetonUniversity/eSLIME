@@ -168,4 +168,6 @@ public abstract class Lattice {
 
     @Override
     public abstract Lattice clone();
+
+    public abstract Coordinate getZeroVector();
 }

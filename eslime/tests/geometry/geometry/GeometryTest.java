@@ -545,6 +545,12 @@ public class GeometryTest extends EslimeTestCase {
         assertEquals(5, geom.getDimensionality());
     }
 
+    public void testGetZeroVector() {
+        Coordinate expected = new Coordinate(0, 0, 0);
+        Coordinate actual = lattice.getZeroVector();
+        assertEquals(expected, actual);
+    }
+
     /**
      * Tests coordToIndex(...) and rebuildIndex()
      */
@@ -602,4 +608,5 @@ public class GeometryTest extends EslimeTestCase {
             return new MockBoundary(scaledShape, clonedLattice);
         }
     }
+
 }

@@ -23,6 +23,8 @@ import cells.Cell;
 import control.GeneralParameters;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
+import geometry.set.CompleteSet;
+import geometry.set.CoordinateSet;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import layers.cell.CellLayer;
@@ -41,9 +43,9 @@ public class MutateAll extends CellProcess {
     private int ancestral;
     private int mutant;
 
-    public MutateAll(ProcessLoader loader, LayerManager layerManager, int id,
+    public MutateAll(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id,
                      GeneralParameters p) {
-        super(loader, layerManager, id, p);
+        super(loader, layerManager, activeSites, id, p);
 
         ancestral = Integer.valueOf(e.element("mutation").attribute("ancestral").getText());
         mutant = Integer.valueOf(e.element("mutation").attribute("mutant").getText());
@@ -52,7 +54,7 @@ public class MutateAll extends CellProcess {
 
     public MutateAll(CellLayer layer, LayerManager layerManager,
                      int ancestral, int mutant) {
-        super(null, layerManager, 0, null);
+        super(null, layerManager, new CompleteSet(layer.getGeometry()), 0, null);
 
         this.ancestral = ancestral;
         this.mutant = mutant;

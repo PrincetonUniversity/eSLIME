@@ -223,4 +223,9 @@ public class CubicLattice extends Lattice {
     public Lattice clone() {
         return new CubicLattice();
     }
+
+    @Override
+    public Coordinate getZeroVector() {
+        return new Coordinate(0, 0, 0, 0);
+    }
 }

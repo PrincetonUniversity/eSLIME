@@ -86,6 +86,7 @@ import control.GeneralParameters;
 import control.arguments.Argument;
 import control.halt.DominationEvent;
 import control.halt.HaltCondition;
+import geometry.set.CoordinateSet;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
@@ -104,8 +105,8 @@ public class CheckForDomination extends CellProcess {
     private double targetFraction;
     private int targetState;
 
-    public CheckForDomination(ProcessLoader loader, LayerManager layerManager, int id, GeneralParameters p, Argument<Integer> targetStateArg, Argument<Double> targetFractionArg) {
-        super(loader, layerManager, id, p);
+    public CheckForDomination(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id, GeneralParameters p, Argument<Integer> targetStateArg, Argument<Double> targetFractionArg) {
+        super(loader, layerManager, activeSites, id, p);
         targetFraction = targetFractionArg.next();
 
         targetState = targetStateArg.next();

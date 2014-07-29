@@ -24,6 +24,7 @@ import control.halt.FixationEvent;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import geometry.MockGeometry;
+import geometry.set.CompleteSet;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import processes.MockStepState;
@@ -181,7 +182,7 @@ public class CheckForFixationTest extends EslimeTestCase {
         layer = new CellLayer(geometry);
         layerManager = new MockLayerManager();
         layerManager.setCellLayer(layer);
-        query = new CheckForFixation(null, layerManager, 0, null);
+        query = new CheckForFixation(null, layerManager, new CompleteSet(geometry), 0, null);
     }
 
 }

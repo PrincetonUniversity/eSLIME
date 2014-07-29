@@ -24,6 +24,7 @@ import control.arguments.Argument;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
+import geometry.set.CoordinateSet;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.MaxTargetHelper;
@@ -46,10 +47,10 @@ public class OccupiedNeighborSwap extends CellProcess {
     private Argument<Integer> maxTargets;
     private Geometry geom;
 
-    public OccupiedNeighborSwap(ProcessLoader loader, LayerManager layerManager, int id,
+    public OccupiedNeighborSwap(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id,
                                 GeneralParameters p, Argument<Integer> maxTargets) {
 
-        super(loader, layerManager, id, p);
+        super(loader, layerManager, activeSites, id, p);
         geom = layer.getGeometry();
         this.maxTargets = maxTargets;
     }

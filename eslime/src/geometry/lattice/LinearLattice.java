@@ -43,8 +43,6 @@ package geometry.lattice;
 import control.identifiers.Coordinate;
 import control.identifiers.Flags;
 
-import java.util.HashSet;
-
 public class LinearLattice extends Lattice {
 
     @Override
@@ -151,5 +149,10 @@ public class LinearLattice extends Lattice {
     @Override
     public Lattice clone() {
         return new LinearLattice();
+    }
+
+    @Override
+    public Coordinate getZeroVector() {
+        return new Coordinate(0, 0, 0);
     }
 }

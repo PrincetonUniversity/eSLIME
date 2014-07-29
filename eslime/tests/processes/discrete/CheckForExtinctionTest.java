@@ -21,12 +21,11 @@ package processes.discrete;
 
 import cells.MockCell;
 import control.arguments.ConstantDouble;
-import control.arguments.ConstantInteger;
 import control.halt.ExtinctionEvent;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import geometry.MockGeometry;
-import junit.framework.TestCase;
+import geometry.set.CompleteSet;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import processes.MockStepState;
@@ -52,7 +51,7 @@ public class CheckForExtinctionTest extends EslimeTestCase {
         layer = new CellLayer(geometry);
         layerManager = new MockLayerManager();
         layerManager.setCellLayer(layer);
-        query = new CheckForExtinction(null, layerManager, 0, new ConstantDouble(0.0), p);
+        query = new CheckForExtinction(null, layerManager, new CompleteSet(geometry), 0, new ConstantDouble(0.0), p);
     }
 
     private void doTest(boolean expected) {

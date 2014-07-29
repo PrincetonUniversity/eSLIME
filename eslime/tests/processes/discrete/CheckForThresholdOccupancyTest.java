@@ -31,6 +31,7 @@ import geometry.boundaries.Boundary;
 import geometry.boundaries.Periodic;
 import geometry.lattice.Lattice;
 import geometry.lattice.RectangularLattice;
+import geometry.set.CompleteSet;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
 import layers.MockLayerManager;
@@ -61,7 +62,7 @@ public class CheckForThresholdOccupancyTest extends EslimeTestCase {
 
         // Create a 1D lattice of length 10.
         // Create an occupancy test that checks for 30% occupancy.
-        query = new CheckForThresholdOccupancy(null, layerManager, 0, p, thresholdArg);
+        query = new CheckForThresholdOccupancy(null, layerManager, new CompleteSet(geom), 0, p, thresholdArg);
     }
 
     public void testAboveThreshold() throws Exception {

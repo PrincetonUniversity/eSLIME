@@ -27,6 +27,7 @@ import control.halt.LatticeFullEvent;
 import control.identifiers.Coordinate;
 import factory.cell.CellFactory;
 import factory.control.arguments.IntegerArgumentFactory;
+import geometry.set.CoordinateSet;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
@@ -44,10 +45,10 @@ public class Scatter extends CellProcess {
 
     private HashSet<Coordinate> candidates = null;
 
-    public Scatter(ProcessLoader loader, LayerManager layerManager, int id,
+    public Scatter(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id,
                    GeneralParameters p) {
 
-        super(loader, layerManager, id, p);
+        super(loader, layerManager, activeSites, id, p);
 
         random = p.getRandom();
 

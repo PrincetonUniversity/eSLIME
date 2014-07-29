@@ -20,6 +20,7 @@
 package processes.discrete;
 
 import cells.MockCell;
+import geometry.set.CompleteSet;
 import processes.MockStepState;
 import test.EslimeLatticeTestCase;
 
@@ -35,7 +36,7 @@ public class CullTest extends EslimeLatticeTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        query = new Cull(null, layerManager, 0, null, 0.5);
+        query = new Cull(null, layerManager, new CompleteSet(geom), 0, null, 0.5);
     }
 
     /**

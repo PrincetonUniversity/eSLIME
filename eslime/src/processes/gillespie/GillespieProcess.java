@@ -22,6 +22,7 @@ package processes.gillespie;
 import control.GeneralParameters;
 import control.halt.HaltCondition;
 import factory.processes.ProcessFactory;
+import geometry.set.CoordinateSet;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import org.dom4j.Element;
@@ -49,9 +50,9 @@ public class GillespieProcess extends CellProcess {
     private HashMap<Integer, Process> childrenById;
     private GillespieState substate;
 
-    public GillespieProcess(ProcessLoader loader, LayerManager layerManager, int id,
+    public GillespieProcess(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id,
                             GeneralParameters p) {
-        super(loader, layerManager, id, p);
+        super(loader, layerManager, activeSites, id, p);
 
         loadChildren();
     }

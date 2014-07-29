@@ -28,6 +28,7 @@ import geometry.boundaries.Boundary;
 import geometry.boundaries.PlaneRingHard;
 import geometry.lattice.Lattice;
 import geometry.lattice.TriangularLattice;
+import geometry.set.CompleteSet;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
 import junit.framework.TestCase;
@@ -61,7 +62,7 @@ public class UniformBiomassGrowthTest extends TestCase {
         layerManager.setCellLayer(layer);
 
         // Create a UniformBiomassGrowth
-        CellProcess process = new UniformBiomassGrowth(layerManager, 1.5, false);
+        CellProcess process = new UniformBiomassGrowth(layerManager, new CompleteSet(geom), 1.5, false);
 
         // Verify that they get fed when the process is invoked
         assertEquals(layer.getViewer().getCell(coord1).getHealth(), 0.7, epsilon);

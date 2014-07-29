@@ -23,6 +23,7 @@ import cells.Cell;
 import control.GeneralParameters;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
+import geometry.set.CoordinateSet;
 import layers.LayerManager;
 import processes.MaxTargetHelper;
 import processes.StepState;
@@ -31,6 +32,7 @@ import processes.gillespie.GillespieState;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 /**
  * Causes cells within the active area to perform the specified behavior.
@@ -47,6 +49,7 @@ public class TriggerProcess extends CellProcess {
     private Cell[] targets;
 
     public TriggerProcess(LayerManager layerManager,
+                          CoordinateSet activeSites,
                           int id,
                           String behaviorName,
                           GeneralParameters p,
@@ -54,7 +57,7 @@ public class TriggerProcess extends CellProcess {
                           boolean skipVacant,
                           boolean requireNeighbors,
                           int maxTargets) {
-        super(null, layerManager, id, p);
+        super(null, layerManager, activeSites, id, p);
         this.behaviorName = behaviorName;
         this.skipVacant = skipVacant;
         this.maxTargets = maxTargets;
@@ -126,9 +129,8 @@ public class TriggerProcess extends CellProcess {
      *
      * @param unfiltered
      */
-    private ArrayList<Coordinate> respectVacancyRequirements(Coordinate[] unfiltered) {
-        ArrayList<Coordinate> candidates = new ArrayList<>(unfiltered.length);
-
+    private ArrayList<Coordinate> respectVacancyRequirements(Set<Coordinate> unfiltered) {
+        ArrayList<Coordinate> candidates = new ArrayList<>(unfiltered.size());
 
         for (Coordinate c : unfiltered) {
 

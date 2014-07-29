@@ -23,6 +23,8 @@ import control.identifiers.Coordinate;
 
 public class MockLattice extends Lattice {
 
+    private Coordinate zeroVector;
+
     @Override
     protected void defineBasis() {
         // TODO Auto-generated method stub
@@ -90,5 +92,14 @@ public class MockLattice extends Lattice {
     @Override
     public Lattice clone() {
         return new MockLattice();
+    }
+
+    @Override
+    public Coordinate getZeroVector() {
+        return zeroVector;
+    }
+
+    public void setZeroVector(Coordinate zeroVector) {
+        this.zeroVector = zeroVector;
     }
 }

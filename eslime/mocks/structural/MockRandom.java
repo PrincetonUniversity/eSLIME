@@ -27,12 +27,26 @@ import java.util.Random;
  * Created by dbborens on 5/15/14.
  */
 public class MockRandom extends Random {
+    private boolean booleanValue;
+
+    private int nextIntValue = -1;
     @Override
+    /**
+     * Returns either the highest possible value, or,
+     * if overriden, the specified value.
+     */
     public int nextInt(int n) {
-        return n - 1;
+        if (nextIntValue == -1) {
+            return n - 1;
+        } else {
+            return nextIntValue;
+        }
     }
 
-    private boolean booleanValue;
+    public void setNextIntValue(int nextIntValue) {
+        this.nextIntValue = nextIntValue;
+    }
+
     public void setBooleanValue(boolean booleanValue) {
         this.booleanValue = booleanValue;
     }

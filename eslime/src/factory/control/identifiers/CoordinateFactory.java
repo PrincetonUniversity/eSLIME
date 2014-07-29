@@ -93,7 +93,8 @@ public abstract class CoordinateFactory {
     }
 
     public static Coordinate offset(Object o, Geometry geom) {
-        Coordinate displacement = instantiate(o);
+        Coordinate displacement;
+        displacement = instantiate(o);
         Coordinate origin = geom.getCenter();
         return geom.rel2abs(origin, displacement, Geometry.APPLY_BOUNDARIES);
     }

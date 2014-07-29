@@ -20,9 +20,6 @@
 package control;
 
 import io.loader.ProjectLoader;
-import org.dom4j.Document;
-import org.dom4j.DocumentException;
-import org.dom4j.DocumentHelper;
 import org.dom4j.Element;
 import structural.utilities.XmlUtil;
 
@@ -39,24 +36,24 @@ public class GeneralParameters {
 
 
     protected Random random;            // Random number generator
+
     // Dimensions
     private int maxStep;
     private int instances;
+
     // Path variables
     private String basePath;        // Path as specified
     private String path;            // May contain a time stamp
 
     // Output flags
     private String instancePath;    // Includes instance number�(if applies)
-    private boolean stateMap;                // Visualize lineages as they grow
 
     // Instantiated members
     private double epsilon;            // Minimum measurable FP delta
     protected long randomSeed;
+
     // State members
     private int instance;
-
-    private String projectXML;
 
     private String version;
 
@@ -119,14 +116,8 @@ public class GeneralParameters {
         // Load base path and (if applicable) time stamped path
         loadPaths(g);
 
-        // Load output flags
-        loadFlags(g);
-
         // Initialize random-number generator
         loadRandom(g);
-
-        System.out.println("Load: project XML is null?" + (loader.toString() == null));
-        projectXML = loader.toString();
     }
 
     private void loadRandom(Element g) {
@@ -142,10 +133,6 @@ public class GeneralParameters {
             random = new Random(randomSeed);
 
         }
-    }
-
-    private void loadFlags(Element g) {
-        stateMap = XmlUtil.getBoolean(g, "write-state-map");
     }
 
     private void loadPaths(Element g) {
@@ -262,10 +249,6 @@ public class GeneralParameters {
         return instancePath;
     }
 
-    public boolean isStateMap() {
-        return stateMap;
-    }
-
     public double getEpsilon() {
         return epsilon;
     }
@@ -289,7 +272,7 @@ public class GeneralParameters {
      * @return
      */
     public String getProjectXML() {
-        return projectXML;
+        throw new UnsupportedOperationException("Re-implement. (Will require extensive effort!)");
     }
 
     /**
@@ -301,27 +284,6 @@ public class GeneralParameters {
      * @return
      */
     public String getInstanceXML() {
-        // Load original XML
-        try {
-            Document replica = DocumentHelper.parseText(projectXML);
-            Element rr = replica.getRootElement();
-            Element re = rr.element("general");
-            // Change path to instance path
-            re.element("path").setText(instancePath);
-
-            // Disable date stamp
-            re.element("date-stamp").setText("false");
-
-            // Change random number key to instance key
-            String seed = Long.valueOf(randomSeed).toString();
-            re.element("random-seed").setText(seed);
-
-            // Change replicates to 1
-            re.element("instances").setText("1");
-
-            return replica.asXML();
-        } catch (DocumentException e) {
-            throw new RuntimeException(e);
-        }
+        throw new UnsupportedOperationException("Re-implement. (Will require extensive effort!)");
     }
 }

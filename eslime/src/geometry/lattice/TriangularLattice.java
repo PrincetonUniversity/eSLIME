@@ -199,7 +199,7 @@ public class TriangularLattice extends Lattice {
     @Override
     public Coordinate rel2abs(Coordinate coord, Coordinate displacement) {
         if (displacement.hasFlag(Flags.PLANAR)) {
-            throw new IllegalArgumentException("Expected planar coordinate.");
+            throw new IllegalArgumentException("Expected three-component coordinate.");
         }
 
         int x = coord.x();
@@ -223,5 +223,10 @@ public class TriangularLattice extends Lattice {
     @Override
     public Lattice clone() {
         return new TriangularLattice();
+    }
+
+    @Override
+    public Coordinate getZeroVector() {
+        return new Coordinate(0, 0, 0);
     }
 }

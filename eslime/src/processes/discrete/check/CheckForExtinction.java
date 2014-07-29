@@ -23,6 +23,7 @@ import control.GeneralParameters;
 import control.arguments.Argument;
 import control.halt.ExtinctionEvent;
 import control.halt.HaltCondition;
+import geometry.set.CoordinateSet;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
 import processes.StepState;
@@ -37,8 +38,8 @@ import processes.gillespie.GillespieState;
 public class CheckForExtinction extends CellProcess {
 
     private double threshold;
-    public CheckForExtinction(ProcessLoader loader, LayerManager layerManager, int id, Argument<Double> thresholdArg, GeneralParameters p) {
-        super(loader, layerManager, id, p);
+    public CheckForExtinction(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id, Argument<Double> thresholdArg, GeneralParameters p) {
+        super(loader, layerManager, activeSites, id, p);
         threshold = thresholdArg.next();
     }
 
