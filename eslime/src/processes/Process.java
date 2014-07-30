@@ -16,7 +16,6 @@
  * For the full license, please visit:
  * http://creativecommons.org/licenses/by/4.0/legalcode
  */
-
 package processes;
 
 import control.GeneralParameters;
