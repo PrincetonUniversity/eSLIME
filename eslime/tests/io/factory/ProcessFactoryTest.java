@@ -21,8 +21,7 @@ import processes.MockProcess;
 import processes.Process;
 import processes.continuum.FieldUpdateProcess;
 import processes.discrete.*;
-import processes.discrete.check.CheckForExtinction;
-import processes.discrete.check.CheckForFixation;
+import processes.discrete.check.*;
 import processes.gillespie.GillespieProcess;
 import processes.temporal.ExponentialInverse;
 import processes.temporal.Tick;
@@ -105,18 +104,23 @@ public class ProcessFactoryTest extends TestCase {
     }
 
     public void testCheckForCompleteFixation() {
-        doTest("check-for-fixation", CheckForFixation.class);
-    }
-
-    public void testCheckForPopulationThreshold() {
-        doTest("check-for-fixation", CheckForFixation.class);
+        doTest("check-for-complete-fixation", CheckForCompleteFixation.class);
     }
 
     public void testCheckForThresholdOccupancy() {
-        doTest("check-for-fixation", CheckForFixation.class);
+        doTest("check-threshold-occupancy", CheckForThresholdOccupancy.class);
+    }
+    public void testCheckForDomination() {
+        Element[] children = new Element[]{
+                new BaseElement("threshold"),
+                new BaseElement("target")
+        };
+        children[0].setText("1.0");
+        children[1].setText("1");
+        doTest("check-for-domination", CheckForDomination.class, children);
     }
 
-    public void testForRecord() {
+    public void testRecord() {
         doTest("record", Record.class);
     }
 
@@ -238,6 +242,13 @@ public class ProcessFactoryTest extends TestCase {
         assertEquals(MockProcess.class, actual[1].getClass());
     }
 
+    public void testCull() {
+        doTest("cull", Cull.class);
+    }
+
+    public void testDiagnostic() {
+        doTest("diagnostic", DiagnosticProcess.class);
+    }
     private Element nullProcessElement(String idStr) {
         Element root = new BaseElement("mock-process");
         Element identifier = new BaseElement("identifier");
@@ -245,4 +256,5 @@ public class ProcessFactoryTest extends TestCase {
         root.add(identifier);
         return root;
     }
+
 }

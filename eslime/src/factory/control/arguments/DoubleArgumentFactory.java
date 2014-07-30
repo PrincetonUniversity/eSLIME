@@ -34,7 +34,7 @@ public abstract class DoubleArgumentFactory {
         Element valueElement = e.element(name);
         if (valueElement == null) {
             throw new IllegalArgumentException("No value specified for " +
-                    "expected field " + name + " in element " +
+                    "expected field '" + name + "' in element " +
                     e.getQualifiedName());
         }
 
