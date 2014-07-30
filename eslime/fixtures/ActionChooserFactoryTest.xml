@@ -1,3 +1,8 @@
+<!--
+  ~ * Copyright (c) 2014 David Bruce Borenstein and the Trustees of
+  ~ * Princeton University. All rights reserved.
+  -->
+
 <fixture>
     <singleton-case>
         <option weight="0.5">

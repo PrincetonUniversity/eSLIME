@@ -1,3 +1,8 @@
+/*
+ *  Copyright (c) 2014 David Bruce Borenstein and the Trustees of
+ *  Princeton University. All rights reserved.
+ */
+
 package io.visual.color;
 
 import control.identifiers.Coordinate;
