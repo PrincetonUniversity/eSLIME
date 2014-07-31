@@ -8,8 +8,8 @@ package control.halt;
 
 public class ThresholdOccupancyReachedEvent extends HaltCondition {
 
-    public ThresholdOccupancyReachedEvent(double gillespie) {
-        super(gillespie);
+    public ThresholdOccupancyReachedEvent() {
+        super();
     }
 
 }

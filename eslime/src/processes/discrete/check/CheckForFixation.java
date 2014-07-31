@@ -41,7 +41,7 @@ public class CheckForFixation extends CellProcess {
 
         for (Integer s : smv.getStates()) {
             if (smv.getCount(s) == layer.getViewer().getOccupiedSites().size()) {
-                throw new FixationEvent(state.getTime(), s);
+                throw new FixationEvent(s);
             }
         }
     }

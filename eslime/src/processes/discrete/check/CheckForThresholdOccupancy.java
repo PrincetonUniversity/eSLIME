@@ -46,7 +46,7 @@ public class CheckForThresholdOccupancy extends CellProcess {
         int numOccupied = layer.getViewer().getOccupiedSites().size();
 
         if (numOccupied >= thresholdCount) {
-            throw new ThresholdOccupancyReachedEvent(state.getTime());
+            throw new ThresholdOccupancyReachedEvent();
         }
     }
 }

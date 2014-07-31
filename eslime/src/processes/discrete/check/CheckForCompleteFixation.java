@@ -40,7 +40,7 @@ public class CheckForCompleteFixation extends CellProcess {
 
         for (Integer s : smv.getStates()) {
             if (smv.getCount(s) == layer.getGeometry().getCanonicalSites().length) {
-                throw new FixationEvent(state.getTime(), s);
+                throw new FixationEvent(s);
             }
         }
     }

@@ -10,7 +10,4 @@ package control.halt;
  */
 public class ExtinctionEvent extends HaltCondition {
 
-    public ExtinctionEvent(double time) {
-        super(time);
-    }
 }

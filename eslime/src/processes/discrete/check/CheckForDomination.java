@@ -76,7 +76,7 @@ public class CheckForDomination extends CellProcess {
         double fraction = numTargetCells / numCells;
 
         if (fraction >= targetFraction) {
-            throw new DominationEvent(stepState.getTime(), target);
+            throw new DominationEvent(target);
         }
 
     }

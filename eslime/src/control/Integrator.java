@@ -52,6 +52,6 @@ public class Integrator {
         // If we got here, it's because we got through the outermost
         // loop, which proceeds for a specified number of iterations
         // before terminating. (This prevents infinite loops.)
-        return new StepMaxReachedEvent(time);
+        return new StepMaxReachedEvent();
     }
 }

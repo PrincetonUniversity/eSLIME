@@ -72,7 +72,7 @@ public class Scatter extends CellProcess {
             for (int j = 0; j < m; j++) {
 
                 if (candidates.isEmpty()) {
-                    throw new LatticeFullEvent(state.getTime());
+                    throw new LatticeFullEvent();
                 }
 
                 // Choose target randomly

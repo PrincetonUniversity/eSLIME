@@ -43,7 +43,7 @@ public class CheckForExtinction extends CellProcess {
         boolean thresholdIsZero = p.epsilonEquals(threshold, 0.0);
         boolean noOccupiedSites = layer.getViewer().getOccupiedSites().size() == 0;
         if (thresholdIsZero && noOccupiedSites) {
-            throw new ExtinctionEvent(state.getTime());
+            throw new ExtinctionEvent();
         }
 
         double totalSites = layer.getGeometry().getCanonicalSites().length * 1.0;
@@ -52,7 +52,7 @@ public class CheckForExtinction extends CellProcess {
         double occupancy = sitesOccupied / totalSites;
 
         if (occupancy < threshold) {
-            throw new ExtinctionEvent(state.getTime());
+            throw new ExtinctionEvent();
         }
     }
 }

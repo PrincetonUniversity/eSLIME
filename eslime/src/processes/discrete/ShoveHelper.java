@@ -79,7 +79,7 @@ public class ShoveHelper {
         // Get nearest vacancies to the cell
         Coordinate[] targets = layerManager.getCellLayer().getLookupManager().getNearestVacancies(origin, -1);
         if (targets.length == 0) {
-            throw new LatticeFullEvent(state.getTime());
+            throw new LatticeFullEvent();
         } else {
             int i = random.nextInt(targets.length);
             target = targets[i];

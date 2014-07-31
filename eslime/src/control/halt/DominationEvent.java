@@ -12,8 +12,8 @@ public class DominationEvent extends HaltCondition {
 
     private Integer cellState;
 
-    public DominationEvent(double gillespie, Integer cellState) {
-        super(gillespie);
+    public DominationEvent(Integer cellState) {
+        super();
         this.cellState = cellState;
     }
 
