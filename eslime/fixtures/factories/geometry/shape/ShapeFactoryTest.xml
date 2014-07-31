@@ -1,0 +1,29 @@
+<!--
+  ~ * Copyright (c) 2014 David Bruce Borenstein and the Trustees of
+  ~ * Princeton University. All rights reserved.
+  -->
+
+<fixture>
+    <line-case>
+        <class>line</class>
+        <length>1</length>
+    </line-case>
+
+    <rectangle-case>
+        <class>rectangle</class>
+        <height>1</height>
+        <width>2</width>
+    </rectangle-case>
+
+    <hexagon-case>
+        <class>hexagon</class>
+        <radius>1</radius>
+    </hexagon-case>
+
+    <cuboid-case>
+        <class>cuboid</class>
+        <height>1</height>
+        <width>2</width>
+        <depth>3</depth>
+    </cuboid-case>
+</fixture>

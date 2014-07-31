@@ -1,0 +1,22 @@
+<!--
+  ~ * Copyright (c) 2014 David Bruce Borenstein and the Trustees of
+  ~ * Princeton University. All rights reserved.
+  -->
+
+<fixture>
+    <linear-case>
+        <class>linear</class>
+    </linear-case>
+
+    <rectangular-case>
+        <class>rectangular</class>
+    </rectangular-case>
+
+    <triangular-case>
+        <class>triangular</class>
+    </triangular-case>
+
+    <cubic-case>
+        <class>cubic</class>
+    </cubic-case>
+</fixture>

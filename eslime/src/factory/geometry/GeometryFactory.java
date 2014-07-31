@@ -5,6 +5,9 @@
 
 package factory.geometry;
 
+import factory.geometry.boundaries.BoundaryFactory;
+import factory.geometry.lattice.LatticeFactory;
+import factory.geometry.shape.ShapeFactory;
 import geometry.Geometry;
 import geometry.boundaries.*;
 import geometry.lattice.*;
@@ -44,64 +47,17 @@ public class GeometryFactory {
                                   Shape shape) {
 
         Element boundaryElem = root.element("boundary");
-        String className = boundaryElem.element("class").getTextTrim();
-
-        if (className.equalsIgnoreCase("Arena")) {
-            return new Arena(shape, lattice);
-        } else if (className.equalsIgnoreCase("PlaneRingHard")) {
-            return new PlaneRingHard(shape, lattice);
-        } else if (className.equalsIgnoreCase("PlaneRingReflecting")) {
-            return new PlaneRingReflecting(shape, lattice);
-        } else if (className.equalsIgnoreCase("Absorbing")) {
-            return new Absorbing(shape, lattice);
-        } else if (className.equalsIgnoreCase("periodic")) {
-            return new Periodic(shape, lattice);
-        } else if (className.equalsIgnoreCase("halt")) {
-            return new HaltBoundary(shape, lattice);
-        } else {
-            String msg = "Unrecognized boundary class '" +
-                    className + "'.";
-            throw new IllegalArgumentException(msg);
-        }
+        return BoundaryFactory.instantiate(boundaryElem, lattice, shape);
     }
 
     private Lattice makeLattice(Element root) {
-        Element latticeElem = root.element("lattice");
-        String className = latticeElem.element("class").getTextTrim();
-
-        if (className.equalsIgnoreCase("Linear")) {
-            return new LinearLattice();
-        } else if (className.equalsIgnoreCase("Rectangular")) {
-            return new RectangularLattice();
-        } else if (className.equalsIgnoreCase("Triangular")) {
-            return new TriangularLattice();
-        } else if (className.equalsIgnoreCase("Cubic")) {
-            return new CubicLattice();
-        } else {
-            String msg = "Unrecognized lattice class '" +
-                    className + "'.";
-            throw new IllegalArgumentException(msg);
-        }
+        Element latticeElement = root.element("lattice");
+        return LatticeFactory.instantiate(latticeElement);
     }
 
     private Shape makeShape(Element root, Lattice lattice) {
         Element shapeElem = root.element("shape");
-        String className = shapeElem.element("class").getTextTrim();
-
-        if (className.equalsIgnoreCase("Line")) {
-            return new Line(lattice, shapeElem);
-        } if (className.equalsIgnoreCase("Rectangle")) {
-            return new Rectangle(lattice, shapeElem);
-        } else if (className.equalsIgnoreCase("Hexagon")) {
-            return new Hexagon(lattice, shapeElem);
-        } else if (className.equalsIgnoreCase("Cuboid")) {
-            return new Cuboid(lattice, shapeElem);
-        } else {
-            String msg = "Unrecognized shape class '" +
-                    className + "'.";
-            throw new IllegalArgumentException(msg);
-        }
-
+        return ShapeFactory.instantiate(shapeElem, lattice);
     }
 
 }
