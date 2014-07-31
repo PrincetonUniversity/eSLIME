@@ -47,7 +47,7 @@ public abstract class Cell {
      *
      * @return
      */
-    public abstract Cell divide();
+    public abstract Cell divide() throws HaltCondition;
 
     /**
      * Creates an exact replica of the cell, differing only by the
@@ -57,7 +57,7 @@ public abstract class Cell {
      * @param state
      * @return
      */
-    public abstract Cell clone(int state);
+    public abstract Cell clone(int state) throws HaltCondition;
 
     /**
      * Returns the current production of the specified solute.
@@ -68,8 +68,7 @@ public abstract class Cell {
      */
     public abstract double getProduction(String solute);
 
-    @Override
-    public Cell clone() {
+    public Cell replicate() throws HaltCondition {
         return clone(state);
     }
 
@@ -77,7 +76,7 @@ public abstract class Cell {
      * Informs the cell that it has been given a direct benefit.
      * The effect of this benefit depends on the cell class.
      */
-    public abstract void adjustHealth(double delta);
+    public abstract void adjustHealth(double delta) throws HaltCondition;
 
     protected void setState(int state) {
         if (state == 0) {
@@ -87,11 +86,11 @@ public abstract class Cell {
         this.state = state;
     }
 
-    protected void setHealth(double health) {
+    protected void setHealth(double health) throws HaltCondition {
         this.health = health;
     }
 
-    protected void setDivisible(boolean divisible) {
+    protected void setDivisible(boolean divisible) throws HaltCondition {
         this.divisible = divisible;
     }
 

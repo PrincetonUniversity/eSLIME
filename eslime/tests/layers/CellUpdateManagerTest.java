@@ -35,7 +35,7 @@ public class CellUpdateManagerTest extends EslimeTestCase {
         query = new CellUpdateManager(content);
     }
 
-    public void testConsiderApply() {
+    public void testConsiderApply() throws Exception {
         MockCell cell = new MockCell();
         query.place(cell, o);
         assertEquals(1, query.consider(o));
@@ -45,7 +45,7 @@ public class CellUpdateManagerTest extends EslimeTestCase {
 
     }
 
-    public void testDivideTo() {
+    public void testDivideTo() throws Exception {
         MockCell cell = new MockCell(1);
         query.place(cell, o);
         MockCell child = new MockCell(2);
@@ -63,7 +63,7 @@ public class CellUpdateManagerTest extends EslimeTestCase {
         assertEquals(t, content.locate(child));
     }
 
-    public void testDivide() {
+    public void testDivide() throws Exception {
         MockCell cell = new MockCell(1);
         MockCell child = new MockCell(2);
         cell.setChild(child);
@@ -75,7 +75,7 @@ public class CellUpdateManagerTest extends EslimeTestCase {
     }
 
 
-    public void testBanish() {
+    public void testBanish() throws Exception {
         Cell cell = new MockCell();
         content.put(o, cell);
 
@@ -84,7 +84,7 @@ public class CellUpdateManagerTest extends EslimeTestCase {
         assertFalse(content.has(o));
     }
 
-    public void testMove() {
+    public void testMove() throws Exception {
         Cell cell = new MockCell(1);
         query.place(cell, o);
         assertNull(indices.getLastPrevious());
@@ -100,7 +100,7 @@ public class CellUpdateManagerTest extends EslimeTestCase {
         assertTrue(content.has(t));
     }
 
-    public void testSwap() {
+    public void testSwap() throws Exception {
         Cell cell1 = new MockCell(1);
         Cell cell2 = new MockCell(2);
         query.place(cell1, o);
@@ -122,7 +122,7 @@ public class CellUpdateManagerTest extends EslimeTestCase {
 
     }
 
-    public void testPlace() {
+    public void testPlace() throws Exception {
         Cell cell = new MockCell(1);
 
         assertFalse(content.has(o));

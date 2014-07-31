@@ -67,7 +67,7 @@ public class ExpandTest extends EslimeTestCase {
 
         Coordinate target = new Coordinate(3, 0, 0);
         parentTargetRule.setTargets(new Coordinate[] {target});
-        parent.trigger("clone-self", null);
+        parent.trigger("replicate-self", null);
 
         checkPosition(3, 4);
         checkPosition(4, 4);
@@ -94,7 +94,7 @@ public class ExpandTest extends EslimeTestCase {
 
         Coordinate target = new Coordinate(3, 0, 0);
         parentTargetRule.setTargets(new Coordinate[] {target});
-        parent.trigger("clone-self", null);
+        parent.trigger("replicate-self", null);
 
         checkPosition(3, 4);
         checkPosition(4, 4);
@@ -118,7 +118,7 @@ public class ExpandTest extends EslimeTestCase {
 
         Coordinate target = new Coordinate(3, 0, 0);
         parentTargetRule.setTargets(new Coordinate[] {target});
-        parent.trigger("clone-self", null);
+        parent.trigger("replicate-self", null);
 
         checkPosition(2, 2);
         checkPosition(3, 3);
@@ -128,7 +128,7 @@ public class ExpandTest extends EslimeTestCase {
     }
 
 
-    private MockTargetRule placeNumberedCell(int x) {
+    private MockTargetRule placeNumberedCell(int x) throws Exception {
         BehaviorCell cell = new BehaviorCell(layerManager, x, x, x);
         Coordinate coord = new Coordinate(x, 0, 0);
         layer.getUpdateManager().place(cell, coord);
@@ -143,7 +143,7 @@ public class ExpandTest extends EslimeTestCase {
         Expand expand = new Expand(cell, layerManager, null, null, random);
 
         Behavior behavior = new Behavior(cell, layerManager, new Action[] {expand});
-        bd.map("clone-self", behavior);
+        bd.map("replicate-self", behavior);
 
         return targetRule;
     }

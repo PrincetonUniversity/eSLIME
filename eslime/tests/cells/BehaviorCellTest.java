@@ -50,7 +50,7 @@ public class BehaviorCellTest extends EslimeLatticeTestCase {
     }
 
     public void testCloneNoArgument() throws Exception {
-        Cell clone = query.clone();
+        Cell clone = query.replicate();
         assertEquals(clone, query);
 
         // Since no division took place, health should be original for each
@@ -80,7 +80,7 @@ public class BehaviorCellTest extends EslimeLatticeTestCase {
         assertFalse(cellLayer.getViewer().isOccupied(origin));
     }
 
-    public void testEquals() {
+    public void testEquals() throws Exception {
         // Difference based on dispatcher (in)equality.
         BehaviorCell other = new BehaviorCell(layerManager, 1, 1.0, 0.5);
         MockBehaviorDispatcher d2 = new MockBehaviorDispatcher();
@@ -112,7 +112,7 @@ public class BehaviorCellTest extends EslimeLatticeTestCase {
      * to setHealth() puts it above or below the threshold,
      * that should be noted.
      */
-    public void testDivisibilityThresholding() {
+    public void testDivisibilityThresholding() throws Exception {
         double threshold = query.getThreshold();
 
         // Start off below threshold.

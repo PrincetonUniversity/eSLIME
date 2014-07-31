@@ -5,11 +5,16 @@
 
 package control;
 
+import control.arguments.ConstantDouble;
 import control.halt.HaltCondition;
+import control.halt.ManualHaltEvent;
 import control.halt.StepMaxReachedEvent;
 import io.serialize.MockSerializationManager;
-import junit.framework.TestCase;
-import processes.StepState;
+import io.serialize.SerializationManager;
+import layers.MockLayerManager;
+import processes.Process;
+import processes.discrete.ManualHalt;
+import processes.temporal.Tick;
 import structural.MockGeneralParameters;
 import test.EslimeTestCase;
 
@@ -38,7 +43,8 @@ public class IntegratorTest extends EslimeTestCase {
     public void testGo() throws Exception {
         // Set T to 5 loops.
         p.setT(5);
-
+        Process[] processes = new Process[0];
+        mgr.setTriggeredProcesses(processes);
         // Each of the following should have been called 5 times:
         HaltCondition halt = integrator.go();
 
@@ -46,13 +52,44 @@ public class IntegratorTest extends EslimeTestCase {
         assertEquals(5, mgr.getTimesIterated());
     }
 
-//    public void testStateApplied() throws Exception {
-//        p.setT(1);
-//        mgr.setStepStateDt(1.0);
-//        // Each of the following should have been called 5 times:
-//        integrator.go();
-//        StepState stepState = integrator.getStepState();
-//        assertEquals(1.0, stepState.getDt());
-//        assertEquals(1.0, stepState.getTime());
-//    }
+    public void testTimeAppliedAtHaltNoAdvance() throws Exception {
+        p.setT(10000);
+        MockLayerManager lm = new MockLayerManager();
+        Process[] processes = new Process[] {
+                new ManualHalt(null, lm, null, 0, null, null)
+        };
+        mgr.setTriggeredProcesses(processes);
+        ExposedIntegrator query = new ExposedIntegrator(p, mgr, sm);
+        query.setTime(3.0);
+
+        HaltCondition halt = query.go();
+        assertTrue(halt instanceof ManualHaltEvent);
+        assertEquals(3.0, halt.getGillespie(), epsilon);
+    }
+
+    public void testTimeAppliedAtHaltAfterClockAdvance() throws Exception {
+        p.setT(10000);
+        MockLayerManager lm = new MockLayerManager();
+        Process[] processes = new Process[] {
+                new Tick(null, null, 0, null, new ConstantDouble(1.0)),
+                new ManualHalt(null, lm, null, 0, null, null)
+        };
+        mgr.setTriggeredProcesses(processes);
+        ExposedIntegrator query = new ExposedIntegrator(p, mgr, sm);
+        query.setTime(3.0);
+
+        HaltCondition halt = query.go();
+        assertTrue(halt instanceof ManualHaltEvent);
+        assertEquals(4.0, halt.getGillespie(), epsilon);
+    }
+    private class ExposedIntegrator extends Integrator {
+
+        public ExposedIntegrator(GeneralParameters p, ProcessManager processManager, SerializationManager serializationManager) {
+            super(p, processManager, serializationManager);
+        }
+
+        public void setTime(double time) {
+            this.time = time;
+        }
+    }
 }

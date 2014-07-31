@@ -125,7 +125,7 @@ public class TriggerProcessTest extends EslimeTestCase {
 //    public void testRecordAfterTargeting() throws Exception {
 //        fail("Not yet implemented");
 //    }
-    private void setUpNeighborhoodTestCase(MockCell neighbor1, MockCell neighbor2, MockCell isolated) {
+    private void setUpNeighborhoodTestCase(MockCell neighbor1, MockCell neighbor2, MockCell isolated) throws Exception {
         MockGeometry geom = (MockGeometry) layer.getGeometry();
         // 0, 0, 0
         Coordinate nc1 = geom.getCanonicalSites()[0];

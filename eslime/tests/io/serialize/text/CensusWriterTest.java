@@ -55,7 +55,7 @@ public class CensusWriterTest extends EslimeLatticeTestCase {
      * Regression test for bug 981770-71079096.
      *
      */
-    public void testCycleIndependence() {
+    public void testCycleIndependence() throws Exception {
         MockGeneralParameters p = makeMockGeneralParameters();
         p.setInstancePath(outputPath + "censusWriterTest/1/");
         CensusWriter writer = new CensusWriter(p);
@@ -79,13 +79,13 @@ public class CensusWriterTest extends EslimeLatticeTestCase {
         assertFilesEqual("censusWriterTest/1/census.txt");
         assertFilesEqual("censusWriterTest/2/census.txt");
     }
-    private void replace(Coordinate c, int state) {
+    private void replace(Coordinate c, int state) throws Exception {
         CellUpdateManager u = cellLayer.getUpdateManager();
         u.banish(c);
         put(c, state);
     }
 
-    private void put(Coordinate c, int state) {
+    private void put(Coordinate c, int state) throws Exception {
         MockCell cell = new MockCell(state);
         CellUpdateManager u = cellLayer.getUpdateManager();
         u.place(cell, c);

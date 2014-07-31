@@ -5,14 +5,12 @@
 
 package agent.action;
 
-import agent.targets.TargetRule;
 import cells.BehaviorCell;
 import cells.Cell;
 import control.arguments.Argument;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
-import layers.cell.CellLayerViewer;
 import layers.cell.CellUpdateManager;
 import processes.discrete.ShoveHelper;
 
@@ -21,7 +19,7 @@ import java.util.Random;
 /**
  * Places a copy or copies of the current cell toward any vacant location.
  *
- * This uses the "clone" method, rather than the "divide" method, meaning
+ * This uses the "replicate" method, rather than the "divide" method, meaning
  * that the state of the cell is exactly preserved.
  *
  * Created by dbborens on 5/2/14.
@@ -62,7 +60,7 @@ public class Expand extends Action{
         shoveHelper.shove(parentLocation, target);
 
         // Step 3: Clone parent.
-        Cell child = getCallback().clone();
+        Cell child = getCallback().replicate();
 
         // Step 4: Place child in parent location.
         u.place(child, parentLocation);

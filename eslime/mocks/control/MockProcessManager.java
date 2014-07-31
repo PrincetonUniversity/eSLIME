@@ -6,6 +6,7 @@
 package control;
 
 import control.halt.HaltCondition;
+import processes.Process;
 import processes.StepState;
 
 /**
@@ -15,6 +16,8 @@ public class MockProcessManager extends ProcessManager {
     int timesIterated;
 
     boolean doTriggeredProcessedCalled;
+    private Process[] triggeredProcesses;
+    private double stepStateDt;
 
     public MockProcessManager() {
         super();
@@ -23,14 +26,24 @@ public class MockProcessManager extends ProcessManager {
         stepStateDt = 0.0;
     }
 
+    public void setTriggeredProcesses(Process[] triggeredProcesses) {
+        this.triggeredProcesses = triggeredProcesses;
+    }
+
+    @Override
+    protected Process[] getTriggeredProcesses(int n) {
+        return triggeredProcesses;
+    }
+
     @Override
     public StepState doTriggeredProcesses(StepState stepState) throws HaltCondition {
         timesIterated++;
+        for (Process p : triggeredProcesses) {
+            p.fire(stepState);
+        }
         stepState.advanceClock(stepStateDt);
         return stepState;
     }
-
-    private double stepStateDt;
 
     public void setStepStateDt(double stepStateDt) {
         this.stepStateDt = stepStateDt;

@@ -7,6 +7,7 @@ package io.serialize.text;
 
 import cells.MockCell;
 import control.arguments.ConstantInteger;
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
 import geometry.boundaries.Absorbing;
@@ -30,7 +31,7 @@ public class InterfaceCensusWriterTest extends EslimeTestCase {
     private MockLayerManager layerManager;
 
     @Override
-    public void setUp() {
+    public void setUp() throws Exception {
         Lattice lattice = new RectangularLattice();
         Shape shape = new Rectangle(lattice, 3, 3);
         Boundary boundary = new Absorbing(shape, lattice);
@@ -73,7 +74,7 @@ public class InterfaceCensusWriterTest extends EslimeTestCase {
      *  border a 1.
      *
      */
-    private void buildInitialCondition() {
+    private void buildInitialCondition() throws HaltCondition{
         put(new Coordinate(0, 0, 0), 0);
         put(new Coordinate(1, 0, 0), 1);
         put(new Coordinate(2, 0, 0), 2);
@@ -122,13 +123,13 @@ public class InterfaceCensusWriterTest extends EslimeTestCase {
         assertFilesEqual("interface_1.txt");
     }
 
-    private void replace(Coordinate c, int state) {
+    private void replace(Coordinate c, int state) throws HaltCondition {
         CellUpdateManager u = cellLayer.getUpdateManager();
         u.banish(c);
         put(c, state);
     }
 
-    private void put(Coordinate c, int state) {
+    private void put(Coordinate c, int state) throws HaltCondition {
         MockCell cell = new MockCell(state);
         CellUpdateManager u = cellLayer.getUpdateManager();
         u.place(cell, c);

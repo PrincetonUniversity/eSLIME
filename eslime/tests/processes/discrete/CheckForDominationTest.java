@@ -97,7 +97,7 @@ public class CheckForDominationTest extends EslimeTestCase {
 
         assertEquals(expectThrow, thrown);
     }
-    private void populate(int x, int state) {
+    private void populate(int x, int state) throws Exception {
         BehaviorCell cell = new BehaviorCell(layerManager, state, state, state);
         Coordinate coord = new Coordinate(x, 0, 0);
         layer.getUpdateManager().place(cell, coord);

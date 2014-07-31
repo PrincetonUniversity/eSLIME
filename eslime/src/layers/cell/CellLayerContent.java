@@ -6,6 +6,7 @@
 package layers.cell;
 
 import cells.Cell;
+import control.halt.BoundaryReachedEvent;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
 import structural.CanonicalCellMap;
@@ -83,7 +84,7 @@ public abstract class CellLayerContent {
         return res;
     }
 
-    public void put(Coordinate coord, Cell current) {
+    public void put(Coordinate coord, Cell current) throws BoundaryReachedEvent {
         Cell previous = map.get(coord);
         indices.refresh(coord, previous, current);
         map.put(coord, current);

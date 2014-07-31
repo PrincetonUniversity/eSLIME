@@ -37,7 +37,7 @@ public class FieldUpdateProcessTest extends EslimeTestCase {
         initCells();
     }
 
-    private void initCells() {
+    private void initCells() throws Exception {
         MockCell inert, produceLo, produceHi;
 
         // Place an inert cell on (1, 0)

@@ -19,7 +19,7 @@ import java.util.Random;
 
 /**
  * Places a copy or copies of the current cell at the target site(s).
- * This uses the "clone" method, meaning that the state of the cell is
+ * This uses the "replicate" method, meaning that the state of the cell is
  * exactly preserved.
  *
  * Created by dbborens on 5/2/14.
@@ -63,10 +63,10 @@ public class CloneTo extends Action{
 
         for (Coordinate target : targets) {
 
-            // Make clone
-            Cell child = getCallback().clone();
+            // Make replicate
+            Cell child = getCallback().replicate();
 
-            // Place clone at target site
+            // Place replicate at target site
             if (!v.isOccupied(target)) {
                 u.place(child, target);
             } else if (noReplace) {

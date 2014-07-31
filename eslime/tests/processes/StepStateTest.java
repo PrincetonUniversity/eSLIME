@@ -7,7 +7,6 @@ package processes;
 
 import cells.MockCell;
 import control.identifiers.Coordinate;
-import io.serialize.MockSerializationManager;
 import layers.cell.CellLayer;
 import layers.cell.CellUpdateManager;
 import test.EslimeLatticeTestCase;
@@ -68,7 +67,7 @@ public class StepStateTest extends EslimeLatticeTestCase {
      * as expected -- namely, that highlighting is always captured,
      * but the state reflects whatever it was when record() was called.
      */
-    public void testDeferral() {
+    public void testDeferral() throws Exception {
         // Place a cell at origin
         put(origin, 1);
 
@@ -92,7 +91,7 @@ public class StepStateTest extends EslimeLatticeTestCase {
         assertArraysEqual(expectedHighlights, actualHighlights, false);
     }
 
-    private void put(Coordinate c, int state) {
+    private void put(Coordinate c, int state) throws Exception {
         MockCell cell = new MockCell(state);
         CellUpdateManager u = cellLayer.getUpdateManager();
         u.place(cell, c);

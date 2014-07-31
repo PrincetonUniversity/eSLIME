@@ -17,7 +17,6 @@ import geometry.shape.Rectangle;
 import geometry.shape.Shape;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
-import processes.MockStepState;
 import processes.StepState;
 import structural.MockGeneralParameters;
 import test.EslimeTestCase;
@@ -47,7 +46,7 @@ public class CorrelationWriterTest extends EslimeTestCase {
 
     }
 
-    private void loadCheckerboard() {
+    private void loadCheckerboard() throws Exception {
         for (int x = 0; x < SIDE; x += 2) {
             for (int y = 0; y < SIDE; y+= 2) {
                 Coordinate c0 = new Coordinate(x, y, 0);
@@ -65,7 +64,7 @@ public class CorrelationWriterTest extends EslimeTestCase {
     }
 
     // Empty, state 1 and state 2.
-    private void loadThreeState() {
+    private void loadThreeState() throws Exception {
         for (int x = 0; x < SIDE; x += 2) {
             for (int y = 0; y < SIDE; y+= 2) {
                 Coordinate c0 = new Coordinate(x, y, 0);

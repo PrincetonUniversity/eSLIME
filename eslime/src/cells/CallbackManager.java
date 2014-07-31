@@ -5,6 +5,7 @@
 
 package cells;
 
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
 import layers.cell.CellLayer;
@@ -41,7 +42,7 @@ public class CallbackManager {
      * Signals to the LayerManager that the callback cell may have
      * changed its divisibility status and should be checked.
      */
-    public void refreshDivisibility() {
+    public void refreshDivisibility() throws HaltCondition {
         CellLayer layer = layerManager.getCellLayer();
 
         if (layer.getViewer().exists(cell)) {

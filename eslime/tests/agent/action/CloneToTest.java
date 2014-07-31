@@ -10,17 +10,14 @@ import agent.control.BehaviorDispatcher;
 import agent.targets.MockTargetRule;
 import cells.BehaviorCell;
 import cells.Cell;
-import cells.MockCell;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
-import geometry.MockGeometry;
 import geometry.boundaries.Boundary;
 import geometry.boundaries.Periodic;
 import geometry.lattice.Lattice;
 import geometry.lattice.RectangularLattice;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
-import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import test.EslimeLatticeTestCase;
 
@@ -56,7 +53,7 @@ public class CloneToTest extends EslimeLatticeTestCase {
     }
 
     public void testLifeCycle() throws Exception {
-        // Trigger the clone event.
+        // Trigger the replicate event.
         query.run(null);
 
         // The other two sites should be occupied.
@@ -79,7 +76,7 @@ public class CloneToTest extends EslimeLatticeTestCase {
         Cell cell = layer.getViewer().getCell(new Coordinate(4, 0, 0));
 
         // Divide cell at position 4 toward 5
-        cell.trigger("clone-self", null);
+        cell.trigger("replicate-self", null);
 
         // New configuration: _123446_89
         assertEquals(4, layer.getViewer().getState(new Coordinate(4, 0, 0)));
@@ -93,7 +90,7 @@ public class CloneToTest extends EslimeLatticeTestCase {
      *   _123456_89  Initial condition
      *       ^       (Cell to be divided)
      */
-    private CellLayer linearLayer(boolean shoving) {
+    private CellLayer linearLayer(boolean shoving) throws Exception {
         Lattice lattice = new RectangularLattice();
         Shape shape = new Rectangle(lattice, 10, 1);
         Boundary boundary = new Periodic(shape, lattice);
@@ -104,7 +101,7 @@ public class CloneToTest extends EslimeLatticeTestCase {
 
         return layer;
     }
-    private void placeNumberedCell(int x, CellLayer layer, boolean shoving) {
+    private void placeNumberedCell(int x, CellLayer layer, boolean shoving) throws Exception {
         BehaviorCell cell = new BehaviorCell(layerManager, x, x, x);
         Coordinate coord = new Coordinate(x, 0, 0);
         layer.getUpdateManager().place(cell, coord);
@@ -120,11 +117,11 @@ public class CloneToTest extends EslimeLatticeTestCase {
                 shoving, null, null, random);
 
         Behavior behavior = new Behavior(cell, layerManager, new Action[] {cloneTo});
-        bd.map("clone-self", behavior);
+        bd.map("replicate-self", behavior);
 
     }
 
-    private void placeCells(CellLayer layer, boolean shoving) {
+    private void placeCells(CellLayer layer, boolean shoving) throws Exception {
         for (int x = 1; x < 7; x++) {
             placeNumberedCell(x, layer, shoving);
         }

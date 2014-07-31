@@ -22,7 +22,7 @@ public class ActionRangeMap extends RangeMap<Action> {
 
     @Override
     public RangeMap<Action> clone() {
-        throw new UnsupportedOperationException("Clone using the clone(BehaviorCell child) method.");
+        throw new UnsupportedOperationException("Clone using the replicate(BehaviorCell child) method.");
     }
 
     public ActionRangeMap clone(BehaviorCell child) {

@@ -37,7 +37,7 @@ public class CellFactoryTest extends EslimeTestCase {
     /**
      * Integration test to verify that stochastic behavior works alright.
      */
-    public void testStochastic() {
+    public void testStochastic() throws Exception {
         Element fixture = fixtureRoot.element("cell-stochastic");
         CellFactory query = new CellFactory(layerManager, fixture, p);
 

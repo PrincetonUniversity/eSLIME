@@ -17,7 +17,7 @@ public class SourceCellTest extends CellTest {
     private SourceCell a, b;
 
     @Override
-    public void setUp() {
+    public void setUp() throws Exception {
         HashMap<String, Double> aProduction = new HashMap<>();
         aProduction.put("alpha", 1.0);
         aProduction.put("beta", 2.0);
@@ -70,7 +70,7 @@ public class SourceCellTest extends CellTest {
     @Override
     public void testClone() throws Exception {
         // There should be two identical objects in memory, not one
-        Cell c = a.clone();
+        Cell c = a.replicate();
         assertEquals(a, c);
         assert (a != c);
     }

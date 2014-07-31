@@ -6,6 +6,7 @@
 package layers.cell;
 
 import cells.Cell;
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 
 /**
@@ -40,7 +41,7 @@ public class CellUpdateManager {
      *
      * @param coord
      */
-    public void apply(Coordinate coord) {
+    public void apply(Coordinate coord) throws HaltCondition {
         content.sanityCheck(coord);
         Cell cell = content.get(coord);
         content.remove(coord);
@@ -66,7 +67,7 @@ public class CellUpdateManager {
      * @param pCoord
      * @param cCoord
      */
-    public void divideTo(Coordinate pCoord, Coordinate cCoord) {
+    public void divideTo(Coordinate pCoord, Coordinate cCoord) throws HaltCondition {
         content.sanityCheck(pCoord);
         content.sanityCheck(cCoord);
 
@@ -82,7 +83,7 @@ public class CellUpdateManager {
     // TODO: The exposure of this method is a bit of cloodge for the shoving
     // method. There's no obvious way around it as things stand, but it does
     // suggest that a refactor may soon be necessary.
-    public Cell divide(Coordinate pCoord) {
+    public Cell divide(Coordinate pCoord) throws HaltCondition {
         content.sanityCheck(pCoord);
 
         // Divide parent
@@ -113,7 +114,7 @@ public class CellUpdateManager {
      * @param cell
      * @param coord
      */
-    public void place(Cell cell, Coordinate coord) {
+    public void place(Cell cell, Coordinate coord) throws HaltCondition {
         content.sanityCheck(coord);
 
         if (content.has(coord)) {
@@ -147,7 +148,7 @@ public class CellUpdateManager {
      * @param pCoord
      * @param qCoord
      */
-    public void move(Coordinate pCoord, Coordinate qCoord) {
+    public void move(Coordinate pCoord, Coordinate qCoord) throws HaltCondition {
 
         if (content.has(qCoord)) {
             throw new IllegalStateException("Attempted to move cell to an " +
@@ -169,7 +170,7 @@ public class CellUpdateManager {
      * @param pCoord
      * @param qCoord
      */
-    public void swap(Coordinate pCoord, Coordinate qCoord) {
+    public void swap(Coordinate pCoord, Coordinate qCoord) throws HaltCondition {
 
         content.sanityCheck(pCoord);
         content.sanityCheck(qCoord);

@@ -28,8 +28,8 @@ public class ArenaTest extends EslimeTestCase {
         Shape rectShape = new Rectangle(rectLattice, 3, 5);
         Shape triShape = new Rectangle(triLattice, 3, 5);
 
-        rect = new Arena(rectShape, rectLattice);
-        tri = new Arena(triShape, triLattice);
+        rect = makeBoundary(rectShape, rectLattice);
+        tri = makeBoundary(triShape, triLattice);
     }
 
     public void testInfinite() {
@@ -167,4 +167,7 @@ public class ArenaTest extends EslimeTestCase {
         assertFalse(rect == query);
     }
 
+    protected Boundary makeBoundary(Shape shape, Lattice lattice) {
+        return new Arena(shape, lattice);
+    }
 }

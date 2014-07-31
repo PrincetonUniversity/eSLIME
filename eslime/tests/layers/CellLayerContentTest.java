@@ -52,7 +52,7 @@ public abstract class CellLayerContentTest extends EslimeTestCase {
 
     // Actually, create a full mock for dependencies and test out
     // that all appropriate requests are fired--nothing more
-    public void testPutHasGetRemove() {
+    public void testPutHasGetRemove() throws Exception {
 
         // Test before and after state
         assertFalse(query.has(c[0]));
@@ -79,7 +79,7 @@ public abstract class CellLayerContentTest extends EslimeTestCase {
         assertEquals(query.getCanonicalSites()[2], c[2]);
     }
 
-    public void testGetStateVector() {
+    public void testGetStateVector() throws Exception {
         query.put(c[0], f0);
         query.put(c[1], f1);
         query.put(c[2], f2);
@@ -90,7 +90,7 @@ public abstract class CellLayerContentTest extends EslimeTestCase {
         assertEquals(query.getStateVector()[2], 2);
     }
 
-    public void testGetHealthVector() {
+    public void testGetHealthVector() throws Exception {
         query.put(c[0], f0);
         query.put(c[1], f1);
         query.put(c[2], f2);

@@ -63,7 +63,7 @@ public class CheckForExtinctionTest extends EslimeTestCase {
         doTest(true);
     }
 
-    public void testNonExtinctionCase() {
+    public void testNonExtinctionCase() throws Exception {
         populateSingletonCase();
         doTest(false);
     }
@@ -72,14 +72,14 @@ public class CheckForExtinctionTest extends EslimeTestCase {
      * Make sure that, if there are occupied sites and they subsequently all
      * become vacant, this is still recorded as an exitnction event.
      */
-    public void testTransitionToExtinction() {
+    public void testTransitionToExtinction() throws Exception {
         Coordinate coord = populateSingletonCase();
         doTest(false);
         layer.getUpdateManager().banish(coord);
         doTest(true);
     }
 
-    private Coordinate populateSingletonCase() {
+    private Coordinate populateSingletonCase() throws Exception {
         makeOneCanonicalSite();
         Coordinate coord = new Coordinate(0, 0, 1);
         MockCell cell = new MockCell();

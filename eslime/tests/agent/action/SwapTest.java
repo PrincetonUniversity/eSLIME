@@ -20,7 +20,6 @@ import geometry.shape.Rectangle;
 import geometry.shape.Shape;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
-import structural.MockRandom;
 import test.EslimeTestCase;
 
 public class SwapTest extends EslimeTestCase {
@@ -89,7 +88,7 @@ public class SwapTest extends EslimeTestCase {
     }
 
 
-    private MockTargetRule placeNumberedCell(int x) {
+    private MockTargetRule placeNumberedCell(int x) throws Exception {
         BehaviorCell cell = new BehaviorCell(layerManager, x, x, x);
         Coordinate coord = new Coordinate(x, 0, 0);
         layer.getUpdateManager().place(cell, coord);

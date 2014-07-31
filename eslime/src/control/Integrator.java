@@ -16,7 +16,7 @@ public class Integrator {
     private GeneralParameters p;
     private SerializationManager serializationManager;
 
-    private double time = 0.0D;
+    protected double time = 0.0D;
 
     public Integrator(GeneralParameters p, ProcessManager processManager,
                       SerializationManager serializationManager) {
@@ -40,6 +40,7 @@ public class Integrator {
             try {
                 state = processManager.doTriggeredProcesses(state);
             } catch (HaltCondition haltCondition) {
+                haltCondition.setGillespie(state.getTime());
                 return haltCondition;
             }
 

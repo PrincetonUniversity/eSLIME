@@ -13,7 +13,6 @@ import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
 import layers.LayerManager;
-import layers.cell.CellLayerViewer;
 import layers.cell.CellUpdateManager;
 import processes.discrete.ShoveHelper;
 
@@ -21,7 +20,7 @@ import java.util.Random;
 
 /**
  * Places a copy or copies of the current cell at the target site(s).
- * This uses the "clone" method, rather than the "divide" method, meaning
+ * This uses the "replicate" method, rather than the "divide" method, meaning
  * that the state of the cell is exactly preserved.
  *
  * Created by dbborens on 5/2/14.
@@ -85,17 +84,17 @@ public class ExpandTo extends Action{
         highlight(target, origin);
     }
 
-    private void cloneToVacancy(Coordinate vacancy) {
+    private void cloneToVacancy(Coordinate vacancy) throws HaltCondition {
         CellUpdateManager u = getLayerManager().getCellLayer().getUpdateManager();
 
         // Clone parent.
-        Cell child = getCallback().clone();
+        Cell child = getCallback().replicate();
 
         // Place child in parent location.
         u.place(child, vacancy);
     }
 
-    private void doShove(DisplacementOption shortestOption) {
+    private void doShove(DisplacementOption shortestOption) throws HaltCondition {
         Coordinate occupied = shortestOption.occupied;
         Coordinate vacant = shortestOption.vacant;
         shoveHelper.shove(occupied, vacant);

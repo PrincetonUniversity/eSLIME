@@ -31,6 +31,8 @@ public class IndividualHaltWriterTest extends EslimeLatticeTestCase {
     }
 
     private ManualHaltEvent createHaltEvent(double time) {
-        return new ManualHaltEvent(time, "TestSuccessful" + Math.round(time));
+        ManualHaltEvent ret =  new ManualHaltEvent("TestSuccessful" + Math.round(time));
+        ret.setGillespie(time);
+        return ret;
     }
 }

@@ -16,7 +16,7 @@ import layers.cell.MockCellLayerIndices;
 
 public class CellLookupManagerTest extends TestCase {
 
-    public void testGetNeighborStates() {
+    public void testGetNeighborStates() throws Exception {
         MockGeometry geometry = new MockGeometry();
         MockCellLayerIndices indices = new MockCellLayerIndices();
         Coordinate[] c = new Coordinate[3];

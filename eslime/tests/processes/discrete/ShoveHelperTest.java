@@ -151,7 +151,7 @@ public class ShoveHelperTest extends EslimeTestCase {
         assertEquals(0, layer.getViewer().getImaginarySites().size());
     }
 
-    private void placeCells() {
+    private void placeCells() throws Exception {
         for (int x = 0; x < 7; x++) {
             placeNumberedCell(x);
         }
@@ -161,7 +161,7 @@ public class ShoveHelperTest extends EslimeTestCase {
         }
     }
 
-    private void placeNumberedCell(int x) {
+    private void placeNumberedCell(int x) throws Exception {
         MockCell cell = new MockCell(x);
         Coordinate coord = new Coordinate(x, 0, 0);
         layer.getUpdateManager().place(cell, coord);

@@ -11,7 +11,6 @@ import control.identifiers.Coordinate;
 import control.identifiers.Flags;
 import geometry.Geometry;
 import layers.LayerManager;
-import layers.cell.CellLayer;
 import processes.StepState;
 
 import java.util.HashSet;
@@ -43,7 +42,7 @@ public class ShoveHelper {
      *
      * @return A set of coordinates that were affected by the shove operation.
      */
-    public HashSet<Coordinate> shove(Coordinate origin, Coordinate target) {
+    public HashSet<Coordinate> shove(Coordinate origin, Coordinate target) throws HaltCondition {
         HashSet<Coordinate> affectedSites = new HashSet<>();
 
         Coordinate displacement = layerManager.getCellLayer().getGeometry().
@@ -97,7 +96,7 @@ public class ShoveHelper {
      *                <p/>
      *                TODO: This is so cloodgy and terrible.
      */
-    private void doShove(Coordinate currentLocation, Coordinate d, HashSet<Coordinate> sites) {
+    private void doShove(Coordinate currentLocation, Coordinate d, HashSet<Coordinate> sites) throws HaltCondition {
 
         // Base case 0: we've reached the target
         if (d.norm() == 0) {

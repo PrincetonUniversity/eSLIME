@@ -20,7 +20,7 @@ public class SourceCell extends Cell {
 
     private double epsilon;
 
-    public SourceCell(int state, HashMap<String, Double> production) {
+    public SourceCell(int state, HashMap<String, Double> production) throws HaltCondition {
         super();
         considerCount = 0;
         setHealth(0);
@@ -51,7 +51,7 @@ public class SourceCell extends Cell {
     }
 
     @Override
-    public Cell clone(int state) {
+    public Cell clone(int state) throws HaltCondition {
         HashMap<String, Double> prodCopy = (HashMap<String, Double>) production.clone();
         SourceCell cc = new SourceCell(getState(), prodCopy);
         return cc;

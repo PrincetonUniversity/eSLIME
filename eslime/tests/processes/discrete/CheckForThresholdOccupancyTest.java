@@ -8,6 +8,7 @@ package processes.discrete;
 import cells.BehaviorCell;
 import control.arguments.Argument;
 import control.arguments.ConstantDouble;
+import control.halt.HaltCondition;
 import control.halt.ThresholdOccupancyReachedEvent;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
@@ -84,7 +85,7 @@ public class CheckForThresholdOccupancyTest extends EslimeTestCase {
 
         assertEquals(expectThrow, thrown);
     }
-    private void placeNumberedCell(int x) {
+    private void placeNumberedCell(int x) throws HaltCondition {
         BehaviorCell cell = new BehaviorCell(layerManager, x, x, x);
         Coordinate coord = new Coordinate(x, 0, 0);
         layer.getUpdateManager().place(cell, coord);

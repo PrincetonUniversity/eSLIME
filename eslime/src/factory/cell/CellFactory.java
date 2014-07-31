@@ -11,6 +11,7 @@ import cells.Cell;
 import control.GeneralParameters;
 import control.arguments.Argument;
 import control.arguments.ConstantInteger;
+import control.halt.HaltCondition;
 import factory.control.arguments.DoubleArgumentFactory;
 import factory.control.arguments.IntegerArgumentFactory;
 import layers.LayerManager;
@@ -65,7 +66,7 @@ public class CellFactory {
         return IntegerArgumentFactory.instantiate(cellDescriptor, "state", p.getRandom());
     }
 
-    public Cell instantiate() {
+    public Cell instantiate() throws HaltCondition {
         String className = cellDescriptor.element("class").getTextTrim();
 
         if (className.equalsIgnoreCase("BehaviorCell")) {
@@ -79,7 +80,7 @@ public class CellFactory {
         }
     }
 
-    private Cell behaviorCell() {
+    private Cell behaviorCell() throws HaltCondition {
         // Load cell properties
         double initialHealthValue = initialHealth.next();
         double thresholdValue = threshold.next();

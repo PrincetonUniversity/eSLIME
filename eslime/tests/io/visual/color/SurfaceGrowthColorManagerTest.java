@@ -94,7 +94,7 @@ public class SurfaceGrowthColorManagerTest extends EslimeTestCase {
         Color ret = HSLColor.toRGB(h, s, l * 0.5F);
         return ret;
     }
-    private void put(CellLayer layer, int pos, int state) {
+    private void put(CellLayer layer, int pos, int state) throws Exception {
         Coordinate coord = new Coordinate(0, pos, 0);
         Cell cell = new MockCell(state);
         layer.getUpdateManager().place(cell, coord);

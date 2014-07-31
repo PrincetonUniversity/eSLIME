@@ -23,8 +23,6 @@ import layers.cell.CellLayer;
 import structural.MockRandom;
 import test.EslimeTestCase;
 
-import java.util.Random;
-
 /**
  * Functional test for the ExpandTo action, which utilizes a path-of-least-
  * resistance preferential division algorithm.
@@ -73,7 +71,7 @@ public class ExpandToTest extends EslimeTestCase {
     public void testOutwardSymmetricDisplacement() throws Exception {
         Coordinate target = new Coordinate(3, 0, 0);
         parentTargetRule.setTargets(new Coordinate[] {target});
-        parent.trigger("clone-self", null);
+        parent.trigger("replicate-self", null);
 
         checkPosition(3, 4);
         checkPosition(4, 4);
@@ -101,7 +99,7 @@ public class ExpandToTest extends EslimeTestCase {
 
         // The coin toss arbitrarily favors shoving parent on true.
         random.setBooleanValue(true);
-        parent.trigger("clone-self", null);
+        parent.trigger("replicate-self", null);
 
         checkPosition(3, 4);
         checkPosition(4, 4);
@@ -128,7 +126,7 @@ public class ExpandToTest extends EslimeTestCase {
 
         // The coin toss arbitrarily favors shoving parent on true.
         random.setBooleanValue(false);
-        parent.trigger("clone-self", null);
+        parent.trigger("replicate-self", null);
 
         checkPosition(4, 4);
         checkPosition(5, 4);
@@ -159,7 +157,7 @@ public class ExpandToTest extends EslimeTestCase {
 
         // The coin toss arbitrarily favors shoving parent on true.
         random.setBooleanValue(true);
-        parent.trigger("clone-self", null);
+        parent.trigger("replicate-self", null);
 
         checkPosition(3, 4);
         checkPosition(4, 4);
@@ -167,7 +165,7 @@ public class ExpandToTest extends EslimeTestCase {
         checkPosition(6, 6);
     }
 
-    private MockTargetRule placeNumberedCell(int x) {
+    private MockTargetRule placeNumberedCell(int x) throws Exception {
         BehaviorCell cell = new BehaviorCell(layerManager, x, x, x);
         Coordinate coord = new Coordinate(x, 0, 0);
         layer.getUpdateManager().place(cell, coord);
@@ -183,7 +181,7 @@ public class ExpandToTest extends EslimeTestCase {
                 null, null, random);
 
         Behavior behavior = new Behavior(cell, layerManager, new Action[] {expandTo});
-        bd.map("clone-self", behavior);
+        bd.map("replicate-self", behavior);
 
         return targetRule;
     }

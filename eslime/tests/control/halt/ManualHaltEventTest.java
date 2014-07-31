@@ -10,7 +10,8 @@ import test.EslimeTestCase;
 public class ManualHaltEventTest extends EslimeTestCase {
 
     public void testLifeCycle() throws Exception {
-        ManualHaltEvent query = new ManualHaltEvent(1.0, "test123");
+        ManualHaltEvent query = new ManualHaltEvent("test123");
+        query.setGillespie(1.0);
         assertEquals("test123", query.toString());
         assertEquals(1.0, query.getGillespie());
     }

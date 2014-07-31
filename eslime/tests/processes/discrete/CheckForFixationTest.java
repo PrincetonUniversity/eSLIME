@@ -85,7 +85,7 @@ public class CheckForFixationTest extends EslimeTestCase {
 //    }
 
     // There's only one site -- automatically fixed once filled
-    public void testFixationCaseSingle() {
+    public void testFixationCaseSingle() throws Exception {
         makeTwoCanonicalSites();
         Coordinate coord = new Coordinate(0, 0, 1);
         MockCell cell = new MockCell();
@@ -95,7 +95,7 @@ public class CheckForFixationTest extends EslimeTestCase {
     }
 
     // There are two sites, but they're both the same type
-    public void testFixationCaseMulti() {
+    public void testFixationCaseMulti() throws Exception {
         makeTwoCanonicalSites();
         for (int i = 0; i < 2; i++) {
             Coordinate coord = new Coordinate(i, 0, 0);
@@ -108,12 +108,12 @@ public class CheckForFixationTest extends EslimeTestCase {
 
     // The lattice is full, but there are at least two
     // kinds of cells -- should not result in a thrown HaltCondition
-    public void testFullNonFixationCase() {
+    public void testFullNonFixationCase() throws Exception {
         setUpMixedCase();
         doTest(false);
     }
 
-    private void setUpMixedCase() {
+    private void setUpMixedCase() throws Exception {
         makeTwoCanonicalSites();
         for (int i = 0; i < 2; i++) {
             Coordinate coord = new Coordinate(i, 0, 0);
@@ -126,7 +126,7 @@ public class CheckForFixationTest extends EslimeTestCase {
 
     // There's only one species, but there's still room
     // to grow -- should still be considered "fixation"
-    public void testOpenSpaceCase() {
+    public void testOpenSpaceCase() throws Exception {
         makeTwoCanonicalSites();
         Coordinate coord = new Coordinate(0, 0, 0);
         MockCell cell = new MockCell();
@@ -139,7 +139,7 @@ public class CheckForFixationTest extends EslimeTestCase {
      * Make sure that, after the extinction of all but one type of site, a
      * fixation event is triggered.
      */
-    public void testTwoToOneStateRegression() {
+    public void testTwoToOneStateRegression() throws Exception {
         // This test should start with two cells, each of a different type.
         setUpMixedCase();
 

@@ -46,7 +46,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         }
     }
 
-    public void testInterrogate() {
+    public void testInterrogate() throws Exception {
         //HexRing geom = new HexRing(6, 6);
         Lattice lattice = new TriangularLattice();
         Shape shape = new Rectangle(lattice, 6, 6);
@@ -68,7 +68,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         assertEquals(toPlace.getState(), layer.getViewer().getCell(coord).getState());
     }
 
-    public void testFeed() {
+    public void testFeed() throws Exception {
         //HexRing geom = new HexRing(6, 6);
         Lattice lattice = new TriangularLattice();
         Shape shape = new Rectangle(lattice, 6, 6);
@@ -91,7 +91,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         assertTrue(layer.getViewer().getDivisibleSites().contains(coord));
     }
 
-    public void testNeighborStates() {
+    public void testNeighborStates() throws Exception {
         //HexRing geom = new HexRing(6, 6);
         Lattice lattice = new TriangularLattice();
         Shape shape = new Rectangle(lattice, 6, 6);
@@ -134,7 +134,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         assertEquals(5, layer.getLookupManager().getNearestVacancies(origin, -1).length);
     }
 
-    public void testVacancyModel() {
+    public void testVacancyModel() throws Exception {
         //HexRing geom = new HexRing(6, 6);
         Lattice lattice = new TriangularLattice();
         Shape shape = new Rectangle(lattice, 6, 6);
@@ -183,7 +183,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         assertEquals(12, layer.getLookupManager().getNearestVacancies(coord, 2).length);
     }
 
-    public void testNoOverwriteOnPlace() {
+    public void testNoOverwriteOnPlace() throws Exception {
         //HexRing geom = new HexRing(6, 6);
         Lattice lattice = new TriangularLattice();
         Shape shape = new Rectangle(lattice, 6, 6);
@@ -207,7 +207,7 @@ public class CellIntegrationTest extends EslimeTestCase {
         assertTrue(thrown);
     }
 
-    public void testNoOverwriteOnMove() {
+    public void testNoOverwriteOnMove() throws Exception {
         Lattice lattice = new TriangularLattice();
         Shape shape = new Rectangle(lattice, 6, 6);
         Boundary boundary = new PlaneRingHard(shape, lattice);
@@ -240,7 +240,7 @@ public class CellIntegrationTest extends EslimeTestCase {
      * ****************
      */
 
-    public void testLatticeFunctionality() {
+    public void testLatticeFunctionality() throws Exception {
         Lattice lattice = new TriangularLattice();
         Shape shape = new Rectangle(lattice, 6, 6);
         Boundary boundary = new PlaneRingHard(shape, lattice);

@@ -6,6 +6,7 @@
 package processes.temporal;
 
 import control.GeneralParameters;
+import control.arguments.Argument;
 import control.halt.HaltCondition;
 import io.loader.ProcessLoader;
 import layers.LayerManager;
@@ -18,19 +19,18 @@ import processes.StepState;
  */
 public class Tick extends TimeProcess {
 
-    private double dt;
+    private Argument<Double> dt;
 
     public Tick(ProcessLoader loader, LayerManager layerManager, int id,
-                GeneralParameters p) {
+                GeneralParameters p, Argument<Double> dt) {
 
         super(loader, layerManager, id, p);
-
-        dt = Double.valueOf(get("dt"));
+        this.dt = dt;
     }
 
     @Override
     public void fire(StepState state) throws HaltCondition {
-        state.advanceClock(dt);
+        state.advanceClock(dt.next());
     }
 
 }

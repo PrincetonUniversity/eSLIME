@@ -11,8 +11,7 @@ package control.halt;
 public class ManualHaltEvent extends HaltCondition {
     private String message;
 
-    public ManualHaltEvent(double gillespie, String message) {
-        super(gillespie);
+    public ManualHaltEvent(String message) {
         this.message = message;
     }
 

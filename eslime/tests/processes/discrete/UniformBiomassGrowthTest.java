@@ -25,7 +25,7 @@ public class UniformBiomassGrowthTest extends TestCase {
 
     private double epsilon = calcEpsilon();
 
-    public void testUndeferred() {
+    public void testUndeferred() throws Exception {
         // Set up a dummy simulation
         //Geometry geom = new HexRing(6, 6);
         Lattice lattice = new TriangularLattice();

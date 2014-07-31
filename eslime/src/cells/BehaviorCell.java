@@ -33,7 +33,7 @@ public class BehaviorCell extends Cell {
     public BehaviorCell() {
     }
 
-    public BehaviorCell(LayerManager layerManager, int state, double initialHealth, double threshold) {
+    public BehaviorCell(LayerManager layerManager, int state, double initialHealth, double threshold) throws HaltCondition {
         this.threshold = threshold;
         callbackManager = new CallbackManager(this, layerManager);
 
@@ -61,7 +61,7 @@ public class BehaviorCell extends Cell {
     }
 
     @Override
-    public Cell divide() {
+    public Cell divide() throws HaltCondition {
         if (!isDivisible()) {
             throw new IllegalStateException("Attempted to divide non-divisible cell.");
         }
@@ -76,7 +76,7 @@ public class BehaviorCell extends Cell {
     }
 
     @Override
-    public BehaviorCell clone(int childState) {
+    public BehaviorCell clone(int childState) throws HaltCondition {
         double health = getHealth();
 
         LayerManager layerManager = callbackManager.getLayerManager();
@@ -95,7 +95,7 @@ public class BehaviorCell extends Cell {
     }
 
     @Override
-    public void adjustHealth(double delta) {
+    public void adjustHealth(double delta) throws HaltCondition {
         double current = getHealth();
         double next = current + delta;
 //        System.out.println("      Adjusting health of cell at " + callbackManager.getMyLocation() + " from " + current + " to " + next);
@@ -113,12 +113,12 @@ public class BehaviorCell extends Cell {
     }
 
     @Override
-    protected void setDivisible(boolean divisible) {
+    protected void setDivisible(boolean divisible) throws HaltCondition {
         super.setDivisible(divisible);
         callbackManager.refreshDivisibility();
     }
 
-    private void checkDivisibility() {
+    private void checkDivisibility() throws HaltCondition {
         //System.out.println("   " + getHealth() + " -- " + threshold);
         if (getHealth() > threshold) {
             setDivisible(true);
@@ -132,7 +132,7 @@ public class BehaviorCell extends Cell {
     }
 
     @Override
-    public void setHealth(double health) {
+    public void setHealth(double health) throws HaltCondition {
         super.setHealth(health);
         checkDivisibility();
     }

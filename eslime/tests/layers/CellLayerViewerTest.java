@@ -66,7 +66,7 @@ public class CellLayerViewerTest extends EslimeTestCase {
     }
 
 
-    public void testGetCell() {
+    public void testGetCell() throws Exception {
 
         Cell cell = new MockCell();
         content.put(c1, cell);

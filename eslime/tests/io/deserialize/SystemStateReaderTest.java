@@ -97,7 +97,7 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
      * Create the fixture files used in this test.
      */
     @SuppressWarnings("unused")
-    private void generateFixtures() {
+    private void generateFixtures() throws Exception {
 
         Serializer[] serializers = makeSerializerArray();
 
@@ -157,7 +157,7 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
         return ret;
     }
 
-    private MockCell placeCell(Coordinate coord, double health, int state) {
+    private MockCell placeCell(Coordinate coord, double health, int state) throws Exception {
         MockCell cell = new MockCell();
         cell.setHealth(health);
         cell.setState(state);

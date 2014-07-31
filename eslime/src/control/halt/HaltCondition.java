@@ -9,12 +9,20 @@ public class HaltCondition extends Exception {
 
     private double gillespie;
 
+    public HaltCondition() {
+    }
+
+    @Deprecated
     public HaltCondition(double gillespie) {
         this.gillespie = gillespie;
     }
 
     public double getGillespie() {
         return gillespie;
+    }
+
+    public void setGillespie(double gillespie) {
+        this.gillespie = gillespie;
     }
 
     @Override

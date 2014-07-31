@@ -28,7 +28,7 @@ public class TargetRuleTest extends EslimeTestCase {
     private Random random;
 
     @Override
-    public void setUp() {
+    public void setUp() throws Exception {
         // Restart RN generator
         random = new Random(RANDOM_SEED);
 

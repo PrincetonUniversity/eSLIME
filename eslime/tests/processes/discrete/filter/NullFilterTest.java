@@ -35,7 +35,7 @@ public class NullFilterTest extends TestCase {
         // The result should be identical to the original.
         assertEquals(original, actual);
 
-        // The original should be identical to its clone (ie, unmodified).
+        // The original should be identical to its replicate (ie, unmodified).
         assertEquals(cloned, original);
     }
 }

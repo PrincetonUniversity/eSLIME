@@ -65,7 +65,8 @@ public class ProcessFactory {
             return new ExponentialInverse(loader, layerManager, id, p);
 
         } else if (processClass.equalsIgnoreCase("tick")) {
-            return new Tick(loader, layerManager, id, p);
+            Argument<Double> dt = DoubleArgumentFactory.instantiate(e, "dt", 1.0, p.getRandom());
+            return new Tick(loader, layerManager, id, p, dt);
 
         } else if (processClass.equalsIgnoreCase("divide-anywhere")) {
             CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);

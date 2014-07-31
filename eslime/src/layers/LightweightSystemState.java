@@ -7,6 +7,7 @@ package layers;
 
 import cells.BehaviorCell;
 import cells.Cell;
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
 import layers.cell.CellLayer;
@@ -93,13 +94,25 @@ public class LightweightSystemState extends SystemState {
                 continue;
             }
 
+            loadCell(cellLayer, coord, health, state);
+        }
+
+    }
+
+    private void loadCell(CellLayer cellLayer, Coordinate coord, double health, int state) {
+        try {
             // Build a dummy cell with the correct state and health.
             Cell cell = new BehaviorCell(layerManager, state, health, 0.0);
 
             // Place it in the cell layer.
             cellLayer.getUpdateManager().place(cell, coord);
+        } catch (HaltCondition hc) {
+            StringBuilder message = new StringBuilder();
+            message.append("Consistency failure: simulation halt event thrown while reconstructing state.\n");
+            message.append("Halt condition: ");
+            message.append(hc.toString());
+            throw new IllegalStateException(message.toString(), hc);
         }
-
     }
 
     public void initSoluteLayer(String id, double[] soluteVector) {
