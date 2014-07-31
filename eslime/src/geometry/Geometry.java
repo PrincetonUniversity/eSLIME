@@ -344,4 +344,21 @@ public class Geometry {
     public Coordinate getZeroVector() {
         return lattice.getZeroVector();
     }
+
+    /**
+     * Janky solution to problem of identifying components without compromising
+     * encapsulation. Permanent solution should involve a different hierarchy
+     * of constructors.
+     *
+     * @return
+     */
+    public Class[] getComponentClasses() {
+        Class[] componentClasses = {
+                lattice.getClass(),
+                shape.getClass(),
+                boundary.getClass()
+        };
+
+        return componentClasses;
+    }
 }

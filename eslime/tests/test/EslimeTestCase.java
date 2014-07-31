@@ -206,4 +206,33 @@ public abstract class EslimeTestCase extends TestCase {
         ret.initializeRandom(RANDOM_SEED);
         return ret;
     }
+
+    protected boolean arraysEqual(Object[] expected, Object[] actual) {
+        if (expected == null && actual != null) {
+            return false;
+        }
+
+        if (actual == null && expected != null) {
+            return false;
+        }
+
+        if (actual.length != expected.length) {
+            return false;
+        }
+
+        for (int i = 0; i < expected.length; i++) {
+            if (expected[i] == null && actual[i] != null) {
+                return false;
+            }
+
+            if (actual[i] == null && expected[i] != null) {
+                return false;
+            }
+
+            if (!expected[i].equals(actual[i])) {
+                return false;
+            }
+        }
+       return true;
+    }
 }

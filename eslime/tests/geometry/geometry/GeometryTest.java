@@ -561,6 +561,18 @@ public class GeometryTest extends EslimeTestCase {
         assertFalse(geom.coordToIndex(o).equals(geom.coordToIndex(p)));
     }
 
+    public void testGetComponentClasses() {
+        Class[] actual = geom.getComponentClasses();
+
+        Class[] expected = new Class[] {
+                RectangularLattice.class,
+                Rectangle.class,
+                MockBoundary.class
+        };
+
+        assertTrue(arraysEqual(expected, actual));
+    }
+
 
     private class MockBoundary extends Boundary {
 
@@ -593,6 +605,7 @@ public class GeometryTest extends EslimeTestCase {
         public Boundary clone(Shape scaledShape, Lattice clonedLattice) {
             return new MockBoundary(scaledShape, clonedLattice);
         }
+
     }
 
 }

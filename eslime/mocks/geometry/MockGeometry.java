@@ -26,8 +26,17 @@ public class MockGeometry extends Geometry {
     private boolean reportEquals;
     private double lastRequestedScale = 0;
 
+
+    private Class[] componentClasses;
+
     public MockGeometry() {
         super(null, null, null);
+
+        componentClasses = new Class[] {
+                Object.class,
+                Object.class,
+                Object.class
+        };
     }
 
     @Override
@@ -134,6 +143,15 @@ public class MockGeometry extends Geometry {
     public Geometry cloneAtScale(double rangeScale) {
         lastRequestedScale = rangeScale;
         return null;
+    }
+
+    @Override
+    public Class[] getComponentClasses() {
+        return componentClasses;
+    }
+
+    public void setComponentClasses(Class[] componentClasses) {
+        this.componentClasses = componentClasses;
     }
 
 }

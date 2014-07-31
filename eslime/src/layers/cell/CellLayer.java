@@ -6,6 +6,7 @@
 package layers.cell;
 
 import geometry.Geometry;
+import geometry.boundaries.HaltBoundary;
 import layers.Layer;
 
 /**
@@ -14,13 +15,18 @@ import layers.Layer;
  */
 public class CellLayer extends Layer {
 
-    private CellLayerContent content;
+    protected CellLayerContent content;
 
     public CellLayer(Geometry geom) {
         geometry = geom;
 
         CellLayerIndices indices = new CellLayerIndices();
-        if (geometry.isInfinite()) {
+
+        // Oh man, do I hate the following two lines and the
+        // "getComponentClasses" cloodge that makes them possible
+        if (geometry.getComponentClasses()[2].equals(HaltBoundary.class)) {
+            content = new HaltCellLayerContent(geom, indices);
+        } else if (geometry.isInfinite()) {
             content = new InfiniteCellLayerContent(geometry, indices);
         } else {
             content = new FiniteCellLayerContent(geometry, indices);

@@ -56,6 +56,8 @@ public class GeometryFactory {
             return new Absorbing(shape, lattice);
         } else if (className.equalsIgnoreCase("periodic")) {
             return new Periodic(shape, lattice);
+        } else if (className.equalsIgnoreCase("halt")) {
+            return new HaltBoundary(shape, lattice);
         } else {
             String msg = "Unrecognized boundary class '" +
                     className + "'.";
