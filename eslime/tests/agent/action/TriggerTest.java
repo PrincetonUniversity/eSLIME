@@ -16,8 +16,12 @@ import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import layers.cell.CellUpdateManager;
 import processes.StepState;
+import processes.discrete.filter.Filter;
+import processes.discrete.filter.NullFilter;
 import test.EslimeTestCase;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -57,7 +61,8 @@ public class TriggerTest extends EslimeTestCase {
         cellLayer.getUpdateManager().place(effectCell, o);
         cellLayer.getUpdateManager().place(causeCell, q);
         layerManager.setCellLayer(cellLayer);
-        Coordinate[] targets = new Coordinate[]{o};
+        List<Coordinate> targets = new ArrayList<>(1);
+        targets.add(o);
         targetRule.setTargets(targets);
 
 //        selfChannel = new ConstantInteger(1);
@@ -106,8 +111,9 @@ public class TriggerTest extends EslimeTestCase {
         MockCell dummyCell1 = new MockCell();
         MockCell dummyCell2 = new MockCell();
 
-        TargetRule sameTargetRule = new TargetOccupiedNeighbors(dummyCell1, layerManager, -1, random);
-        TargetRule differentTargetRule = new TargetOccupiedNeighbors(dummyCell2, layerManager, -1, random);
+        Filter filter = new NullFilter();
+        TargetRule sameTargetRule = new TargetOccupiedNeighbors(dummyCell1, layerManager, filter, -1, random);
+        TargetRule differentTargetRule = new TargetOccupiedNeighbors(dummyCell2, layerManager, filter, -1, random);
         String differentEffectName = "not the same as effectName";
 
         identical = new Trigger(dummyCell1, layerManager, effectName, targetRule, null, null);

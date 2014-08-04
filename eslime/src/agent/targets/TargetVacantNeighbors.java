@@ -10,8 +10,10 @@ import control.identifiers.Coordinate;
 import geometry.Geometry;
 import layers.LayerManager;
 import layers.cell.CellLayerViewer;
+import processes.discrete.filter.Filter;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -23,15 +25,15 @@ public class TargetVacantNeighbors extends TargetRule {
 
     @Override
     public TargetRule clone(BehaviorCell child) {
-        return new TargetVacantNeighbors(child, layerManager, maximum, random);
+        return new TargetVacantNeighbors(child, layerManager, filter, maximum, random);
     }
 
-    public TargetVacantNeighbors(BehaviorCell callback, LayerManager layerManager, int maximum, Random random) {
-        super(callback, layerManager, maximum, random);
+    public TargetVacantNeighbors(BehaviorCell callback, LayerManager layerManager, Filter filter, int maximum, Random random) {
+        super(callback, layerManager, filter, maximum, random);
     }
 
     @Override
-    protected Coordinate[] getCandidates(BehaviorCell caller) {
+    protected List<Coordinate> getCandidates(BehaviorCell caller) {
         // Get geometry
         Geometry geom = layerManager.getCellLayer().getGeometry();
 
@@ -53,10 +55,7 @@ public class TargetVacantNeighbors extends TargetRule {
             }
         }
 
-        // Convert to array
-        Coordinate[] ret = vacNeighbors.toArray(new Coordinate[0]);
-
         // Return the array
-        return ret;
+        return vacNeighbors;
     }
 }

@@ -27,4 +27,10 @@
             <state>1</state>
         </cell-state>
     </state-filter-case>
+
+    <depth-filter-case>
+        <depth>
+            <max-depth>1</max-depth>
+        </depth>
+    </depth-filter-case>
 </fixture>

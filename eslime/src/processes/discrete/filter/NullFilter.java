@@ -7,13 +7,14 @@ package processes.discrete.filter;
 
 import control.identifiers.Coordinate;
 
-import java.util.Collection;
+import java.util.List;
 
 /**
  * NullFilter passes all entries through unaffected.
  * Created by dbborens on 5/5/14.
  */
 public class NullFilter extends Filter {
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -22,7 +23,7 @@ public class NullFilter extends Filter {
     }
 
     @Override
-    public Collection<Coordinate> apply(Collection<Coordinate> toFilter) {
+    public List<Coordinate> apply(List<Coordinate> toFilter) {
         return toFilter;
     }
 }

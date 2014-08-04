@@ -8,6 +8,8 @@ package processes.discrete.filter;
 import control.identifiers.Coordinate;
 import junit.framework.TestCase;
 
+import java.util.ArrayList;
+
 public class CompositeFilterTest extends TestCase {
 
     public void testApply() throws Exception {
@@ -15,7 +17,7 @@ public class CompositeFilterTest extends TestCase {
         Filter child2 = new MockFilter();
         Filter[] children = new Filter[] {child1, child2};
         CompositeFilter query = new CompositeFilter(children);
-        query.apply(new Coordinate[0]);
+        query.apply(new ArrayList<Coordinate>(0));
         assertTrue(child1.isCalled());
         assertTrue(child2.isCalled());
     }

@@ -7,19 +7,22 @@ package agent.targets;
 
 import cells.BehaviorCell;
 import control.identifiers.Coordinate;
+import processes.discrete.filter.NullFilter;
+
+import java.util.List;
 
 /**
  * Created by dbborens on 2/14/14.
  */
 public class MockTargetRule extends TargetRule {
-    private Coordinate[] targets;
+    private List<Coordinate> targets;
     private BehaviorCell lastCaller;
 
     public MockTargetRule() {
-        super(null, null, -1, null);
+        super(null, null, new NullFilter(), -1, null);
     }
 
-    public void setTargets(Coordinate[] targets) {
+    public void setTargets(List<Coordinate> targets) {
         this.targets = targets;
     }
 
@@ -28,7 +31,7 @@ public class MockTargetRule extends TargetRule {
     }
 
     @Override
-    protected Coordinate[] getCandidates(BehaviorCell caller) {
+    protected List<Coordinate> getCandidates(BehaviorCell caller) {
         lastCaller = caller;
         return targets;
     }

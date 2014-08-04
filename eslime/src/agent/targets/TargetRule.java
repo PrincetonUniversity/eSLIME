@@ -8,8 +8,10 @@ package agent.targets;
 import cells.BehaviorCell;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
+import processes.discrete.filter.Filter;
 
-import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -29,16 +31,18 @@ public abstract class TargetRule {
     protected int maximum;
     protected BehaviorCell callback;
     protected LayerManager layerManager;
-
+    protected Filter filter;
+    
     /**
      * @param callback     The cell whose behavior is being described
      * @param layerManager
      */
-    public TargetRule(BehaviorCell callback, LayerManager layerManager, int maximum, Random random) {
+    public TargetRule(BehaviorCell callback, LayerManager layerManager, Filter filter, int maximum, Random random) {
         this.callback = callback;
         this.layerManager = layerManager;
         this.maximum = maximum;
         this.random = random;
+        this.filter = filter;
     }
 
     public int getMaximum() {
@@ -51,26 +55,27 @@ public abstract class TargetRule {
      *
      * @param caller The cell that triggered the action.
      */
-    public Coordinate[] report(BehaviorCell caller) {
-        Coordinate[] candidates = getCandidates(caller);
-        Coordinate[] targets = respectMaximum(candidates);
+    public List<Coordinate> report(BehaviorCell caller) {
+        List<Coordinate> candidates = getCandidates(caller);
+        List<Coordinate> filtered = filter.apply(candidates);
+        List<Coordinate> targets = respectMaximum(filtered);
         return targets;
     }
 
-    private Coordinate[] respectMaximum(Coordinate[] candidates) {
+    private List<Coordinate> respectMaximum(List<Coordinate> candidates) {
         // If maximum is < 0, it means that there is no maximum; return all.
         if (maximum < 0) {
             return candidates;
         }
         // If there the number of candidates does not exceed the max, return.
-        if (candidates.length <= maximum) {
+        if (candidates.size() <= maximum) {
             return candidates;
         }
 
         // Otherwise, permute and choose the first n, where n = maximum.
-        permute(candidates);
+        Collections.shuffle(candidates);
 
-        Coordinate[] reduced = Arrays.copyOfRange(candidates, 0, maximum);
+        List<Coordinate> reduced = candidates.subList(0, maximum);
 
         return reduced;
     }
@@ -95,6 +100,10 @@ public abstract class TargetRule {
             return false;
         }
 
+        if (!this.filter.equals(other.filter)) {
+            return false;
+        }
+
         return true;
     }
 
@@ -104,22 +113,5 @@ public abstract class TargetRule {
         return callback;
     }
 
-    protected abstract Coordinate[] getCandidates(BehaviorCell caller);
-
-    /**
-     * Fischer-Yates shuffling algorithm for permuting the contents of
-     * a coordinate array.
-     */
-    private void permute(Coordinate[] arr) {
-        for (int i = arr.length - 1; i > 0; i--) {
-            int j = random.nextInt(i + 1);
-            swap(arr, i, j);
-        }
-    }
-
-    private void swap(Coordinate[] arr, int i, int j) {
-        Coordinate temp = arr[j];
-        arr[j] = arr[i];
-        arr[i] = temp;
-    }
+    protected abstract List<Coordinate> getCandidates(BehaviorCell caller);
 }

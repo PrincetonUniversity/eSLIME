@@ -6,7 +6,14 @@
 package test;
 
 import control.identifiers.Coordinate;
+import geometry.Geometry;
 import geometry.MockGeometry;
+import geometry.boundaries.Arena;
+import geometry.boundaries.Boundary;
+import geometry.lattice.Lattice;
+import geometry.lattice.LinearLattice;
+import geometry.shape.Line;
+import geometry.shape.Shape;
 import junit.framework.TestCase;
 import junitx.framework.FileAssert;
 import org.dom4j.Document;
@@ -234,5 +241,13 @@ public abstract class EslimeTestCase extends TestCase {
             }
         }
        return true;
+    }
+
+    protected Geometry makeLinearGeometry(int length) {
+        Lattice lattice = new LinearLattice();
+        Shape shape = new Line(lattice, length);
+        Boundary boundary = new Arena(shape, lattice);
+        Geometry geometry = new Geometry(lattice, shape, boundary);
+        return geometry;
     }
 }

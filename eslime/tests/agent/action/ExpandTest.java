@@ -23,6 +23,8 @@ import layers.cell.CellLayer;
 import structural.MockRandom;
 import test.EslimeTestCase;
 
+import java.util.ArrayList;
+
 public class ExpandTest extends EslimeTestCase {
 
     private MockLayerManager layerManager;
@@ -66,7 +68,9 @@ public class ExpandTest extends EslimeTestCase {
         placeNumberedCell(5);
 
         Coordinate target = new Coordinate(3, 0, 0);
-        parentTargetRule.setTargets(new Coordinate[] {target});
+        ArrayList<Coordinate> targets = new ArrayList<>(1);
+        targets.add(target);
+        parentTargetRule.setTargets(targets);
         parent.trigger("replicate-self", null);
 
         checkPosition(3, 4);
@@ -93,7 +97,8 @@ public class ExpandTest extends EslimeTestCase {
     public void testMultipleVacancies() throws Exception {
 
         Coordinate target = new Coordinate(3, 0, 0);
-        parentTargetRule.setTargets(new Coordinate[] {target});
+        ArrayList<Coordinate> targets = new ArrayList<>(1);
+        targets.add(target);
         parent.trigger("replicate-self", null);
 
         checkPosition(3, 4);
@@ -117,7 +122,8 @@ public class ExpandTest extends EslimeTestCase {
         placeNumberedCell(5);
 
         Coordinate target = new Coordinate(3, 0, 0);
-        parentTargetRule.setTargets(new Coordinate[] {target});
+        ArrayList<Coordinate> targets = new ArrayList<>(1);
+        targets.add(target);
         parent.trigger("replicate-self", null);
 
         checkPosition(2, 2);
@@ -138,7 +144,10 @@ public class ExpandTest extends EslimeTestCase {
         MockTargetRule targetRule = new MockTargetRule();
 
         // Cells always divide to the right
-        targetRule.setTargets(new Coordinate[]{new Coordinate(x + 1, 0, 0)});
+        ArrayList<Coordinate> targets = new ArrayList<>(1);
+        Coordinate target = new Coordinate(x + 1, 0, 0);
+        targets.add(target);
+        targetRule.setTargets(targets);
 
         Expand expand = new Expand(cell, layerManager, null, null, random);
 

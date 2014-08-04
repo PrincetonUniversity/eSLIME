@@ -12,6 +12,8 @@ import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
 
+import java.util.List;
+
 /**
  * Created by dbborens on 2/11/14.
  */
@@ -49,7 +51,7 @@ public class Trigger extends Action {
         // the caller for the triggered behaviors is this cell.
         Coordinate self = getOwnLocation();
 
-        Coordinate[] targets = targetRule.report(callerCell);
+        List<Coordinate> targets = targetRule.report(callerCell);
 
         for (Coordinate target : targets) {
             // We require an occupied cell for the target of trigger actions.

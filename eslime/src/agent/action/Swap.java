@@ -12,6 +12,8 @@ import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
 
+import java.util.List;
+
 /**
  * Causes the callback cell to swap locations with a neighbor.
  *
@@ -35,14 +37,14 @@ public class Swap extends Action {
     public void run(Coordinate caller) throws HaltCondition {
         BehaviorCell callerCell = resolveCaller(caller);
         Coordinate self = getOwnLocation();
-        Coordinate[] targets = targetRule.report(callerCell);
+        List<Coordinate> targets = targetRule.report(callerCell);
 
-        if (targets.length != 1) {
+        if (targets.size() != 1) {
             throw new IllegalStateException("Swap action requires exactly one " +
                     "target per event.");
         }
 
-        Coordinate target = targets[0];
+        Coordinate target = targets.get(0);
 
         getLayerManager().getCellLayer().getUpdateManager().swap(self, target);
 

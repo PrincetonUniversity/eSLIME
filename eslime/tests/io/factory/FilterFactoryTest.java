@@ -9,10 +9,7 @@ import control.GeneralParameters;
 import control.arguments.ConstantInteger;
 import factory.processes.discrete.filter.FilterFactory;
 import org.dom4j.Element;
-import processes.discrete.filter.CellStateFilter;
-import processes.discrete.filter.CompositeFilter;
-import processes.discrete.filter.Filter;
-import processes.discrete.filter.NullFilter;
+import processes.discrete.filter.*;
 import test.EslimeLatticeTestCase;
 
 public class FilterFactoryTest extends EslimeLatticeTestCase {
@@ -81,6 +78,13 @@ public class FilterFactoryTest extends EslimeLatticeTestCase {
         Filter expected = new CellStateFilter(null, new ConstantInteger(1));
         Filter actual = FilterFactory.instantiate(e, layerManager, p);
         assertEquals(expected, actual);
+    }
 
+    public void testDepthFilter() throws Exception {
+        Element e = root.element("depth-filter-case");
+
+        Filter expected = new DepthFilter(null, new ConstantInteger(1));
+        Filter actual = FilterFactory.instantiate(e, layerManager, p);
+        assertEquals(expected, actual);
     }
 }

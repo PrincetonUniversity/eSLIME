@@ -6,12 +6,19 @@
 package agent.targets;
 
 import cells.MockCell;
+import control.arguments.ConstantInteger;
 import control.identifiers.Coordinate;
 import geometry.MockGeometry;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
+import processes.discrete.filter.CellStateFilter;
+import processes.discrete.filter.Filter;
+import processes.discrete.filter.NullFilter;
 import test.EslimeTestCase;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -26,7 +33,7 @@ public class TargetRuleTest extends EslimeTestCase {
     private Coordinate[] cc, neighbors;
     private Coordinate left, right, center;
     private Random random;
-
+    private Filter filter;
     @Override
     public void setUp() throws Exception {
         // Restart RN generator
@@ -38,7 +45,7 @@ public class TargetRuleTest extends EslimeTestCase {
         left = new Coordinate(0, 0, 0);
         right = new Coordinate(2, 0, 0);
 
-        cc = new Coordinate[]{center, left, right};
+        cc = new Coordinate[] {center, left, right};
 
         geom.setCanonicalSites(cc);
 
@@ -46,74 +53,80 @@ public class TargetRuleTest extends EslimeTestCase {
         cellLayer = new CellLayer(geom);
         layerManager.setCellLayer(cellLayer);
 
-        occupiedNeighbor = new MockCell();
-        self = new MockCell();
+        occupiedNeighbor = new MockCell(1);
+        self = new MockCell(2);
 
         // Only one neighbor is occupied; the other is not.
         cellLayer.getUpdateManager().place(self, center);
         cellLayer.getUpdateManager().place(occupiedNeighbor, left);
 
         // Associate the neighborhood with the coordinate
-        neighbors = new Coordinate[]{left, right};
+        neighbors = new Coordinate[] {left, right};
         geom.setCellNeighbors(center, neighbors);
+
+        filter = new NullFilter();
     }
 
     public void testTargetAllNeighbors() {
-        TargetRule query = new TargetAllNeighbors(self, layerManager, -1, random);
+        TargetRule query = new TargetAllNeighbors(self, layerManager, filter, -1, random);
 
         // Get target list
-        Coordinate[] actual = query.report(null);
-        Coordinate[] expected = neighbors;
+        List<Coordinate> actual = query.report(null);
+        List<Coordinate> expected = Arrays.asList(neighbors);
 
         // Should contain all neighbors
-        assertArraysEqual(expected, actual, true);
+        assertEquals(expected, actual);
     }
 
     public void testTargetVacantNeighbors() {
-        TargetRule query = new TargetVacantNeighbors(self, layerManager, -1, random);
+        TargetRule query = new TargetVacantNeighbors(self, layerManager, filter, -1, random);
 
         // Get target list
-        Coordinate[] actual = query.report(null);
-        Coordinate[] expected = new Coordinate[]{right};
+        List<Coordinate> actual = query.report(null);
+        List<Coordinate> expected = new ArrayList<>(1);
+        expected.add(right);
 
         // Should contain all neighbors
-        assertArraysEqual(expected, actual, true);
+        assertEquals(expected, actual);
     }
 
     public void testTargetOccupiedNeighbors() {
-        TargetRule query = new TargetOccupiedNeighbors(self, layerManager, -1, random);
+        TargetRule query = new TargetOccupiedNeighbors(self, layerManager, filter, -1, random);
 
         // Get target list
-        Coordinate[] actual = query.report(null);
-        Coordinate[] expected = new Coordinate[]{left};
+        List<Coordinate> actual = query.report(null);
+        List<Coordinate> expected = new ArrayList<>(1);
+        expected.add(left);
 
         // Should contain all neighbors
-        assertArraysEqual(expected, actual, true);
+        assertEquals(expected, actual);
     }
 
     public void testTargetSelf() {
-        TargetRule query = new TargetSelf(self, layerManager, -1, random);
+        TargetRule query = new TargetSelf(self, layerManager, filter, -1, random);
 
         // Get target list
-        Coordinate[] actual = query.report(null);
-        Coordinate[] expected = new Coordinate[]{center};
+        List<Coordinate> actual = query.report(null);
+        List<Coordinate> expected = new ArrayList<>(1);
+        expected.add(center);
 
         // Should contain all neighbors
-        assertArraysEqual(expected, actual, true);
+        assertEquals(expected, actual);
     }
 
     public void testTargetCaller() {
         // Left caller
-        TargetRule query = new TargetCaller(self, layerManager, -1, random);
-        Coordinate[] actual = query.report(occupiedNeighbor);
-        Coordinate[] expected = new Coordinate[]{left};
-        assertArraysEqual(expected, actual, true);
+        TargetRule query = new TargetCaller(self, layerManager, filter, -1, random);
+        List<Coordinate> actual = query.report(occupiedNeighbor);
+        List<Coordinate> expected = new ArrayList<>(1);
+        expected.add(left);
+        assertEquals(expected, actual);
 
     }
 
     // Null caller: should blow up
     public void testTargetCallerNull() {
-        TargetRule query = new TargetCaller(self, layerManager, -1, random);
+        TargetRule query = new TargetCaller(self, layerManager, filter, -1, random);
         boolean thrown = false;
         try {
             query.report(null);
@@ -132,11 +145,11 @@ public class TargetRuleTest extends EslimeTestCase {
         TargetRule p, q, r;
 
         // Make two targeters of the same class, but with different callbacks
-        p = new TargetSelf(new MockCell(), layerManager, -1, random);
-        q = new TargetSelf(new MockCell(), layerManager, -1, random);
+        p = new TargetSelf(new MockCell(), layerManager, filter, -1, random);
+        q = new TargetSelf(new MockCell(), layerManager, filter, -1, random);
 
         // Make one targeter of a different class
-        r = new TargetCaller(new MockCell(), layerManager, -1, random);
+        r = new TargetCaller(new MockCell(), layerManager, filter, -1, random);
 
         // Test that the two of the same class are equal
         assertEquals(p, q);
@@ -148,11 +161,11 @@ public class TargetRuleTest extends EslimeTestCase {
     public void testClone() {
         MockCell parent = new MockCell();
         TargetRule[] rules = new TargetRule[]{
-                new TargetAllNeighbors(parent, layerManager, -1, random),
-                new TargetCaller(parent, layerManager, -1, random),
-                new TargetOccupiedNeighbors(parent, layerManager, -1, random),
-                new TargetSelf(parent, layerManager, -1, random),
-                new TargetVacantNeighbors(parent, layerManager, -1, random)
+                new TargetAllNeighbors(parent, layerManager, filter, -1, random),
+                new TargetCaller(parent, layerManager, filter, -1, random),
+                new TargetOccupiedNeighbors(parent, layerManager, filter, -1, random),
+                new TargetSelf(parent, layerManager, filter, -1, random),
+                new TargetVacantNeighbors(parent, layerManager, filter, -1, random)
         };
 
         for (TargetRule rule : rules) {
@@ -165,14 +178,15 @@ public class TargetRuleTest extends EslimeTestCase {
       testNoMaximum method is not necessary.
      */
     public void testMaximum() {
-        TargetRule query = new TargetAllNeighbors(self, layerManager, 1, random);
+        TargetRule query = new TargetAllNeighbors(self, layerManager, filter, 1, random);
 
         // Get target list
-        Coordinate[] actual = query.report(null);
-        Coordinate[] expected = new Coordinate[]{left};
+        List<Coordinate> actual = query.report(null);
+        List<Coordinate> expected = new ArrayList<>(1);
+        expected.add(right);
 
         // Should contain all neighbors
-        assertArraysEqual(expected, actual, true);
+        assertEquals(expected, actual);
     }
 
     private void doCloneTest(TargetRule original, MockCell parent) {
@@ -183,4 +197,17 @@ public class TargetRuleTest extends EslimeTestCase {
         assertEquals(child, cloned.getCallback());
     }
 
+    public void testFilterApplied() throws Exception {
+        MockCell anotherNeighbor = new MockCell(3);
+        cellLayer.getUpdateManager().place(anotherNeighbor, right);
+
+        filter = new CellStateFilter(cellLayer, new ConstantInteger(1));
+        TargetRule query = new TargetAllNeighbors(self, layerManager, filter, -1, random);
+
+        List<Coordinate> actual = query.report(null);
+        List<Coordinate> expected = new ArrayList<>(1);
+        expected.add(left);
+
+        assertEquals(expected, actual);
+    }
 }

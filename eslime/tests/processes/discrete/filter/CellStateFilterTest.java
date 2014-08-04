@@ -12,10 +12,7 @@ import control.identifiers.Coordinate;
 import layers.cell.CellUpdateManager;
 import test.EslimeLatticeTestCase;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
+import java.util.*;
 
 public class CellStateFilterTest extends EslimeLatticeTestCase {
     private Cell yes, no;
@@ -37,14 +34,14 @@ public class CellStateFilterTest extends EslimeLatticeTestCase {
     }
 
     public void testLifeCycle() throws Exception {
-        Collection<Coordinate> cc = Arrays.asList(geom.getCanonicalSites());
-        Collection<Coordinate> ccCopy = new ArrayList<>(cc);
+        List<Coordinate> cc = Arrays.asList(geom.getCanonicalSites());
+        List<Coordinate> ccCopy = new ArrayList<>(cc);
 
         // Apply filter.
-        Collection<Coordinate> actual = query.apply(cc);
+        List<Coordinate> actual = query.apply(cc);
 
         // Only "x" should be retained.
-        Collection<Coordinate> expected = Arrays.asList(new Coordinate[] {x});
+        List<Coordinate> expected = Arrays.asList(new Coordinate[] {x});
         assertTrue(collectionsEqual(expected, actual));
 
         // Original list should be unmodified

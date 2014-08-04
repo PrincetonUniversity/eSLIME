@@ -8,7 +8,7 @@ package processes.discrete.filter;
 import control.identifiers.Coordinate;
 
 import java.util.Arrays;
-import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by dbborens on 5/5/14.
@@ -38,7 +38,7 @@ public class CompositeFilter extends Filter {
     }
 
     @Override
-    public Collection<Coordinate> apply(Collection<Coordinate> toFilter) {
+    public List<Coordinate> apply(List<Coordinate> toFilter) {
         for (Filter child : children) {
             toFilter = child.apply(toFilter);
         }

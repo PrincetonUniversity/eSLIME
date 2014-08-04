@@ -22,6 +22,9 @@ import layers.MockLayerManager;
 import layers.cell.CellLayer;
 import test.EslimeTestCase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class SwapTest extends EslimeTestCase {
 
     private MockLayerManager layerManager;
@@ -59,7 +62,8 @@ public class SwapTest extends EslimeTestCase {
     public void testTwoOccupied() throws Exception {
         placeNumberedCell(5);
         Coordinate target = new Coordinate(5, 0, 0);
-        parentTargetRule.setTargets(new Coordinate[] {target});
+        List<Coordinate> targets = new ArrayList<>(1);
+        targets.add(target);
         parent.trigger("swap", null);
 
         checkIsVacant(3);
@@ -79,7 +83,9 @@ public class SwapTest extends EslimeTestCase {
      */
     public void testOneVacant() throws Exception {
         Coordinate target = new Coordinate(5, 0, 0);
-        parentTargetRule.setTargets(new Coordinate[] {target});
+        List<Coordinate> targets = new ArrayList<>(1);
+        targets.add(target);
+        parentTargetRule.setTargets(targets);
         parent.trigger("swap", null);
 
         checkIsVacant(3);
@@ -98,7 +104,10 @@ public class SwapTest extends EslimeTestCase {
         MockTargetRule targetRule = new MockTargetRule();
 
         // Cells always divide to the right
-        targetRule.setTargets(new Coordinate[]{new Coordinate(x + 1, 0, 0)});
+        List<Coordinate> targets = new ArrayList<>(1);
+        Coordinate target = new Coordinate(x + 1, 0, 0);
+        targets.add(target);
+        targetRule.setTargets(targets);
 
         Action action = new Swap(cell, layerManager, targetRule, null, null);
 

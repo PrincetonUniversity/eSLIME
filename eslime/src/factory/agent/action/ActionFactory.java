@@ -76,9 +76,8 @@ public class ActionFactory {
     }
 
     private static Action trigger(Element e, BehaviorCell callback, LayerManager layerManager, GeneralParameters p) {
-        Random random = p.getRandom();
         Element descriptor = e.element("target");
-        TargetRule targetRule = TargetFactory.instantiate(callback, layerManager, descriptor, random);
+        TargetRule targetRule = TargetFactory.instantiate(callback, layerManager, descriptor, p);
         String behaviorName = e.element("behavior").getTextTrim();
         Argument<Integer> selfChannel = IntegerArgumentFactory.instantiate(e, "actor-highlight", -1, p.getRandom());
         Argument<Integer> targetChannel = IntegerArgumentFactory.instantiate(e, "target-highlight", -1, p.getRandom());
@@ -86,9 +85,8 @@ public class ActionFactory {
     }
 
     private static Action cloneTo(Element e, BehaviorCell callback, LayerManager layerManager, GeneralParameters p) {
-        Random random = p.getRandom();
         Element descriptor = e.element("target");
-        TargetRule targetRule = TargetFactory.instantiate(callback, layerManager, descriptor, random);
+        TargetRule targetRule = TargetFactory.instantiate(callback, layerManager, descriptor, p);
         Argument<Integer> selfChannel = IntegerArgumentFactory.instantiate(e, "actor-highlight", -1, p.getRandom());
         Argument<Integer> targetChannel = IntegerArgumentFactory.instantiate(e, "target-highlight", -1, p.getRandom());
         boolean noReplace = XmlUtil.getBoolean(e, "no-replacement");
@@ -97,9 +95,8 @@ public class ActionFactory {
     }
 
     private static Action swap(Element e, BehaviorCell callback, LayerManager layerManager, GeneralParameters p) {
-        Random random = p.getRandom();
         Element descriptor = e.element("target");
-        TargetRule targetRule = TargetFactory.instantiate(callback, layerManager, descriptor, random);
+        TargetRule targetRule = TargetFactory.instantiate(callback, layerManager, descriptor, p);
         Argument<Integer> selfChannel = IntegerArgumentFactory.instantiate(e, "actor-highlight", -1, p.getRandom());
         Argument<Integer> targetChannel = IntegerArgumentFactory.instantiate(e, "target-highlight", -1, p.getRandom());
         Swap ret = new Swap(callback, layerManager, targetRule, selfChannel, targetChannel);
@@ -107,9 +104,8 @@ public class ActionFactory {
     }
 
     private static Action expandTo(Element e, BehaviorCell callback, LayerManager layerManager, GeneralParameters p) {
-        Random random = p.getRandom();
         Element descriptor = e.element("target");
-        TargetRule targetRule = TargetFactory.instantiate(callback, layerManager, descriptor, random);
+        TargetRule targetRule = TargetFactory.instantiate(callback, layerManager, descriptor, p);
         Argument<Integer> selfChannel = IntegerArgumentFactory.instantiate(e, "actor-highlight", -1, p.getRandom());
         Argument<Integer> targetChannel = IntegerArgumentFactory.instantiate(e, "target-highlight", -1, p.getRandom());
         ExpandTo ret = new ExpandTo(callback, layerManager, targetRule, selfChannel, targetChannel, p.getRandom());

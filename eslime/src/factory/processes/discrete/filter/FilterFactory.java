@@ -10,10 +10,7 @@ import control.arguments.Argument;
 import factory.control.arguments.IntegerArgumentFactory;
 import layers.LayerManager;
 import org.dom4j.Element;
-import processes.discrete.filter.CellStateFilter;
-import processes.discrete.filter.CompositeFilter;
-import processes.discrete.filter.Filter;
-import processes.discrete.filter.NullFilter;
+import processes.discrete.filter.*;
 
 /**
  * Created by dbborens on 5/5/14.
@@ -29,6 +26,8 @@ public abstract class FilterFactory {
             return composite(e, layerManager, p);
         } else if (name.equalsIgnoreCase("cell-state")) {
             return cellStateFilter(e, layerManager, p);
+        } else if (name.equalsIgnoreCase("depth")) {
+            return depthFilter(e, layerManager, p);
         } else {
             String msg = "Unrecognized filter '" + name + "'.";
             throw new IllegalArgumentException(msg);
@@ -77,6 +76,12 @@ public abstract class FilterFactory {
     private static Filter cellStateFilter(Element e, LayerManager layerManager, GeneralParameters p) {
         Argument<Integer> toChoose = IntegerArgumentFactory.instantiate(e, "state", p.getRandom());
         CellStateFilter ret = new CellStateFilter(layerManager.getCellLayer(), toChoose);
+        return ret;
+    }
+
+    private static Filter depthFilter(Element e, LayerManager layerManager, GeneralParameters p) {
+        Argument<Integer> maxDepth = IntegerArgumentFactory.instantiate(e, "max-depth", p.getRandom());
+        DepthFilter ret = new DepthFilter(layerManager.getCellLayer(), maxDepth);
         return ret;
     }
 }

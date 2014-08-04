@@ -13,6 +13,8 @@ import cells.MockCell;
 import factory.agent.action.ActionFactory;
 import layers.MockLayerManager;
 import org.dom4j.Element;
+import processes.discrete.filter.Filter;
+import processes.discrete.filter.NullFilter;
 import structural.MockGeneralParameters;
 import test.EslimeTestCase;
 
@@ -24,6 +26,7 @@ public class ActionFactoryTest extends EslimeTestCase {
     private MockLayerManager layerManager;
     private MockGeneralParameters p;
     private Element fixtureRoot;
+    private Filter filter;
 
     @Override
     protected void setUp() throws Exception {
@@ -32,6 +35,7 @@ public class ActionFactoryTest extends EslimeTestCase {
         layerManager = new MockLayerManager();
         p = new MockGeneralParameters();
         p.initializeRandom(RANDOM_SEED);
+        filter = new NullFilter();
     }
 
     public void testNull() throws Exception {
@@ -68,7 +72,7 @@ public class ActionFactoryTest extends EslimeTestCase {
 
     public void testTrigger() throws Exception {
         Element e = fixtureRoot.element("trigger");
-        TargetRule rule = new TargetSelf(callback, layerManager, -1, null);
+        TargetRule rule = new TargetSelf(callback, layerManager, filter, -1, null);
         Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
         Action expected = new Trigger(callback, layerManager, "test", rule, null, null);
         assertEquals(expected, actual);
@@ -76,7 +80,7 @@ public class ActionFactoryTest extends EslimeTestCase {
 
     public void testClone() throws Exception {
         Element e = fixtureRoot.element("clone");
-        TargetRule rule = new TargetVacantNeighbors(callback, layerManager, 1, null);
+        TargetRule rule = new TargetVacantNeighbors(callback, layerManager, filter, 1, null);
         Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
         Action expected = new CloneTo(callback, layerManager, rule, false, null, null, p.getRandom());
         assertEquals(expected, actual);
@@ -98,7 +102,7 @@ public class ActionFactoryTest extends EslimeTestCase {
 
     public void testExpandTo() throws Exception {
         Element e = fixtureRoot.element("expand-to");
-        TargetRule rule = new TargetVacantNeighbors(callback, layerManager, 1, null);
+        TargetRule rule = new TargetVacantNeighbors(callback, layerManager, filter, 1, null);
         Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
         Action expected = new ExpandTo(callback, layerManager, rule, null, null, p.getRandom());
         assertEquals(expected, actual);
@@ -106,7 +110,7 @@ public class ActionFactoryTest extends EslimeTestCase {
 
     public void testSwap() throws Exception {
         Element e = fixtureRoot.element("swap");
-        TargetRule rule = new TargetVacantNeighbors(callback, layerManager, 1, null);
+        TargetRule rule = new TargetVacantNeighbors(callback, layerManager, filter, 1, null);
         Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
         Action expected = new Swap(callback, layerManager, rule, null, null);
         assertEquals(expected, actual);

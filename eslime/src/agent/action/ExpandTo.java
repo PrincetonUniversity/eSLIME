@@ -16,6 +16,7 @@ import layers.LayerManager;
 import layers.cell.CellUpdateManager;
 import processes.discrete.ShoveHelper;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -53,7 +54,7 @@ public class ExpandTo extends Action{
     @Override
     public void run(Coordinate caller) throws HaltCondition {
         BehaviorCell callerCell = resolveCaller(caller);
-        Coordinate[] targets = targetRule.report(callerCell);
+        List<Coordinate> targets = targetRule.report(callerCell);
         for (Coordinate target : targets) {
             preferentialExpand(target);
         }

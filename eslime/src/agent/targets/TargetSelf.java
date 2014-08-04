@@ -8,7 +8,10 @@ package agent.targets;
 import cells.BehaviorCell;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
+import processes.discrete.filter.Filter;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -21,19 +24,20 @@ import java.util.Random;
  * Created by dbborens on 2/7/14.
  */
 public class TargetSelf extends TargetRule {
-    public TargetSelf(BehaviorCell callback, LayerManager layerManager, int maximum, Random random) {
-        super(callback, layerManager, maximum, random);
+    public TargetSelf(BehaviorCell callback, LayerManager layerManager, Filter filter, int maximum, Random random) {
+        super(callback, layerManager, filter, maximum, random);
     }
 
     @Override
-    protected Coordinate[] getCandidates(BehaviorCell caller) {
+    protected List<Coordinate> getCandidates(BehaviorCell caller) {
         Coordinate self = layerManager.getCellLayer().getLookupManager().getCellLocation(callback);
-        Coordinate[] arr = new Coordinate[]{self};
-        return arr;
+        List<Coordinate> ret = new ArrayList<>(1);
+        ret.add(self);
+        return ret;
     }
 
     @Override
     public TargetRule clone(BehaviorCell child) {
-        return new TargetSelf(child, layerManager, maximum, random);
+        return new TargetSelf(child, layerManager, filter, maximum, random);
     }
 }

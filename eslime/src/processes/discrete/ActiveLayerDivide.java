@@ -34,7 +34,7 @@ public class ActiveLayerDivide extends BulkDivisionProcess {
 
         // Choose a random active cell.
         HashSet<Coordinate> superset = layer.getViewer().getDivisibleSites();
-        HashSet<Coordinate> candSet = new HashSet<Coordinate>(superset.size());
+        HashSet<Coordinate> candSet = new HashSet<>(superset.size());
         for (Coordinate c : superset) {
             // Look for vacancies within the active layer depth
             Coordinate[] vacancies = layer.getLookupManager().getNearestVacancies(c, depth);

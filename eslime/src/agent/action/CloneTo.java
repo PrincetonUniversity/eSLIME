@@ -15,6 +15,7 @@ import layers.LayerManager;
 import layers.cell.CellLayerViewer;
 import layers.cell.CellUpdateManager;
 
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -56,7 +57,7 @@ public class CloneTo extends Action{
 
         Coordinate self = getOwnLocation();
 
-        Coordinate[] targets = targetRule.report(callerCell);
+        List<Coordinate> targets = targetRule.report(callerCell);
 
         CellUpdateManager u = getLayerManager().getCellLayer().getUpdateManager();
         CellLayerViewer v = getLayerManager().getCellLayer().getViewer();

@@ -21,6 +21,8 @@ import geometry.shape.Shape;
 import layers.cell.CellLayer;
 import test.EslimeLatticeTestCase;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 public class CloneToTest extends EslimeLatticeTestCase {
@@ -36,7 +38,9 @@ public class CloneToTest extends EslimeLatticeTestCase {
 
         // Create mock targeter that lists other two sites as targets.
         targetRule = new MockTargetRule();
-        Coordinate[] targets = new Coordinate[] {x, y};
+        List<Coordinate> targets = new ArrayList<>(2);
+        targets.add(x);
+        targets.add(y);
         targetRule.setTargets(targets);
 
         // Place a single cell at origin.
@@ -111,7 +115,10 @@ public class CloneToTest extends EslimeLatticeTestCase {
         MockTargetRule mtr = new MockTargetRule();
 
         // Cells always divide to the right
-        mtr.setTargets(new Coordinate[] {new Coordinate(x + 1, 0, 0)});
+        Coordinate target = new Coordinate(x + 1, 0, 0);
+        List<Coordinate> targets = new ArrayList<>(1);
+        targets.add(target);
+        mtr.setTargets(targets);
 
         CloneTo cloneTo = new CloneTo(cell, layerManager, mtr,
                 shoving, null, null, random);

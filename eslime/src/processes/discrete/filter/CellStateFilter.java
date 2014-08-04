@@ -13,6 +13,7 @@ import layers.cell.CellLayerViewer;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Created by dbborens on 5/5/14.
@@ -54,7 +55,7 @@ public class CellStateFilter extends Filter {
     }
 
     @Override
-    public Collection<Coordinate> apply(Collection<Coordinate> toFilter) {
+    public List<Coordinate> apply(List<Coordinate> toFilter) {
         ArrayList<Coordinate> toRetain = getRetained(toFilter);
         return toRetain;
     }

@@ -23,6 +23,9 @@ import layers.cell.CellLayer;
 import structural.MockRandom;
 import test.EslimeTestCase;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  * Functional test for the ExpandTo action, which utilizes a path-of-least-
  * resistance preferential division algorithm.
@@ -70,7 +73,9 @@ public class ExpandToTest extends EslimeTestCase {
      */
     public void testOutwardSymmetricDisplacement() throws Exception {
         Coordinate target = new Coordinate(3, 0, 0);
-        parentTargetRule.setTargets(new Coordinate[] {target});
+        List<Coordinate> targets = new ArrayList<>(1);
+        targets.add(target);
+        parentTargetRule.setTargets(targets);
         parent.trigger("replicate-self", null);
 
         checkPosition(3, 4);
@@ -95,7 +100,9 @@ public class ExpandToTest extends EslimeTestCase {
      */
     public void testInwardSymmetricParentDisplacement() throws Exception {
         Coordinate target = new Coordinate(5, 0, 0);
-        parentTargetRule.setTargets(new Coordinate[] {target});
+        List<Coordinate> targets = new ArrayList<>(1);
+        targets.add(target);
+        parentTargetRule.setTargets(targets);
 
         // The coin toss arbitrarily favors shoving parent on true.
         random.setBooleanValue(true);
@@ -122,7 +129,9 @@ public class ExpandToTest extends EslimeTestCase {
      */
     public void testInwardSymmetricTargetDisplacement() throws Exception {
         Coordinate target = new Coordinate(5, 0, 0);
-        parentTargetRule.setTargets(new Coordinate[] {target});
+        List<Coordinate> targets = new ArrayList<>(1);
+        targets.add(target);
+        parentTargetRule.setTargets(targets);
 
         // The coin toss arbitrarily favors shoving parent on true.
         random.setBooleanValue(false);
@@ -153,7 +162,9 @@ public class ExpandToTest extends EslimeTestCase {
         placeNumberedCell(6);
 
         Coordinate target = new Coordinate(5, 0, 0);
-        parentTargetRule.setTargets(new Coordinate[] {target});
+        List<Coordinate> targets = new ArrayList<>(1);
+        targets.add(target);
+        parentTargetRule.setTargets(targets);
 
         // The coin toss arbitrarily favors shoving parent on true.
         random.setBooleanValue(true);
@@ -175,7 +186,10 @@ public class ExpandToTest extends EslimeTestCase {
         MockTargetRule targetRule = new MockTargetRule();
 
         // Cells always divide to the right
-        targetRule.setTargets(new Coordinate[]{new Coordinate(x + 1, 0, 0)});
+        List<Coordinate> targets = new ArrayList<>(1);
+        Coordinate target = new Coordinate(x + 1, 0, 0);
+        targets.add(target);
+        targetRule.setTargets(targets);
 
         ExpandTo expandTo = new ExpandTo(cell, layerManager, targetRule,
                 null, null, random);
