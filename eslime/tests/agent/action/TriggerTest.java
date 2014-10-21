@@ -155,4 +155,8 @@ public class TriggerTest extends EslimeTestCase {
         assertArraysEqual(expected, actual, true);
     }
 
+    public void testNoTargetsMeansNoChange() throws Exception {
+        // Verify that, if there is nowhere for an event to take place, nothing happens
+        fail("Not yet implemented");
+    }
 }

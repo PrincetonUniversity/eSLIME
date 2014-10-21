@@ -6,6 +6,7 @@
 package agent.action;
 
 import cells.BehaviorCell;
+import control.arguments.Argument;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
 
@@ -13,12 +14,15 @@ import layers.LayerManager;
  * Created by dbborens on 2/10/14.
  */
 public class Die extends Action {
-    public Die(BehaviorCell callback, LayerManager layerManager) {
+
+    private Argument<Integer> channel;
+    public Die(BehaviorCell callback, LayerManager layerManager,  Argument<Integer> channel) {
         super(callback, layerManager);
     }
 
     @Override
     public void run(Coordinate caller) {
+        doHighlight(channel, getOwnLocation());
         getCallback().die();
     }
 
@@ -32,6 +36,6 @@ public class Die extends Action {
 
     @Override
     public Action clone(BehaviorCell child) {
-        return new Die(child, getLayerManager());
+        return new Die(child, getLayerManager(), channel);
     }
 }

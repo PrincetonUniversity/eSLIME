@@ -15,7 +15,28 @@ package control.run;
 public class ManualLauncher {
 
     public static void main(String[] args) {
-        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/manuscript/figure4/AvP_immune_2D_sweep_sample.xml";
+        String path = "/Users/dbborens/Downloads/minimal.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-09-29/1d_kymo.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-27/models_3d_AvA_bulk/0_l=45_f=0.25_g=2.00.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-26/models_ball_2d/0_r=90_i=8_g=8.00_d=3.00.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-26/models_ball_2d/0_r=90_i=4_g=8.00_d=3.00.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-25/AvA/models_1D_AvA_bulk/0_l=10000_f=0.25_g=2.00.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-16/models_2D_AvA_bulk/0_r=65_f=0.25_g=2.00.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-14/AvA/models_2D_AvA_bulk/test.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-13/3_r=90_f=0.25_g=10.00_d=1.50.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-13/0_r=90_f=0.25_g=10.00_d=1.50.xml";
+//        tring path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-11/ball/models_ball/0_r=90_i=20_g=10.00_d=2.00.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-11/ball/models_ball/0_r=90_i=10_g=10.00_d=2.00.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-11/ball/models_ball/0_r=90_i=8_g=10.00_d=2.00.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-11/ball/models_ball/0_r=90_i=6_g=10.00_d=2.00.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-11/ball/models_ball/0_r=90_i=4_g=10.00_d=2.00.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-11/ball/models_ball/0_r=90_i=2_g=10.00_d=2.00.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-07/manual/AvA_bulk_2D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-07/AvPi_surface_2D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-06/summary/AvPi_bulk_2D_manual.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-06/movies/AvPi_bulk_2D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-06/movies/AvPi_surface_2D.xml";
+//        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/2014-08-04/AvPi_surface_2D.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/manuscript/figure3/AvP_immune_2D.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/manuscript/figure3/AvP_non-immune_2D.xml";
 //        String path = "/Users/dbborens/IdeaProjects/t6ss/xml/manuscript/figure3/AvP_non-immune_no-glyphs_2D.xml";

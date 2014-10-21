@@ -28,8 +28,9 @@ public class HaltCellLayerContent extends InfiniteCellLayerContent {
 
     @Override
     public void put(Coordinate coord, Cell current) throws BoundaryReachedEvent {
-        if (coord.hasFlag(Flags.BEYOND_BOUNDS)) {
+        if (coord.hasFlag(Flags.END_OF_WORLD)) {
             throw new BoundaryReachedEvent();
         }
+        super.put(coord, current);
     }
 }

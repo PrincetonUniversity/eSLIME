@@ -49,7 +49,7 @@ public class ProgressReporter extends Serializer {
     public void dispatchHalt(HaltCondition ex) {
         System.out.println("Simulation ended. Cause: " + ex.getClass().getSimpleName());
         long instanceTime = (System.currentTimeMillis() - instanceStart) / 1000;
-        System.out.print("Instance running time: " + instanceTime + " seconds.");
+        System.out.println("Instance running time: " + instanceTime + " seconds.");
     }
 
     @Override

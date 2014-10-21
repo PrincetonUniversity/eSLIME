@@ -24,7 +24,7 @@ public class TriPixelTranslatorTest extends EslimeTestCase {
         c1 = new Coordinate(1, 0, 0);
 
         Coordinate[] cc = new Coordinate[]{c0, c1};
-        VisualizationProperties mapState = new VisualizationProperties(null, 10.0, 1);
+        VisualizationProperties mapState = new VisualizationProperties(null, 10, 1);
         mapState.setCoordinates(cc);
         query = new TriPixelTranslator();
         query.init(mapState);

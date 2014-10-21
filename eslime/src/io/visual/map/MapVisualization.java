@@ -28,6 +28,7 @@ public class MapVisualization extends Visualization {
 
     @Override
     public BufferedImage render(SystemState systemState) {
+        System.out.println("Rendering frame " + systemState.getFrame());
         Coordinate pDims = translator.getImageDims();
         BufferedImage img = new BufferedImage(pDims.x(), pDims.y(), BufferedImage.TYPE_INT_RGB);
 

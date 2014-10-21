@@ -12,7 +12,6 @@ import io.visual.VisualizationProperties;
 import io.visual.highlight.HighlightManager;
 import io.visual.map.CoordinateRenderer;
 import io.visual.map.PixelTranslator;
-import io.visual.map.PixelTranslatorFactory;
 import layers.SystemState;
 
 import java.awt.*;
@@ -33,7 +32,10 @@ public class Kymograph extends Visualization {
 
     @Override
     public BufferedImage render(SystemState systemState) {
+        // Build the image one frame (=column) at a time, but don't return it
+        // until all columns are loaded.
 
+        System.out.println("Rendering frame " + systemState.getFrame());
         CoordinateRenderer renderer = new CoordinateRenderer(g, translator, properties);
         for (Coordinate c : properties.getCoordinates()) {
             renderer.render(c, systemState);

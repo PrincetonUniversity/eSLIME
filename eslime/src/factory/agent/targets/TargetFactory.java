@@ -44,7 +44,7 @@ public abstract class TargetFactory {
     }
 
     private static Filter getFilter(Element descriptor, LayerManager layerManager, GeneralParameters p) {
-        Element filterElem = descriptor.element("filter");
+        Element filterElem = descriptor.element("filters");
         if (filterElem == null) {
             return new NullFilter();
         }

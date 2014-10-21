@@ -32,7 +32,7 @@ public class DefaultColorManager extends ColorManager {
             case 2:
                 return Color.RED;
             case 3:
-                return Color.GREEN;
+                return Color.YELLOW;
             default:
                 throw new UnsupportedOperationException("Default color manager supports only states 1 and 2, or dead.");
         }

@@ -19,7 +19,7 @@ public class KymoPixelTranslatorTest extends EslimeTestCase {
         c0 = new Coordinate(0, 0, 0);
         c1 = new Coordinate(0, 1, 0);
         Coordinate[] cc = new Coordinate[]{c0, c1};
-        VisualizationProperties properties = new VisualizationProperties(null, 10.0, 1);
+        VisualizationProperties properties = new VisualizationProperties(null, 10, 1);
         properties.setCoordinates(cc);
         properties.setFrames(new int[] {0, 1});
         query = new KymoPixelTranslator();

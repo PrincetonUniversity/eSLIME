@@ -43,7 +43,7 @@ public class KymographTest extends EslimeTestCase {
         Boundary boundary = new Arena(shape, lattice);
         Geometry geom = new Geometry(lattice, shape, boundary);
         ColorManager colorManager = new DefaultColorManager();
-        VisualizationProperties mapState = new VisualizationProperties(colorManager, 25.0, outline);
+        VisualizationProperties mapState = new VisualizationProperties(colorManager, 25, outline);
         HighlightManager highlightManager = new HighlightManager();
         mapState.setHighlightManager(highlightManager);
         Kymograph map = new Kymograph(mapState);

@@ -57,24 +57,47 @@ public class MapVisualizationTest extends GlyphTest {
     // Regression test for issues with incorrect bounds for hexagonal
     // geometries. (Really a graphical test for HexPixelTranslator.)
     public void testHexagon() throws Exception {
-        Lattice lattice = new TriangularLattice();
-        Shape shape = new Hexagon(lattice, 10);
-        Boundary boundary = new Arena(shape, lattice);
-        Geometry geom = new Geometry(lattice, shape, boundary);
-        ColorManager colorManager = new DefaultColorManager();
-        VisualizationProperties mapState = new VisualizationProperties(colorManager, 25.0, 1);
-        HighlightManager highlightManager = new HighlightManager();
-        mapState.setHighlightManager(highlightManager);
-        MapVisualization map = new MapVisualization(mapState);
-        map.init(geom, null, null);
-        systemState = makeSystemState(geom);
-        BufferedImage result = map.render(systemState);
-        File file = new File(outputPath + "HexagonalMap.png");
-        ImageIO.write(result, "png", file);
+        for (int r = 6; r <= 24; r += 6) {
+            Lattice lattice = new TriangularLattice();
+            Shape shape = new Hexagon(lattice, 10);
+            Boundary boundary = new Arena(shape, lattice);
+            Geometry geom = new Geometry(lattice, shape, boundary);
+            ColorManager colorManager = new DefaultColorManager();
+            VisualizationProperties mapState = new VisualizationProperties(colorManager, r, 1);
+            HighlightManager highlightManager = new HighlightManager();
+            mapState.setHighlightManager(highlightManager);
+            MapVisualization map = new MapVisualization(mapState);
+            map.init(geom, null, null);
+            systemState = makeSystemState(geom);
+            BufferedImage result = map.render(systemState);
+            String fn = "HexagonalMap" + r + ".png";
+            File file = new File(outputPath + fn);
+            ImageIO.write(result, "png", file);
 
-        assertBinaryFilesEqual("glyphs/HexagonalMap.png", "HexagonalMap.png");
+            assertBinaryFilesEqual("glyphs/" + fn, fn);
+        }
     }
 
+    public void testHexagonNoOutline() throws Exception {
+        for (int r = 6; r <= 24; r += 6) {
+            Lattice lattice = new TriangularLattice();
+            Shape shape = new Hexagon(lattice, 10);
+            Boundary boundary = new Arena(shape, lattice);
+            Geometry geom = new Geometry(lattice, shape, boundary);
+            ColorManager colorManager = new DefaultColorManager();
+            VisualizationProperties mapState = new VisualizationProperties(colorManager, r, 0);
+            HighlightManager highlightManager = new HighlightManager();
+            mapState.setHighlightManager(highlightManager);
+            MapVisualization map = new MapVisualization(mapState);
+            map.init(geom, null, null);
+            systemState = makeSystemState(geom);
+            BufferedImage result = map.render(systemState);
+            String fn = "HexagonalMapNoOutline" + r + ".png";
+            File file = new File(outputPath + fn);
+            ImageIO.write(result, "png", file);
+            assertBinaryFilesEqual("glyphs/" + fn, fn);
+        }
+    }
     // As above, but for rectangular geometry.
     public void testRectangle() throws Exception {
         doRectangleTest(1, "RectangularMap.png");
@@ -90,7 +113,7 @@ public class MapVisualizationTest extends GlyphTest {
         Boundary boundary = new Arena(shape, lattice);
         Geometry geom = new Geometry(lattice, shape, boundary);
         ColorManager colorManager = new DefaultColorManager();
-        VisualizationProperties mapState = new VisualizationProperties(colorManager, 25.0, outline);
+        VisualizationProperties mapState = new VisualizationProperties(colorManager, 25, outline);
         HighlightManager highlightManager = new HighlightManager();
         mapState.setHighlightManager(highlightManager);
         MapVisualization map = new MapVisualization(mapState);
@@ -102,5 +125,9 @@ public class MapVisualizationTest extends GlyphTest {
 
         assertBinaryFilesEqual("glyphs/" + filename, filename);
 
+    }
+
+    public void testCube() throws Exception {
+        fail("Not yet implemented. Try making the in-view plane blue, and the rest red. The test image should be all blue.");
     }
 }

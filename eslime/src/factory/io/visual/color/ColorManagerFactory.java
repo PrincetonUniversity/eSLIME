@@ -34,6 +34,9 @@ public abstract class ColorManagerFactory {
 
     private static String getClassName(Element element) {
         Element classNameElem = element.element("class");
+        if (classNameElem == null) {
+            throw new IllegalArgumentException("Missing required argument <class> in item <color>");
+        }
         return classNameElem.getTextTrim();
     }
 }

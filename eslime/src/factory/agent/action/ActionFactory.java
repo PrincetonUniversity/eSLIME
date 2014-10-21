@@ -30,7 +30,7 @@ public class ActionFactory {
             case "mock":
                 return mockAction();
             case "die":
-                return die(callback, layerManager);
+                return die(e, callback, layerManager, p);
             case "adjust-health":
                 return adjustHealth(e, callback, layerManager);
             case "trigger":
@@ -71,8 +71,9 @@ public class ActionFactory {
         return new MockAction();
     }
 
-    private static Action die(BehaviorCell callback, LayerManager layerManager) {
-        return new Die(callback, layerManager);
+    private static Action die(Element e, BehaviorCell callback, LayerManager layerManager, GeneralParameters p) {
+        Argument<Integer> channel = IntegerArgumentFactory.instantiate(e, "highlight", -1, p.getRandom());
+        return new Die(callback, layerManager, channel);
     }
 
     private static Action trigger(Element e, BehaviorCell callback, LayerManager layerManager, GeneralParameters p) {

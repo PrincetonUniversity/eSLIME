@@ -40,6 +40,7 @@ public abstract class GlyphTest extends EslimeTestCase {
     private HighlightManager highlightManager;
     private MapVisualization map;
     protected SystemState systemState;
+    protected VisualizationProperties mapState;
 
     @Override
     protected void setUp() throws Exception {
@@ -49,7 +50,7 @@ public abstract class GlyphTest extends EslimeTestCase {
         ColorManager colorManager = new DefaultColorManager();
 
         // Create a 10 x 10 hexagonal map.
-        VisualizationProperties mapState = new VisualizationProperties(colorManager, 50.0, 1);
+        mapState = new VisualizationProperties(colorManager, 50, 1);
 
         // Create highlight manager.
         highlightManager = new HighlightManager();

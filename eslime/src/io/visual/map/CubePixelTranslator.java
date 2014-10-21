@@ -3,6 +3,11 @@
  *  Princeton University. All rights reserved.
  */
 
+/*
+ *  Copyright (c) 2014 David Bruce Borenstein and the Trustees of
+ *  Princeton University. All rights reserved.
+ */
+
 package io.visual.map;
 
 import control.identifiers.Coordinate;
@@ -11,12 +16,17 @@ import io.visual.VisualizationProperties;
 import java.awt.*;
 
 /**
+ *
+ * Creates a 2D rectangular map from the middle-Z slice of a 3D cuboid arena.
+ *
  * Created by David B Borenstein on 5/8/14.
  */
-public class RectPixelTranslator extends PixelTranslator {
+public class CubePixelTranslator extends PixelTranslator {
+    private int zMiddle;
+
     @Override
     protected void calcLimits(VisualizationProperties mapState) {
-        int xMin, xMax, yMin, yMax;
+        int xMin, xMax, yMin, yMax, zMin, zMax;
 
         xMin = 2147483647;
         xMax = -2147483648;
@@ -24,9 +34,33 @@ public class RectPixelTranslator extends PixelTranslator {
         yMin = 2147483647;
         yMax = -2147483648;
 
+        zMin = 2147483647;
+        zMax = -2147483648;
+
+        // First, get middle Z coordinate.
+        for (Coordinate c : mapState.getCoordinates()) {
+            int z = c.z();
+
+            if (z < zMin) {
+                zMin = z;
+            }
+
+            if (z > zMax) {
+                zMax = z;
+            }
+        }
+
+        zMiddle = (zMax - zMin) / 2;
+
+        // Next, find x and y extrema from the middle-Z plane.
         for (Coordinate c : mapState.getCoordinates()) {
             int x = c.x();
             int y = c.y();
+            int z = c.z();
+
+            if (z != zMiddle) {
+                continue;
+            }
 
             if (x < xMin) {
                 xMin = x;
@@ -45,24 +79,29 @@ public class RectPixelTranslator extends PixelTranslator {
             }
         }
 
-        int dy = (int) edge * (yMax - yMin + 1);
-        int dx = (int) edge * (xMax - xMin + 1);
+        int dy = edge * (yMax - yMin + 1);
+        int dx = edge * (xMax - xMin + 1);
         imageDims = new Coordinate(dx, dy, 0);
     }
 
     @Override
     protected void calcOrigin() {
-        int x = (int) Math.round(edge / 2);
-        int y = (int) Math.round(edge / 2);
+        int x = edge / 2;
+        int y = edge / 2;
         origin = new Coordinate(x, y, 0);
     }
 
     protected Coordinate indexToPixels(Coordinate c) {
         int x = c.x();
         int y = c.y();
+        int z = c.z();
 
-        int xPixels = (int) Math.round(x * edge);
-        int yPixels = (int) Math.round(y * edge);
+        if (z != zMiddle) {
+            throw new IllegalStateException("Attempting to plot non-middle point in CubePixelTranslator.");
+        }
+
+        int xPixels = x * edge;
+        int yPixels = y * edge;
 
         Coordinate center = new Coordinate(xPixels, yPixels, 0);
 
@@ -75,7 +114,7 @@ public class RectPixelTranslator extends PixelTranslator {
 
     @Override
     public boolean equals(Object obj) {
-        return (obj instanceof RectPixelTranslator);
+        return (obj instanceof CubePixelTranslator);
     }
 
     @Override
@@ -87,7 +126,7 @@ public class RectPixelTranslator extends PixelTranslator {
     public Polygon makePolygon(Coordinate c, int frame, double time) {
         Coordinate centerPx = resolve(c, frame, time);
         Polygon p = new Polygon();
-        int d = (int) Math.round(edge / 2);
+        int d = edge / 2;
 
         p.addPoint(centerPx.x() - d, centerPx.y() - d);
         p.addPoint(centerPx.x() + d, centerPx.y() - d);
@@ -104,6 +143,6 @@ public class RectPixelTranslator extends PixelTranslator {
 
     @Override
     public boolean isRetained(Coordinate c) {
-        return true;
+        return (c.z() == zMiddle);
     }
 }

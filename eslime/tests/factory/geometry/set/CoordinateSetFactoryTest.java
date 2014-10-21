@@ -39,21 +39,21 @@ public class CoordinateSetFactoryTest extends EslimeTestCase {
 
     public void testDefault() throws Exception {
         // Element does not actually exist, so e is null
-        Element e = root.element("default");
+        Element e = root.element("default-case");
         CoordinateSet expected = new CompleteSet(g);
         CoordinateSet actual = CoordinateSetFactory.instantiate(e, g, p);
         assertEquals(expected, actual);
     }
 
     public void testAll() throws Exception {
-        Element e = root.element("all");
+        Element e = root.element("all-case");
         CoordinateSet expected = new CompleteSet(g);
         CoordinateSet actual = CoordinateSetFactory.instantiate(e, g, p);
         assertEquals(expected, actual);
     }
 
     public void testDisc() throws Exception {
-        Element e = root.element("disc");
+        Element e = root.element("disc-case");
         Coordinate offset = g.getZeroVector();
         Argument<Integer> radius = new ConstantInteger(1);
         CoordinateSet expected = new DiscSet(g, radius, offset);
@@ -62,7 +62,7 @@ public class CoordinateSetFactoryTest extends EslimeTestCase {
     }
 
     public void testList() throws Exception {
-        Element e = root.element("list");
+        Element e = root.element("list-case");
         CoordinateSet expected = new CustomSet();
         CoordinateSet actual = CoordinateSetFactory.instantiate(e, g, p);
         assertEquals(expected, actual);

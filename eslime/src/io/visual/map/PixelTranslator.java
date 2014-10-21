@@ -24,7 +24,7 @@ public abstract class PixelTranslator {
     // Lower left coordinate, in pixel space
     protected Coordinate origin;
 
-    protected double edge;
+    protected int edge;
 
     /**
      * Load required state from the map and construct coordinate to pixel
@@ -70,4 +70,10 @@ public abstract class PixelTranslator {
      */
     public abstract double getDiagonal();
 
+    /**
+     * Returns true iff the specified coordinate is to be plotted.
+     * @param c
+     * @return
+     */
+    public abstract boolean isRetained(Coordinate c);
 }

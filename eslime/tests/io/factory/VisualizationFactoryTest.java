@@ -44,7 +44,7 @@ public class VisualizationFactoryTest extends EslimeTestCase {
     public void testMapCase() {
         Element root = fixtureRoot.element("map-case");
         Visualization actual = VisualizationFactory.instantiate(root, p);
-        double edge = MapVisualizationFactory.DEFAULT_EDGE;
+        int edge = MapVisualizationFactory.DEFAULT_EDGE;
         int outline = MapVisualizationFactory.DEFAULT_OUTLINE;
         VisualizationProperties properties = makeProperties(edge, outline);
         Visualization expected = new MapVisualization(properties);
@@ -58,7 +58,7 @@ public class VisualizationFactoryTest extends EslimeTestCase {
     public void testKymographCase() {
         Element root = fixtureRoot.element("kymograph-case");
         Visualization actual = VisualizationFactory.instantiate(root, p);
-        double edge = KymographFactory.DEFAULT_EDGE;
+        int edge = KymographFactory.DEFAULT_EDGE;
         int outline = KymographFactory.DEFAULT_OUTLINE;
         VisualizationProperties properties = makeProperties(edge, outline);
         Visualization expected = new Kymograph(properties);
@@ -69,7 +69,7 @@ public class VisualizationFactoryTest extends EslimeTestCase {
         assertEquals(expected, actual);
     }
 
-    private VisualizationProperties makeProperties(double edge, int outline) {
+    private VisualizationProperties makeProperties(int edge, int outline) {
         ColorManager colorManager = new DefaultColorManager();
         HighlightManager highlightManager = new HighlightManager();
         VisualizationProperties visualizationProperties = new VisualizationProperties(colorManager, edge, outline);

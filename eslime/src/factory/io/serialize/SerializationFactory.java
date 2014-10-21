@@ -49,6 +49,9 @@ public abstract class SerializationFactory {
         } else if (writerClass.equalsIgnoreCase("census-writer")) {
             CensusWriter freq = new CensusWriter(p);
             return freq;
+        } else if (writerClass.equalsIgnoreCase("surface-census-writer")) {
+            SurfaceCensusWriter freq = new SurfaceCensusWriter(p);
+            return freq;
         } else if (writerClass.equalsIgnoreCase("individual-halt-writer")) {
             IndividualHaltWriter writer = new IndividualHaltWriter(p);
             return writer;

@@ -115,4 +115,10 @@ public class SerializationFactoryTest extends EslimeTestCase {
     public void testRandomSeedWriter() {
         doTest("random-seed-writer", RandomSeedWriter.class);
     }
+
+    public void testSurfaceCensusWriter() {
+        doTest("surface-census-writer", SurfaceCensusWriter.class);
+
+    }
+
 }

@@ -60,16 +60,16 @@ public class TargetFactoryTest extends EslimeTestCase {
 
         /*
             <self>
-               <filter>
+               <filters>
                   <cell-state>
                      <state>1</state>
                   </cell-state>
-               </filter>
+               </filters>
             </self>
          */
         Filter expFilter = new CellStateFilter(cellLayer, new ConstantInteger(1));
         Element element = createTargetElement("self");
-        Element filterElem = new BaseElement("filter");
+        Element filterElem = new BaseElement("filters");
         Element classElem = new BaseElement("cell-state");
         Element stateElem = new BaseElement("state");
         stateElem.setText("1");

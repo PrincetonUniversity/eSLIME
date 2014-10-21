@@ -24,8 +24,8 @@ public class PixelTranslatorFactory {
             return new TriPixelTranslator();
 
             // Cubic lattide
-        } else if (d == 2 && c == 3) {
-            throw new UnsupportedOperationException("Support for cubic lattice not yet implemented. (Hint: it should consist of a grid of rectangular grids.");
+        } else if (d == 3 && c == 3) {
+            return new CubePixelTranslator();
 
         } else if (d == 1 && c == 1)  {
             return new RectPixelTranslator();

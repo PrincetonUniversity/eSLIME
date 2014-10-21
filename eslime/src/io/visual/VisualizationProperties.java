@@ -29,7 +29,7 @@ public class VisualizationProperties {
     private HighlightManager highlightManager;
 
     // How long each edge should be. Sets visual scale.
-    private double edge;
+    private int edge;
 
     // How wide should any outlines be?
     private int outline;
@@ -38,7 +38,7 @@ public class VisualizationProperties {
     private int[] frames;
     private double[] times;
 
-    public VisualizationProperties(ColorManager colorManager, double edge,
+    public VisualizationProperties(ColorManager colorManager, int edge,
                                    int outline) {
         if (outline > 1) {
             throw new UnsupportedOperationException("Thick outlines not " +
@@ -112,7 +112,7 @@ public class VisualizationProperties {
         return colorManager;
     }
 
-    public double getEdge() {
+    public int getEdge() {
         return edge;
     }
 

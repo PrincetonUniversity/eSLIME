@@ -28,6 +28,10 @@ public class CoordinateRenderer {
     }
 
     public void render(Coordinate c, SystemState systemState) {
+        if (!translator.isRetained(c)) {
+            return;
+        }
+
         renderFill(c, systemState);
 
         if (mapState.getOutline() != 0) {

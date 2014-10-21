@@ -3,14 +3,19 @@
  *  Princeton University. All rights reserved.
  */
 
+/*
+ *  Copyright (c) 2014 David Bruce Borenstein and the Trustees of
+ *  Princeton University. All rights reserved.
+ */
+
 package io.serialize.text;
 
 import control.GeneralParameters;
 import control.halt.HaltCondition;
+import control.identifiers.Coordinate;
 import io.serialize.Serializer;
 import layers.LayerManager;
 import layers.cell.CellLayer;
-import layers.cell.StateMapViewer;
 import processes.StepState;
 
 import java.io.BufferedWriter;
@@ -24,9 +29,9 @@ import java.util.TreeSet;
  *
  * @author dbborens
  */
-public class CensusWriter extends Serializer {
+public class SurfaceCensusWriter extends Serializer {
 
-    private static final String FILENAME = "census.txt";
+    private static final String FILENAME = "surface_census.txt";
 
     // It is necessary to flush all data at the end of each iteration, rather
     // than after each flush event, because a state may appear for the first
@@ -43,11 +48,9 @@ public class CensusWriter extends Serializer {
 //    HashSet<Integer> observedStates = new HashSet<>();
     HashSet<Integer> observedStates;
 
-    private LayerManager lm;
-
     private BufferedWriter bw;
 
-    public CensusWriter(GeneralParameters p) {
+    public SurfaceCensusWriter(GeneralParameters p) {
         super(p);
     }
 
@@ -61,34 +64,51 @@ public class CensusWriter extends Serializer {
         String filename = p.getInstancePath() + '/' + FILENAME;
         mkDir(p.getInstancePath(), true);
         bw = makeBufferedWriter(filename);
-        this.lm = lm;
+    }
+
+    private void increment(HashMap<Integer, Integer> observations, int state) {
+        if (!observations.containsKey(state)) {
+            observations.put(state, 0);
+        }
+
+        int value = observations.get(state);
+        observations.put(state, value+1);
+        observedStates.add(state);
+    }
+
+    private boolean isAtFront(Coordinate c, CellLayer layer) {
+        int[] neighborStates = layer.getLookupManager().getNeighborStates(c, false);
+
+        // If any neighbor is 0 (vacant), the point is at the front
+        for (int neighborState : neighborStates) {
+            if (neighborState == 0) {
+                return true;
+            }
+        }
+        // If none of the neighbors are vacant, the point is interior
+        return false;
     }
 
     @Override
     public void flush(StepState stepState) {
         CellLayer layer = stepState.getRecordedCellLayer();
-        doFlush(layer, stepState.getFrame());
-    }
-
-    private void doFlush(CellLayer layer, int t) {
-        frames.add(t);
+        frames.add(stepState.getFrame());
 
         // Create a bucket for this frame.
         HashMap<Integer, Integer> observations = new HashMap<>();
-        histo.put(t, observations);
+        histo.put(stepState.getFrame(), observations);
 
-        // Iterate over all observed states for this frame.
-        StateMapViewer smv = layer.getViewer().getStateMapViewer();
-        for (Integer state : smv.getStates()) {
-            Integer count = smv.getCount(state);
-            observations.put(state, count);
-            observedStates.add(state);
+        // Iterate over all occupied sites.
+        for (Coordinate c : layer.getViewer().getOccupiedSites()) {
+            // Is it at the front? If so, count it.
+            if (isAtFront(c, layer)) {
+                int state = layer.getViewer().getState(c);
+                increment(observations, state);
+            }
         }
-
     }
+
     public void dispatchHalt(HaltCondition ex) {
-        int t = (int) Math.round(ex.getGillespie());
-        doFlush(lm.getCellLayer(), t);
         conclude();
         closed = true;
     }

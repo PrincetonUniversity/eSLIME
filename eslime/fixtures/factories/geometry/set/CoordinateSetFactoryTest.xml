@@ -5,9 +5,15 @@
 
 <fixture>
 
-    <all />
+    <all-case>
+        <all />
+    </all-case>
 
-    <disc />
+    <disc-case>
+        <disc />
+    </disc-case>
 
-    <list />
+    <list-case>
+        <list />
+    </list-case>
 </fixture>

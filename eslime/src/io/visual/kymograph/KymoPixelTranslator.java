@@ -56,18 +56,18 @@ public class KymoPixelTranslator extends PixelTranslator {
                     "coordinate in kymograph. Kymograph requires a 1D system.");
         }
 
-        int dy = (int) edge * (yMax - yMin + 1);
+        int dy = edge * (yMax - yMin + 1);
 
         int n = properties.getFrames().length;
         int lastFrame = properties.getFrames()[n - 1];
-        int dt = (int) edge * (lastFrame + 1);
+        int dt = edge * (lastFrame + 1);
         imageDims = new Coordinate(dt, dy, 0);
     }
 
     @Override
     protected void calcOrigin() {
-        int t = (int) Math.round(edge / 2);
-        int y = (int) Math.round(edge / 2);
+        int t = edge / 2;
+        int y = edge / 2;
         origin = new Coordinate(t, y, 0);
 
     }
@@ -77,8 +77,8 @@ public class KymoPixelTranslator extends PixelTranslator {
         int x = frame;
         int y = c.y();
 
-        int xPixels = (int) Math.round(x * edge);
-        int yPixels = (int) Math.round(y * edge);
+        int xPixels = x * edge;
+        int yPixels = y * edge;
 
         Coordinate center = new Coordinate(xPixels, yPixels, 0);
 
@@ -98,11 +98,12 @@ public class KymoPixelTranslator extends PixelTranslator {
     public Polygon makePolygon(Coordinate c, int frame, double time) {
         Coordinate centerPx = resolve(c, frame, time);
         Polygon p = new Polygon();
-        int d = (int) Math.round(edge / 2);
+        int d = edge / 2;
 
-        p.addPoint(centerPx.x() - d, centerPx.y() - d);
-        p.addPoint(centerPx.x() + d, centerPx.y() - d);
-        p.addPoint(centerPx.x() + d, centerPx.y() + d);
+        // This is broken right now, and using outlines will require a rethink.
+        p.addPoint(centerPx.x() - d, centerPx.y() - d - 1);
+        p.addPoint(centerPx.x() + d + 1, centerPx.y() - d - 1);
+        p.addPoint(centerPx.x() + d + 1, centerPx.y() + d);
         p.addPoint(centerPx.x() - d, centerPx.y() + d);
 
         return p;
@@ -111,5 +112,10 @@ public class KymoPixelTranslator extends PixelTranslator {
     @Override
     public double getDiagonal() {
         return Math.sqrt(2) * edge;
+    }
+
+    @Override
+    public boolean isRetained(Coordinate c) {
+        return true;
     }
 }

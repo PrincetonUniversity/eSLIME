@@ -56,7 +56,7 @@ public class ActionFactoryTest extends EslimeTestCase {
     public void testDie() throws Exception {
         Element e = fixtureRoot.element("die");
         Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
-        Action expected = new Die(callback, layerManager);
+        Action expected = new Die(callback, layerManager, null);
         assertEquals(expected, actual);
     }
 

@@ -20,7 +20,7 @@ import structural.utilities.XmlUtil;
  */
 public abstract class KymographFactory {
 
-    public static final double DEFAULT_EDGE = 10.0;
+    public static final int DEFAULT_EDGE = 10;
 
     // You often don't want a cell outline for a kymograph. Default to 0.
     public static final int DEFAULT_OUTLINE = 0;
@@ -33,11 +33,14 @@ public abstract class KymographFactory {
         ColorManager colorManager = makeColorManager(mapElement, p);
 
         // Get edge size
-        double edge = getEdge(mapElement);
+        int edge = getEdge(mapElement);
 
         // Get outline thickness
         int outline = getOutline(mapElement);
 
+        if (outline != 0) {
+            throw new UnsupportedOperationException("Outlines on kymographs are currently broken.");
+        }
         // Construct map state object
         VisualizationProperties properties = makeProperties(highlightManager, colorManager, edge, outline);
 
@@ -49,7 +52,7 @@ public abstract class KymographFactory {
 
     private static VisualizationProperties makeProperties(HighlightManager highlightManager,
                                                           ColorManager colorManager,
-                                                          double edge, int outline) {
+                                                          int edge, int outline) {
 
         VisualizationProperties properties = new VisualizationProperties(colorManager, edge, outline);
         properties.setHighlightManager(highlightManager);
@@ -68,8 +71,8 @@ public abstract class KymographFactory {
         return ret;
     }
 
-    private static double getEdge(Element root) {
-        double edge = XmlUtil.getDouble(root, "edge", DEFAULT_EDGE);
+    private static int getEdge(Element root) {
+        int edge = XmlUtil.getInteger(root, "edge", DEFAULT_EDGE);
         return edge;
     }
 

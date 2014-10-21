@@ -11,6 +11,8 @@ import geometry.set.CompleteSet;
 import geometry.set.CoordinateSet;
 import org.dom4j.Element;
 
+import java.util.List;
+
 /**
  * Created by dbborens on 7/28/14.
  */
@@ -21,14 +23,15 @@ public abstract class CoordinateSetFactory {
             return new CompleteSet(geom);
         }
 
-        String name = e.getName();
+        Element descriptor = getDescriptor(e);
+        String name = descriptor.getName();
 
         if (name.equalsIgnoreCase("all")) {
             return new CompleteSet(geom);
         } else if (name.equals("disc")) {
-            return DiscSetFactory.instantiate(e, geom, p);
+            return DiscSetFactory.instantiate(descriptor, geom, p);
         } else if (name.equals("list")) {
-            return CustomSetFactory.instantiate(e, geom);
+            return CustomSetFactory.instantiate(descriptor, geom);
         } else if (name.equals("line")) {
             throw new UnsupportedOperationException("Coordinate set 'line' has been disabled until it is re-implemented in standard Factory logic and tested thoroughly.");
         } else if (name.equals("rectangle")) {
@@ -36,5 +39,14 @@ public abstract class CoordinateSetFactory {
         } else {
             throw new IllegalArgumentException("Unrecognized coordinate set '" + name + "'");
         }
+    }
+
+    private static Element getDescriptor(Element e) {
+        List<Object> children = e.elements();
+        if (children.size() != 1) {
+            throw new IllegalStateException("Expect single child (descriptor) for coordinate set definition, but got " + children.size() + ".");
+        }
+
+        return (Element) children.iterator().next();
     }
 }

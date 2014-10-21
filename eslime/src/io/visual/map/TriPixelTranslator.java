@@ -16,10 +16,33 @@ import java.awt.*;
 public class TriPixelTranslator extends PixelTranslator {
 
     private int yOffset;
+    private int dy;
+    private int dx;
+
+    @Override
+    public boolean isRetained(Coordinate c) {
+        return true;
+    }
+
+    @Override
+    public void init(VisualizationProperties properties) {
+        int edge = properties.getEdge();
+        dx = 3 * edge / 2;
+
+        double dyFP = Math.sqrt(3.0f) * edge;
+        dy = (int) Math.round(dyFP);
+
+        // We want both dx and dy to be even
+        if (dy % 2 != 0) {
+            dy += 1;
+        }
+
+        super.init(properties);
+    }
 
     @Override
     public double getDiagonal() {
-        return 2 * edge;
+        return 2.0 * edge;
     }
 
     @Override
@@ -77,32 +100,27 @@ public class TriPixelTranslator extends PixelTranslator {
             }
         }
 
-        int dy = (int) Math.ceil((yMax - yMin) + (Math.sqrt(3.0) * edge));
-        int dx = (int) Math.ceil(xMax - xMin + (2 * edge)) + 1;
-        imageDims = new Coordinate(dx, dy, 0);
+        int y = (yMax - yMin) + dy;
+        int x = xMax - xMin + (2 * edge) + 1;
+        imageDims = new Coordinate(x, y, 0);
         calcYOffset(yMin);
     }
 
     private void calcYOffset(int y) {
-        int y0 = (int) (indexToOffset(0, 0).y() - (0.5 * Math.sqrt(3.0) * edge));
+        int y0 = indexToOffset(0, 0).y() - (dy / 2);
         yOffset = y - y0;
     }
 
     @Override
     protected void calcOrigin() {
-        int x = (int) Math.round(edge);
-        int y = (int) Math.round(edge * Math.sqrt(3.0f)) - yOffset;
+        int x = (int) Math.floor(edge);
+        int y = dy - yOffset;
         origin = new Coordinate(x, y, 0);
     }
 
     private Coordinate indexToOffset(int x, int y) {
-        double xOffsetFP = edge * (double) x * 1.5;
-        int ox = (int) Math.round(xOffsetFP);
-
-        double yOffsetFP = (-0.5f * Math.sqrt(3.0f) * edge * (double) x)
-                + (Math.sqrt(3.0f) * edge * (double) y);
-        int oy = (int) Math.round(yOffsetFP);
-
+        int ox = dx * x;
+        int oy = -(dy * x / 2) + (dy * y);
         Coordinate ret = new Coordinate(ox, oy, 0);
         return (ret);
     }
@@ -110,12 +128,12 @@ public class TriPixelTranslator extends PixelTranslator {
     public Polygon makePolygon(Coordinate coord, int frame, double time) {
         Coordinate centerPx = resolve(coord, frame, time);
         Polygon p = new Polygon();
-        for (double theta = 0d; theta < 360d; theta += 60d) {
-            double rad = (theta / 180) * Math.PI;
-            int x1 = (int) Math.round(centerPx.x() + edge * Math.cos(rad));
-            int y1 = (int) Math.round(centerPx.y() + edge * Math.sin(rad));
-            p.addPoint(x1, y1);
-        }
+        p.addPoint(centerPx.x() + edge, centerPx.y());
+        p.addPoint(centerPx.x() + (edge / 2), centerPx.y() - (dy / 2));
+        p.addPoint(centerPx.x() - (edge / 2) - 1, centerPx.y() - (dy / 2));
+        p.addPoint(centerPx.x() - (edge) - 1, centerPx.y());
+        p.addPoint(centerPx.x() - (edge / 2) - 1, centerPx.y() + (dy / 2));
+        p.addPoint(centerPx.x() + (edge / 2), centerPx.y() + (dy / 2));
 
         return p;
     }

@@ -68,7 +68,7 @@ public class KymographFactoryTest extends EslimeTestCase {
     private Kymograph makeMinimalCase() {
         ColorManager colorManager = new DefaultColorManager();
         HighlightManager highlightManager = new HighlightManager();
-        double edge = 10.0;
+        int edge = 10;
 
         VisualizationProperties mapState = new VisualizationProperties(colorManager, edge, 0);
         mapState.setHighlightManager(highlightManager);
@@ -81,7 +81,7 @@ public class KymographFactoryTest extends EslimeTestCase {
         ColorManager colorManager = new DefaultColorManager();
         HighlightManager highlightManager = new HighlightManager();
         highlightManager.setGlyph(0, new MockGlyph());
-        double edge = 5.0;
+        int edge = 5;
 
         VisualizationProperties mapState = new VisualizationProperties(colorManager, edge, 0);
         mapState.setHighlightManager(highlightManager);
