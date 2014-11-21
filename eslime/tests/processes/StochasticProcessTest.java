@@ -5,7 +5,6 @@
 
 package processes;
 
-import com.sun.deploy.util.ArrayUtil;
 import control.GeneralParameters;
 import control.arguments.Argument;
 import control.arguments.UniformInteger;

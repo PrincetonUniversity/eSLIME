@@ -6,7 +6,7 @@
 package io.serialize.text;
 
 import cells.MockCell;
-import control.GeneralParameters;
+import control.halt.ManualHaltEvent;
 import control.identifiers.Coordinate;
 import layers.cell.CellUpdateManager;
 import processes.StepState;
@@ -17,10 +17,19 @@ import test.EslimeLatticeTestCase;
  * Created by dbborens on 4/28/14.
  */
 public class CensusWriterTest extends EslimeLatticeTestCase {
+    private MockGeneralParameters p;
+    private CensusWriter writer;
+    private ManualHaltEvent haltEvent;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        p = makeMockGeneralParameters();
+        writer = new CensusWriter(p);
+        haltEvent = new ManualHaltEvent("");
+    }
 
     public void testLifeCycle() throws Exception {
-        GeneralParameters p = makeMockGeneralParameters();
-        CensusWriter writer = new CensusWriter(p);
         writer.init(layerManager);
         // Create original configuration
         put(origin, 1);
@@ -45,7 +54,8 @@ public class CensusWriterTest extends EslimeLatticeTestCase {
         state.record(cellLayer);
         writer.flush(state);
 
-        writer.dispatchHalt(null);
+        haltEvent.setGillespie(2.0);
+        writer.dispatchHalt(haltEvent);
         writer.close();
         assertFilesEqual("census.txt");
     }
@@ -56,15 +66,14 @@ public class CensusWriterTest extends EslimeLatticeTestCase {
      *
      */
     public void testCycleIndependence() throws Exception {
-        MockGeneralParameters p = makeMockGeneralParameters();
+        haltEvent.setGillespie(0);
         p.setInstancePath(outputPath + "censusWriterTest/1/");
-        CensusWriter writer = new CensusWriter(p);
         writer.init(layerManager);
         StepState state = new StepState(0.0, 0);
         put(origin, 1);
         state.record(cellLayer);
         writer.flush(state);
-        writer.dispatchHalt(null);
+        writer.dispatchHalt(haltEvent);
 
         p.setInstancePath(outputPath + "censusWriterTest/2/");
         writer.init(layerManager);
@@ -73,7 +82,7 @@ public class CensusWriterTest extends EslimeLatticeTestCase {
         state = new StepState(0.0, 0);
         state.record(cellLayer);
         writer.flush(state);
-        writer.dispatchHalt(null);
+        writer.dispatchHalt(haltEvent);
         writer.close();
 
         assertFilesEqual("censusWriterTest/1/census.txt");

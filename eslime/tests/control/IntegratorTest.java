@@ -94,6 +94,12 @@ public class IntegratorTest extends EslimeTestCase {
     }
 
     public void testTimeAppliedAtMaxStep() throws Exception {
-        fail("Not yet implemented");
+        p.setT(5);
+        mgr.setStepStateDt(2.0);
+        mgr.setTriggeredProcesses(new Process[0]);
+        ExposedIntegrator query = new ExposedIntegrator(p, mgr, sm);
+        HaltCondition ret = query.go();
+        assertTrue(ret instanceof StepMaxReachedEvent);
+        assertEquals(10.0, ret.getGillespie(), epsilon);
     }
 }

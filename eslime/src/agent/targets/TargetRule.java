@@ -73,7 +73,7 @@ public abstract class TargetRule {
         }
 
         // Otherwise, permute and choose the first n, where n = maximum.
-        Collections.shuffle(candidates);
+        Collections.shuffle(candidates, random);
 
         List<Coordinate> reduced = candidates.subList(0, maximum);
 

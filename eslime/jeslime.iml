@@ -19,7 +19,7 @@
       <sourceFolder url="file://$MODULE_DIR$/mocks" isTestSource="false" />
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="jdk" jdkName="1.7" jdkType="JavaSDK" />
+    <orderEntry type="inheritedJdk" />
     <orderEntry type="module-library" exported="">
       <library name="arpack_combo-0.1.jar">
         <CLASSES>
@@ -94,4 +94,3 @@
     </orderEntry>
   </component>
 </module>
-

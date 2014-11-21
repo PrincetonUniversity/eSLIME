@@ -5,10 +5,106 @@
 
 package io.serialize.text;//import junit.framework.TestCase;
 
+import cells.MockCell;
+import control.halt.ManualHaltEvent;
+import control.identifiers.Coordinate;
+import geometry.Geometry;
+import geometry.boundaries.Arena;
+import geometry.boundaries.Boundary;
+import geometry.lattice.Lattice;
+import geometry.lattice.LinearLattice;
+import geometry.shape.Line;
+import geometry.shape.Shape;
+import layers.MockLayerManager;
+import layers.cell.CellLayer;
+import layers.cell.CellUpdateManager;
+import processes.StepState;
+import structural.MockGeneralParameters;
 import test.EslimeTestCase;
 
 public class SurfaceCensusWriterTest extends EslimeTestCase {
-    public void testNothing() {
-        fail("Base these tests on whatever I have for the bulk census.");
+    private MockGeneralParameters p;
+    private SurfaceCensusWriter writer;
+    private ManualHaltEvent haltEvent;
+    private Geometry geom;
+    private MockLayerManager layerManager;
+    private CellLayer cellLayer;
+    public void setUp() throws Exception {
+        super.setUp();
+        p = makeMockGeneralParameters();
+        writer = new SurfaceCensusWriter(p);
+
+        Lattice lattice = new LinearLattice();
+        Shape shape = new Line(lattice, 10);
+        Boundary boundary = new Arena(shape, lattice);
+        geom = new Geometry(lattice, shape, boundary);
+
+        cellLayer = new CellLayer(geom);
+        layerManager = new MockLayerManager();
+        layerManager.setCellLayer(cellLayer);
+        haltEvent = new ManualHaltEvent("");
+    }
+
+    public void testLifeCycle() throws Exception {
+        writer.init(layerManager);
+
+        // Place single cell at center -- it is the surface
+        StepState state = new StepState(0.0, 0);
+        put(5, 1);
+        state.record(cellLayer);
+        writer.flush(state);
+
+        // Place a cell to its left -- both surface
+        put(4, 1);
+        state = new StepState(1.0, 1);
+        state.record(cellLayer);
+        writer.flush(state);
+
+        // Place a cell to the right of the original -- now the center is not surface
+        put(6, 2);
+        state = new StepState(2.0, 2);
+        state.record(cellLayer);
+        writer.flush(state);
+
+        // Replace left cell with a different state
+        replace(4, 2);
+        state = new StepState(3.0, 3);
+        state.record(cellLayer);
+        writer.flush(state);
+
+        haltEvent.setGillespie(3.0);
+        writer.dispatchHalt(haltEvent);
+        writer.close();
+        assertFilesEqual("surface_census.txt");
+    }
+
+    public void testImaginarySites() throws Exception {
+        writer.init(layerManager);
+
+        // Place cells in imaginary sites -- they should be treated normally
+        StepState state = new StepState(0.0, 0);
+        put(-2, 2);
+        put(-1, 1);
+        state.record(cellLayer);
+        writer.flush(state);
+        haltEvent.setGillespie(0.0);
+        writer.dispatchHalt(haltEvent);
+        writer.close();
+        assertFilesEqual("surface_census_imaginary.txt", "surface_census.txt");
+    }
+
+    private void replace(int y, int state) throws Exception {
+        Coordinate c = new Coordinate(0, y, 0);
+        CellUpdateManager u = cellLayer.getUpdateManager();
+        u.banish(c);
+        MockCell cell = new MockCell(state);
+        u.place(cell, c);
+    }
+
+    private void put(int y, int state) throws Exception {
+        Coordinate c = new Coordinate(0, y, 0);
+        MockCell cell = new MockCell(state);
+        CellUpdateManager u = cellLayer.getUpdateManager();
+        u.place(cell, c);
     }
 }

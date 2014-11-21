@@ -34,6 +34,7 @@ public class TargetRuleTest extends EslimeTestCase {
     private Coordinate left, right, center;
     private Random random;
     private Filter filter;
+
     @Override
     public void setUp() throws Exception {
         // Restart RN generator
@@ -86,7 +87,6 @@ public class TargetRuleTest extends EslimeTestCase {
         List<Coordinate> expected = new ArrayList<>(1);
         expected.add(right);
 
-        // Should contain all neighbors
         assertEquals(expected, actual);
     }
 
@@ -98,7 +98,6 @@ public class TargetRuleTest extends EslimeTestCase {
         List<Coordinate> expected = new ArrayList<>(1);
         expected.add(left);
 
-        // Should contain all neighbors
         assertEquals(expected, actual);
     }
 
@@ -110,7 +109,6 @@ public class TargetRuleTest extends EslimeTestCase {
         List<Coordinate> expected = new ArrayList<>(1);
         expected.add(center);
 
-        // Should contain all neighbors
         assertEquals(expected, actual);
     }
 
@@ -183,9 +181,8 @@ public class TargetRuleTest extends EslimeTestCase {
         // Get target list
         List<Coordinate> actual = query.report(null);
         List<Coordinate> expected = new ArrayList<>(1);
-        expected.add(right);
+        expected.add(left);
 
-        // Should contain all neighbors
         assertEquals(expected, actual);
     }
 

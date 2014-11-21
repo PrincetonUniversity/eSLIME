@@ -65,10 +65,6 @@ public class TriggerTest extends EslimeTestCase {
         targets.add(o);
         targetRule.setTargets(targets);
 
-//        selfChannel = new ConstantInteger(1);
-//        targetChannel = new ConstantInteger(2);
-        // Create a trigger action.
-//        query = new Trigger(causeCell, layerManager, effectName, targetRule, selfChannel, targetChannel);
         query = new Trigger(causeCell, layerManager, effectName, targetRule, null, null);
     }
 
@@ -153,10 +149,5 @@ public class TriggerTest extends EslimeTestCase {
         expected = new Coordinate[]{o};
         actual = stepState.getHighlights(4);
         assertArraysEqual(expected, actual, true);
-    }
-
-    public void testNoTargetsMeansNoChange() throws Exception {
-        // Verify that, if there is nowhere for an event to take place, nothing happens
-        fail("Not yet implemented");
     }
 }

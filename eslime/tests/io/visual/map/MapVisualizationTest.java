@@ -5,15 +5,19 @@
 
 package io.visual.map;
 
+import control.identifiers.Coordinate;
 import geometry.Geometry;
 import geometry.boundaries.Arena;
 import geometry.boundaries.Boundary;
+import geometry.lattice.CubicLattice;
 import geometry.lattice.Lattice;
 import geometry.lattice.RectangularLattice;
 import geometry.lattice.TriangularLattice;
+import geometry.shape.Cuboid;
 import geometry.shape.Hexagon;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
+import io.deserialize.MockCoordinateDeindexer;
 import io.visual.VisualizationProperties;
 import io.visual.color.ColorManager;
 import io.visual.color.DefaultColorManager;
@@ -127,7 +131,49 @@ public class MapVisualizationTest extends GlyphTest {
 
     }
 
+    /**
+     * The cube visualization shows only the middle slice. So we populate
+     * every slice but the middle slice with a checkerboard of red and blue,
+     * and the middle slice with only yellow. We expect an image containing
+     * only yellow tiles.
+     *
+     * @throws Exception
+     */
     public void testCube() throws Exception {
-        fail("Not yet implemented. Try making the in-view plane blue, and the rest red. The test image should be all blue.");
+        Lattice lattice = new CubicLattice();
+        Shape shape = new Cuboid(lattice, 5, 5, 5);
+        Boundary boundary = new Arena(shape, lattice);
+        Geometry geom = new Geometry(lattice, shape, boundary);
+        ColorManager colorManager = new DefaultColorManager();
+        VisualizationProperties mapState = new VisualizationProperties(colorManager, 25, 1);
+        HighlightManager highlightManager = new HighlightManager();
+        mapState.setHighlightManager(highlightManager);
+        MapVisualization map = new MapVisualization(mapState);
+        map.init(geom, null, null);
+        systemState = makeSystemState(geom);
+        remakeStatesForCube(geom);
+        BufferedImage result = map.render(systemState);
+        File file = new File(outputPath + "cube.png");
+        ImageIO.write(result, "png", file);
+
+        assertBinaryFilesEqual("glyphs/cube.png", "cube.png");
+    }
+
+    private void remakeStatesForCube(Geometry geom) {
+        MockCoordinateDeindexer deindexer = new MockCoordinateDeindexer();
+        deindexer.setUnderlying(geom.getCanonicalSites());
+        int n = geom.getCanonicalSites().length;
+        double[] health = new double[n];
+        int[] state = new int[n];
+        for (int i = 0; i < n; i++) {
+            health[i] = (i % 2) + 1;
+            Coordinate c = deindexer.getCoordinate(i);
+            if (c.z() == 2) {
+                state[i] = 3;
+            } else {
+                state[i] = ((i + 1) % 2) + 1;
+            }
+        }
+        ((LightweightSystemState) systemState).initCellLayer(state, health);
     }
 }

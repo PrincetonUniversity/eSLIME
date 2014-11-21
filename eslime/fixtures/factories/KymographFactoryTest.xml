@@ -17,7 +17,7 @@
             <class>default</class>
         </color>
 
-        <edge>5.0</edge>
+        <edge>5</edge>
     </typical-case>
 
     <minimal-case/>
