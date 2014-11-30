@@ -15,17 +15,18 @@ import io.serialize.text.*;
 import org.dom4j.Element;
 import org.dom4j.tree.BaseElement;
 import structural.MockGeneralParameters;
-import test.EslimeTestCase;
+import test.EslimeLatticeTestCase;
 
 /**
  * Created by dbborens on 1/17/14.
  */
-public class SerializationFactoryTest extends EslimeTestCase {
+public class SerializationFactoryTest extends EslimeLatticeTestCase {
 
     private MockGeneralParameters p;
 
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         p = new MockGeneralParameters();
         p.setInstancePath(outputPath);
         p.setPath(outputPath);
@@ -33,7 +34,7 @@ public class SerializationFactoryTest extends EslimeTestCase {
 
     private void doTest(String elementName, Class expected) {
         Element e = new BaseElement(elementName);
-        Serializer result = SerializationFactory.instantiate(e, p);
+        Serializer result = SerializationFactory.instantiate(e, p, layerManager);
         Class actual = result.getClass();
         assertEquals(expected, actual);
     }
@@ -87,8 +88,8 @@ public class SerializationFactoryTest extends EslimeTestCase {
         channels.add(c2);
         e.add(channels);
 
-        Serializer actual = SerializationFactory.instantiate(e, p);
-        Serializer expected = new HighlightWriter(p, new int[] {3, 5});
+        Serializer actual = SerializationFactory.instantiate(e, p, layerManager);
+        Serializer expected = new HighlightWriter(p, new int[]{3, 5}, layerManager);
         assertEquals(expected, actual);
     }
 
@@ -99,7 +100,7 @@ public class SerializationFactoryTest extends EslimeTestCase {
         m.setText("mock");
         vp.add(m);
         e.add(vp);
-        Serializer result = SerializationFactory.instantiate(e, p);
+        Serializer result = SerializationFactory.instantiate(e, p, layerManager);
         Class actual = result.getClass();
         assertEquals(VisualizationSerializer.class, actual);
     }

@@ -25,13 +25,13 @@ public class RunningTimeWriter extends Serializer {
 
     private BufferedWriter bw;
 
-    public RunningTimeWriter(GeneralParameters p) {
-        super(p);
+    public RunningTimeWriter(GeneralParameters p, LayerManager lm) {
+        super(p, lm);
     }
 
     @Override
-    public void init(LayerManager lm) {
-        super.init(lm);
+    public void init() {
+        super.init();
         String filename = p.getInstancePath() + '/' + FILENAME;
         mkDir(p.getInstancePath(), true);
         bw = makeBufferedWriter(filename);

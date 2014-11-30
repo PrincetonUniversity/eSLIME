@@ -5,6 +5,8 @@
 
 package control.arguments;
 
+import control.halt.HaltCondition;
+
 /**
  * Beginning in eSLIME 0.5.1, any object constructed by a factory can be
  * implemented to use flexible primitive arguments. These replace traditional
@@ -17,5 +19,5 @@ public abstract class Argument<T> {
     @Override
     public abstract boolean equals(Object obj);
 
-    public abstract T next();
+    public abstract T next() throws HaltCondition;
 }

@@ -5,14 +5,10 @@
 
 package processes.discrete;
 
-import control.GeneralParameters;
-import control.arguments.Argument;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
-import geometry.set.CoordinateSet;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
+import processes.BaseProcessArguments;
 import processes.MaxTargetHelper;
 import processes.StepState;
 import processes.gillespie.GillespieState;
@@ -29,16 +25,18 @@ import java.util.Set;
  */
 public class OccupiedNeighborSwap extends CellProcess {
 
-    private List<Object> candidates = null;
-    private Argument<Integer> maxTargets;
+    private List<Object> candidates;
     private Geometry geom;
 
-    public OccupiedNeighborSwap(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id,
-                                GeneralParameters p, Argument<Integer> maxTargets) {
+    public OccupiedNeighborSwap(BaseProcessArguments arguments, CellProcessArguments cpArguments) {
 
-        super(loader, layerManager, activeSites, id, p);
+        super(arguments, cpArguments);
         geom = layer.getGeometry();
-        this.maxTargets = maxTargets;
+    }
+
+    @Override
+    public void init() {
+        candidates = null;
     }
 
     @Override
@@ -67,25 +65,12 @@ public class OccupiedNeighborSwap extends CellProcess {
         this.candidates = null;
     }
 
-    private Object[] selectTargets() {
+    private Object[] selectTargets() throws HaltCondition {
 
         Object[] selectedCoords = MaxTargetHelper.respectMaxTargets(candidates, maxTargets.next(), p.getRandom());
 
 
         return selectedCoords;
-    }
-
-    /**
-     * Convenience class for pairs of coordinates to swap.
-     */
-    private class SwapTuple {
-        public Coordinate p;
-        public Coordinate q;
-
-        public SwapTuple(Coordinate p, Coordinate q) {
-            this.p = p;
-            this.q = q;
-        }
     }
 
     @Override
@@ -119,6 +104,19 @@ public class OccupiedNeighborSwap extends CellProcess {
         // we halve the number of swaps.
         if (gs != null) {
             gs.add(getID(), candidates.size() / 2, coords.size() * 1.0D);
+        }
+    }
+
+    /**
+     * Convenience class for pairs of coordinates to swap.
+     */
+    private class SwapTuple {
+        public Coordinate p;
+        public Coordinate q;
+
+        public SwapTuple(Coordinate p, Coordinate q) {
+            this.p = p;
+            this.q = q;
         }
     }
 }

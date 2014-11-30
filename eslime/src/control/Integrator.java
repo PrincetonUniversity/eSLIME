@@ -13,10 +13,9 @@ import processes.StepState;
 public class Integrator {
 
     private final ProcessManager processManager;
+    protected double time = 0.0D;
     private GeneralParameters p;
     private SerializationManager serializationManager;
-
-    protected double time = 0.0D;
 
     public Integrator(GeneralParameters p, ProcessManager processManager,
                       SerializationManager serializationManager) {
@@ -34,7 +33,7 @@ public class Integrator {
      *
      * @return
      */
-    public HaltCondition go() {
+    private HaltCondition go() {
         for (int n = 0; n < p.T(); n++) {
             StepState state = new StepState(time, n);
             try {
@@ -55,5 +54,25 @@ public class Integrator {
         StepMaxReachedEvent ret = new StepMaxReachedEvent();
         ret.setGillespie(time);
         return ret;
+    }
+
+    public HaltCondition doNext() {
+        processManager.init();
+        serializationManager.init();
+        HaltCondition ex = go();
+
+        // This step includes any analysis or visualizations that take place
+        // after the integrator is done running. It also closes any open handles
+        // or managers instantiated by the serialization manager on behalf
+        // of the instance.
+        serializationManager.dispatchHalt(ex);
+
+        System.out.println(p.getInstancePath());
+
+        // This instructs the parameter handler to re-initialize the random
+        // number generator and to update paths to reflect the next
+        // iterate.
+        p.advance();
+        return ex;
     }
 }

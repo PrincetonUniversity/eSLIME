@@ -9,6 +9,7 @@ import control.GeneralParameters;
 import control.halt.FixationEvent;
 import control.halt.HaltCondition;
 import io.serialize.Serializer;
+import layers.LayerManager;
 import processes.StepState;
 
 import java.io.BufferedWriter;
@@ -18,8 +19,8 @@ public class HaltTimeWriter extends Serializer {
     private static final String FILENAME = "tth.txt";
     private BufferedWriter bw;
 
-    public HaltTimeWriter(GeneralParameters p) {
-        super(p);
+    public HaltTimeWriter(GeneralParameters p, LayerManager lm) {
+        super(p, lm);
 
         // We use the non-instance path because this metric aggregates over
         // all instances.

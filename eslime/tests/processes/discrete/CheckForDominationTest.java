@@ -16,11 +16,11 @@ import geometry.boundaries.Boundary;
 import geometry.boundaries.Periodic;
 import geometry.lattice.Lattice;
 import geometry.lattice.RectangularLattice;
-import geometry.set.CompleteSet;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
+import processes.BaseProcessArguments;
 import processes.StepState;
 import processes.discrete.check.CheckForDomination;
 import structural.MockGeneralParameters;
@@ -47,7 +47,10 @@ public class CheckForDominationTest extends EslimeTestCase {
 
         // Create a 1D lattice of length 10.
         // Create an occupancy test that checks for 30% occupancy.
-        query = new CheckForDomination(null, layerManager, new CompleteSet(geom), 0, p, stateArg, thresholdArg);
+        BaseProcessArguments arguments = makeBaseProcessArguments(layerManager, p);
+        CellProcessArguments cpArguments = makeCellProcessArguments(geom);
+        query = new CheckForDomination(arguments, cpArguments, stateArg, thresholdArg);
+        query.init();
     }
 
     public void testAboveThreshold() throws Exception {

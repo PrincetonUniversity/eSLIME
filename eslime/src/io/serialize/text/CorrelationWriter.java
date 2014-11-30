@@ -49,17 +49,21 @@ public class CorrelationWriter extends Serializer {
      *                    for the same simulation. Multiple RDF serializers
      *                    can be included for the same model!
      */
-    public CorrelationWriter(GeneralParameters p, String filename, Argument<Double> triggerTimeArg) {
-        super(p);
+    public CorrelationWriter(GeneralParameters p, String filename, Argument<Double> triggerTimeArg, LayerManager lm) {
+        super(p, lm);
         identity = new HashMap<>();
         observations = new HashMap<>();
-        this.triggerTime = triggerTimeArg.next();
+        try {
+            this.triggerTime = triggerTimeArg.next();
+        } catch (HaltCondition ex) {
+            throw new IllegalStateException("Halt condition thrown while retrieving trigger time for correlation writer.");
+        }
         this.filename = filename;
     }
 
     @Override
-    public void init(LayerManager layerManager) {
-        super.init(layerManager);
+    public void init() {
+        super.init();
         fired = false;
     }
 

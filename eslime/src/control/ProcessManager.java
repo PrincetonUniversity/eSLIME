@@ -6,50 +6,42 @@
 package control;
 
 import control.halt.HaltCondition;
-import factory.processes.ProcessFactory;
 import layers.LayerManager;
-import processes.Process;
+import processes.EcoProcess;
 import processes.StepState;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by dbborens on 1/6/14.
  */
 public class ProcessManager {
 
-    private Process[] processes;
+    private List<EcoProcess> processes;
     private LayerManager layerManager;
 
-    /**
-     * Default constructor included for testing
-     */
-    public ProcessManager() {
-    }
-
-    public ProcessManager(ProcessFactory factory, LayerManager layerManager) {
-        processes = factory.getProcesses();
+    public ProcessManager(List<EcoProcess> processes, LayerManager layerManager) {
+        this.processes = processes;
         this.layerManager = layerManager;
     }
 
-    //protected Process[] getTriggeredProcesses(int n, double t) {
-    protected Process[] getTriggeredProcesses(int n) {
-        // Currently, no handling for time-triggered processes
+    protected List<EcoProcess> getTriggeredProcesses(int n) throws HaltCondition {
 
-        ArrayList<Process> triggeredProcesses = new ArrayList<>(processes.length);
+        ArrayList<EcoProcess> triggeredProcesses = new ArrayList<>(processes.size());
 
-        for (Process process : processes) {
+        for (EcoProcess process : processes) {
             if (triggered(n, process)) {
                 triggeredProcesses.add(process);
             }
         }
 
-        return triggeredProcesses.toArray(new Process[0]);
+        return triggeredProcesses;
     }
 
-    protected boolean triggered(int n, Process process) {
-        int period = process.getPeriod();
-        int start = process.getStart();
+    protected boolean triggered(int n, EcoProcess process) throws HaltCondition {
+        int period = process.getPeriod().next();
+        int start = process.getStart().next();
 
         // Case 1: this is a 1-time event, and it is that one time.
         if (period == 0 && start == n) {
@@ -89,10 +81,10 @@ public class ProcessManager {
         layerManager.setStepState(stepState);
 
         // Get triggered events.
-        Process[] triggeredProcesses = getTriggeredProcesses(stepState.getFrame());
+        List<EcoProcess> triggeredProcesses = getTriggeredProcesses(stepState.getFrame());
 
         // Fire each triggered cell event.
-        for (Process process : triggeredProcesses) {
+        for (EcoProcess process : triggeredProcesses) {
             process.iterate();
         }
 
@@ -102,5 +94,16 @@ public class ProcessManager {
         layerManager.setStepState(null);
 
         return stepState;
+    }
+
+    /**
+     * Resets all layers and processes to their original
+     * configurations.
+     */
+    public void init() {
+        layerManager.reset();
+        for (EcoProcess process : processes) {
+            process.init();
+        }
     }
 }

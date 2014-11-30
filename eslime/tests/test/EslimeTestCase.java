@@ -5,6 +5,9 @@
 
 package test;
 
+import control.GeneralParameters;
+import control.arguments.Argument;
+import control.arguments.ConstantInteger;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
 import geometry.MockGeometry;
@@ -12,15 +15,20 @@ import geometry.boundaries.Arena;
 import geometry.boundaries.Boundary;
 import geometry.lattice.Lattice;
 import geometry.lattice.LinearLattice;
+import geometry.set.CompleteSet;
+import geometry.set.CoordinateSet;
 import geometry.shape.Line;
 import geometry.shape.Shape;
 import junit.framework.TestCase;
 import junitx.framework.FileAssert;
+import layers.LayerManager;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 import org.dom4j.tree.BaseElement;
+import processes.BaseProcessArguments;
+import processes.discrete.CellProcessArguments;
 import structural.MockGeneralParameters;
 
 import java.io.File;
@@ -212,6 +220,18 @@ public abstract class EslimeTestCase extends TestCase {
         ret.setPath(outputPath);
         ret.initializeRandom(RANDOM_SEED);
         return ret;
+    }
+
+    protected BaseProcessArguments makeBaseProcessArguments(LayerManager layerManager, GeneralParameters p) {
+        Argument<Integer> start = new ConstantInteger(0);
+        Argument<Integer> period = new ConstantInteger(1);
+        return new BaseProcessArguments(layerManager, p, 0, start, period);
+    }
+
+    protected CellProcessArguments makeCellProcessArguments(Geometry geom) {
+        CoordinateSet activeSites = new CompleteSet(geom);
+        Argument<Integer> maxTargets = new ConstantInteger(-1);
+        return new CellProcessArguments(activeSites, maxTargets);
     }
 
     protected boolean arraysEqual(Object[] expected, Object[] actual) {

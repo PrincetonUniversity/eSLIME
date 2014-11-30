@@ -32,7 +32,6 @@ public class SurfaceCensusWriterTest extends EslimeTestCase {
     public void setUp() throws Exception {
         super.setUp();
         p = makeMockGeneralParameters();
-        writer = new SurfaceCensusWriter(p);
 
         Lattice lattice = new LinearLattice();
         Shape shape = new Line(lattice, 10);
@@ -43,10 +42,11 @@ public class SurfaceCensusWriterTest extends EslimeTestCase {
         layerManager = new MockLayerManager();
         layerManager.setCellLayer(cellLayer);
         haltEvent = new ManualHaltEvent("");
+        writer = new SurfaceCensusWriter(p, layerManager);
     }
 
     public void testLifeCycle() throws Exception {
-        writer.init(layerManager);
+        writer.init();
 
         // Place single cell at center -- it is the surface
         StepState state = new StepState(0.0, 0);
@@ -79,7 +79,7 @@ public class SurfaceCensusWriterTest extends EslimeTestCase {
     }
 
     public void testImaginarySites() throws Exception {
-        writer.init(layerManager);
+        writer.init();
 
         // Place cells in imaginary sites -- they should be treated normally
         StepState state = new StepState(0.0, 0);

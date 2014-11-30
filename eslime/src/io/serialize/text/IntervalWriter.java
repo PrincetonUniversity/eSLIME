@@ -23,13 +23,14 @@ public class IntervalWriter extends Serializer {
     private BufferedWriter intervalWriter;
     private long prevTime;
 
-    public IntervalWriter(GeneralParameters p) {
-        super(p);
+    public IntervalWriter(GeneralParameters p, LayerManager lm) {
+        super(p, lm);
 
 
     }
 
-    public void init(LayerManager lm) {
+    public void init() {
+        super.init();
         String intervalFileStr = p.getInstancePath() + '/' + INTERVAL_FILENAME;
 
         try {

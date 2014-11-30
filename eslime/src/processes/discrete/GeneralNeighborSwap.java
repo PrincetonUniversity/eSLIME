@@ -5,14 +5,10 @@
 
 package processes.discrete;
 
-import control.GeneralParameters;
-import control.arguments.Argument;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
-import geometry.set.CoordinateSet;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
+import processes.BaseProcessArguments;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 
@@ -26,15 +22,15 @@ import java.util.Set;
  */
 public class GeneralNeighborSwap extends CellProcess {
 
-    private Argument<Integer> count;
     private Coordinate[] activeSitesArr;
 
-    public GeneralNeighborSwap(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id,
-                               GeneralParameters p, Argument<Integer> count) {
+    public GeneralNeighborSwap(BaseProcessArguments arguments, CellProcessArguments cpArguments) {
 
-        super(loader, layerManager, activeSites, id, p);
-        this.count = count;
+        super(arguments, cpArguments);
+    }
 
+    @Override
+    public void init() {
         activeSitesArr = new Coordinate[activeSites.size()];
         activeSites.toArray(activeSitesArr);
     }
@@ -43,7 +39,7 @@ public class GeneralNeighborSwap extends CellProcess {
     public void fire(StepState state) throws HaltCondition {
 
         // Determine number of swaps to make.
-        int n = count.next();
+        int n = maxTargets.next();
 
 
         // Perform swaps.

@@ -32,30 +32,26 @@ public class VisualizationSerializer extends Serializer {
     // Leading part of the file name (after the instance path)
     private String prefix;
 
-    // Output mode. Supported JPEG, PNG, BMP, WBMP and and GIF.
-    // See Java's ImageIO class for more information.
-    private String mode;
-
     private Geometry geometry;
 
     private PngEncoder pngEncoder;
 
-    @Override
-    public void init(LayerManager layerManager) {
-        super.init(layerManager);
-        geometry = layerManager.getCellLayer().getGeometry();
+    public VisualizationSerializer(GeneralParameters p,
+                                   Visualization visualization,
+                                   String prefix, LayerManager lm) {
+        super(p, lm);
+        geometry = lm.getCellLayer().getGeometry();
+        this.visualization = visualization;
+        this.prefix = prefix;
+    }
 
+    @Override
+    public void init() {
+        super.init();
 
         pngEncoder = new PngEncoder();
     }
 
-    public VisualizationSerializer(GeneralParameters p,
-                                   Visualization visualization,
-                                   String prefix) {
-        super(p);
-        this.visualization = visualization;
-        this.prefix = prefix;
-    }
 
     @Override
     public void dispatchHalt(HaltCondition ex) {

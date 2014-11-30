@@ -6,9 +6,8 @@
 package processes.temporal;
 
 import control.GeneralParameters;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
-import processes.Process;
+import processes.BaseProcessArguments;
+import processes.EcoProcess;
 import processes.gillespie.GillespieState;
 
 /**
@@ -23,19 +22,12 @@ import processes.gillespie.GillespieState;
  * @author David Bruce Borenstein
  * @untested
  */
-public abstract class TimeProcess extends Process {
+public abstract class TimeProcess extends EcoProcess {
     protected GeneralParameters p;
 
-    public TimeProcess(ProcessLoader loader, LayerManager layerManager, int id,
-                       GeneralParameters p) {
+    public TimeProcess(BaseProcessArguments arguments) {
 
-        super(loader, layerManager, p, id);
-
-        this.p = p;
-    }
-
-    protected String getProcessClass() {
-        return this.getClass().getSimpleName();
+        super(arguments);
     }
 
     public void target(GillespieState gs) {

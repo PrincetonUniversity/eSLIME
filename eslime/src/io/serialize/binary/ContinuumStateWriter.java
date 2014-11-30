@@ -37,25 +37,25 @@ public class ContinuumStateWriter extends Serializer {
     private Coordinate[] sites;
 
 
-    public ContinuumStateWriter(GeneralParameters p) {
-        super(p);
+    public ContinuumStateWriter(GeneralParameters p, LayerManager lm) {
+        super(p, lm);
     }
 
     @Override
-    public void init(LayerManager layerManager) {
-        super.init(layerManager);
+    public void init() {
+        super.init();
 
-        if (layerManager.getSoluteLayers().length == 0) {
+        if (lm.getSoluteLayers().length == 0) {
             throw new IllegalArgumentException("Attempted to build a continuum state writer for a model that contains no continuum components.");
         }
 
-        if (layerManager.getSoluteLayers().length != 1) {
+        if (lm.getSoluteLayers().length != 1) {
             throw new UnsupportedOperationException("Support not yet implemented for multiple solute layer serialization. To do this, all you need to do is turn all of the state variables into maps of ID --> whatever.");
         }
 
         // We currently get an array of solute layers, but that array had better only have
         // one thing in it until multi-layer support is introduced.
-        layer = layerManager.getSoluteLayers()[0];
+        layer = lm.getSoluteLayers()[0];
 
         initStructures();
 

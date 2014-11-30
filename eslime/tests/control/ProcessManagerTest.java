@@ -5,35 +5,41 @@
 
 package control;
 
-import io.factory.MockProcessFactory;
-import junit.framework.TestCase;
+import control.arguments.Argument;
+import control.arguments.ConstantInteger;
 import layers.MockLayerManager;
+import processes.BaseProcessArguments;
+import processes.EcoProcess;
 import processes.MockProcess;
-import processes.Process;
 import processes.StepState;
+import test.EslimeTestCase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by David B Borenstein on 1/7/14.
  */
-public class ProcessManagerTest extends TestCase {
+public class ProcessManagerTest extends EslimeTestCase {
 
     private static final int CURRENT_N = 2;
     private static final double CURRENT_TIME = 1.7;
     MockProcess yes, no;
     ProcessManager query;
-    MockProcessFactory factory;
     MockLayerManager layerManager;
 
     @Override
     protected void setUp() throws Exception {
-        initHelperObjects();
+        layerManager = new MockLayerManager();
         initYesAndNo();
-        query = new ProcessManager(factory, layerManager);
+        buildQuery();
     }
 
-    private void initHelperObjects() {
-        layerManager = new MockLayerManager();
-        factory = new MockProcessFactory();
+    private void buildQuery() {
+        List<EcoProcess> processes = new ArrayList<>(2);
+        processes.add(yes);
+        processes.add(no);
+        query = new ProcessManager(processes, layerManager);
     }
 
     /**
@@ -41,31 +47,25 @@ public class ProcessManagerTest extends TestCase {
      */
     private void initYesAndNo() {
 
-        yes = new MockProcess();
-        yes.setLayerManager(layerManager);
-        // These processes each run once, but only one runs at the current time.
-        yes.setStart(CURRENT_N);
-        yes.setPeriod(0);
+        GeneralParameters p = makeMockGeneralParameters();
+        Argument<Integer> period = new ConstantInteger(0);
+        Argument<Integer> yesStart = new ConstantInteger(CURRENT_N);
+        Argument<Integer> noStart = new ConstantInteger(CURRENT_N + 1);
 
-        no = new MockProcess();
-        no.setLayerManager(layerManager);
-        no.setStart(CURRENT_N + 1);
-        no.setPeriod(0);
+        BaseProcessArguments yesArgs = new BaseProcessArguments(layerManager, p, 0, yesStart, period);
+        BaseProcessArguments noArgs = new BaseProcessArguments(layerManager, p, 0, noStart, period);
 
-        Process[] processes = new Process[]{
-                yes,
-                no
-        };
 
-        factory.setProcesses(processes);
+        yes = new MockProcess(yesArgs, "yes", 0.0, 1);
+        no = new MockProcess(noArgs, "no", 0.0, 1);
     }
 
     public void testGetTriggeredProcesses() throws Exception {
         // Call getTriggeredProcesses.
-        Process[] triggeredProcesses = query.getTriggeredProcesses(CURRENT_N);
+        List<EcoProcess> triggeredProcesses = query.getTriggeredProcesses(CURRENT_N);
 
-        assertEquals(1, triggeredProcesses.length);
-        assertEquals(yes, triggeredProcesses[0]);
+        assertEquals(1, triggeredProcesses.size());
+        assertEquals(yes, triggeredProcesses.get(0));
     }
 
     public void testTriggered() throws Exception {
@@ -88,13 +88,14 @@ public class ProcessManagerTest extends TestCase {
         assertFalse(triggerTest(1, 2));
     }
 
-    public boolean triggerTest(int start, int period) {
-        // Construct a mock process.
-        MockProcess process = new MockProcess();
+    public boolean triggerTest(int start, int period) throws Exception {
+        GeneralParameters p = makeMockGeneralParameters();
+        Argument<Integer> periodArg = new ConstantInteger(period);
+        Argument<Integer> startArg = new ConstantInteger(start);
 
-        // Give it the specified start and period arguments.
-        process.setPeriod(period);
-        process.setStart(start);
+        BaseProcessArguments args = new BaseProcessArguments(layerManager, p, 0, startArg, periodArg);
+
+        MockProcess process = new MockProcess(args, "", 0.0, 1);
 
         // Run ProcessManager::triggered().
         return query.triggered(CURRENT_N, process);

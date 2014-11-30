@@ -8,6 +8,7 @@ package factory.control.arguments;
 import control.arguments.Argument;
 import control.arguments.ConstantDouble;
 import control.arguments.UniformDouble;
+import control.halt.HaltCondition;
 import org.dom4j.Element;
 
 import java.util.Iterator;
@@ -58,9 +59,14 @@ public abstract class DoubleArgumentFactory {
     }
 
     private static Argument<Double> getUniformDouble(Element valueElement, Random random) {
-        double min = instantiate(valueElement, "min", random).next();
-        double max = instantiate(valueElement, "max", random).next();
+        double min, max;
 
+        try {
+            min = instantiate(valueElement, "min", random).next();
+            max = instantiate(valueElement, "max", random).next();
+        } catch (HaltCondition ex) {
+            throw new IllegalStateException(ex);
+        }
         Argument<Double> ret = new UniformDouble(min, max, random);
         return ret;
     }

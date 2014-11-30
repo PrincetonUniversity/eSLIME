@@ -50,13 +50,13 @@ public class SurfaceCensusWriter extends Serializer {
 
     private BufferedWriter bw;
 
-    public SurfaceCensusWriter(GeneralParameters p) {
-        super(p);
+    public SurfaceCensusWriter(GeneralParameters p, LayerManager lm) {
+        super(p, lm);
     }
 
     @Override
-    public void init(LayerManager lm) {
-        super.init(lm);
+    public void init() {
+        super.init();
         histo = new HashMap<>();
         frames = new ArrayList<>();
         observedStates = new HashSet<>();

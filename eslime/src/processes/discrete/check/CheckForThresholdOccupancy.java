@@ -5,15 +5,13 @@
 
 package processes.discrete.check;
 
-import control.GeneralParameters;
 import control.arguments.Argument;
 import control.halt.HaltCondition;
 import control.halt.ThresholdOccupancyReachedEvent;
-import geometry.set.CoordinateSet;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
+import processes.BaseProcessArguments;
 import processes.StepState;
 import processes.discrete.CellProcess;
+import processes.discrete.CellProcessArguments;
 import processes.gillespie.GillespieState;
 
 /**
@@ -23,16 +21,29 @@ import processes.gillespie.GillespieState;
  */
 public class CheckForThresholdOccupancy extends CellProcess {
     private int thresholdCount;
-    public CheckForThresholdOccupancy(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id, GeneralParameters p, Argument<Double> thresholdOccupancy) {
-        super(loader, layerManager, activeSites, id, p);
-        double toVal = thresholdOccupancy.next();
+    private Argument<Double> thresholdOccupancy;
+
+    public CheckForThresholdOccupancy(BaseProcessArguments arguments, CellProcessArguments cpArguments, Argument<Double> thresholdOccupancy) {
+        super(arguments, cpArguments);
+        this.thresholdOccupancy = thresholdOccupancy;
+    }
+
+    @Override
+    public void init() {
+        double toVal;
+
+        try {
+            toVal = thresholdOccupancy.next();
+        } catch (HaltCondition ex) {
+            throw new IllegalStateException(ex);
+        }
+
         if (toVal > 1.0 || toVal < 0) {
             throw new IllegalArgumentException("Illegal occupancy fraction " + toVal);
         }
 
         thresholdCount = (int) Math.floor(layer.getGeometry().getCanonicalSites().length * toVal);
     }
-
     @Override
     public void target(GillespieState gs) throws HaltCondition {
         // There's only one event that can happen in this process.

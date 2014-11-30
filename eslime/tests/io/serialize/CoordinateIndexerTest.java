@@ -40,8 +40,8 @@ public class CoordinateIndexerTest extends EslimeTestCase {
         lm = new MockLayerManager();
         CellLayer layer = new CellLayer(geom);
         lm.setCellLayer(layer);
-        indexer = new CoordinateIndexer(params);
-        indexer.init(lm);
+        indexer = new CoordinateIndexer(params, lm);
+        indexer.init();
     }
 
     public void testCoordinateIndexer() throws Exception {

@@ -1,6 +1,7 @@
 package processes.discrete.filter;
 
 import control.arguments.Argument;
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import layers.cell.CellLayer;
 
@@ -26,8 +27,13 @@ public class DepthFilter extends Filter {
     @Override
     public List<Coordinate> apply(List<Coordinate> toFilter) {
         // Get current depth value.
-        int depth = maxDepth.next();
 
+        int depth;
+        try {
+            depth = maxDepth.next();
+        } catch (HaltCondition ex) {
+            throw new IllegalStateException(ex);
+        }
         // We have to use a set because, with some boundary conditions, we could
         // see the same site twice.
         HashSet<Coordinate> set = new HashSet<>(toFilter.size());

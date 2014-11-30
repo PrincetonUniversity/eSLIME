@@ -5,6 +5,7 @@
 
 package factory.geometry.boundaries;//import junit.framework.TestCase;
 
+import control.arguments.GeometryDescriptor;
 import geometry.boundaries.*;
 import geometry.lattice.Lattice;
 import geometry.lattice.RectangularLattice;
@@ -16,15 +17,15 @@ import test.EslimeTestCase;
 public class BoundaryFactoryTest extends EslimeTestCase {
 
     private Element root;
-    private Shape shape;
-    private Lattice lattice;
+    private GeometryDescriptor geometryDescriptor;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         root = readXmlFile("factories/geometry/boundary/BoundaryFactoryTest.xml");
-        lattice = new RectangularLattice();
-        shape = new Rectangle(lattice, 1, 1);
+        Lattice lattice = new RectangularLattice();
+        Shape shape = new Rectangle(lattice, 1, 1);
+        geometryDescriptor = new GeometryDescriptor(lattice, shape);
     }
 
     public void testArenaCase() {
@@ -53,7 +54,7 @@ public class BoundaryFactoryTest extends EslimeTestCase {
 
     private void doTest(String eName, Class expected) {
         Element e = root.element(eName);
-        Class actual = BoundaryFactory.instantiate(e, lattice, shape).getClass();
+        Class actual = BoundaryFactory.instantiate(e, geometryDescriptor).getClass();
         assertEquals(expected, actual);
     }
 }

@@ -5,7 +5,8 @@
 
 package factory.layers;
 
-import factory.geometry.GeometryFactory;
+import control.arguments.GeometryDescriptor;
+import factory.control.arguments.GeometryDescriptorFactory;
 import geometry.Geometry;
 import geometry.boundaries.Arena;
 import geometry.boundaries.Boundary;
@@ -21,20 +22,18 @@ import test.EslimeTestCase;
 
 public class LayerManagerFactoryTest extends EslimeTestCase {
     private Element root;
-    private GeometryFactory factory;
-
+    private GeometryDescriptor geometryDescriptor;
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         root = readXmlFile("factories/layers/LayerManagerFactoryTest.xml");
         Element geometryRoot = root.element("geometry");
-        factory = new GeometryFactory(geometryRoot);
-
+        geometryDescriptor = GeometryDescriptorFactory.instantiate(geometryRoot);
     }
 
     public void testInstantiate() throws Exception {
         Element e = root.element("general-case");
-        LayerManager actual = LayerManagerFactory.instantiate(e, factory);
+        LayerManager actual = LayerManagerFactory.instantiate(e, geometryDescriptor);
         LayerManager expected = makeExpected();
         assertEquals(expected, actual);
     }

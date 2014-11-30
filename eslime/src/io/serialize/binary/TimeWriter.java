@@ -22,14 +22,14 @@ public class TimeWriter extends Serializer {
 
     private DataOutputStream stream;
 
-    public TimeWriter(GeneralParameters p) {
-        super(p);
+    public TimeWriter(GeneralParameters p, LayerManager lm) {
+        super(p, lm);
         makeFiles();
     }
 
     @Override
-    public void init(LayerManager layerManager) {
-        super.init(layerManager);
+    public void init() {
+        super.init();
         String path = makeFilePath();
         stream = FileConventions.makeDataOutputStream(path);
     }

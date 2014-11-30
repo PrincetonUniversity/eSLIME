@@ -19,9 +19,9 @@ for (i in seq(0, iterates - 1)) {
 	colnames(census.table) <- cols
     census.long <- rbind(census.long, census.table)
 }
-p.frac <- census.long$pacifists / (census.long$pacifists + census.long$instigators)
-#print(p.frac)
+generalParameters.frac <- census.long$pacifists / (census.long$pacifists + census.long$instigators)
+#print(generalParameters.frac)
 
-census.long <- cbind(census.long, p.frac)
-qplot(frame, p.frac, data = census.long, xlab='Time (frames)', ylab='Pacifist fraction', main='Pacifist fraction', geom = c("point", "smooth"), colour=instance)
+census.long <- cbind(census.long, generalParameters.frac)
+qplot(frame, generalParameters.frac, data = census.long, xlab='Time (frames)', ylab='Pacifist fraction', main='Pacifist fraction', geom = c("point", "smooth"), colour=instance)
 ggsave(path=basepath, file="pacifist fraction.pdf")

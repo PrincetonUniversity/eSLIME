@@ -19,6 +19,7 @@ import io.serialize.binary.VisualizationSerializer;
 import io.serialize.interactive.ProgressReporter;
 import io.serialize.text.*;
 import io.visual.Visualization;
+import layers.LayerManager;
 import org.dom4j.Element;
 import structural.utilities.XmlUtil;
 
@@ -29,89 +30,90 @@ import java.util.List;
  * Created by dbborens on 1/17/14.
  */
 public abstract class SerializationFactory {
-    public static Serializer instantiate(Element e, GeneralParameters p) {
+    public static Serializer instantiate(Element e, GeneralParameters p, LayerManager lm) {
 
         String writerClass = e.getName();
 
+        Serializer ret;
         // Cell writers
         if (writerClass.equalsIgnoreCase("cell-state-writer")) {
-            LegacyCellStateWriter bsw = new LegacyCellStateWriter(p);
-            return bsw;
+            ret = new LegacyCellStateWriter(p, lm);
+            return ret;
         } else if (writerClass.equalsIgnoreCase("halt-time-writer")) {
-            HaltTimeWriter ftw = new HaltTimeWriter(p);
-            return ftw;
+            ret = new HaltTimeWriter(p, lm);
+            return ret;
         } else if (writerClass.equalsIgnoreCase("parameter-writer")) {
-            ParameterWriter pw = new ParameterWriter(p);
-            return pw;
+            ret = new ParameterWriter(p, lm);
+            return ret;
         } else if (writerClass.equalsIgnoreCase("progress-reporter")) {
-            ProgressReporter pr = new ProgressReporter(p);
-            return pr;
+            ret = new ProgressReporter(p, lm);
+            return ret;
         } else if (writerClass.equalsIgnoreCase("census-writer")) {
-            CensusWriter freq = new CensusWriter(p);
-            return freq;
+            ret = new CensusWriter(p, lm);
+            return ret;
         } else if (writerClass.equalsIgnoreCase("surface-census-writer")) {
-            SurfaceCensusWriter freq = new SurfaceCensusWriter(p);
-            return freq;
+            ret = new SurfaceCensusWriter(p, lm);
+            return ret;
         } else if (writerClass.equalsIgnoreCase("individual-halt-writer")) {
-            IndividualHaltWriter writer = new IndividualHaltWriter(p);
-            return writer;
+            ret = new IndividualHaltWriter(p, lm);
+            return ret;
         } else if (writerClass.equalsIgnoreCase("interface-census-writer")) {
             Argument<Integer> focalStateArg = IntegerArgumentFactory.instantiate(e, "focal-state", p.getRandom());
-            InterfaceCensusWriter freq = new InterfaceCensusWriter(p, focalStateArg);
-            return freq;
+            ret = new InterfaceCensusWriter(p, focalStateArg, lm);
+            return ret;
         } else if (writerClass.equalsIgnoreCase("interval-writer")) {
-            IntervalWriter iw = new IntervalWriter(p);
-            return iw;
+            ret = new IntervalWriter(p, lm);
+            return ret;
         } else if (writerClass.equalsIgnoreCase("random-seed-writer")) {
-            RandomSeedWriter rs = new RandomSeedWriter(p);
-            return rs;
+            ret = new RandomSeedWriter(p, lm);
+            return ret;
         } else if (writerClass.equalsIgnoreCase("running-time-writer")) {
-            RunningTimeWriter rt = new RunningTimeWriter(p);
-            return rt;
+            ret = new RunningTimeWriter(p, lm);
+            return ret;
         } else if (writerClass.equalsIgnoreCase("coordinate-indexer")) {
-            CoordinateIndexer ce = new CoordinateIndexer(p);
-            return ce;
+            ret = new CoordinateIndexer(p, lm);
+            return ret;
         } else if (writerClass.equalsIgnoreCase("continuum-state-writer")) {
-            ContinuumStateWriter csw = new ContinuumStateWriter(p);
-            return csw;
+            ret = new ContinuumStateWriter(p, lm);
+            return ret;
         } else if (writerClass.equalsIgnoreCase("time-writer")) {
-            TimeWriter tw = new TimeWriter(p);
-            return tw;
+            ret = new TimeWriter(p, lm);
+            return ret;
         } else if (writerClass.equalsIgnoreCase("highlight-writer")) {
             Element channelsElem = e.element("channels");
             int[] channels = XmlUtil.getIntegerArray(channelsElem, "channel");
-            HighlightWriter hw = new HighlightWriter(p, channels);
-            return hw;
+            ret = new HighlightWriter(p, channels, lm);
+            return ret;
         } else if (writerClass.equalsIgnoreCase("visualization-serializer")) {
-            VisualizationSerializer vs = visualizationSerializer(e, p);
-            return vs;
+            ret = visualizationSerializer(e, p, lm);
+            return ret;
         } else if (writerClass.equalsIgnoreCase("correlation-writer")) {
-            return correlationWriter(e, p);
+            return correlationWriter(e, p, lm);
         } else {
             throw new IllegalArgumentException("Unrecognized serialization '" + writerClass + "'");
         }
     }
 
-    public static SerializationManager makeManager(Element we, GeneralParameters p) {
+    public static SerializationManager makeManager(Element we, LayerManager layerManager, GeneralParameters p) {
         List<Serializer> writers = new ArrayList<>();
 
         for (Object o : we.elements()) {
             Element e = (Element) o;
-            Serializer w = SerializationFactory.instantiate(e, p);
+            Serializer w = SerializationFactory.instantiate(e, p, layerManager);
             writers.add(w);
         }
 
-        SerializationManager manager = new SerializationManager(p, writers);
+        SerializationManager manager = new SerializationManager(p, layerManager, writers);
         return manager;
     }
 
-    private static CorrelationWriter correlationWriter(Element e, GeneralParameters p) {
+    private static CorrelationWriter correlationWriter(Element e, GeneralParameters p, LayerManager lm) {
         Argument<Double> triggerTimeArg = DoubleArgumentFactory.instantiate(e, "trigger-time", 0.0, p.getRandom());
         String filename = XmlUtil.getString(e, "filename", "correlation.txt");
-        return new CorrelationWriter(p, filename, triggerTimeArg);
+        return new CorrelationWriter(p, filename, triggerTimeArg, lm);
     }
     private static VisualizationSerializer visualizationSerializer(Element e,
-                                                                   GeneralParameters p) {
+                                                                   GeneralParameters p, LayerManager lm) {
 
         String prefix;
         Element prefixElement = e.element("prefix");
@@ -124,6 +126,6 @@ public abstract class SerializationFactory {
         Element visElement = e.element("visualization");
         Visualization visualization = VisualizationFactory.instantiate(visElement, p);
 
-        return new VisualizationSerializer(p, visualization, prefix);
+        return new VisualizationSerializer(p, visualization, prefix, lm);
     }
 }

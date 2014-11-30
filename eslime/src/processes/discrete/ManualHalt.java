@@ -5,12 +5,9 @@
 
 package processes.discrete;
 
-import control.GeneralParameters;
 import control.halt.HaltCondition;
 import control.halt.ManualHaltEvent;
-import geometry.set.CoordinateSet;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
+import processes.BaseProcessArguments;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 
@@ -20,9 +17,13 @@ import processes.gillespie.GillespieState;
 public class ManualHalt extends CellProcess {
     private String message;
 
-    public ManualHalt(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id, GeneralParameters p, String message) {
-        super(loader, layerManager, activeSites, id, p);
+    public ManualHalt(BaseProcessArguments arguments, CellProcessArguments cpArguments, String message) {
+        super(arguments, cpArguments);
         this.message = message;
+    }
+
+    @Override
+    public void init() {
     }
 
     @Override

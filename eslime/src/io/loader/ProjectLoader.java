@@ -25,6 +25,7 @@ import java.io.File;
  * @author dbborens
  * @untested
  */
+@Deprecated
 public class ProjectLoader {
 
     // Version -- checked against parameters file to make sure they're

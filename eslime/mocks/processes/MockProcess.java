@@ -5,10 +5,8 @@
 
 package processes;
 
-import control.GeneralParameters;
+import control.arguments.ConstantInteger;
 import control.halt.HaltCondition;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
 import layers.MockLayerManager;
 import processes.gillespie.GillespieState;
 
@@ -18,12 +16,10 @@ import processes.gillespie.GillespieState;
  *
  * @author David Bruce Borenstein
  */
-public class MockProcess extends Process {
+public class MockProcess extends EcoProcess {
 
     private Integer count;
     private Double weight;
-    private int start;
-    private int period;
 
     // Some identifier to let the user distinguish between null processes
     private String identifier;
@@ -32,32 +28,19 @@ public class MockProcess extends Process {
     // testing.
     private int timesFired = 0;
 
-    public MockProcess(ProcessLoader loader, LayerManager layerManager, GeneralParameters p, int id) {
-        super(loader, layerManager, p, id);
-
-        identifier = get("identifier");
-        weight = Double.valueOf(get("weight", "1.0"));
-        count = Integer.valueOf(get("count", "1"));
+    public MockProcess(BaseProcessArguments arguments, String identifier, double weight, int count) {
+        super(arguments);
+        this.count = count;
+        this.weight = weight;
+        this.identifier = identifier;
     }
 
     public MockProcess() {
-        super(null, null, null, 0);
+        super(new BaseProcessArguments(null, null, 0, new ConstantInteger(0), new ConstantInteger(1)));
     }
 
-    public int getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(int period) {
-        this.period = period;
-    }
-
-    public int getStart() {
-        return start;
-    }
-
-    public void setStart(int start) {
-        this.start = start;
+    @Override
+    public void init() {
     }
 
     public Double getWeight() {
@@ -74,11 +57,6 @@ public class MockProcess extends Process {
 
     public void setCount(Integer count) {
         this.count = count;
-    }
-
-    @Override
-    protected String getProcessClass() {
-        return getClass().getSimpleName();
     }
 
     @Override

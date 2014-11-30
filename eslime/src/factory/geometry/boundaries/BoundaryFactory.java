@@ -5,6 +5,7 @@
 
 package factory.geometry.boundaries;
 
+import control.arguments.GeometryDescriptor;
 import geometry.boundaries.*;
 import geometry.lattice.Lattice;
 import geometry.shape.Shape;
@@ -14,7 +15,10 @@ import org.dom4j.Element;
  * Created by dbborens on 7/31/14.
  */
 public abstract class BoundaryFactory {
-    public static Boundary instantiate(Element root, Lattice lattice, Shape shape) {
+    public static Boundary instantiate(Element root, GeometryDescriptor geometryDescriptor) {
+
+        Shape shape = geometryDescriptor.getShape();
+        Lattice lattice = geometryDescriptor.getLattice();
 
         String className = root.element("class").getTextTrim();
 

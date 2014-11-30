@@ -116,7 +116,7 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
         stepState.setHighlights(0, highlights);
         /* Initialize output and push first state */
         for (Serializer serializer : serializers) {
-            serializer.init(layerManager);
+            serializer.init();
             serializer.flush(stepState);
             serializer.flush(stepState);
         }
@@ -140,11 +140,11 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
         MockGeneralParameters p = makeMockGeneralParameters();
         p.setIsFrameValue(true);
         Serializer[] ret = new Serializer[]{
-                new CoordinateIndexer(p),
-                new TimeWriter(p),
-                new ContinuumStateWriter(p),
-                new LegacyCellStateWriter(p),
-                new HighlightWriter(p, new int[]{0})
+                new CoordinateIndexer(p, layerManager),
+                new TimeWriter(p, layerManager),
+                new ContinuumStateWriter(p, layerManager),
+                new LegacyCellStateWriter(p, layerManager),
+                new HighlightWriter(p, new int[]{0}, layerManager)
         };
 
         return ret;

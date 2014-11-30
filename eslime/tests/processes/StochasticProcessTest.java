@@ -9,18 +9,27 @@ import control.GeneralParameters;
 import control.arguments.Argument;
 import control.arguments.UniformInteger;
 import control.halt.HaltCondition;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
 import processes.gillespie.GillespieState;
 import test.EslimeTestCase;
 
 /**
+
  * Test to make sure that stochastic values work as expected in a process.
  * This is a regression test for a possible failure mode observed in April 2014.
  *
  * Created by dbborens on 5/1/14.
  */
 public class StochasticProcessTest extends EslimeTestCase {
+
+
+    protected static double mean(double[] a) {
+        if (a.length == 0) return Double.NaN;
+        double sum = 0.0;
+        for (int i = 0; i < a.length; i++) {
+            sum = sum + a[i];
+        }
+        return sum / a.length;
+    }
 
     public void testOngoing() throws Exception {
         double[] obs = new double[100];
@@ -35,37 +44,6 @@ public class StochasticProcessTest extends EslimeTestCase {
         examine(obs);
 
     }
-    private class StochasticProcess extends Process {
-
-        private Argument<Integer> ongoing;
-        private Integer ongoingVal;
-
-        public StochasticProcess(Argument<Integer> ongoing) {
-            super(null, null, null, 0);
-            this.ongoing = ongoing;
-        }
-
-
-        @Override
-        protected String getProcessClass() {
-            return null;
-        }
-
-        @Override
-        public void target(GillespieState gs) throws HaltCondition {
-            ongoingVal = ongoing.next();
-        }
-
-        public double getOngoingVal() {
-            return ongoingVal;
-        }
-
-        @Override
-        public void fire(StepState state) throws HaltCondition {
-
-        }
-
-    }
 
     private void examine(double[] results) {
         assertEquals(408.0, minValue(results), epsilon);
@@ -74,15 +52,6 @@ public class StochasticProcessTest extends EslimeTestCase {
         double actual = mean(results);
         double var = (1.0 / 12.0) * Math.pow(1, 2.0);
         assertEquals(expected, actual, var);
-    }
-
-    protected static double mean(double[] a) {
-        if (a.length == 0) return Double.NaN;
-        double sum = 0.0;
-        for (int i = 0; i < a.length; i++) {
-            sum = sum + a[i];
-        }
-        return sum / a.length;
     }
 
     private double minValue(double[] a) {
@@ -107,6 +76,36 @@ public class StochasticProcessTest extends EslimeTestCase {
         }
 
         return cur;
+    }
+
+    private class StochasticProcess extends EcoProcess {
+
+        private Argument<Integer> ongoing;
+        private Integer ongoingVal;
+
+        public StochasticProcess(Argument<Integer> ongoing) {
+            super(makeBaseProcessArguments(null, null));
+            this.ongoing = ongoing;
+        }
+
+        @Override
+        public void init() {
+        }
+
+        @Override
+        public void target(GillespieState gs) throws HaltCondition {
+            ongoingVal = ongoing.next();
+        }
+
+        public double getOngoingVal() {
+            return ongoingVal;
+        }
+
+        @Override
+        public void fire(StepState state) throws HaltCondition {
+
+        }
+
     }
 
 }

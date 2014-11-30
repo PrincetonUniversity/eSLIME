@@ -14,7 +14,7 @@ import structures.cell.AbstractCell;
 import control.parameters.Parameters;
 public class RdfWriter {
 
-	private Parameters p;
+	private Parameters generalParameters;
 
 
 	private int simulations = 0;
@@ -31,8 +31,8 @@ public class RdfWriter {
 	// I'm sure there's a nice geometric way to do this.
 	private HashMap<Integer, Double> areaMap;
 
-	public RdfWriter(Parameters p) {
-		this.p = p;
+	public RdfWriter(Parameters generalParameters) {
+		this.generalParameters = generalParameters;
 		maxRadius = calcMaxRadius();
 		totals = new HashMap<Integer, Double>();
 		areaMap = calcAnnulusAreas();
@@ -40,23 +40,23 @@ public class RdfWriter {
 
 	private int calcMaxRadius() {
 		// radius=0 corresponds to a single point.
-		return (p.W() - 1) / 2;
+		return (generalParameters.W() - 1) / 2;
 	}
 
 	public void push(AbstractLifeCycle ca, int particles) {
 		HashMap<Integer, Double> densities = new HashMap<Integer, Double>();
 
-		if (particles < p.getHaltCount())
+		if (particles < generalParameters.getHaltCount())
 			throw new IllegalStateException("RDF calculator was called at insufficient density.");
 
 		// Reference (ideal) density
-		//double meanSquared = Math.pow((particles * 1.0D) / p.N(), 2.0);
+		//double meanSquared = Math.pow((particles * 1.0D) / generalParameters.N(), 2.0);
 
 
 		// Sum over rho_i*rho_j for all j at the same Euclidean distance
 		// from i, but only for all rho_i = 1.
-		for (int x = 0; x < p.W(); x++) {
-			for (int y = 0; y < p.W(); y++) {
+		for (int x = 0; x < generalParameters.W(); x++) {
+			for (int y = 0; y < generalParameters.W(); y++) {
 				if (ca.getTypeAt(x, y) == AbstractCell.CHEATER) {
 					contribute(ca, densities, x, y);
 				}
@@ -70,7 +70,7 @@ public class RdfWriter {
 
 			// Divide all the rho_i*rho_j by the number of non-zero i
 			// positions to get <rho_i rho_j>.
-			//double contrib = (densities.get(sqDisp) / p.N()) - meanSquared;
+			//double contrib = (densities.get(sqDisp) / generalParameters.N()) - meanSquared;
 			double contrib = (densities.get(sqDisp) / particles);
 			//System.out.println("Cumulative density: " + densities.get(sqDisp) + ". Number of particles: " + particles + ". Simulation contribution: " + contrib + ".");
 			if (!totals.containsKey(sqDisp))
@@ -194,7 +194,7 @@ public class RdfWriter {
 	 * boundary conditions.
 	 */
 	private int wrap(int x) {
-		int w = p.W();
+		int w = generalParameters.W();
 
 		// Java's % operator is actually a remainder, so for negative numbers it doesn't
 		// do what one might expect for a "modulo" operator
@@ -222,7 +222,7 @@ public class RdfWriter {
 	private void writeToFile(HashMap<Integer, Double> rdf, SortedSet<Integer> displacements) {
 		try {
 			mkDir();
-			String fileName = p.getRootPath() + "/rdf.txt";
+			String fileName = generalParameters.getRootPath() + "/rdf.txt";
 			File file = new File(fileName);
 			FileWriter fw = new FileWriter(file);
 			BufferedWriter bw = new BufferedWriter(fw);
@@ -256,12 +256,12 @@ public class RdfWriter {
 	}
 
 	private void mkDir() {
-		File path = new File(p.getRootPath());
+		File path = new File(generalParameters.getRootPath());
 		if (!path.exists()) {
 			try {
 				path.mkdirs();
 			} catch (Exception ex) {
-				throw new RuntimeException("Could not create directory tree " + p.getRootPath());
+				throw new RuntimeException("Could not create directory tree " + generalParameters.getRootPath());
 			}
 		}
 	}

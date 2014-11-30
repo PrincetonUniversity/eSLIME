@@ -18,8 +18,8 @@ public class MockSerializer extends Serializer {
     private boolean isInit;
     private boolean isFlush;
 
-    public MockSerializer() {
-        super(null);
+    public MockSerializer(LayerManager layerManager) {
+        super(null, layerManager);
 
         isDispatchHalt = false;
         isClose = false;
@@ -54,7 +54,7 @@ public class MockSerializer extends Serializer {
     }
 
     @Override
-    public void init(LayerManager layerManager) {
+    public void init() {
         isInit = true;
     }
 

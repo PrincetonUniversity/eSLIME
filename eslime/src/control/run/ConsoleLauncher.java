@@ -5,6 +5,8 @@
 
 package control.run;
 
+import factory.control.run.RunnerFactory;
+
 /**
  * The manual runner specifies a hard-coded parameters file to be loaded.
  * It is used for ad-hoc simulations and testing. Batch executions use
@@ -17,7 +19,7 @@ public class ConsoleLauncher {
 
     public static void main(String[] args) {
         String path = args[0];
-        Runner runner = new Runner(path);
+        Runner runner = RunnerFactory.instantiate(path);
         runner.run();
     }
 

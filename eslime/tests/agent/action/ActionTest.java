@@ -9,8 +9,8 @@ import cells.BehaviorCell;
 import cells.Cell;
 import control.arguments.Argument;
 import control.arguments.ConstantInteger;
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
-import geometry.Geometry;
 import geometry.MockGeometry;
 import layers.LayerManager;
 import layers.MockLayerManager;
@@ -80,6 +80,10 @@ public class ActionTest extends EslimeTestCase {
         private boolean isRun = false;
         private Coordinate lastCaller = null;
 
+        public ExposedAction(BehaviorCell callback, LayerManager layerManager) {
+            super(callback, layerManager);
+        }
+
         public boolean isRun() {
             return isRun;
         }
@@ -99,10 +103,6 @@ public class ActionTest extends EslimeTestCase {
             return super.getCallback();
         }
 
-        public ExposedAction(BehaviorCell callback, LayerManager layerManager) {
-            super(callback, layerManager);
-        }
-
         @Override
         public boolean equals(Object obj) {
             return (obj instanceof ExposedAction);
@@ -114,7 +114,7 @@ public class ActionTest extends EslimeTestCase {
         }
 
         @Override
-        public void doHighlight(Argument<Integer> channelArg, Coordinate toHighlight) {
+        public void doHighlight(Argument<Integer> channelArg, Coordinate toHighlight) throws HaltCondition {
             super.doHighlight(channelArg, toHighlight);
         }
     }

@@ -24,13 +24,13 @@ public class IndividualHaltWriter extends Serializer {
 
     private BufferedWriter bw;
 
-    public IndividualHaltWriter(GeneralParameters p) {
-        super(p);
+    public IndividualHaltWriter(GeneralParameters p, LayerManager lm) {
+        super(p, lm);
     }
 
     @Override
-    public void init(LayerManager lm) {
-        super.init(lm);
+    public void init() {
+        super.init();
         String filename = p.getInstancePath() + '/' + FILENAME;
         mkDir(p.getInstancePath(), true);
         bw = makeBufferedWriter(filename);

@@ -5,7 +5,8 @@
 
 package factory.layers.cell;
 
-import factory.geometry.GeometryFactory;
+import control.arguments.GeometryDescriptor;
+import factory.control.arguments.GeometryDescriptorFactory;
 import geometry.Geometry;
 import geometry.boundaries.Arena;
 import geometry.boundaries.Boundary;
@@ -20,18 +21,18 @@ import test.EslimeTestCase;
 public class CellLayerFactoryTest extends EslimeTestCase {
 
     private Element fixtureRoot;
-    private GeometryFactory factory;
+    private GeometryDescriptor descriptor;
     @Override
     protected void setUp() throws Exception {
         super.setUp();
         fixtureRoot = readXmlFile("factories/layers/cell/CellLayerFactoryTest.xml");
         Element geometryRoot = fixtureRoot.element("geometry");
-        factory = new GeometryFactory(geometryRoot);
+        descriptor = GeometryDescriptorFactory.instantiate(geometryRoot);
     }
 
     public void testInstantiate() throws Exception {
         Element e = fixtureRoot.element("general-case");
-        CellLayer actual = CellLayerFactory.instantiate(e, factory);
+        CellLayer actual = CellLayerFactory.instantiate(e, descriptor);
         Geometry geom = makeGeometry();
         CellLayer expected = new CellLayer(geom);
         assertEquals(expected, actual);

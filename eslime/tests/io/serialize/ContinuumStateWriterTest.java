@@ -41,7 +41,7 @@ public class ContinuumStateWriterTest extends EslimeTestCase {
         layer.setGeometry(geom);
         lm = new MockLayerManager();
         lm.addSoluteLayer("42", layer);
-        csw = new ContinuumStateWriter(p);
+        csw = new ContinuumStateWriter(p, lm);
     }
 
     /**
@@ -63,7 +63,7 @@ public class ContinuumStateWriterTest extends EslimeTestCase {
 
     private void generateOutput() {
         // Initialize csw files
-        csw.init(lm);
+        csw.init();
 
         // Fabricate states
         SolutionViewer first = makeFirstVector();

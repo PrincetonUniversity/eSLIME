@@ -43,17 +43,15 @@ public class CensusWriter extends Serializer {
 //    HashSet<Integer> observedStates = new HashSet<>();
     HashSet<Integer> observedStates;
 
-    private LayerManager lm;
-
     private BufferedWriter bw;
 
-    public CensusWriter(GeneralParameters p) {
-        super(p);
+    public CensusWriter(GeneralParameters p, LayerManager lm) {
+        super(p, lm);
     }
 
     @Override
-    public void init(LayerManager lm) {
-        super.init(lm);
+    public void init() {
+        super.init();
         histo = new HashMap<>();
         frames = new ArrayList<>();
         observedStates = new HashSet<>();
@@ -61,7 +59,6 @@ public class CensusWriter extends Serializer {
         String filename = p.getInstancePath() + '/' + FILENAME;
         mkDir(p.getInstancePath(), true);
         bw = makeBufferedWriter(filename);
-        this.lm = lm;
     }
 
     @Override

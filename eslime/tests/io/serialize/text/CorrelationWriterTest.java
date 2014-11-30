@@ -84,8 +84,8 @@ public class CorrelationWriterTest extends EslimeTestCase {
     public void testTrivialCase() throws Exception {
         String filename = "TrivialCorrelation.txt";
         MockGeneralParameters p = makeMockGeneralParameters();
-        CorrelationWriter query = new CorrelationWriter(p, filename, new ConstantDouble(1.0));
-        query.init(layerManager);
+        CorrelationWriter query = new CorrelationWriter(p, filename, new ConstantDouble(1.0), layerManager);
+        query.init();
         StepState state = new StepState(2.0, 1);
         state.record(layerManager.getCellLayer());
         query.flush(state);
@@ -97,9 +97,9 @@ public class CorrelationWriterTest extends EslimeTestCase {
     public void testCheckerboardCase() throws Exception {
         String filename = "CheckerboardCorrelation.txt";
         MockGeneralParameters p = makeMockGeneralParameters();
-        CorrelationWriter query = new CorrelationWriter(p, filename, new ConstantDouble(1.0));
+        CorrelationWriter query = new CorrelationWriter(p, filename, new ConstantDouble(1.0), layerManager);
         loadCheckerboard();
-        query.init(layerManager);
+        query.init();
         StepState state = new StepState(2.0, 1);
         state.record(layerManager.getCellLayer());
         query.flush(state);
@@ -120,9 +120,9 @@ public class CorrelationWriterTest extends EslimeTestCase {
         // at longer lengths and exactly right at shorter states.
         String filename = "ThreeStateCorrelation.txt";
         MockGeneralParameters p = makeMockGeneralParameters();
-        CorrelationWriter query = new CorrelationWriter(p, filename, new ConstantDouble(1.0));
+        CorrelationWriter query = new CorrelationWriter(p, filename, new ConstantDouble(1.0), layerManager);
         loadThreeState();
-        query.init(layerManager);
+        query.init();
         StepState state = new StepState(2.0, 1);
         state.record(layerManager.getCellLayer());
         query.flush(state);
@@ -143,14 +143,14 @@ public class CorrelationWriterTest extends EslimeTestCase {
     public void testAggregation() throws Exception {
         String filename = "AggregateCorrelation.txt";
         MockGeneralParameters p = makeMockGeneralParameters();
-        CorrelationWriter query = new CorrelationWriter(p, filename, new ConstantDouble(1.0));
-        query.init(layerManager);
+        CorrelationWriter query = new CorrelationWriter(p, filename, new ConstantDouble(1.0), layerManager);
+        query.init();
         StepState state = new StepState(2.0, 1);
         state.record(layerManager.getCellLayer());
         query.flush(state);
         query.dispatchHalt(null);
         loadCheckerboard();
-        query.init(layerManager);
+        query.init();
         state.record(layerManager.getCellLayer());
         query.flush(state);
         query.dispatchHalt(null);

@@ -5,21 +5,18 @@
 
 package processes.continuum;
 
-import control.GeneralParameters;
 import control.halt.HaltCondition;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
-import processes.Process;
+import processes.BaseProcessArguments;
+import processes.EcoProcess;
 import processes.gillespie.GillespieState;
 
 /**
  * Created by David B Borenstein on 1/7/14.
  */
-public abstract class ContinuumProcess extends Process {
+public abstract class ContinuumProcess extends EcoProcess {
 
-    public ContinuumProcess(ProcessLoader loader, LayerManager layerManager, GeneralParameters p,
-                            int id) {
-        super(loader, layerManager, p, id);
+    public ContinuumProcess(BaseProcessArguments arguments) {
+        super(arguments);
     }
 
     protected String getProcessClass() {

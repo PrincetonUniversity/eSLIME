@@ -5,15 +5,13 @@
 
 package processes.discrete.check;
 
-import control.GeneralParameters;
 import control.arguments.Argument;
 import control.halt.ExtinctionEvent;
 import control.halt.HaltCondition;
-import geometry.set.CoordinateSet;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
+import processes.BaseProcessArguments;
 import processes.StepState;
 import processes.discrete.CellProcess;
+import processes.discrete.CellProcessArguments;
 import processes.gillespie.GillespieState;
 
 /**
@@ -24,11 +22,21 @@ import processes.gillespie.GillespieState;
 public class CheckForExtinction extends CellProcess {
 
     private double threshold;
-    public CheckForExtinction(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id, Argument<Double> thresholdArg, GeneralParameters p) {
-        super(loader, layerManager, activeSites, id, p);
-        threshold = thresholdArg.next();
+    private Argument<Double> thresholdArg;
+
+    public CheckForExtinction(BaseProcessArguments arguments, CellProcessArguments cpArguments, Argument<Double> thresholdArg) {
+        super(arguments, cpArguments);
+        this.thresholdArg = thresholdArg;
     }
 
+    @Override
+    public void init() {
+        try {
+            threshold = thresholdArg.next();
+        } catch (HaltCondition ex) {
+            throw new IllegalStateException(ex);
+        }
+    }
     @Override
     public void target(GillespieState gs) throws HaltCondition {
         // There's only one event that can happen in this process.

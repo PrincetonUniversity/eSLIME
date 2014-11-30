@@ -89,8 +89,8 @@ public class InterfaceCensusWriterTest extends EslimeTestCase {
     public void testLifeCycle() throws Exception {
         MockGeneralParameters p = makeMockGeneralParameters();
         p.setInstancePath(outputPath);
-        InterfaceCensusWriter writer = new InterfaceCensusWriter(p, new ConstantInteger(1));
-        writer.init(layerManager);
+        InterfaceCensusWriter writer = new InterfaceCensusWriter(p, new ConstantInteger(1), layerManager);
+        writer.init();
 
         // Flush original configuration
         StepState state = new StepState(0.0, 0);

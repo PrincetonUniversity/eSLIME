@@ -7,197 +7,151 @@ package factory.processes;
 
 import control.GeneralParameters;
 import control.arguments.Argument;
+import control.arguments.CellDescriptor;
+import factory.control.arguments.CellDescriptorFactory;
 import factory.control.arguments.DoubleArgumentFactory;
 import factory.control.arguments.IntegerArgumentFactory;
 import factory.geometry.set.CoordinateSetFactory;
+import factory.processes.discrete.FillProcessFactory;
+import factory.processes.discrete.MockProcessFactory;
+import factory.processes.discrete.ScatterProcessFactory;
+import factory.processes.discrete.TriggerProcessFactory;
 import factory.processes.discrete.filter.FilterFactory;
 import geometry.Geometry;
 import geometry.set.CoordinateSet;
-import io.loader.ProcessLoader;
 import layers.LayerManager;
 import org.dom4j.Element;
-import processes.MockProcess;
-import processes.Process;
-import processes.continuum.FieldUpdateProcess;
+import processes.BaseProcessArguments;
+import processes.EcoProcess;
 import processes.discrete.*;
-import processes.discrete.check.*;
+import processes.discrete.check.CheckForDomination;
+import processes.discrete.check.CheckForExtinction;
+import processes.discrete.check.CheckForFixation;
+import processes.discrete.check.CheckForThresholdOccupancy;
 import processes.discrete.filter.Filter;
-import processes.gillespie.GillespieProcess;
 import processes.temporal.ExponentialInverse;
 import processes.temporal.Tick;
 import structural.utilities.XmlUtil;
 
 /**
- * @author dbborens
+ * Created by dbborens on 11/23/14.
  */
-public class ProcessFactory {
-
-    private final LayerManager layerManager;
-    private ProcessLoader loader;
-    private GeneralParameters p;
-
-    public ProcessFactory(ProcessLoader loader, LayerManager lm, GeneralParameters p) {
-        this.loader = loader;
-        this.layerManager = lm;
-        this.p = p;
-
-    }
-
-    public Process[] getProcesses() {
-        Integer[] ids = loader.getProcesses();
-        Process[] processes = new Process[ids.length];
-
-        // Build processes.
-        for (int i = 0; i < ids.length; i++) {
-            int id = ids[i];
-            processes[i] = instantiate(id);
-        }
-
-        return processes;
-    }
-
-    public Process instantiate(Integer id) {
-        Element e = loader.getProcess(id);
+public abstract class ProcessFactory {
+    public static EcoProcess instantiate(Element e, LayerManager layerManager, GeneralParameters p, int id) {
 
         String processClass = e.getName();
 
+        BaseProcessArguments arguments = makeProcessArguments(e, layerManager, p, id);
+
         if (processClass.equalsIgnoreCase("exponential-inverse")) {
-            return new ExponentialInverse(loader, layerManager, id, p);
+            return new ExponentialInverse(arguments);
 
         } else if (processClass.equalsIgnoreCase("tick")) {
             Argument<Double> dt = DoubleArgumentFactory.instantiate(e, "dt", 1.0, p.getRandom());
-            return new Tick(loader, layerManager, id, p, dt);
+            return new Tick(arguments, dt);
 
-        } else if (processClass.equalsIgnoreCase("divide-anywhere")) {
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
-            Argument<Integer> maxTargets = getMaxTargets(e, p);
-            return new DivideAnywhere(loader, layerManager, activeSites, id, p, maxTargets);
-
-        } else if (processClass.equalsIgnoreCase("active-layer-divide")) {
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
-            Argument<Integer> maxTargets = getMaxTargets(e, p);
-            return new ActiveLayerDivide(loader, layerManager, activeSites, id, p, maxTargets);
+        } else if (processClass.equalsIgnoreCase("divide")) {
+            CellProcessArguments cpArguments = makeCellProcessArguments(e, layerManager, p);
+            return new Divide(arguments, cpArguments);
 
         } else if (processClass.equalsIgnoreCase("occupied-neighbor-swap")) {
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
-            Argument<Integer> maxTargets = getMaxTargets(e, p);
-            return new OccupiedNeighborSwap(loader, layerManager, activeSites, id, p, maxTargets);
+            CellProcessArguments cpArguments = makeCellProcessArguments(e, layerManager, p);
+            return new OccupiedNeighborSwap(arguments, cpArguments);
 
         } else if (processClass.equalsIgnoreCase("general-neighbor-swap")) {
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
-            Argument<Integer> count = getCount(e, p);
-            return new GeneralNeighborSwap(loader, layerManager, activeSites, id, p, count);
+            CellProcessArguments cpArguments = makeCellProcessArguments(e, layerManager, p);
+            return new GeneralNeighborSwap(arguments, cpArguments);
 
         } else if (processClass.equalsIgnoreCase("scatter")) {
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
-            return new Scatter(loader, layerManager, activeSites, id, p);
+            return ScatterProcessFactory.instantiate(e, layerManager, p, id);
 
         } else if (processClass.equalsIgnoreCase("fill")) {
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
-            return new Fill(loader, layerManager, activeSites, id, p);
-
-        } else if (processClass.equalsIgnoreCase("uniform-biomass-growth")) {
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
-            return new UniformBiomassGrowth(loader, layerManager, activeSites, id, p);
-
-        } else if (processClass.equalsIgnoreCase("targeted-biomass-growth")) {
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
-            return new TargetedBiomassGrowth(loader, layerManager, activeSites, id, p);
-
-        } else if (processClass.equalsIgnoreCase("mutate-all")) {
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
-            return new MutateAll(loader, layerManager, activeSites, id, p);
+            return FillProcessFactory.instantiate(e, layerManager, p, id);
 
         } else if (processClass.equalsIgnoreCase("mock-process")) {
-            return new MockProcess(loader, layerManager, p, id);
-
-        } else if (processClass.equalsIgnoreCase("gillespie-process")) {
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
-            return new GillespieProcess(loader, layerManager, activeSites, id, p);
-
-        } else if (processClass.equalsIgnoreCase("field-update-process")) {
-            String target = e.element("target").getTextTrim();
-            return new FieldUpdateProcess(loader, id, layerManager, p, target);
+            return MockProcessFactory.instantiate(e, layerManager, p, id);
 
         } else if (processClass.equalsIgnoreCase("trigger")) {
-            Filter filter = loadFilters(e);
-            String behaviorName = XmlUtil.getString(e, "behavior");
-            boolean skipVacant = XmlUtil.getBoolean(e, "skip-vacant-sites");
-            int maxTargets = XmlUtil.getInteger(e, "max-targets", -1);
-            boolean requireNeighbors = XmlUtil.getBoolean(e, "require-neighbors");
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
-            return new TriggerProcess(layerManager,
-                    activeSites,
-                    id,
-                    behaviorName,
-                    p,
-                    filter,
-                    skipVacant,
-                    requireNeighbors,
-                    maxTargets);
+            return TriggerProcessFactory.instantiate(e, layerManager, p, id);
+
         } else if (processClass.equalsIgnoreCase("cull")) {
             double threshold = XmlUtil.getDouble(e, "threshold", 0.0);
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
-            return new Cull(loader, layerManager, activeSites, id, p, threshold);
+            CellProcessArguments cpArguments = makeCellProcessArguments(e, layerManager, p);
+            return new Cull(arguments, cpArguments, threshold);
 
         } else if (processClass.equalsIgnoreCase("diagnostic")) {
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
-            return new DiagnosticProcess(loader, layerManager, activeSites, id, p);
+            CellProcessArguments cpArguments = makeCellProcessArguments(e, layerManager, p);
+            return new DiagnosticProcess(arguments, cpArguments);
 
         } else if (processClass.equalsIgnoreCase("check-for-fixation")) {
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
-            return new CheckForFixation(loader, layerManager, activeSites, id, p);
+            CellProcessArguments cpArguments = makeCellProcessArguments(e, layerManager, p);
+            return new CheckForFixation(arguments, cpArguments);
 
         } else if (processClass.equalsIgnoreCase("check-threshold-occupancy")) {
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
             Argument<Double> thresholdOccupancy = DoubleArgumentFactory.instantiate(e, "threshold", 1.0, p.getRandom());
-            return new CheckForThresholdOccupancy(loader, layerManager, activeSites, id, p, thresholdOccupancy);
+            CellProcessArguments cpArguments = makeCellProcessArguments(e, layerManager, p);
+            return new CheckForThresholdOccupancy(arguments, cpArguments, thresholdOccupancy);
 
         } else if (processClass.equalsIgnoreCase("check-for-domination")) {
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
+            CellProcessArguments cpArguments = makeCellProcessArguments(e, layerManager, p);
             Argument<Double> thresholdFraction = DoubleArgumentFactory.instantiate(e, "threshold", p.getRandom());
             Argument<Integer> targetState = IntegerArgumentFactory.instantiate(e, "target", -1, p.getRandom());
-
-            return new CheckForDomination(loader, layerManager, activeSites, id, p, targetState, thresholdFraction);
-
-        } else if (processClass.equalsIgnoreCase("check-for-complete-fixation")) {
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
-            return new CheckForCompleteFixation(loader, layerManager, activeSites, id, p);
+            return new CheckForDomination(arguments, cpArguments, targetState, thresholdFraction);
 
         } else if (processClass.equalsIgnoreCase("check-for-extinction")) {
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
             Argument<Double> threshold = DoubleArgumentFactory.instantiate(e, "threshold", 0.0, p.getRandom());
-            return new CheckForExtinction(loader, layerManager, activeSites, id, threshold, p);
+            CellProcessArguments cpArguments = makeCellProcessArguments(e, layerManager, p);
+            return new CheckForExtinction(arguments, cpArguments, threshold);
 
         } else if (processClass.equalsIgnoreCase("record")) {
-            CoordinateSet activeSites = getActiveSites(e, layerManager.getCellLayer().getGeometry(), p);
-            return new Record(loader, layerManager, activeSites, id, p);
+            CellProcessArguments cpArguments = makeCellProcessArguments(e, layerManager, p);
+            return new Record(arguments, cpArguments);
 
         } else {
             String msg = "Unrecognized process '" +
-                    processClass + "' (id=" + id + ").";
+                    processClass + ".";
 
             throw new IllegalArgumentException(msg);
         }
     }
 
-    private Filter loadFilters(Element root) {
+    protected static BaseProcessArguments makeProcessArguments(Element e,
+                                                               LayerManager layerManager,
+                                                               GeneralParameters p,
+                                                               int id) {
+
+        Argument<Integer> start = IntegerArgumentFactory.instantiate(e, "start", 0, p.getRandom());
+        Argument<Integer> period = IntegerArgumentFactory.instantiate(e, "period", 1, p.getRandom());
+        return new BaseProcessArguments(layerManager, p, id, start, period);
+    }
+
+    protected static CellProcessArguments makeCellProcessArguments(Element e, LayerManager layerManager, GeneralParameters p) {
+        Geometry geometry = layerManager.getCellLayer().getGeometry();
+        CoordinateSet activeSites = getActiveSites(e, geometry, p);
+        Argument<Integer> maxTargets = getMaxTargets(e, p);
+
+        return new CellProcessArguments(activeSites, maxTargets);
+    }
+
+    protected static Filter loadFilters(Element root, LayerManager layerManager, GeneralParameters p) {
         Element e = root.element("filters");
         Filter filter = FilterFactory.instantiate(e, layerManager, p);
         return filter;
     }
 
-    private Argument<Integer> getMaxTargets(Element e, GeneralParameters p) {
+    private static Argument<Integer> getMaxTargets(Element e, GeneralParameters p) {
         return IntegerArgumentFactory.instantiate(e, "max-targets", -1, p.getRandom());
     }
 
-    private Argument<Integer> getCount(Element e, GeneralParameters p) {
-        return IntegerArgumentFactory.instantiate(e, "count", p.getRandom());
-    }
-
-    private CoordinateSet getActiveSites(Element e, Geometry geom, GeneralParameters p) {
+    private static CoordinateSet getActiveSites(Element e, Geometry geom, GeneralParameters p) {
         Element sitesElem = e.element("active-sites");
         CoordinateSet ret = CoordinateSetFactory.instantiate(sitesElem, geom, p);
         return ret;
+    }
+
+    protected static CellDescriptor makeCellDescriptor(Element e, String key, LayerManager layerManager, GeneralParameters p) {
+        Element cellDescriptor = e.element(key);
+        CellDescriptor cellArgument = CellDescriptorFactory.instantiate(cellDescriptor, layerManager, p);
+        return cellArgument;
     }
 }

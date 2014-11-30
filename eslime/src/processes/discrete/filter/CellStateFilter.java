@@ -7,6 +7,7 @@ package processes.discrete.filter;
 
 import cells.Cell;
 import control.arguments.Argument;
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import layers.cell.CellLayer;
 import layers.cell.CellLayerViewer;
@@ -61,7 +62,13 @@ public class CellStateFilter extends Filter {
     }
 
     private ArrayList<Coordinate> getRetained(Collection<Coordinate> toFilter) {
-        int chosen = toChoose.next();
+        int chosen;
+        try {
+            chosen = toChoose.next();
+        } catch (HaltCondition ex) {
+            throw new IllegalStateException(ex);
+        }
+
         ArrayList<Coordinate> toRetain = new ArrayList<>();
         CellLayerViewer viewer = layer.getViewer();
         for (Coordinate c : toFilter) {

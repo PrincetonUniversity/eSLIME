@@ -84,7 +84,7 @@ public class CloneTo extends Action{
 
     }
 
-    private void highlight(Coordinate target, Coordinate ownLocation) {
+    private void highlight(Coordinate target, Coordinate ownLocation) throws HaltCondition {
         doHighlight(targetChannel, target);
         doHighlight(selfChannel, ownLocation);
     }

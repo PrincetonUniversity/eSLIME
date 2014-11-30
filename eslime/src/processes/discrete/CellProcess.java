@@ -5,29 +5,23 @@
 
 package processes.discrete;
 
-import control.GeneralParameters;
+import control.arguments.Argument;
 import geometry.set.CoordinateSet;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
 import layers.cell.CellLayer;
-import processes.Process;
+import processes.BaseProcessArguments;
+import processes.EcoProcess;
 
-public abstract class CellProcess extends Process {
+public abstract class CellProcess extends EcoProcess {
     // These are easily accessed from the layer manager, but there
     // are very many calls to them thanks to some legacy code.
     protected CellLayer layer;
     protected CoordinateSet activeSites;
+    protected Argument<Integer> maxTargets;
 
-    public CellProcess(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id,
-                       GeneralParameters p) {
-
-
-        super(loader, layerManager, p, id);
-        this.activeSites = activeSites;
+    public CellProcess(BaseProcessArguments arguments, CellProcessArguments cpArguments) {
+        super(arguments);
         layer = layerManager.getCellLayer();
-    }
-
-    protected String getProcessClass() {
-        return this.getClass().getSimpleName();
+        activeSites = cpArguments.getActiveSites();
+        maxTargets = cpArguments.getMaxTargets();
     }
 }

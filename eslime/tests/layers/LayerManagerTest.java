@@ -5,7 +5,8 @@
 
 package layers;
 
-import factory.geometry.GeometryFactory;
+import control.arguments.GeometryDescriptor;
+import factory.control.arguments.GeometryDescriptorFactory;
 import factory.layers.LayerManagerFactory;
 import layers.solute.SoluteLayer;
 import org.dom4j.Element;
@@ -26,7 +27,7 @@ public class LayerManagerTest extends EslimeTestCase {
 
         // Construct geometry manager
         Element geomElem = root.element("geometry");
-        GeometryFactory gm = new GeometryFactory(geomElem);
+        GeometryDescriptor gm = GeometryDescriptorFactory.instantiate(geomElem);
 
         // Construct layer manager instances
         Element lr1 = root.element("first-case");

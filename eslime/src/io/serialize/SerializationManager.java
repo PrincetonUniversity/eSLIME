@@ -19,8 +19,8 @@ public class SerializationManager extends Serializer {
 
     private List<Serializer> writers;
 
-    public SerializationManager(GeneralParameters p, List<Serializer> writers) {
-        super(p);
+    public SerializationManager(GeneralParameters p, LayerManager layerManager, List<Serializer> writers) {
+        super(p, layerManager);
         this.writers = writers;
     }
 
@@ -28,9 +28,9 @@ public class SerializationManager extends Serializer {
      * Opens handles / initializes data structures for a new instance.
      * Blows up if these were left open from the previous instance.
      */
-    public void init(LayerManager lm) {
+    public void init() {
         for (Serializer tw : writers) {
-            tw.init(lm);
+            tw.init();
         }
     }
 

@@ -6,40 +6,29 @@
 package processes.discrete;
 
 import cells.Cell;
-import control.GeneralParameters;
-import control.arguments.Argument;
+import control.arguments.CellDescriptor;
 import control.halt.HaltCondition;
 import control.halt.LatticeFullEvent;
 import control.identifiers.Coordinate;
-import factory.cell.CellFactory;
-import factory.control.arguments.IntegerArgumentFactory;
-import geometry.set.CoordinateSet;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
+import processes.BaseProcessArguments;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 
 import java.util.HashSet;
-import java.util.Random;
 
 public class Scatter extends CellProcess {
 
-    private Argument<Integer> numGroups;
-    private Argument<Integer> groupSize;
+    private HashSet<Coordinate> candidates;
+    private CellDescriptor cellDescriptor;
 
-    private Random random;
+    public Scatter(BaseProcessArguments arguments, CellProcessArguments cpArguments, CellDescriptor cellDescriptor) {
+        super(arguments, cpArguments);
+        this.cellDescriptor = cellDescriptor;
+    }
 
-    private HashSet<Coordinate> candidates = null;
-
-    public Scatter(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id,
-                   GeneralParameters p) {
-
-        super(loader, layerManager, activeSites, id, p);
-
-        random = p.getRandom();
-
-        numGroups = IntegerArgumentFactory.instantiate(e, "types", 1, p.getRandom());
-        groupSize = IntegerArgumentFactory.instantiate(e, "tokens", 1, p.getRandom());
+    @Override
+    public void init() {
+        candidates = null;
     }
 
     public void target(GillespieState gs) throws HaltCondition {
@@ -62,33 +51,25 @@ public class Scatter extends CellProcess {
             throw new IllegalStateException("fire() invoked on scatter before target().");
         }
 
-        int n = numGroups.next();
+        int n = maxTargets.next();
         for (int i = 0; i < n; i++) {
-            CellFactory factory = getCellFactory(layerManager);
-
-            // Create a cell factory for this group
-            int m = groupSize.next();
-            System.out.println("Tokens: " + m);
-            for (int j = 0; j < m; j++) {
-
-                if (candidates.isEmpty()) {
-                    throw new LatticeFullEvent();
-                }
-
-                // Choose target randomly
-                Coordinate[] cVec = candidates.toArray(new Coordinate[0]);
-
-                int o = random.nextInt(cVec.length);
-                Coordinate target = cVec[o];
-
-                Cell cell = factory.instantiate();
-
-                //System.out.println("   Placing cell of type " + cell.getState() + " at location " + target);
-                layer.getUpdateManager().place(cell, target);
-
-                //state.highlight(target);
-                candidates.remove(target);
+            if (candidates.isEmpty()) {
+                throw new LatticeFullEvent();
             }
+
+            // Choose target randomly
+            Coordinate[] cVec = candidates.toArray(new Coordinate[0]);
+
+            int o = p.getRandom().nextInt(cVec.length);
+            Coordinate target = cVec[o];
+
+            Cell cell = cellDescriptor.next();
+
+            //System.out.println("   Placing cell of type " + cell.getState() + " at location " + target);
+            layer.getUpdateManager().place(cell, target);
+
+            //state.highlight(target);
+            candidates.remove(target);
         }
 
         // Make sure that a new target must be chosen prior to next invocation.

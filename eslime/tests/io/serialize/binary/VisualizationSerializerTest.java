@@ -41,8 +41,8 @@ public class VisualizationSerializerTest extends EslimeTestCase {
         // because it exists.
         p.setInstancePath(fixturePath + "SystemStateReader/");
         String prefix = "../../output/test";
-        query = new VisualizationSerializer(p, visualization, prefix);
-        query.init(lm);
+        query = new VisualizationSerializer(p, visualization, prefix, lm);
+        query.init();
     }
 
     public void testLifeCycle() {

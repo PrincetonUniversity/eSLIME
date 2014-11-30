@@ -5,10 +5,8 @@
 
 package processes.temporal;
 
-import control.GeneralParameters;
 import control.halt.HaltCondition;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
+import processes.BaseProcessArguments;
 import processes.StepState;
 
 /**
@@ -24,10 +22,12 @@ import processes.StepState;
  */
 public class ExponentialInverse extends TimeProcess {
 
-    public ExponentialInverse(ProcessLoader loader, LayerManager layerManager,
-                              Integer id, GeneralParameters p) {
+    public ExponentialInverse(BaseProcessArguments arguments) {
+        super(arguments);
+    }
 
-        super(loader, layerManager, id, p);
+    @Override
+    public void init() {
     }
 
     @Override

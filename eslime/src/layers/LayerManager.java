@@ -8,6 +8,7 @@ package layers;
 import layers.cell.CellLayer;
 import layers.solute.SoluteLayer;
 import processes.StepState;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;
 
@@ -23,10 +24,6 @@ public class LayerManager {
 
     public LayerManager() {
         soluteLayers = new HashMap<>();
-    }
-
-    public void setCellLayer(CellLayer cellLayer) {
-        this.cellLayer = cellLayer;
     }
 
     public void addSoluteLayer(String id, SoluteLayer soluteLayer) {
@@ -53,8 +50,8 @@ public class LayerManager {
         return cellLayer;
     }
 
-    public void setStepState(StepState stepState) {
-        this.stepState = stepState;
+    public void setCellLayer(CellLayer cellLayer) {
+        this.cellLayer = cellLayer;
     }
 
     @Override
@@ -96,5 +93,13 @@ public class LayerManager {
 
     public StepState getStepState() {
         return stepState;
+    }
+
+    public void setStepState(StepState stepState) {
+        this.stepState = stepState;
+    }
+
+    public void reset() {
+        throw new NotImplementedException();
     }
 }

@@ -6,9 +6,11 @@
 package factory.layers.solute;
 
 import continuum.solvers.EquilibriumSolver;
+import control.arguments.GeometryDescriptor;
 import factory.continuum.solvers.SolverFactory;
+import factory.geometry.boundaries.BoundaryFactory;
 import geometry.Geometry;
-import factory.geometry.GeometryFactory;
+import geometry.boundaries.Boundary;
 import layers.LayerManager;
 import layers.MockSoluteLayer;
 import layers.solute.EquilibriumSoluteLayer;
@@ -35,10 +37,12 @@ public abstract class SoluteLayerFactory {
             // No finite time solvers yet
     };
 
-    public static SoluteLayer instantiate(Element layerRoot, GeometryFactory geometryFactory, LayerManager layerManager) {
+    public static SoluteLayer instantiate(Element layerRoot, GeometryDescriptor geometryDescriptor, LayerManager layerManager) {
+        Element boundaryElem = layerRoot.element("boundary");
         String layerClass = layerRoot.element("class").getTextTrim();
+        Boundary boundary = BoundaryFactory.instantiate(boundaryElem, geometryDescriptor);
         if (layerClass.equalsIgnoreCase("equilibrium")) {
-            Geometry geometry = geometryFactory.make(layerRoot);
+            Geometry geometry = geometryDescriptor.make(boundary);
             return equilibriumLayer(layerRoot, geometry, layerManager);
         } else if (layerClass.equalsIgnoreCase("mock")) {
             return new MockSoluteLayer();

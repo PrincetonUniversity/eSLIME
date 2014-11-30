@@ -47,8 +47,8 @@ public class RunningTimeWriterTest extends EslimeLatticeTestCase {
 
     private void runWithPauses() throws Exception {
         GeneralParameters p = makeMockGeneralParameters();
-        RunningTimeWriter writer = new RunningTimeWriter(p);
-        writer.init(layerManager);
+        RunningTimeWriter writer = new RunningTimeWriter(p, layerManager);
+        writer.init();
         StepState state = new StepState(0.0, 0);
 
         Thread.sleep(5);

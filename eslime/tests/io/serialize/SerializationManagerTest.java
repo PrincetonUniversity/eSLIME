@@ -5,13 +5,12 @@
 
 package io.serialize;
 
-import junit.framework.TestCase;
 import processes.MockStepState;
-import processes.StepState;
+import test.EslimeTestCase;
 
 import java.util.ArrayList;
 
-public class SerializationManagerTest extends TestCase {
+public class SerializationManagerTest extends EslimeTestCase {
 
     private MockSerializer serializer;
     private SerializationManager query;
@@ -23,9 +22,9 @@ public class SerializationManagerTest extends TestCase {
         // make sure that the child's methods each get called.
         ArrayList<Serializer> writers = new ArrayList<>(1);
 
-        serializer = new MockSerializer();
+        serializer = new MockSerializer(null);
         writers.add(serializer);
-        query = new SerializationManager(null, writers);
+        query = new SerializationManager(null, null, writers);
     }
 
     public void testFlushRecorded() {
@@ -43,7 +42,7 @@ public class SerializationManagerTest extends TestCase {
 
     }
     public void testInit() {
-        query.init(null);
+        query.init();
         assertTrue(serializer.isInit());
     }
 

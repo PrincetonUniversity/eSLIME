@@ -6,15 +6,11 @@
 package processes.discrete;
 
 import cells.Cell;
-import control.GeneralParameters;
-import control.arguments.Argument;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
-import geometry.set.CoordinateSet;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
 import layers.cell.CellLookupManager;
 import layers.cell.CellUpdateManager;
+import processes.BaseProcessArguments;
 import processes.MaxTargetHelper;
 
 import java.util.Random;
@@ -23,15 +19,15 @@ public abstract class BulkDivisionProcess extends CellProcess {
 
 
     protected Random random;
-    private Argument<Integer> maxTargets;
     private ShoveHelper shoveHelper;
 
-    public BulkDivisionProcess(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id,
-                               GeneralParameters p, Argument<Integer> maxTargets) {
-        super(loader, layerManager, activeSites, id, p);
-        random = p.getRandom();
-        this.maxTargets = maxTargets;
+    public BulkDivisionProcess(BaseProcessArguments arguments, CellProcessArguments cpArguments) {
+        super(arguments, cpArguments);
+    }
 
+    @Override
+    public void init() {
+        random = p.getRandom();
         shoveHelper = new ShoveHelper(layerManager, random);
     }
 

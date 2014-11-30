@@ -7,6 +7,7 @@ package agent.action;
 
 import cells.BehaviorCell;
 import control.arguments.Argument;
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
 
@@ -18,10 +19,11 @@ public class Die extends Action {
     private Argument<Integer> channel;
     public Die(BehaviorCell callback, LayerManager layerManager,  Argument<Integer> channel) {
         super(callback, layerManager);
+        this.channel = channel;
     }
 
     @Override
-    public void run(Coordinate caller) {
+    public void run(Coordinate caller) throws HaltCondition {
         doHighlight(channel, getOwnLocation());
         getCallback().die();
     }

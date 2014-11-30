@@ -6,6 +6,7 @@
 package io.visual.color;
 
 import control.arguments.Argument;
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import io.visual.HSLColor;
 import layers.SystemState;
@@ -64,13 +65,24 @@ public class SurfaceGrowthColorManager extends ColorManager {
         float originalLuminance = baseHSL.getLuminance();
         float hue = baseHSL.getHue();
 
-        float sScale = saturationScale.next().floatValue();
+        float sScale, lScale;
+        try {
+            sScale = saturationScale.next().floatValue();
+        } catch (HaltCondition ex) {
+            throw new IllegalStateException(ex);
+        }
+
         float saturation = originalSaturation * sScale;
         if (saturation > 100.0) {
             saturation = 100.0F;
         }
 
-        float lScale = luminanceScale.next().floatValue();
+        try {
+            lScale = luminanceScale.next().floatValue();
+        } catch (HaltCondition ex) {
+            throw new IllegalStateException(ex);
+        }
+
         float luminance = originalLuminance * lScale;
         if (luminance > 100.0) {
             luminance = 100.0F;

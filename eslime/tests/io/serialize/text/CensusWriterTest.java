@@ -25,12 +25,12 @@ public class CensusWriterTest extends EslimeLatticeTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         p = makeMockGeneralParameters();
-        writer = new CensusWriter(p);
+        writer = new CensusWriter(p, layerManager);
         haltEvent = new ManualHaltEvent("");
     }
 
     public void testLifeCycle() throws Exception {
-        writer.init(layerManager);
+        writer.init();
         // Create original configuration
         put(origin, 1);
         put(x, 1);
@@ -68,7 +68,7 @@ public class CensusWriterTest extends EslimeLatticeTestCase {
     public void testCycleIndependence() throws Exception {
         haltEvent.setGillespie(0);
         p.setInstancePath(outputPath + "censusWriterTest/1/");
-        writer.init(layerManager);
+        writer.init();
         StepState state = new StepState(0.0, 0);
         put(origin, 1);
         state.record(cellLayer);
@@ -76,7 +76,7 @@ public class CensusWriterTest extends EslimeLatticeTestCase {
         writer.dispatchHalt(haltEvent);
 
         p.setInstancePath(outputPath + "censusWriterTest/2/");
-        writer.init(layerManager);
+        writer.init();
         // Create original configuration
         replace(origin, 2);
         state = new StepState(0.0, 0);

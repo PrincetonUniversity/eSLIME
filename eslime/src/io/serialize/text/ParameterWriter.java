@@ -19,8 +19,8 @@ import java.io.IOException;
 public class ParameterWriter extends Serializer {
     private final String PROJECT_FILENAME = "project.xml";
 
-    public ParameterWriter(GeneralParameters p) {
-        super(p);
+    public ParameterWriter(GeneralParameters p, LayerManager lm) {
+        super(p, lm);
         mkDir(p.getPath(), true);
 
         try {
@@ -38,7 +38,7 @@ public class ParameterWriter extends Serializer {
     }
 
     @Override
-    public void init(LayerManager lm) {
+    public void init() {
         // Write out an instance-specific XML file.
         if (p.getNumInstances() == 1) {
             return;

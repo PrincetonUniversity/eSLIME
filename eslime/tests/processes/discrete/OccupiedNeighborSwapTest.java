@@ -6,18 +6,17 @@
 package processes.discrete;
 
 import cells.MockCell;
-import control.arguments.ConstantInteger;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
 import geometry.boundaries.Arena;
 import geometry.boundaries.Boundary;
 import geometry.lattice.Lattice;
 import geometry.lattice.RectangularLattice;
-import geometry.set.CompleteSet;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
+import processes.BaseProcessArguments;
 import processes.MockStepState;
 import processes.gillespie.GillespieState;
 import structural.MockGeneralParameters;
@@ -45,7 +44,9 @@ public class OccupiedNeighborSwapTest extends EslimeTestCase {
         layerManager.setCellLayer(cellLayer);
 
         MockGeneralParameters p = makeMockGeneralParameters();
-        query = new OccupiedNeighborSwap(null, layerManager, new CompleteSet(geom), 0, p, new ConstantInteger(1));
+        BaseProcessArguments arguments = makeBaseProcessArguments(layerManager, p);
+        CellProcessArguments cpArguments = makeCellProcessArguments(geom);
+        query = new OccupiedNeighborSwap(arguments, cpArguments);
 
         /*
          * Cell layout:

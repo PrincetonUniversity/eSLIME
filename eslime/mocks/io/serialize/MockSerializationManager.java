@@ -5,7 +5,7 @@
 
 package io.serialize;
 
-import org.dom4j.tree.BaseElement;
+import layers.LayerManager;
 import processes.StepState;
 
 import java.util.ArrayList;
@@ -17,8 +17,8 @@ public class MockSerializationManager extends SerializationManager {
 
     private StepState stepState;
 
-    public MockSerializationManager() {
-        super(null, new ArrayList<Serializer>());
+    public MockSerializationManager(LayerManager layerManager) {
+        super(null, layerManager, new ArrayList<Serializer>());
     }
 
     public StepState getStepState() {

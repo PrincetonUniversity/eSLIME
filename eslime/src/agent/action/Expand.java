@@ -72,7 +72,7 @@ public class Expand extends Action{
         highlight(target, parentLocation);
     }
 
-    private void highlight(Coordinate target, Coordinate ownLocation) {
+    private void highlight(Coordinate target, Coordinate ownLocation) throws HaltCondition {
         doHighlight(targetChannel, target);
         doHighlight(selfChannel, ownLocation);
     }

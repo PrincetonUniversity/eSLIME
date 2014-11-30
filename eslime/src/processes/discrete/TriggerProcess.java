@@ -6,11 +6,9 @@
 package processes.discrete;
 
 import cells.Cell;
-import control.GeneralParameters;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
-import geometry.set.CoordinateSet;
-import layers.LayerManager;
+import processes.BaseProcessArguments;
 import processes.MaxTargetHelper;
 import processes.StepState;
 import processes.discrete.filter.Filter;
@@ -28,27 +26,26 @@ public class TriggerProcess extends CellProcess {
     private String behaviorName;
     private boolean skipVacant;
     private boolean requireNeighbors;
-    private int maxTargets;
     private Filter filter;
 
     // We use a cell array because triggering may also move cells
     private Cell[] targets;
 
-    public TriggerProcess(LayerManager layerManager,
-                          CoordinateSet activeSites,
-                          int id,
+    public TriggerProcess(BaseProcessArguments arguments, CellProcessArguments cpArguments,
                           String behaviorName,
-                          GeneralParameters p,
                           Filter filter,
                           boolean skipVacant,
-                          boolean requireNeighbors,
-                          int maxTargets) {
-        super(null, layerManager, activeSites, id, p);
+                          boolean requireNeighbors) {
+        super(arguments, cpArguments);
         this.behaviorName = behaviorName;
         this.skipVacant = skipVacant;
-        this.maxTargets = maxTargets;
         this.requireNeighbors = requireNeighbors;
         this.filter = filter;
+    }
+
+    @Override
+    public void init() {
+        targets = null;
     }
 
     @Override
@@ -62,11 +59,11 @@ public class TriggerProcess extends CellProcess {
 
     }
 
-    private Cell[] resolveTargets() {
+    private Cell[] resolveTargets() throws HaltCondition {
         ArrayList<Coordinate> vacancyFiltered = respectVacancyRequirements(activeSites);
         Collection<Coordinate> stateFiltered = filter.apply(vacancyFiltered);
         Collection<? extends Object> neighborFiltered = respectNeighborhoodRequirements(stateFiltered);
-        Object[] selectedCoords = MaxTargetHelper.respectMaxTargets(neighborFiltered, maxTargets, p.getRandom());
+        Object[] selectedCoords = MaxTargetHelper.respectMaxTargets(neighborFiltered, maxTargets.next(), p.getRandom());
 
         Cell[] selectedCells = new Cell[selectedCoords.length];
         for (int i = 0; i < selectedCells.length; i++) {

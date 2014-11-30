@@ -29,8 +29,8 @@ public class TimeWriterTest extends EslimeTestCase {
 
     private void generateFile() {
         MockGeneralParameters p = makeMockGeneralParameters();
-        TimeWriter query = new TimeWriter(p);
-        query.init(null);
+        TimeWriter query = new TimeWriter(p, null);
+        query.init();
 //        query.step(null, 0.5, 2);
 //        query.step(null, 1.3, 4);
         query.flush(new MockStepState(0.5, 2));

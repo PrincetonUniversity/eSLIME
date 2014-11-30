@@ -5,15 +5,13 @@
 
 package processes.discrete.check;
 
-import control.GeneralParameters;
 import control.arguments.Argument;
 import control.halt.DominationEvent;
 import control.halt.HaltCondition;
-import geometry.set.CoordinateSet;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
+import processes.BaseProcessArguments;
 import processes.StepState;
 import processes.discrete.CellProcess;
+import processes.discrete.CellProcessArguments;
 import processes.gillespie.GillespieState;
 
 /**
@@ -25,17 +23,28 @@ import processes.gillespie.GillespieState;
  * Created by dbborens on 1/13/14.
  */
 public class CheckForDomination extends CellProcess {
+    private Argument<Double> targetFractionArg;
+    private Argument<Integer> targetStateArg;
     private double targetFraction;
     private int targetState;
 
-    public CheckForDomination(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id, GeneralParameters p, Argument<Integer> targetStateArg, Argument<Double> targetFractionArg) {
-        super(loader, layerManager, activeSites, id, p);
-        targetFraction = targetFractionArg.next();
+    public CheckForDomination(BaseProcessArguments arguments, CellProcessArguments cpArguments, Argument<Integer> targetStateArg, Argument<Double> targetFractionArg) {
+        super(arguments, cpArguments);
 
-        targetState = targetStateArg.next();
+        this.targetFractionArg = targetFractionArg;
+        this.targetStateArg = targetStateArg;
+    }
 
-        if (targetState == 0) {
-            throw new IllegalArgumentException("Dead state (0) set as domination target. Use CheckForExtinction instead.");
+    @Override
+    public void init() {
+        try {
+            targetFraction = targetFractionArg.next();
+            targetState = targetStateArg.next();
+            if (targetState == 0) {
+                throw new IllegalArgumentException("Dead state (0) set as domination target. Use CheckForExtinction instead.");
+            }
+        } catch (HaltCondition ex) {
+            throw new IllegalStateException(ex);
         }
     }
 

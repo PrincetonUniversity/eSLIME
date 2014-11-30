@@ -85,8 +85,8 @@ public class ContinuumStateReaderManagerTest extends EslimeLatticeTestCase {
         layer.setGeometry(geom);
         MockLayerManager lm = new MockLayerManager();
         lm.addSoluteLayer("43", layer);
-        ContinuumStateWriter csw = new ContinuumStateWriter(p);
-        csw.init(lm);
+        ContinuumStateWriter csw = new ContinuumStateWriter(p, lm);
+        csw.init();
         double[] values = new double[]{5.0, 4.0, 3.0, 2.0, 1.0};
         DenseVector vec = new DenseVector(5);
         for (int i = 0; i < 5; i++) {

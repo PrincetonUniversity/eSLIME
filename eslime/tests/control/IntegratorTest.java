@@ -6,47 +6,56 @@
 package control;
 
 import control.arguments.ConstantDouble;
+import control.arguments.ConstantInteger;
 import control.halt.HaltCondition;
 import control.halt.ManualHaltEvent;
 import control.halt.StepMaxReachedEvent;
 import io.serialize.MockSerializationManager;
 import io.serialize.SerializationManager;
-import layers.MockLayerManager;
-import processes.Process;
+import processes.BaseProcessArguments;
+import processes.EcoProcess;
+import processes.discrete.CellProcessArguments;
 import processes.discrete.ManualHalt;
 import processes.temporal.Tick;
 import structural.MockGeneralParameters;
-import test.EslimeTestCase;
+import test.EslimeLatticeTestCase;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by David B Borenstein on 1/7/14.
  */
-public class IntegratorTest extends EslimeTestCase {
+public class IntegratorTest extends EslimeLatticeTestCase {
 
     // Items used during construction
     private MockGeneralParameters p;
     private MockSerializationManager sm;
     private MockProcessManager mgr;
-
+    private BaseProcessArguments arguments;
+    private CellProcessArguments cpArguments;
     // And now, the thing to be tested...
     private Integrator integrator;
 
     @Override
     protected void setUp() throws Exception {
+        super.setUp();
         // Initialize infrastructure objects
         p = new MockGeneralParameters();
-        sm = new MockSerializationManager();
+        sm = new MockSerializationManager(layerManager);
         mgr = new MockProcessManager();
         integrator = new Integrator(p, mgr, sm);
+        arguments = makeBaseProcessArguments(layerManager, p);
+        cpArguments = new CellProcessArguments(null, new ConstantInteger(-1));
     }
 
-    public void testGo() throws Exception {
+    public void testDoNext() throws Exception {
         // Set T to 5 loops.
         p.setT(5);
-        Process[] processes = new Process[0];
+        List<EcoProcess> processes = new ArrayList<>(0);
         mgr.setTriggeredProcesses(processes);
         // Each of the following should have been called 5 times:
-        HaltCondition halt = integrator.go();
+        HaltCondition halt = integrator.doNext();
 
         assertTrue(halt instanceof StepMaxReachedEvent);
         assertEquals(5, mgr.getTimesIterated());
@@ -54,34 +63,44 @@ public class IntegratorTest extends EslimeTestCase {
 
     public void testTimeAppliedAtHaltNoAdvance() throws Exception {
         p.setT(10000);
-        MockLayerManager lm = new MockLayerManager();
-        Process[] processes = new Process[] {
-                new ManualHalt(null, lm, null, 0, null, null)
-        };
+        List<EcoProcess> processes = new ArrayList<>(1);
+
+
+        processes.add(new ManualHalt(arguments, cpArguments, ""));
         mgr.setTriggeredProcesses(processes);
         ExposedIntegrator query = new ExposedIntegrator(p, mgr, sm);
         query.setTime(3.0);
 
-        HaltCondition halt = query.go();
+        HaltCondition halt = query.doNext();
         assertTrue(halt instanceof ManualHaltEvent);
         assertEquals(3.0, halt.getGillespie(), epsilon);
     }
 
     public void testTimeAppliedAtHaltAfterClockAdvance() throws Exception {
         p.setT(10000);
-        MockLayerManager lm = new MockLayerManager();
-        Process[] processes = new Process[] {
-                new Tick(null, null, 0, null, new ConstantDouble(1.0)),
-                new ManualHalt(null, lm, null, 0, null, null)
-        };
+        List<EcoProcess> processes = new ArrayList<>(2);
+        processes.add(new Tick(arguments, new ConstantDouble(1.0)));
+        processes.add(new ManualHalt(arguments, cpArguments, ""));
         mgr.setTriggeredProcesses(processes);
         ExposedIntegrator query = new ExposedIntegrator(p, mgr, sm);
         query.setTime(3.0);
 
-        HaltCondition halt = query.go();
+        HaltCondition halt = query.doNext();
         assertTrue(halt instanceof ManualHaltEvent);
         assertEquals(4.0, halt.getGillespie(), epsilon);
     }
+
+    public void testTimeAppliedAtMaxStep() throws Exception {
+        p.setT(5);
+        mgr.setStepStateDt(2.0);
+        List<EcoProcess> processes = new ArrayList<>(0);
+        mgr.setTriggeredProcesses(processes);
+        ExposedIntegrator query = new ExposedIntegrator(p, mgr, sm);
+        HaltCondition ret = query.doNext();
+        assertTrue(ret instanceof StepMaxReachedEvent);
+        assertEquals(10.0, ret.getGillespie(), epsilon);
+    }
+
     private class ExposedIntegrator extends Integrator {
 
         public ExposedIntegrator(GeneralParameters p, ProcessManager processManager, SerializationManager serializationManager) {
@@ -93,13 +112,4 @@ public class IntegratorTest extends EslimeTestCase {
         }
     }
 
-    public void testTimeAppliedAtMaxStep() throws Exception {
-        p.setT(5);
-        mgr.setStepStateDt(2.0);
-        mgr.setTriggeredProcesses(new Process[0]);
-        ExposedIntegrator query = new ExposedIntegrator(p, mgr, sm);
-        HaltCondition ret = query.go();
-        assertTrue(ret instanceof StepMaxReachedEvent);
-        assertEquals(10.0, ret.getGillespie(), epsilon);
-    }
 }

@@ -5,12 +5,9 @@
 
 package processes.discrete;
 
-import control.GeneralParameters;
 import control.halt.HaltCondition;
-import geometry.set.CoordinateSet;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
 import layers.cell.StateMapViewer;
+import processes.BaseProcessArguments;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 
@@ -20,8 +17,8 @@ import processes.gillespie.GillespieState;
  * Created by dbborens on 3/7/14.
  */
 public class DiagnosticProcess extends CellProcess {
-    public DiagnosticProcess(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id, GeneralParameters p) {
-        super(loader, layerManager, activeSites, id, p);
+    public DiagnosticProcess(BaseProcessArguments arguments, CellProcessArguments cpArguments) {
+        super(arguments, cpArguments);
     }
 
     @Override
@@ -30,6 +27,10 @@ public class DiagnosticProcess extends CellProcess {
         if (gs != null) {
             gs.add(this.getID(), 1, 0.0D);
         }
+    }
+
+    @Override
+    public void init() {
     }
 
     @Override

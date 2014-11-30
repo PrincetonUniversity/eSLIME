@@ -31,8 +31,8 @@ public class HighlightWriter extends Serializer {
 
     private int[] channels;
 
-    public HighlightWriter(GeneralParameters p, int[] channels) {
-        super(p);
+    public HighlightWriter(GeneralParameters p, int[] channels, LayerManager lm) {
+        super(p, lm);
         makeFiles();
         this.channels = channels;
     }
@@ -58,8 +58,8 @@ public class HighlightWriter extends Serializer {
     }
 
     @Override
-    public void init(LayerManager layerManager) {
-        super.init(layerManager);
+    public void init() {
+        super.init();
 
         createDataStreams();
     }

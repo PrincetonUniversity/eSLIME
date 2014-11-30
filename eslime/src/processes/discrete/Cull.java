@@ -6,13 +6,10 @@
 package processes.discrete;
 
 import cells.Cell;
-import control.GeneralParameters;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
-import geometry.set.CoordinateSet;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
 import layers.cell.CellUpdateManager;
+import processes.BaseProcessArguments;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 
@@ -25,13 +22,17 @@ import java.util.ArrayList;
  * Created by dbborens on 3/5/14.
  */
 public class Cull extends CellProcess {
-    private Coordinate[] targetsArr = null;
+    private Coordinate[] targetsArr;
     private double threshold;
 
-    public Cull(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id,
-                GeneralParameters p, double threshold) {
-        super(loader, layerManager, activeSites, id, p);
+    public Cull(BaseProcessArguments arguments, CellProcessArguments cpArguments, double threshold) {
+        super(arguments, cpArguments);
         this.threshold = threshold;
+    }
+
+    @Override
+    public void init() {
+        targetsArr = null;
     }
 
     public void target(GillespieState gs) throws HaltCondition {

@@ -5,11 +5,8 @@
 
 package processes.discrete;
 
-import control.GeneralParameters;
 import control.halt.HaltCondition;
-import geometry.set.CoordinateSet;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
+import processes.BaseProcessArguments;
 import processes.StepState;
 import processes.gillespie.GillespieState;
 
@@ -17,8 +14,12 @@ import processes.gillespie.GillespieState;
  * Created by dbborens on 4/24/14.
  */
 public class Record extends CellProcess {
-    public Record(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id, GeneralParameters p) {
-        super(loader, layerManager, activeSites, id, p);
+    public Record(BaseProcessArguments arguments, CellProcessArguments cpArguments) {
+        super(arguments, cpArguments);
+    }
+
+    @Override
+    public void init() {
     }
 
     @Override

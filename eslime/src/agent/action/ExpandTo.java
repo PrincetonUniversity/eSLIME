@@ -141,7 +141,7 @@ public class ExpandTo extends Action{
         return ret;
     }
 
-    private void highlight(Coordinate target, Coordinate ownLocation) {
+    private void highlight(Coordinate target, Coordinate ownLocation) throws HaltCondition {
         doHighlight(targetChannel, target);
         doHighlight(selfChannel, ownLocation);
     }

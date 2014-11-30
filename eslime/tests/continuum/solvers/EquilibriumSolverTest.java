@@ -534,8 +534,8 @@ public abstract class EquilibriumSolverTest extends EslimeTestCase {
         p.setPath(outputPath);
 
         // Construct writer
-        ContinuumStateWriter writer = new ContinuumStateWriter(p);
-        writer.init(lm);
+        ContinuumStateWriter writer = new ContinuumStateWriter(p, lm);
+        writer.init();
         writer.flush(new MockStepState(0, 0));
         writer.dispatchHalt(null);
     }

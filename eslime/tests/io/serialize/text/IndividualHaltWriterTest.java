@@ -14,13 +14,13 @@ import test.EslimeLatticeTestCase;
 public class IndividualHaltWriterTest extends EslimeLatticeTestCase {
     public void testLifeCycle() {
         GeneralParameters p = makeMockGeneralParameters();
-        IndividualHaltWriter writer = new IndividualHaltWriter(p);
+        IndividualHaltWriter writer = new IndividualHaltWriter(p, layerManager);
         runCycle(writer, 0.0);
         assertFilesEqual("serializations/halt.txt", "halt.txt");
     }
 
     private void runCycle(Serializer writer, double time) {
-        writer.init(layerManager);
+        writer.init();
         StepState state = new StepState(time, (int) Math.round(time));
         state.record(cellLayer);
         writer.flush(state);

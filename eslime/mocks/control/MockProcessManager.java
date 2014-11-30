@@ -6,8 +6,10 @@
 package control;
 
 import control.halt.HaltCondition;
-import processes.Process;
+import processes.EcoProcess;
 import processes.StepState;
+
+import java.util.List;
 
 /**
  * Created by dbborens on 1/13/14.
@@ -16,29 +18,29 @@ public class MockProcessManager extends ProcessManager {
     int timesIterated;
 
     boolean doTriggeredProcessedCalled;
-    private Process[] triggeredProcesses;
+    private List<EcoProcess> triggeredProcesses;
     private double stepStateDt;
 
     public MockProcessManager() {
-        super();
+        super(null, null);
         timesIterated = 0;
         doTriggeredProcessedCalled = false;
         stepStateDt = 0.0;
     }
 
-    public void setTriggeredProcesses(Process[] triggeredProcesses) {
+    public void setTriggeredProcesses(List<EcoProcess> triggeredProcesses) {
         this.triggeredProcesses = triggeredProcesses;
     }
 
     @Override
-    protected Process[] getTriggeredProcesses(int n) {
+    protected List<EcoProcess> getTriggeredProcesses(int n) {
         return triggeredProcesses;
     }
 
     @Override
     public StepState doTriggeredProcesses(StepState stepState) throws HaltCondition {
         timesIterated++;
-        for (Process p : triggeredProcesses) {
+        for (EcoProcess p : triggeredProcesses) {
             p.fire(stepState);
         }
         stepState.advanceClock(stepStateDt);
@@ -51,5 +53,9 @@ public class MockProcessManager extends ProcessManager {
 
     public int getTimesIterated() {
         return timesIterated;
+    }
+
+    @Override
+    public void init() {
     }
 }

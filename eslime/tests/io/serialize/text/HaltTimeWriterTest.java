@@ -14,7 +14,7 @@ import test.EslimeLatticeTestCase;
 public class HaltTimeWriterTest extends EslimeLatticeTestCase {
     public void testLifeCycle() {
         GeneralParameters p = makeMockGeneralParameters();
-        HaltTimeWriter writer = new HaltTimeWriter(p);
+        HaltTimeWriter writer = new HaltTimeWriter(p, layerManager);
         for (double t = 0; t < 10.0; t += 1.0) {
             runCycle(writer, t);
         }
@@ -23,7 +23,7 @@ public class HaltTimeWriterTest extends EslimeLatticeTestCase {
     }
 
     private void runCycle(Serializer writer, double time) {
-        writer.init(layerManager);
+        writer.init();
         StepState state = new StepState(time, (int) Math.round(time));
         state.record(cellLayer);
         writer.flush(state);

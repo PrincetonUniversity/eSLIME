@@ -23,13 +23,13 @@ public class RandomSeedWriter extends Serializer {
     private static final String FILENAME = "random.txt";
 
 
-    public RandomSeedWriter(GeneralParameters p) {
-        super(p);
+    public RandomSeedWriter(GeneralParameters p, LayerManager lm) {
+        super(p, lm);
     }
 
     @Override
-    public void init(LayerManager lm) {
-        super.init(lm);
+    public void init() {
+        super.init();
         String filename = p.getInstancePath() + '/' + FILENAME;
         mkDir(p.getInstancePath(), true);
         BufferedWriter bw = makeBufferedWriter(filename);

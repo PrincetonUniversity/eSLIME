@@ -19,20 +19,19 @@ import java.io.IOException;
  * Created by dbborens on 12/11/13.
  */
 public abstract class Serializer {
-    private LayerManager layerManager;
+    protected LayerManager lm;
     protected GeneralParameters p;
     protected boolean closed = true;
 
-    public Serializer(GeneralParameters p) {
+    public Serializer(GeneralParameters p, LayerManager lm) {
         this.p = p;
+        this.lm = lm;
     }
 
-    public void init(LayerManager layerManager) {
+    public void init() {
         if (!closed) {
             throw new IllegalStateException("Attempting to initialize active writer!");
         }
-
-        this.layerManager = layerManager;
     }
 
 

@@ -8,6 +8,7 @@ package factory.control.arguments;
 import control.arguments.Argument;
 import control.arguments.ConstantInteger;
 import control.arguments.UniformInteger;
+import control.halt.HaltCondition;
 import org.dom4j.Element;
 
 import java.util.Iterator;
@@ -58,8 +59,13 @@ public abstract class IntegerArgumentFactory {
     }
 
     private static Argument<Integer> getUniformInteger(Element valueElement, Random random) {
-        int min = instantiate(valueElement, "min", random).next();
-        int max = instantiate(valueElement, "max", random).next();
+        int min, max;
+        try {
+            min = instantiate(valueElement, "min", random).next();
+            max = instantiate(valueElement, "max", random).next();
+        } catch (HaltCondition ex) {
+            throw new IllegalStateException(ex);
+        }
 
         Argument<Integer> ret = new UniformInteger(min, max, random);
         return ret;

@@ -5,7 +5,6 @@
 
 package control;
 
-import io.loader.ProjectLoader;
 import org.dom4j.Element;
 import structural.utilities.XmlUtil;
 
@@ -22,30 +21,23 @@ public class GeneralParameters {
 
 
     protected Random random;            // Random number generator
-
+    protected long randomSeed;
     // Dimensions
     private int maxStep;
     private int instances;
-
     // Path variables
     private String basePath;        // Path as specified
     private String path;            // May contain a time stamp
-
     // Output flags
     private String instancePath;    // Includes instance number�(if applies)
-
     // Instantiated members
     private double epsilon;            // Minimum measurable FP delta
-    protected long randomSeed;
-
     // State members
     private int instance;
 
-    private String version;
-
-    public GeneralParameters(ProjectLoader loader) {
+    public GeneralParameters(Element root) {
         calcEpsilon();
-        load(loader);
+        load(root);
         instance = 0;
         updateInstancePath();
 
@@ -91,10 +83,7 @@ public class GeneralParameters {
 
     }
 
-    private void load(ProjectLoader loader) {
-        Element g = loader.getElement("general");
-
-        version = loader.getVersion();
+    private void load(Element g) {
 
         // Load dimensions
         loadDimensions(g);
@@ -184,10 +173,6 @@ public class GeneralParameters {
         SimpleDateFormat sdf = new SimpleDateFormat("HH'h'mm'm'ss's'");
         Date date = new Date();
         return sdf.format(date);
-    }
-
-    public String getVersion() {
-        return version;
     }
 
     /**

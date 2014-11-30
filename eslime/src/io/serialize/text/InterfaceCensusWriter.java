@@ -32,14 +32,19 @@ public class InterfaceCensusWriter extends Serializer {
 
     private HashMap<Integer, Map<Integer, Double>> frameToHistogramMap;
 
-    public InterfaceCensusWriter(GeneralParameters p, Argument<Integer> focalStateArg) {
-        super(p);
-        focalState = focalStateArg.next();
+    public InterfaceCensusWriter(GeneralParameters p, Argument<Integer> focalStateArg, LayerManager lm) {
+        super(p, lm);
+
+        try {
+            focalState = focalStateArg.next();
+        } catch (HaltCondition ex) {
+            throw new IllegalStateException(ex);
+        }
     }
 
     @Override
-    public void init(LayerManager lm) {
-        super.init(lm);
+    public void init() {
+        super.init();
         observedInterfaceStates = new HashSet<>();
         frameToHistogramMap = new HashMap<>();
 

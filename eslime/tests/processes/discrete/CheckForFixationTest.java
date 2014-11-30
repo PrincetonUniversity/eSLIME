@@ -10,9 +10,9 @@ import control.halt.FixationEvent;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import geometry.MockGeometry;
-import geometry.set.CompleteSet;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
+import processes.BaseProcessArguments;
 import processes.MockStepState;
 import processes.discrete.check.CheckForFixation;
 import processes.gillespie.GillespieState;
@@ -168,7 +168,9 @@ public class CheckForFixationTest extends EslimeTestCase {
         layer = new CellLayer(geometry);
         layerManager = new MockLayerManager();
         layerManager.setCellLayer(layer);
-        query = new CheckForFixation(null, layerManager, new CompleteSet(geometry), 0, null);
+        BaseProcessArguments arguments = makeBaseProcessArguments(layerManager, null);
+        CellProcessArguments cpArguments = makeCellProcessArguments(geometry);
+        query = new CheckForFixation(arguments, cpArguments);
     }
 
 }

@@ -18,8 +18,8 @@ public class RandomSeedWriterTest extends EslimeLatticeTestCase {
     private void makeFiles() throws Exception {
         MockGeneralParameters p = makeMockGeneralParameters();
         p.initializeRandom(1234567890);
-        RandomSeedWriter writer = new RandomSeedWriter(p);
-        writer.init(layerManager);
+        RandomSeedWriter writer = new RandomSeedWriter(p, layerManager);
+        writer.init();
         StepState state = new StepState(0.0, 0);
         state.record(cellLayer);
         writer.flush(state);

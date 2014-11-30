@@ -6,17 +6,12 @@
 package processes.discrete;
 
 import cells.Cell;
-import control.GeneralParameters;
+import control.arguments.CellDescriptor;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
-import factory.cell.CellFactory;
-import geometry.set.CoordinateSet;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
-import org.dom4j.Element;
+import processes.BaseProcessArguments;
 import processes.StepState;
 import processes.gillespie.GillespieState;
-import structural.utilities.XmlUtil;
 
 /**
  * Fills in all sites in the active site set
@@ -28,17 +23,21 @@ import structural.utilities.XmlUtil;
  */
 public class Fill extends CellProcess {
 
+    private CellDescriptor cellDescriptor;
+
     // If true, the process will skip over any already-filled sites. If
     // false, it will blow up if it encounters an already-filled site
     // that it expected to fill.
-    boolean skipFilled;
+    private boolean skipFilled;
 
-    public Fill(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id,
-                GeneralParameters p) {
-        super(loader, layerManager, activeSites, id, p);
+    public Fill(BaseProcessArguments arguments, CellProcessArguments cpArguments, boolean skipFilled, CellDescriptor cellDescriptor) {
+        super(arguments, cpArguments);
+        this.skipFilled = skipFilled;
+        this.cellDescriptor = cellDescriptor;
+    }
 
-        Element e = loader.getProcess(id);
-        skipFilled = XmlUtil.getBoolean(e, "skip-filled-sites");
+    @Override
+    public void init() {
     }
 
     public void target(GillespieState gs) throws HaltCondition {
@@ -49,7 +48,6 @@ public class Fill extends CellProcess {
     }
 
     public void fire(StepState state) throws HaltCondition {
-        CellFactory factory = getCellFactory(layerManager);
 
         for (Coordinate c : activeSites) {
             boolean filled = layer.getViewer().isOccupied(c);
@@ -62,7 +60,7 @@ public class Fill extends CellProcess {
 
                 throw new IllegalStateException(msg);
             } else if (!filled) {
-                Cell cell = factory.instantiate();
+                Cell cell = cellDescriptor.next();
                 layer.getUpdateManager().place(cell, c);
             } else {
                 // Do nothing if site is filled and skipFilled is true.

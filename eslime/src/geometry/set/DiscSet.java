@@ -6,6 +6,7 @@
 package geometry.set;
 
 import control.arguments.Argument;
+import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
 
@@ -16,7 +17,12 @@ public class DiscSet extends CoordinateSet {
 
     public DiscSet(Geometry geom, Argument<Integer> radiusArg, Coordinate offset) {
         Coordinate origin = geom.rel2abs(geom.getCenter(), offset, Geometry.APPLY_BOUNDARIES);
-        int radius = radiusArg.next();
+        int radius;
+        try {
+            radius = radiusArg.next();
+        } catch (HaltCondition ex) {
+            throw new IllegalStateException(ex);
+        }
 
         for (int r = 0; r <= radius; r++) {
             Coordinate[] annulus = geom.getAnnulus(origin, r, Geometry.APPLY_BOUNDARIES);

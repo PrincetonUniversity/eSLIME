@@ -9,7 +9,6 @@ import control.GeneralParameters;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import control.identifiers.Extrema;
-import geometry.Geometry;
 import io.serialize.Serializer;
 import layers.LayerManager;
 import layers.cell.CellLayer;
@@ -19,7 +18,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.util.Date;
 
 /**
  * Writes the state of the system to a file. To avoid lots of opening and
@@ -63,13 +61,14 @@ public class LegacyCellStateWriter extends Serializer {
 
     //public CellStateWriter(String stateDir, Parameters p, int n) {
 
-    public LegacyCellStateWriter(GeneralParameters p) {
-        super(p);
+    public LegacyCellStateWriter(GeneralParameters p, LayerManager lm) {
+        super(p, lm);
     }
 
 
-    public void init(LayerManager layerManager) {
-        super.init(layerManager);
+    @Override
+    public void init() {
+        super.init();
         initStructures();
         makeFiles();
         initFiles();

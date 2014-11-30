@@ -21,12 +21,12 @@ census.long <- data.frame(instance=factor(), frame=numeric(), instigators=numeri
     census.table <- cbind(v, census.table)
 	colnames(census.table) <- cols
     census.long <- rbind(census.long, census.table)
-p.frac <- census.long$pacifists / (census.long$pacifists + census.long$instigators)
-#print(p.frac)
+generalParameters.frac <- census.long$pacifists / (census.long$pacifists + census.long$instigators)
+#print(generalParameters.frac)
 
-census.long <- cbind(census.long, p.frac)
+census.long <- cbind(census.long, generalParameters.frac)
 pdf(sprintf("%s/plots.pdf", basepath), onefile = TRUE)
-print(qplot(frame, p.frac, data = census.long, xlab='Time (frames)', ylab='Red fraction', main='Red fraction', geom = c("point", "line"), facets=instance ~ .))
+print(qplot(frame, generalParameters.frac, data = census.long, xlab='Time (frames)', ylab='Red fraction', main='Red fraction', geom = c("point", "line"), facets=instance ~ .))
 print(qplot(frame, pacifists, data = census.long, xlab='Time (frames)', ylab='Red population', main='Red population', geom = c("point", "line"), facets=instance ~ .))
 print(qplot(frame, instigators, data = census.long, xlab='Time (frames)', ylab='Blue population', main='Blue population', geom = c("point", "line"), facets=instance ~ .))
 dev.off()

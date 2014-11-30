@@ -11,7 +11,6 @@ import control.identifiers.Coordinate;
 import geometry.Geometry;
 import io.serialize.Serializer;
 import layers.LayerManager;
-import layers.cell.CellLayer;
 import processes.StepState;
 import structural.utilities.FileConventions;
 
@@ -26,8 +25,8 @@ public class CoordinateIndexer extends Serializer {
 
     // This file specifies the relationship between vector index and coordinate.
 
-    public CoordinateIndexer(GeneralParameters p) {
-        super(p);
+    public CoordinateIndexer(GeneralParameters p, LayerManager lm) {
+        super(p, lm);
     }
 
     protected void makeCoordinateMap() {
@@ -56,8 +55,8 @@ public class CoordinateIndexer extends Serializer {
 
 
     @Override
-    public void init(LayerManager lm) {
-        super.init(lm);
+    public void init() {
+        super.init();
         geometry = lm.getCellLayer().getGeometry();
     }
 

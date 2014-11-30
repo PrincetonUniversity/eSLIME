@@ -26,12 +26,12 @@ public class ProgressReporter extends Serializer {
     private long instanceStart;
     private long cycleStart;
 
-    public ProgressReporter(GeneralParameters p) {
-        super(p);
+    public ProgressReporter(GeneralParameters p, LayerManager lm) {
+        super(p, lm);
         projectStart = System.currentTimeMillis();
     }
 
-    public void init(LayerManager lm) {
+    public void init() {
         instanceStart = System.currentTimeMillis();
         cycleStart = System.currentTimeMillis();
         System.out.println("Instance " + p.getInstance() + ": " + p.getInstancePath());

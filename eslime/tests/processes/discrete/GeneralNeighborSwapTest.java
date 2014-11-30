@@ -18,6 +18,7 @@ import geometry.shape.Rectangle;
 import geometry.shape.Shape;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
+import processes.BaseProcessArguments;
 import processes.MockStepState;
 import structural.MockGeneralParameters;
 import structural.MockRandom;
@@ -48,7 +49,10 @@ public class GeneralNeighborSwapTest extends EslimeTestCase {
         MockGeneralParameters p = makeMockGeneralParameters();
         random = new MockRandom();
         p.setRandom(random);
-        query = new GeneralNeighborSwap(null, layerManager, new CompleteSet(geom), 0, p, new ConstantInteger(1));
+        BaseProcessArguments arguments = makeBaseProcessArguments(layerManager, p);
+        CellProcessArguments cpArguments = new CellProcessArguments(new CompleteSet(geom), new ConstantInteger(1));
+        query = new GeneralNeighborSwap(arguments, cpArguments);
+        query.init();
 
         /*
          * Cell layout:

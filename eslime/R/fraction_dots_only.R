@@ -25,15 +25,15 @@ for (i in seq(0, iterates - 1)) {
 	colnames(census.table) <- cols
     census.long <- rbind(census.long, census.table)
 }
-p.frac <- census.long$instigators / (census.long$pacifists + census.long$instigators)
-#print(p.frac)
+generalParameters.frac <- census.long$instigators / (census.long$pacifists + census.long$instigators)
+#print(generalParameters.frac)
 
-census.long <- cbind(census.long, p.frac)
+census.long <- cbind(census.long, generalParameters.frac)
 pdf(sprintf("%s/plots.pdf", basepath), onefile = TRUE)
-aggdata <- aggregate(census.long$p.frac, list(time=census.long$frame), mean)
+aggdata <- aggregate(census.long$generalParameters.frac, list(time=census.long$frame), mean)
 head(aggdata)
-print(qplot(frame, p.frac, data = aggdata, xlab='Time (frames)', ylab='Average blue fraction', main='Blue fraction', geom = c("line")))
-print(qplot(frame, p.frac, data = census.long, xlab='Time (frames)', ylab='Blue fraction', main='Blue fraction', geom = c("line"), facets=instance ~ .))
+print(qplot(frame, generalParameters.frac, data = aggdata, xlab='Time (frames)', ylab='Average blue fraction', main='Blue fraction', geom = c("line")))
+print(qplot(frame, generalParameters.frac, data = census.long, xlab='Time (frames)', ylab='Blue fraction', main='Blue fraction', geom = c("line"), facets=instance ~ .))
 print(qplot(frame, pacifists, data = census.long, xlab='Time (frames)', ylab='Red population', main='Red population', geom = c("line"), facets=instance ~ .))
 print(qplot(frame, instigators, data = census.long, xlab='Time (frames)', ylab='Blue population', main='Blue population', geom = c("line"), facets=instance ~ .))
 dev.off()

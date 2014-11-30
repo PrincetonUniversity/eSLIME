@@ -5,7 +5,7 @@
 
 package factory.layers;
 
-import factory.geometry.GeometryFactory;
+import control.arguments.GeometryDescriptor;
 import factory.layers.cell.CellLayerFactory;
 import factory.layers.solute.SoluteLayerFactory;
 import layers.LayerManager;
@@ -16,36 +16,37 @@ import org.dom4j.Element;
 import java.util.List;
 
 /**
- * Created by dbborens on 7/25/14.
+ * Created by dbborens on 11/26/14.
  */
 public abstract class LayerManagerFactory {
 
-    public static LayerManager instantiate(Element layerRoot, GeometryFactory factory) {
+    public static LayerManager instantiate(Element root, GeometryDescriptor geometryDescriptor) {
         LayerManager ret = new LayerManager();
         // Build the Cell layer, if present
-        if (hasCellElement(layerRoot)) {
-            CellLayer cellLayer = buildCellLayer(layerRoot, factory);
+        if (hasCellElement(root)) {
+            CellLayer cellLayer = buildCellLayer(root, geometryDescriptor);
             ret.setCellLayer(cellLayer);
         }
 
         // Build solute layers, if present
-        List<Object> slElemObjs = layerRoot.elements("solute-layer");
+        List<Object> slElemObjs = root.elements("solute-layer");
         for (Object o : slElemObjs) {
             Element e = (Element) o;
-            initSoluteLayer(e, factory, ret);
+            initSoluteLayer(e, geometryDescriptor, ret);
         }
 
         return ret;
+
     }
 
-    private static CellLayer buildCellLayer(Element layerRoot, GeometryFactory factory) {
+    private static CellLayer buildCellLayer(Element layerRoot, GeometryDescriptor geometryDescriptor) {
         Element e = layerRoot.element("cell-layer");
-        return CellLayerFactory.instantiate(e, factory);
+        return CellLayerFactory.instantiate(e, geometryDescriptor);
     }
 
-    private static void initSoluteLayer(Element e, GeometryFactory factory, LayerManager ret) {
+    private static void initSoluteLayer(Element e, GeometryDescriptor geometryDescriptor, LayerManager ret) {
         String id = e.element("id").getTextTrim();
-        SoluteLayer layer = SoluteLayerFactory.instantiate(e, factory, ret);
+        SoluteLayer layer = SoluteLayerFactory.instantiate(e, geometryDescriptor, ret);
         ret.addSoluteLayer(id, layer);
     }
 
@@ -53,5 +54,4 @@ public abstract class LayerManagerFactory {
         List<Object> elems = layerRoot.elements("cell-layer");
         return (elems.size() > 0);
     }
-
 }

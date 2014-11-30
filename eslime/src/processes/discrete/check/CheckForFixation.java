@@ -5,15 +5,13 @@
 
 package processes.discrete.check;
 
-import control.GeneralParameters;
 import control.halt.FixationEvent;
 import control.halt.HaltCondition;
-import geometry.set.CoordinateSet;
-import io.loader.ProcessLoader;
-import layers.LayerManager;
 import layers.cell.StateMapViewer;
+import processes.BaseProcessArguments;
 import processes.StepState;
 import processes.discrete.CellProcess;
+import processes.discrete.CellProcessArguments;
 import processes.gillespie.GillespieState;
 
 /**
@@ -22,8 +20,12 @@ import processes.gillespie.GillespieState;
  * Created by dbborens on 1/13/14.
  */
 public class CheckForFixation extends CellProcess {
-    public CheckForFixation(ProcessLoader loader, LayerManager layerManager, CoordinateSet activeSites, int id, GeneralParameters p) {
-        super(loader, layerManager, activeSites, id, p);
+    public CheckForFixation(BaseProcessArguments arguments, CellProcessArguments cpArguments) {
+        super(arguments, cpArguments);
+    }
+
+    @Override
+    public void init() {
     }
 
     @Override
