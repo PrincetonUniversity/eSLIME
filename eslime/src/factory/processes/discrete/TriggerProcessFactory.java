@@ -23,7 +23,7 @@ public abstract class TriggerProcessFactory extends ProcessFactory {
         BaseProcessArguments arguments = makeProcessArguments(e, layerManager, p, id);
         CellProcessArguments cpArguments = makeCellProcessArguments(e, layerManager, p);
         Filter filter = loadFilters(e, layerManager, p);
-        String behaviorName = XmlUtil.getString(e, "behavior");
+        String behaviorName = XmlUtil.getString(e, "behavior", "default");
         boolean skipVacant = XmlUtil.getBoolean(e, "skip-vacant-sites");
         boolean requireNeighbors = XmlUtil.getBoolean(e, "require-neighbors");
         return new TriggerProcess(arguments, cpArguments, behaviorName, filter, skipVacant, requireNeighbors);

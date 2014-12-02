@@ -80,7 +80,7 @@ public abstract class FilterFactory {
     }
 
     private static Filter depthFilter(Element e, LayerManager layerManager, GeneralParameters p) {
-        Argument<Integer> maxDepth = IntegerArgumentFactory.instantiate(e, "max-depth", p.getRandom());
+        Argument<Integer> maxDepth = IntegerArgumentFactory.instantiate(e, "max-depth", 1, p.getRandom());
         DepthFilter ret = new DepthFilter(layerManager.getCellLayer(), maxDepth);
         return ret;
     }

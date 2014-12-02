@@ -55,4 +55,29 @@ public class SerializationManager extends Serializer {
             tw.dispatchHalt(ex);
         }
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        SerializationManager that = (SerializationManager) o;
+
+        if (that.writers.size() != this.writers.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < writers.size(); i++) {
+            if (!writers.get(i).equals(that.writers.get(i))) {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return writers != null ? writers.hashCode() : 0;
+    }
 }

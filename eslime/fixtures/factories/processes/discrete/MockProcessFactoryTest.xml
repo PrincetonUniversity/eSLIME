@@ -1,0 +1,14 @@
+<!--
+  ~ * Copyright (c) 2014 David Bruce Borenstein and the Trustees of
+  ~ * Princeton University. All rights reserved.
+  -->
+
+<fixture>
+    <implicit-case/>
+
+    <explicit-case>
+        <identifier>test</identifier>
+        <weight>4.0</weight>
+        <count>2</count>
+    </explicit-case>
+</fixture>

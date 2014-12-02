@@ -42,21 +42,12 @@ public class CellDescriptor extends Argument<Cell> {
 
         CellDescriptor that = (CellDescriptor) o;
 
-        if (!behaviorRoot.equals(that.behaviorRoot)) return false;
+        //if (!behaviorRoot.equals(that.behaviorRoot)) return false;
         if (!cellState.equals(that.cellState)) return false;
         if (!initialHealth.equals(that.initialHealth)) return false;
         if (!threshold.equals(that.threshold)) return false;
 
         return true;
-    }
-
-    @Override
-    public int hashCode() {
-        int result = cellState.hashCode();
-        result = 31 * result + threshold.hashCode();
-        result = 31 * result + initialHealth.hashCode();
-        result = 31 * result + behaviorRoot.hashCode();
-        return result;
     }
 
     @Override

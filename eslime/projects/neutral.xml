@@ -114,7 +114,7 @@
         <!-- End the simulation if no living cells are present -->
         <check-for-extinction/>
 
-        <!-- End the simulation if one cell type has fixed -->
+        <!-- End the simulation if one cell state has fixed -->
         <check-for-fixation/>
 
     </cell-processes>

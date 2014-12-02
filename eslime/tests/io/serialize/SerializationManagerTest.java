@@ -9,6 +9,7 @@ import processes.MockStepState;
 import test.EslimeTestCase;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class SerializationManagerTest extends EslimeTestCase {
 
@@ -54,5 +55,26 @@ public class SerializationManagerTest extends EslimeTestCase {
     public void testDispatchHalt() {
         query.dispatchHalt(null);
         assertTrue(serializer.isDispatchHalt());
+    }
+
+    public void testEquals() {
+        SerializationManager p = makeExample();
+        SerializationManager q = makeExample();
+
+        assertEquals(p, q);
+        assertFalse(p == q);
+    }
+
+    private SerializationManager makeExample() {
+        MockSerializer a = new MockSerializer(null);
+        MockSerializer b = new MockSerializer(null);
+
+        List<Serializer> writers = new ArrayList<>(2);
+        writers.add(a);
+        writers.add(b);
+
+        SerializationManager ret = new SerializationManager(null, null, writers);
+
+        return ret;
     }
 }

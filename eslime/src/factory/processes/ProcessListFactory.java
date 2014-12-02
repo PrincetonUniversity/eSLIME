@@ -20,6 +20,9 @@ public abstract class ProcessListFactory {
 
     public static List<EcoProcess> instantiate(Element root, LayerManager layerManager, GeneralParameters p) {
         ArrayList<EcoProcess> processes = new ArrayList<>();
+        if (root == null) {
+            return processes;
+        }
         int id = 0;
         for (Object o : root.elements()) {
             Element e = (Element) o;

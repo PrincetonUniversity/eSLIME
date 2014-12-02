@@ -1,0 +1,23 @@
+<!--
+  ~ * Copyright (c) 2014 David Bruce Borenstein and the Trustees of
+  ~ * Princeton University. All rights reserved.
+  -->
+
+<fixture>
+    <implicit-case/>
+
+    <singleton-case>
+        <mock-process>
+            <identifier>test</identifier>
+        </mock-process>
+    </singleton-case>
+
+    <multiple-case>
+        <mock-process>
+            <identifier>test1</identifier>
+        </mock-process>
+        <mock-process>
+            <identifier>test2</identifier>
+        </mock-process>
+    </multiple-case>
+</fixture>

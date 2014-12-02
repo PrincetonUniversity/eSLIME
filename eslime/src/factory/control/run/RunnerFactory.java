@@ -22,7 +22,7 @@ public abstract class RunnerFactory {
 
     // Version -- checked against parameters file to make sure they're
     // compatible
-    private final static String VERSION = "0.5.7";
+    private final static String VERSION = "0.5.8";
 
     public static Runner instantiate(String projectPath) {
         Element root = DocumentFactory.instantiate(projectPath);

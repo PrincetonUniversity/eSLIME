@@ -63,4 +63,9 @@ public class MockSerializer extends Serializer {
     public void flush(StepState stepState) {
         isFlush = true;
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof MockSerializer);
+    }
 }

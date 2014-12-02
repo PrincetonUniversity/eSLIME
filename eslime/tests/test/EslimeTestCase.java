@@ -201,6 +201,7 @@ public abstract class EslimeTestCase extends TestCase {
         File fixtureFile = new File(fixture);
         File outputFile = new File(output);
 
+        System.out.println(fixtureFile.getAbsoluteFile());
         FileAssert.assertBinaryEquals(fixtureFile, outputFile);
     }
 

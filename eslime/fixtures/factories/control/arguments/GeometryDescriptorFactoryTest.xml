@@ -1,0 +1,16 @@
+<!--
+  ~ * Copyright (c) 2014 David Bruce Borenstein and the Trustees of
+  ~ * Princeton University. All rights reserved.
+  -->
+
+<fixture>
+    <explicit-case>
+        <lattice>
+            <class>linear</class>
+        </lattice>
+        <shape>
+            <class>line</class>
+            <length>10</length>
+        </shape>
+    </explicit-case>
+</fixture>

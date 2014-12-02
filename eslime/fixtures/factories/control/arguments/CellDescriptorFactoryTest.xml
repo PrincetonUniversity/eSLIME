@@ -1,0 +1,18 @@
+<!--
+  ~ * Copyright (c) 2014 David Bruce Borenstein and the Trustees of
+  ~ * Princeton University. All rights reserved.
+  -->
+
+<fixture>
+    <implicit-case/>
+
+    <explicit-case>
+        <behaviors>
+            <test-behavior/>
+        </behaviors>
+        <initial-health>2.0</initial-health>
+        <threshold>3.0</threshold>
+        <state>7</state>
+    </explicit-case>
+
+</fixture>

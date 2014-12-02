@@ -24,7 +24,7 @@ public abstract class MockProcessFactory extends ProcessFactory {
 
     public static MockProcess instantiate(Element e, LayerManager layerManager, GeneralParameters p, int id) {
         BaseProcessArguments arguments = makeProcessArguments(e, layerManager, p, id);
-        String identifier = XmlUtil.getString(e, "identifier");
+        String identifier = XmlUtil.getString(e, "identifier", "");
         double weight = XmlUtil.getDouble(e, "weight", 1.0);
         int count = XmlUtil.getInteger(e, "count", 1);
         return new MockProcess(arguments, identifier, weight, count);

@@ -106,4 +106,32 @@ public class ProcessManager {
             process.init();
         }
     }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+
+        if (!(obj instanceof ProcessManager)) {
+            return false;
+        }
+
+        ProcessManager other = (ProcessManager) obj;
+
+        if (other.processes.size() != this.processes.size()) {
+            return false;
+        }
+
+        for (int i = 0; i < processes.size(); i++) {
+            EcoProcess mine = processes.get(i);
+            EcoProcess theirs = other.processes.get(i);
+
+            if (!mine.equals(theirs)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

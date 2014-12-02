@@ -34,6 +34,14 @@ public class Fill extends CellProcess {
         super(arguments, cpArguments);
         this.skipFilled = skipFilled;
         this.cellDescriptor = cellDescriptor;
+
+        try {
+            if (cpArguments.getMaxTargets().next() >= 0) {
+                throw new IllegalArgumentException("Cannot specify maximum targets on fill operation. (Did you mean to limit active sites?)");
+            }
+        } catch (HaltCondition ex) {
+            throw new IllegalStateException(ex);
+        }
     }
 
     @Override
@@ -66,5 +74,32 @@ public class Fill extends CellProcess {
                 // Do nothing if site is filled and skipFilled is true.
             }
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Fill fill = (Fill) o;
+
+        if (skipFilled != fill.skipFilled) return false;
+        if (cellDescriptor != null ? !cellDescriptor.equals(fill.cellDescriptor) : fill.cellDescriptor != null)
+            return false;
+
+        if (activeSites != null ? !activeSites.equals(fill.activeSites) : fill.activeSites != null)
+            return false;
+
+        if (maxTargets != null ? !maxTargets.equals(fill.maxTargets) : fill.maxTargets != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = cellDescriptor != null ? cellDescriptor.hashCode() : 0;
+        result = 31 * result + (skipFilled ? 1 : 0);
+        return result;
     }
 }

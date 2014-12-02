@@ -20,7 +20,17 @@ import java.util.List;
 public abstract class ProcessManagerFactory {
 
     public static ProcessManager instantiate(Element root, GeneralParameters p, LayerManager lm) {
-        List<EcoProcess> processes = ProcessListFactory.instantiate(root, lm, p);
+        if (root == null) {
+            return nullCase(lm, p);
+        }
+        Element processElem = root.element("processes");
+        List<EcoProcess> processes = ProcessListFactory.instantiate(processElem, lm, p);
+        ProcessManager processManager = new ProcessManager(processes, lm);
+        return processManager;
+    }
+
+    private static ProcessManager nullCase(LayerManager lm, GeneralParameters p) {
+        List<EcoProcess> processes = ProcessListFactory.instantiate(null, lm, p);
         ProcessManager processManager = new ProcessManager(processes, lm);
         return processManager;
     }

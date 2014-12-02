@@ -73,14 +73,8 @@ public class OccupiedNeighborSwapTest extends EslimeTestCase {
 
         CellLayer cl = layerManager.getCellLayer();
 
-        // No matter what, B should no longer be at (0, 0)
+        // B should no longer be at (0, 0)
         assertFalse(cl.getViewer().getCell(bc).equals(b));
-
-        // It so happens that, with this random seed, b and a are swapped
-        assertTrue(cl.getViewer().getCell(bc).equals(a));
-        assertTrue(cl.getViewer().getCell(ac).equals(b));
-        assertTrue(cl.getViewer().getCell(cc).equals(c));
-
     }
 
     public void testGillespie() throws Exception {

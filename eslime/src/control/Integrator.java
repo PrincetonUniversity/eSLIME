@@ -75,4 +75,26 @@ public class Integrator {
         p.advance();
         return ex;
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Integrator that = (Integrator) o;
+
+        if (processManager != null ? !processManager.equals(that.processManager) : that.processManager != null)
+            return false;
+        if (serializationManager != null ? !serializationManager.equals(that.serializationManager) : that.serializationManager != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = processManager != null ? processManager.hashCode() : 0;
+        result = 31 * result + (serializationManager != null ? serializationManager.hashCode() : 0);
+        return result;
+    }
 }

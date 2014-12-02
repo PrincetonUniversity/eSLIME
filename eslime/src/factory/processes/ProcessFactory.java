@@ -94,7 +94,7 @@ public abstract class ProcessFactory {
 
         } else if (processClass.equalsIgnoreCase("check-for-domination")) {
             CellProcessArguments cpArguments = makeCellProcessArguments(e, layerManager, p);
-            Argument<Double> thresholdFraction = DoubleArgumentFactory.instantiate(e, "threshold", p.getRandom());
+            Argument<Double> thresholdFraction = DoubleArgumentFactory.instantiate(e, "threshold", 1.0, p.getRandom());
             Argument<Integer> targetState = IntegerArgumentFactory.instantiate(e, "target", -1, p.getRandom());
             return new CheckForDomination(arguments, cpArguments, targetState, thresholdFraction);
 

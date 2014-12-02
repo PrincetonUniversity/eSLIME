@@ -5,71 +5,102 @@
 
 package factory.processes;
 
-import junit.framework.TestCase;
+import control.GeneralParameters;
+import org.dom4j.Element;
+import org.dom4j.tree.BaseElement;
+import processes.EcoProcess;
+import processes.MockProcess;
+import processes.discrete.*;
+import processes.discrete.check.CheckForDomination;
+import processes.discrete.check.CheckForExtinction;
+import processes.discrete.check.CheckForFixation;
+import processes.discrete.check.CheckForThresholdOccupancy;
+import processes.temporal.ExponentialInverse;
+import processes.temporal.Tick;
+import test.EslimeLatticeTestCase;
 
-public class ProcessFactoryTest extends TestCase {
+public class ProcessFactoryTest extends EslimeLatticeTestCase {
 
+    private GeneralParameters p;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        p = makeMockGeneralParameters();
+    }
+
+    private EcoProcess make(String nodeName) {
+        Element element = new BaseElement(nodeName);
+        EcoProcess process = ProcessFactory.instantiate(element, layerManager, p, 0);
+        return process;
+    }
+
+    private void doTest(String nodeName, Class expected) {
+        EcoProcess process = make(nodeName);
+        Class actual = process.getClass();
+        assertEquals(expected, actual);
+    }
     public void testExponentialInverse() throws Exception {
-        fail("Not yet implemented");
+        doTest("exponential-inverse", ExponentialInverse.class);
     }
 
     public void testTick() throws Exception {
-        fail("Not yet implemented");
+        doTest("tick", Tick.class);
     }
 
     public void testDivide() throws Exception {
-        fail("Not yet implemented");
+        doTest("divide", Divide.class);
     }
 
     public void testOccupiedNeighborSwap() throws Exception {
-        fail("Not yet implemented");
+        doTest("occupied-neighbor-swap", OccupiedNeighborSwap.class);
     }
 
     public void testGeneralNeighborSwap() throws Exception {
-        fail("Not yet implemented");
+        doTest("general-neighbor-swap", GeneralNeighborSwap.class);
     }
 
     public void testScatter() throws Exception {
-        fail("Not yet implemented");
+        doTest("scatter", Scatter.class);
     }
 
     public void testFill() throws Exception {
-        fail("Not yet implemented");
+        doTest("fill", Fill.class);
     }
 
     public void testMockProcess() throws Exception {
-        fail("Not yet implemented");
+        doTest("mock-process", MockProcess.class);
     }
 
     public void testTrigger() throws Exception {
-        fail("Not yet implemented");
+        doTest("trigger", TriggerProcess.class);
     }
 
     public void testCull() throws Exception {
-        fail("Not yet implemented");
+        doTest("cull", Cull.class);
     }
 
     public void testDiagnostic() throws Exception {
-        fail("Not yet implemented");
+        doTest("diagnostic", DiagnosticProcess.class);
     }
 
     public void testCheckForFixation() throws Exception {
-        fail("Not yet implemented");
+        doTest("check-for-fixation", CheckForFixation.class);
     }
 
     public void testCheckThresholdOccupancy() throws Exception {
-        fail("Not yet implemented");
+        doTest("check-threshold-occupancy", CheckForThresholdOccupancy.class);
     }
 
     public void testCheckForDomination() throws Exception {
-        fail("Not yet implemented");
+        doTest("check-for-domination", CheckForDomination.class);
     }
 
     public void testCheckForExtinction() throws Exception {
-        fail("Not yet implemented");
+        doTest("check-for-extinction", CheckForExtinction.class);
     }
 
     public void testRecord() throws Exception {
-        fail("Not yet implemented");
+        doTest("record", Record.class);
     }
 }

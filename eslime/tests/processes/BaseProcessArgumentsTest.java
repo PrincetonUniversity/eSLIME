@@ -5,36 +5,50 @@
 
 package processes;
 
-import junit.framework.TestCase;
+import control.GeneralParameters;
+import control.arguments.Argument;
+import control.arguments.ConstantInteger;
+import test.EslimeLatticeTestCase;
 
-public class BaseProcessArgumentsTest extends TestCase {
+public class BaseProcessArgumentsTest extends EslimeLatticeTestCase {
+
+    private GeneralParameters p;
+    private int id;
+    private Argument<Integer> start;
+    private Argument<Integer> period;
+
+    private BaseProcessArguments query;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+        p = makeMockGeneralParameters();
+        id = 7;
+        start = new ConstantInteger(4);
+        period = new ConstantInteger(11);
+
+        query = new BaseProcessArguments(layerManager, p, id, start, period);
+    }
 
     public void testGetPeriod() throws Exception {
-        fail("Not yet implemented");
+        assertTrue(period == query.getPeriod());
     }
 
     public void testGetStart() throws Exception {
-        fail("Not yet implemented");
+        assertTrue(start == query.getStart());
 
     }
 
     public void testGetId() throws Exception {
-        fail("Not yet implemented");
+        assertTrue(id == query.getId());
 
     }
 
     public void testGetGeneralParameters() throws Exception {
-        fail("Not yet implemented");
-
+        assertTrue(p == query.getGeneralParameters());
     }
 
     public void testGetLayerManager() throws Exception {
-        fail("Not yet implemented");
-
-    }
-
-    public void testGetActiveSites() throws Exception {
-        fail("Not yet implemented");
-
+        assertTrue(layerManager == query.getLayerManager());
     }
 }

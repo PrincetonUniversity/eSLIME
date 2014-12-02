@@ -5,15 +5,33 @@
 
 package processes.discrete;
 
-import junit.framework.TestCase;
+import control.arguments.Argument;
+import control.arguments.ConstantInteger;
+import geometry.set.CoordinateSet;
+import geometry.set.CustomSet;
+import test.EslimeTestCase;
 
-public class CellProcessArgumentsTest extends TestCase {
+public class CellProcessArgumentsTest extends EslimeTestCase {
+
+    private CoordinateSet activeSites;
+    private Argument<Integer> maxTargets;
+    private CellProcessArguments query;
+
+    @Override
+    protected void setUp() throws Exception {
+        super.setUp();
+
+        activeSites = new CustomSet();
+        maxTargets = new ConstantInteger(0);
+
+        query = new CellProcessArguments(activeSites, maxTargets);
+    }
 
     public void testGetActiveSites() throws Exception {
-        fail("Not yet implemented");
+        assert (query.getActiveSites() == activeSites);
     }
 
     public void testGetMaxTargets() throws Exception {
-        fail("Not yet implemented");
+        assert (query.getMaxTargets() == maxTargets);
     }
 }

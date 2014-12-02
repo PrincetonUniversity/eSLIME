@@ -52,6 +52,10 @@ public class Scatter extends CellProcess {
         }
 
         int n = maxTargets.next();
+        if (n < 0) {
+            n = candidates.size();
+        }
+
         for (int i = 0; i < n; i++) {
             if (candidates.isEmpty()) {
                 throw new LatticeFullEvent();
@@ -75,5 +79,29 @@ public class Scatter extends CellProcess {
         // Make sure that a new target must be chosen prior to next invocation.
         candidates = null;
 
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        Scatter scatter = (Scatter) o;
+
+        if (cellDescriptor != null ? !cellDescriptor.equals(scatter.cellDescriptor) : scatter.cellDescriptor != null)
+            return false;
+
+        if (activeSites != null ? !activeSites.equals(scatter.activeSites) : scatter.activeSites != null)
+            return false;
+
+        if (maxTargets != null ? !maxTargets.equals(scatter.maxTargets) : scatter.maxTargets != null)
+            return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        return cellDescriptor != null ? cellDescriptor.hashCode() : 0;
     }
 }

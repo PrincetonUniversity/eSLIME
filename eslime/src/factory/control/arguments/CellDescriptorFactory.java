@@ -36,7 +36,7 @@ public abstract class CellDescriptorFactory {
         return cellDescriptor;
     }
 
-    private static CellDescriptor makeDefault(LayerManager layerManager, GeneralParameters p) {
+    public static CellDescriptor makeDefault(LayerManager layerManager, GeneralParameters p) {
         CellDescriptor cellDescriptor = new CellDescriptor(layerManager, p);
         cellDescriptor.setCellState(new ConstantInteger(DEFAULT_STATE));
         cellDescriptor.setThreshold(new ConstantDouble(DEFAULT_THRESHOLD));

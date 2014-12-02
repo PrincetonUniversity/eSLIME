@@ -50,6 +50,7 @@ public class CheckForThresholdOccupancyTest extends EslimeTestCase {
         BaseProcessArguments arguments = makeBaseProcessArguments(layerManager, p);
         CellProcessArguments cpArguments = makeCellProcessArguments(geom);
         query = new CheckForThresholdOccupancy(arguments, cpArguments, thresholdArg);
+        query.init();
     }
 
     public void testAboveThreshold() throws Exception {

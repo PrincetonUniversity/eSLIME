@@ -171,6 +171,12 @@ public class TriggerProcess extends CellProcess {
             return false;
         }
 
+        if (activeSites != null ? !activeSites.equals(other.activeSites) : other.activeSites != null)
+            return false;
+
+        if (maxTargets != null ? !maxTargets.equals(other.maxTargets) : other.maxTargets != null)
+            return false;
+
         return true;
     }
 }
