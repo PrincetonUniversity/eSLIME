@@ -40,9 +40,9 @@ public class ProgressReporter extends Serializer {
 
     @Override
     public void flush(StepState stepState) {
-            long cycleTime = System.currentTimeMillis() - cycleStart;
-            System.out.println("   Frame " + stepState.getFrame() + " (" + cycleTime + "ms).");
-            cycleStart = System.currentTimeMillis();
+        long cycleTime = System.currentTimeMillis() - cycleStart;
+        System.out.println("   Frame " + stepState.getFrame() + " (" + cycleTime + "ms).");
+        cycleStart = System.currentTimeMillis();
     }
 
     @Override
@@ -64,4 +64,8 @@ public class ProgressReporter extends Serializer {
         System.out.println("=================================================");
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        return (obj instanceof ProgressReporter);
+    }
 }

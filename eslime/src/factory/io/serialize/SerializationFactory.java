@@ -97,6 +97,11 @@ public abstract class SerializationFactory {
     public static SerializationManager makeManager(Element we, LayerManager layerManager, GeneralParameters p) {
         List<Serializer> writers = new ArrayList<>();
 
+        // No writers? No problem -- return an empty manager.
+        if (we == null) {
+            return new SerializationManager(p, layerManager, writers);
+        }
+
         for (Object o : we.elements()) {
             Element e = (Element) o;
             Serializer w = SerializationFactory.instantiate(e, p, layerManager);
