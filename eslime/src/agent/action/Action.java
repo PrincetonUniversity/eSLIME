@@ -73,8 +73,9 @@ public abstract class Action {
         CellLayerViewer viewer = getLayerManager().getCellLayer().getViewer();
 
         if (!viewer.isOccupied(coord)) {
-            throw new IllegalStateException("Expected, but did not find, an occupied site at " + coord
-                    + ".");
+            return null;
+//            throw new IllegalStateException("Expected, but did not find, an occupied site at " + coord
+//                    + ".");
         }
 
         Cell putative = viewer.getCell(coord);

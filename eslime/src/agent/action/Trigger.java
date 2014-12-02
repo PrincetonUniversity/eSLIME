@@ -56,6 +56,9 @@ public class Trigger extends Action {
         for (Coordinate target : targets) {
             // We require an occupied cell for the target of trigger actions.
             BehaviorCell targetCell = getWithCast(target);
+            if (targetCell == null) {
+                continue;
+            }
             targetCell.trigger(behaviorName, self);
             highlight(target, self);
         }

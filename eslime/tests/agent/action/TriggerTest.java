@@ -150,4 +150,32 @@ public class TriggerTest extends EslimeTestCase {
         actual = stepState.getHighlights(4);
         assertArraysEqual(expected, actual, true);
     }
+
+    /**
+     * If a location was chosen as a target, and it is subsequently
+     * vacated, do nothing.
+     *
+     * Regression test for ticket #83330824.
+     *
+     * @throws Exception
+     */
+    public void testSkipNewlyVacant() throws Exception {
+        // Begin as with testRun() above.
+        MockCell dummy = new MockCell();
+        CellUpdateManager updateManager = cellLayer.getUpdateManager();
+        updateManager.place(dummy, p);
+
+        // Remove the target.
+        updateManager.banish(o);
+
+        // Run the action.
+        query.run(p);
+
+        // The action should still report that it was called.
+        assertEquals(dummy, targetRule.getLastCaller());
+
+        // ...however, the target was not on the lattice, and should not
+        // have been affected.
+        assertNull(effectCell.getLastTriggeredBehaviorName());
+    }
 }
