@@ -31,7 +31,7 @@ public class SystemStateReader implements Iterable<LightweightSystemState> {
     /* Data handles */
     private HighlightReader highlightReader;
     private LegacyCellStateReader cellStateReader;
-    private ContinuumStateReaderManager continuumStateReaderManager;
+//    private ContinuumStateReaderManager continuumStateReaderManager;
 
     private Geometry geometry;
 
@@ -46,7 +46,7 @@ public class SystemStateReader implements Iterable<LightweightSystemState> {
         loadTime(fileRoot);
 
         // Open ContinuumStateReader object for each continuum field.
-        continuumStateReaderManager = new ContinuumStateReaderManager(fileRoot, soluteIds);
+//        continuumStateReaderManager = new ContinuumStateReaderManager(fileRoot, soluteIds);
 
         // Open handle to data file for each highlght channel.
         highlightReader = new HighlightReader(fileRoot, channelIds, deindexer);
@@ -99,7 +99,7 @@ public class SystemStateReader implements Iterable<LightweightSystemState> {
             cellStateReader.populate(state);
 
             // Populate state of continuum fields
-            continuumStateReaderManager.populate(state);
+//            continuumStateReaderManager.populate(state);
 
             // Populate cell change highlights
             highlightReader.populate(state);

@@ -8,7 +8,6 @@ package layers;
 import control.arguments.GeometryDescriptor;
 import factory.control.arguments.GeometryDescriptorFactory;
 import factory.layers.LayerManagerFactory;
-import layers.solute.SoluteLayer;
 import org.dom4j.Element;
 import test.EslimeTestCase;
 
@@ -42,16 +41,16 @@ public class LayerManagerTest extends EslimeTestCase {
         assertFalse(case2.hasCellLayer());
     }
 
-    public void testGetSoluteLayerIds() throws Exception {
-        String[] expected = new String[]{"prr", "prh"};
-        String[] actual = case1.getSoluteLayerIds();
-        assertArraysEqual(expected, actual, true);
-    }
+//    public void testGetSoluteLayerIds() throws Exception {
+//        String[] expected = new String[]{"prr", "prh"};
+//        String[] actual = case1.getSoluteLayerIds();
+//        assertArraysEqual(expected, actual, true);
+//    }
 
-    public void testGetSoluteLayer() throws Exception {
-        SoluteLayer prr = case1.getSoluteLayer("prr");
-        assertEquals("prr", prr.getId());
-    }
+//    public void testGetSoluteLayer() throws Exception {
+//        SoluteLayer prr = case1.getSoluteLayer("prr");
+//        assertEquals("prr", prr.getId());
+//    }
 
     public void testGetCellLayer() throws Exception {
         assertNotNull(case1.getCellLayer());

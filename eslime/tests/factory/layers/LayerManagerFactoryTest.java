@@ -15,7 +15,6 @@ import geometry.lattice.LinearLattice;
 import geometry.shape.Line;
 import geometry.shape.Shape;
 import layers.LayerManager;
-import layers.MockSoluteLayer;
 import layers.cell.CellLayer;
 import org.dom4j.Element;
 import test.EslimeTestCase;
@@ -40,12 +39,12 @@ public class LayerManagerFactoryTest extends EslimeTestCase {
 
     private LayerManager makeExpected() {
         CellLayer cellLayer = new CellLayer(arenaGeom());
-        MockSoluteLayer soluteLayer1 = new MockSoluteLayer();
-        MockSoluteLayer soluteLayer2 = new MockSoluteLayer();
+//        MockSoluteLayer soluteLayer1 = new MockSoluteLayer();
+//        MockSoluteLayer soluteLayer2 = new MockSoluteLayer();
 
         LayerManager layerManager = new LayerManager();
-        layerManager.addSoluteLayer("test1", soluteLayer1);
-        layerManager.addSoluteLayer("test2", soluteLayer2);
+//        layerManager.addSoluteLayer("test1", soluteLayer1);
+//        layerManager.addSoluteLayer("test2", soluteLayer2);
         layerManager.setCellLayer(cellLayer);
         return layerManager;
     }

@@ -14,14 +14,13 @@ import io.serialize.binary.TimeWriter;
 import io.serialize.text.CoordinateIndexer;
 import io.serialize.text.LegacyCellStateWriter;
 import layers.LightweightSystemState;
-import layers.MockSoluteLayer;
-import no.uib.cipr.matrix.DenseVector;
 import processes.MockStepState;
 import structural.MockGeneralParameters;
-import structural.postprocess.SolutionViewer;
 import test.EslimeLatticeTestCase;
 
 import java.util.Iterator;
+
+//import layers.MockSoluteLayer;
 
 /**
  * Test for the SystemStateReader. As an I/O orchestrator whose main function
@@ -75,7 +74,7 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
         LightweightSystemState state = query.next();
 
         // Check solute state
-        assertEquals(1.0, state.getLayerManager().getSoluteLayer("0").getState().getAbsolute(origin), epsilon);
+//        assertEquals(1.0, state.getLayerManager().getSoluteLayer("0").getState().getAbsolute(origin), epsilon);
 
         // Check cell state
         assertEquals(5, state.getLayerManager().getCellLayer().getViewer().getState(x));
@@ -102,10 +101,10 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
         Serializer[] serializers = makeSerializerArray();
 
         /* Populate the system */
-        MockSoluteLayer layer0 = initializeSoluteLayer("0");
-        layerManager.addSoluteLayer("0", layer0);
+//        MockSoluteLayer layer0 = initializeSoluteLayer("0");
+//        layerManager.addSoluteLayer("0", layer0);
 
-        pushState(layer0, new double[]{1.0, 2.0, 3.0, 4.0, 5.0});
+//        pushState(layer0, new double[]{1.0, 2.0, 3.0, 4.0, 5.0});
 
         placeCell(x, 2.0, 5);
         placeCell(y, 1.0, 3);
@@ -127,7 +126,7 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
         stepState = new MockStepState(4.8, 6);
         stepState.setHighlights(0, highlights);
 
-        pushState(layer0, new double[]{0.1, 0.2, 0.3, 0.4, 0.5});
+//        pushState(layer0, new double[]{0.1, 0.2, 0.3, 0.4, 0.5});
 
         /* Push second state and close fixture */
         for (Serializer serializer : serializers) {
@@ -150,12 +149,12 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
         return ret;
     }
 
-    private MockSoluteLayer initializeSoluteLayer(String id) {
-        MockSoluteLayer ret = new MockSoluteLayer();
-        ret.setGeometry(geom);
-        ret.setId(id);
-        return ret;
-    }
+//    private MockSoluteLayer initializeSoluteLayer(String id) {
+//        MockSoluteLayer ret = new MockSoluteLayer();
+//        ret.setGeometry(geom);
+//        ret.setId(id);
+//        return ret;
+//    }
 
     private MockCell placeCell(Coordinate coord, double health, int state) throws Exception {
         MockCell cell = new MockCell();
@@ -166,9 +165,9 @@ public class SystemStateReaderTest extends EslimeLatticeTestCase {
         return cell;
     }
 
-    private void pushState(MockSoluteLayer layer, double[] state) {
-        DenseVector vector = new DenseVector(state);
-        SolutionViewer viewer = new SolutionViewer(vector, geom);
-        layer.push(viewer);
-    }
+//    private void pushState(MockSoluteLayer layer, double[] state) {
+//        DenseVector vector = new DenseVector(state);
+//        SolutionViewer viewer = new SolutionViewer(vector, geom);
+//        layer.push(viewer);
+//    }
 }

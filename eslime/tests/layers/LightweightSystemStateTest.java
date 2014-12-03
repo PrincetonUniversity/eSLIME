@@ -11,7 +11,7 @@ import control.identifiers.Coordinate;
 import geometry.Geometry;
 import io.deserialize.MockCoordinateDeindexer;
 import layers.cell.CellLayer;
-import layers.solute.LightweightSoluteLayer;
+//import layers.solute.LightweightSoluteLayer;
 
 import java.util.HashSet;
 import java.util.Set;
@@ -40,7 +40,7 @@ public class LightweightSystemStateTest extends SystemStateTest {
         query = new LightweightSystemState(g);
         query.initCellLayer(stateVector, healthVector);
 
-        query.initSoluteLayer(id, healthVector);
+//        query.initSoluteLayer(id, healthVector);
     }
 
     @Override
@@ -69,15 +69,15 @@ public class LightweightSystemStateTest extends SystemStateTest {
         }
     }
 
-    @Override
-    // This test has been made stupid by the refactor of LightweightSystemState and should be rethought.
-    public void testGetValue() throws Exception {
-
-        // Yuck.
-        double[] data = query.getLayerManager().getSoluteLayer(id).getState().getSolution().getData();
-
-        assertArraysEqual(healthVector, data, false);
-    }
+//    @Override
+//    // This test has been made stupid by the refactor of LightweightSystemState and should be rethought.
+//    public void testGetValue() throws Exception {
+//
+//        // Yuck.
+//        double[] data = query.getLayerManager().getSoluteLayer(id).getState().getSolution().getData();
+//
+//        assertArraysEqual(healthVector, data, false);
+//    }
 
     @Override
     public void testGetTime() throws Exception {
@@ -110,9 +110,9 @@ public class LightweightSystemStateTest extends SystemStateTest {
         MockLayerManager expected = new MockLayerManager();
 
         CellLayer cellLayer = new CellLayer(g);
-        LightweightSoluteLayer soluteLayer = new LightweightSoluteLayer(g, expected, id);
+//        LightweightSoluteLayer soluteLayer = new LightweightSoluteLayer(g, expected, id);
         expected.setCellLayer(cellLayer);
-        expected.addSoluteLayer(id, soluteLayer);
+//        expected.addSoluteLayer(id, soluteLayer);
 
         for (int i = 0; i < g.getCanonicalSites().length; i++) {
             Coordinate c = g.getCanonicalSites()[i];
@@ -123,7 +123,7 @@ public class LightweightSystemStateTest extends SystemStateTest {
                 BehaviorCell cell = new BehaviorCell(expected, state, health, 0.0);
                 cellLayer.getUpdateManager().place(cell, c);
             }
-            soluteLayer.set(c, health);
+//            soluteLayer.set(c, health);
         }
 
         LayerManager actual = query.getLayerManager();

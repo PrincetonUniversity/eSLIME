@@ -15,7 +15,7 @@ public abstract class SystemStateTest extends EslimeTestCase {
 
     public abstract void testGetState() throws Exception;
 
-    public abstract void testGetValue() throws Exception;
+//    public abstract void testGetValue() throws Exception;
 
     public abstract void testGetTime() throws Exception;
 

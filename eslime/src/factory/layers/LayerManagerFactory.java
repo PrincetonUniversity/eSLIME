@@ -7,10 +7,8 @@ package factory.layers;
 
 import control.arguments.GeometryDescriptor;
 import factory.layers.cell.CellLayerFactory;
-import factory.layers.solute.SoluteLayerFactory;
 import layers.LayerManager;
 import layers.cell.CellLayer;
-import layers.solute.SoluteLayer;
 import org.dom4j.Element;
 
 import java.util.List;
@@ -29,11 +27,11 @@ public abstract class LayerManagerFactory {
         }
 
         // Build solute layers, if present
-        List<Object> slElemObjs = root.elements("solute-layer");
-        for (Object o : slElemObjs) {
-            Element e = (Element) o;
-            initSoluteLayer(e, geometryDescriptor, ret);
-        }
+//        List<Object> slElemObjs = root.elements("solute-layer");
+//        for (Object o : slElemObjs) {
+//            Element e = (Element) o;
+//            initSoluteLayer(e, geometryDescriptor, ret);
+//        }
 
         return ret;
 
@@ -44,11 +42,11 @@ public abstract class LayerManagerFactory {
         return CellLayerFactory.instantiate(e, geometryDescriptor);
     }
 
-    private static void initSoluteLayer(Element e, GeometryDescriptor geometryDescriptor, LayerManager ret) {
-        String id = e.element("id").getTextTrim();
-        SoluteLayer layer = SoluteLayerFactory.instantiate(e, geometryDescriptor, ret);
-        ret.addSoluteLayer(id, layer);
-    }
+//    private static void initSoluteLayer(Element e, GeometryDescriptor geometryDescriptor, LayerManager ret) {
+//        String id = e.element("id").getTextTrim();
+//        SoluteLayer layer = SoluteLayerFactory.instantiate(e, geometryDescriptor, ret);
+//        ret.addSoluteLayer(id, layer);
+//    }
 
     private static boolean hasCellElement(Element layerRoot) {
         List<Object> elems = layerRoot.elements("cell-layer");

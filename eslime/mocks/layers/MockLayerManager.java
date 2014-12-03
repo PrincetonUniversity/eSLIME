@@ -6,9 +6,6 @@
 package layers;
 
 import layers.cell.CellLayer;
-import layers.solute.SoluteLayer;
-
-import java.util.HashMap;
 
 /**
  * Created by dbborens on 12/31/13.
@@ -16,7 +13,7 @@ import java.util.HashMap;
 public class MockLayerManager extends LayerManager {
     public MockLayerManager() {
         super();
-        soluteLayers = new HashMap<>();
+//        soluteLayers = new HashMap<>();
     }
 
     public CellLayer getCellLayer() {
@@ -27,15 +24,15 @@ public class MockLayerManager extends LayerManager {
         this.cellLayer = cellLayer;
     }
 
-    public void addSoluteLayer(String s, SoluteLayer layer) {
-        soluteLayers.put(s, layer);
-    }
+//    public void addSoluteLayer(String s, SoluteLayer layer) {
+//        soluteLayers.put(s, layer);
+//    }
 
-    public SoluteLayer getSoluteLayer(String s) {
-        return soluteLayers.get(s);
-    }
+//    public SoluteLayer getSoluteLayer(String s) {
+//        return soluteLayers.get(s);
+//    }
 
-    public SoluteLayer[] getSoluteLayers() {
-        return soluteLayers.values().toArray(new SoluteLayer[0]);
-    }
+//    public SoluteLayer[] getSoluteLayers() {
+//        return soluteLayers.values().toArray(new SoluteLayer[0]);
+//    }
 }

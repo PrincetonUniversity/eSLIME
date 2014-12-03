@@ -11,7 +11,6 @@ import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
 import layers.cell.CellLayer;
-import layers.solute.LightweightSoluteLayer;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -115,17 +114,17 @@ public class LightweightSystemState extends SystemState {
         }
     }
 
-    public void initSoluteLayer(String id, double[] soluteVector) {
-        if (soluteVector.length != geometry.getCanonicalSites().length) {
-            throw new IllegalStateException("Actual number of data points not equal to expected number");
-        }
-        LightweightSoluteLayer soluteLayer = new LightweightSoluteLayer(geometry, layerManager, id);
-        for (int i = 0; i < soluteVector.length; i++) {
-            Coordinate coord = geometry.getCanonicalSites()[i];
-            double value = soluteVector[i];
-            soluteLayer.set(coord, value);
-        }
-
-        layerManager.addSoluteLayer(id, soluteLayer);
-    }
+//    public void initSoluteLayer(String id, double[] soluteVector) {
+//        if (soluteVector.length != geometry.getCanonicalSites().length) {
+//            throw new IllegalStateException("Actual number of data points not equal to expected number");
+//        }
+//        LightweightSoluteLayer soluteLayer = new LightweightSoluteLayer(geometry, layerManager, id);
+//        for (int i = 0; i < soluteVector.length; i++) {
+//            Coordinate coord = geometry.getCanonicalSites()[i];
+//            double value = soluteVector[i];
+//            soluteLayer.set(coord, value);
+//        }
+//
+//        layerManager.addSoluteLayer(id, soluteLayer);
+//    }
 }
