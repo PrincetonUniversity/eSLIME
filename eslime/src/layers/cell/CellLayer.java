@@ -16,21 +16,9 @@ import layers.Layer;
 public class CellLayer extends Layer {
 
     protected CellLayerContent content;
-
     public CellLayer(Geometry geom) {
         geometry = geom;
-
-        CellLayerIndices indices = new CellLayerIndices();
-
-        // Oh man, do I hate the following two lines and the
-        // "getComponentClasses" cloodge that makes them possible
-        if (geometry.getComponentClasses()[2].equals(HaltBoundary.class)) {
-            content = new HaltCellLayerContent(geom, indices);
-        } else if (geometry.isInfinite()) {
-            content = new InfiniteCellLayerContent(geometry, indices);
-        } else {
-            content = new FiniteCellLayerContent(geometry, indices);
-        }
+        reset();
     }
 
     public CellLookupManager getLookupManager() {
@@ -74,5 +62,20 @@ public class CellLayer extends Layer {
     @Override
     public String getId() {
         return "0";
+    }
+
+    @Override
+    public void reset() {
+        CellLayerIndices indices = new CellLayerIndices();
+
+        // Oh man, do I hate the following two lines and the
+        // "getComponentClasses" cloodge that makes them possible
+        if (geometry.getComponentClasses()[2].equals(HaltBoundary.class)) {
+            content = new HaltCellLayerContent(geometry, indices);
+        } else if (geometry.isInfinite()) {
+            content = new InfiniteCellLayerContent(geometry, indices);
+        } else {
+            content = new FiniteCellLayerContent(geometry, indices);
+        }
     }
 }

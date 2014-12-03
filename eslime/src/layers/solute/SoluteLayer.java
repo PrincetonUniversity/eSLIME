@@ -11,6 +11,7 @@ import layers.Layer;
 import layers.LayerManager;
 import no.uib.cipr.matrix.DenseVector;
 import structural.postprocess.SolutionViewer;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 /**
  * This entire subsystem probably deserves a bit of a rethink.
@@ -76,4 +77,9 @@ public abstract class SoluteLayer extends Layer {
 
     @Override
     public abstract boolean equals(Object obj);
+
+    @Override
+    public void reset() {
+        throw new NotImplementedException();
+    }
 }

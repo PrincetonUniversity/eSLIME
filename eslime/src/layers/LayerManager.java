@@ -8,7 +8,6 @@ package layers;
 import layers.cell.CellLayer;
 import layers.solute.SoluteLayer;
 import processes.StepState;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.util.HashMap;
 
@@ -100,6 +99,6 @@ public class LayerManager {
     }
 
     public void reset() {
-        throw new NotImplementedException();
+        cellLayer.reset();
     }
 }

@@ -5,6 +5,8 @@
 
 package layers.cell;
 
+import cells.MockCell;
+import control.identifiers.Coordinate;
 import geometry.Geometry;
 import geometry.MockGeometry;
 import geometry.boundaries.HaltBoundary;
@@ -52,6 +54,27 @@ public class CellLayerTest extends EslimeTestCase {
         geom.setInfinite(true);
         ExposedCellLayer query = new ExposedCellLayer(geom);
         assertEquals(InfiniteCellLayerContent.class, query.getContent().getClass());
+    }
+
+    public void testReset() throws Exception {
+        // Put some stuff on the lattice.
+        ExposedCellLayer query = new ExposedCellLayer(geom);
+        for (int i = 0; i < geom.getCanonicalSites().length; i++) {
+            Coordinate c = geom.getCanonicalSites()[i];
+            query.getUpdateManager().place(new MockCell(i), c);
+        }
+
+        // Verify that the lattice is filled up.
+        assertEquals(geom.getCanonicalSites().length, query.getViewer().getOccupiedSites().size());
+
+        // Reset the lattice.
+        query.reset();
+
+        // Make sure that the lattice is reset to square one.
+        assertEquals(0, query.getViewer().getOccupiedSites().size());
+        for (Coordinate c : geom.getCanonicalSites()) {
+            assertFalse(query.getViewer().isOccupied(c));
+        }
     }
 
     private class ExposedCellLayer extends CellLayer {

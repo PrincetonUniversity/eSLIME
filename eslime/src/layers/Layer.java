@@ -19,4 +19,6 @@ public abstract class Layer {
     public Geometry getGeometry() {
         return geometry;
     }
+
+    public abstract void reset();
 }
