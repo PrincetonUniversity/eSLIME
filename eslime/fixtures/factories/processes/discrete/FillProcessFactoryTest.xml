@@ -7,7 +7,7 @@
     <implicit-case/>
 
     <explicit-case>
-        <skip-filled/>
+        <skip-filled-sites/>
         <active-sites>
             <disc>
                 <radius>2</radius>

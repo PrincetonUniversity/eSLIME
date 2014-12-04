@@ -24,7 +24,7 @@ public abstract class FillProcessFactory extends ProcessFactory {
         BaseProcessArguments arguments = makeProcessArguments(e, layerManager, p, id);
         CellProcessArguments cpArguments = makeCellProcessArguments(e, layerManager, p);
         CellDescriptor cellDescriptor = makeCellDescriptor(e, "cell-descriptor", layerManager, p);
-        boolean skipFilled = XmlUtil.getBoolean(e, "skip-filled");
+        boolean skipFilled = XmlUtil.getBoolean(e, "skip-filled-sites");
         Fill fill = new Fill(arguments, cpArguments, skipFilled, cellDescriptor);
         return fill;
     }
