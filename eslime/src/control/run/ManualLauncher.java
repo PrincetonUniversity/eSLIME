@@ -17,7 +17,7 @@ import factory.control.run.RunnerFactory;
 public class ManualLauncher {
 
     public static void main(String[] args) {
-        String path = "/Users/dbborens/Downloads/minimal.xml";
+        String path = "/home/dbborens/Downloads/0_h=32_f=0.10_g=5.00_a=0.01.xml";
         Runner runner = RunnerFactory.instantiate(path);
         runner.run();
     }

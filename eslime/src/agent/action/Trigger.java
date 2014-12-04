@@ -51,6 +51,12 @@ public class Trigger extends Action {
         // the caller for the triggered behaviors is this cell.
         Coordinate self = getOwnLocation();
 
+        // If this cell is no longer on the lattice, then it can no longer act,
+        // so skip the action.
+        if (self == null) {
+            return;
+        }
+
         List<Coordinate> targets = targetRule.report(callerCell);
 
         for (Coordinate target : targets) {

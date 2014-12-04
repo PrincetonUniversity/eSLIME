@@ -178,4 +178,30 @@ public class TriggerTest extends EslimeTestCase {
         // have been affected.
         assertNull(effectCell.getLastTriggeredBehaviorName());
     }
+
+    /**
+     * If a cell is set to trigger something after it's dead, it skips
+     * that action instead. Regression test for issue #83973358.
+     */
+    public void testDeadCannotTrigger() throws Exception {
+        // Begin as with testRun() above.
+        MockCell dummy = new MockCell();
+        CellUpdateManager updateManager = cellLayer.getUpdateManager();
+        updateManager.place(dummy, p);
+
+        // Remove the target.
+        updateManager.banish(q);
+
+        // Run the action.
+        query.run(p);
+
+        // The entire action was aborted, so the target rule should
+        // never have been called.
+        // The action should still report that it was called.
+        assertNull(targetRule.getLastCaller());
+
+        // The target should not have been affected.
+        assertNull(effectCell.getLastTriggeredBehaviorName());
+
+    }
 }

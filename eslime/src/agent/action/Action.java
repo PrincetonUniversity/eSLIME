@@ -51,6 +51,13 @@ public abstract class Action {
     protected Coordinate getOwnLocation() {
         CellLookupManager lookup = getLayerManager().getCellLayer().getLookupManager();
         BehaviorCell self = getCallback();
+
+        // If the acting cell has been removed from the lattice, return no coordinate.
+        // It's up to the particular Action to decide what happens at that point.
+        if (!getLayerManager().getCellLayer().getViewer().exists(self)) {
+            return null;
+        }
+
         Coordinate location = lookup.getCellLocation(self);
         return location;
     }
