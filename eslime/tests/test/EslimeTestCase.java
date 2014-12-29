@@ -22,6 +22,7 @@ import geometry.shape.Shape;
 import junit.framework.TestCase;
 import junitx.framework.FileAssert;
 import layers.LayerManager;
+import no.uib.cipr.matrix.Vector;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -120,6 +121,12 @@ public abstract class EslimeTestCase extends TestCase {
         fail("Arrays are equal when they were expected to be unequal.");
     }
 
+    protected void assertVectorsEqual(Vector expected, Vector actual, double tolerance) {
+        assertEquals(expected.size(), actual.size());
+        for (int i = 0; i < expected.size(); i++) {
+            assertEquals(expected.get(i), actual.get(i), tolerance);
+        }
+    }
     protected Coordinate[] clean(Coordinate[] check) {
         ArrayList<Coordinate> retain = new ArrayList<Coordinate>(check.length);
         for (Coordinate c : check) {
