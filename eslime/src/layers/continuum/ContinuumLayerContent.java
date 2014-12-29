@@ -21,4 +21,7 @@ public class ContinuumLayerContent {
         this.state = state;
     }
 
+    public void reset() {
+        this.state = null;
+    }
 }

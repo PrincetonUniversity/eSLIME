@@ -13,6 +13,7 @@ import no.uib.cipr.matrix.Vector;
 public class MockContinuumLayerContent extends ContinuumLayerContent {
 
     private boolean triggered = false;
+    private boolean reset = false;
 
     public boolean isTriggered() {
         return triggered;
@@ -26,5 +27,15 @@ public class MockContinuumLayerContent extends ContinuumLayerContent {
     public void setState(Vector state) {
         super.setState(state);
         triggered = true;
+    }
+
+    @Override
+    public void reset() {
+        super.reset();
+        reset = true;
+    }
+
+    public boolean isReset() {
+        return reset;
     }
 }

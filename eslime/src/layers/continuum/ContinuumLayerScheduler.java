@@ -62,4 +62,9 @@ public class ContinuumLayerScheduler {
         scheduledOperations.exp(target, b);
         solveIfNotHeld();
     }
+
+    public void reset() {
+        isHeld = false;
+        scheduledOperations.reset();
+    }
 }
