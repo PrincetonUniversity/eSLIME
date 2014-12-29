@@ -126,21 +126,17 @@ public class CorrelationWriter extends Serializer {
 
     @Override
     public void flush(StepState stepState) {
-        System.out.println("Go");
         long start = System.currentTimeMillis();
         // Has the analysis fired yet? If so, return.
         if (fired) {
-            System.out.println("I still think I fired.");
             return;
         }
 
         // Is it time to fire yet? If not, return.
         if (stepState.getTime() < triggerTime) {
-            System.out.println(stepState.getTime() + " < " + triggerTime);
             return;
         }
 
-        System.out.print("Analyzing correlation...");
         CellLayer layer = stepState.getRecordedCellLayer();
         Geometry geom = layer.getGeometry();
         Coordinate[] cc = geom.getCanonicalSites();
@@ -153,7 +149,6 @@ public class CorrelationWriter extends Serializer {
         }
         // Mark the analysis event as having fired.
         long total = System.currentTimeMillis() - start;
-        System.out.println("done in " + total + " ms");
         fired = true;
     }
 

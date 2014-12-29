@@ -39,7 +39,7 @@ import java.util.Arrays;
 
 public abstract class EslimeTestCase extends TestCase {
 
-    protected final String eslimeRoot = "./eslime/";
+    protected final String eslimeRoot = "./";
     protected final String outputPath = eslimeRoot + "/output/";
     protected final String fixturePath = eslimeRoot + "/fixtures/";
     protected final int RANDOM_SEED = 0;
