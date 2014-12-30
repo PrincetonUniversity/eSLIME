@@ -59,8 +59,8 @@ public class DepthFilterTest extends EslimeTestCase {
         List<Coordinate> expected = new ArrayList<>();
         expected.add(new Coordinate(0, 2, 0));
         expected.add(new Coordinate(0, 3, 0));
-        expected.add(new Coordinate(0, 5, 0));
         expected.add(new Coordinate(0, 6, 0));
+        expected.add(new Coordinate(0, 5, 0));
 
         assertEquals(expected, actual);
     }

@@ -6,12 +6,14 @@
 package processes.discrete;
 
 import cells.MockCell;
+import control.arguments.ConstantInteger;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
 import geometry.boundaries.Arena;
 import geometry.boundaries.Boundary;
 import geometry.lattice.Lattice;
 import geometry.lattice.RectangularLattice;
+import geometry.set.CompleteSet;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
 import layers.MockLayerManager;
@@ -30,7 +32,7 @@ public class OccupiedNeighborSwapTest extends EslimeTestCase {
     private OccupiedNeighborSwap query;
     private MockLayerManager layerManager;
     private MockCell a, b, c;
-    private Coordinate ac, bc, cc;
+    private Coordinate aa, bb, cc;
 
     @Override
     protected void setUp() throws Exception {
@@ -45,24 +47,25 @@ public class OccupiedNeighborSwapTest extends EslimeTestCase {
 
         MockGeneralParameters p = makeMockGeneralParameters();
         BaseProcessArguments arguments = makeBaseProcessArguments(layerManager, p);
-        CellProcessArguments cpArguments = makeCellProcessArguments(geom);
+        CellProcessArguments cpArguments = new CellProcessArguments(new CompleteSet(geom), new ConstantInteger(1));
+
         query = new OccupiedNeighborSwap(arguments, cpArguments);
 
         /*
          * Cell layout:
          *     0 1
-         *  1  a .
-         *  0  b c
+         *  0  b .
+         *  1  a c
          */
         a = new MockCell(1);
         b = new MockCell(2);
         c = new MockCell(3);
 
-        ac = new Coordinate(0, 1, 0);
-        bc = new Coordinate(0, 0, 0);
+        aa = new Coordinate(0, 1, 0);
+        bb = new Coordinate(0, 0, 0);
         cc = new Coordinate(1, 1, 0);
-        cellLayer.getUpdateManager().place(a, ac);
-        cellLayer.getUpdateManager().place(b, bc);
+        cellLayer.getUpdateManager().place(a, aa);
+        cellLayer.getUpdateManager().place(b, bb);
         cellLayer.getUpdateManager().place(c, cc);
     }
 
@@ -73,8 +76,7 @@ public class OccupiedNeighborSwapTest extends EslimeTestCase {
 
         CellLayer cl = layerManager.getCellLayer();
 
-        // B should no longer be at (0, 0)
-        assertFalse(cl.getViewer().getCell(bc).equals(b));
+        assertFalse(cl.getViewer().getCell(aa).equals(a));
     }
 
     public void testGillespie() throws Exception {

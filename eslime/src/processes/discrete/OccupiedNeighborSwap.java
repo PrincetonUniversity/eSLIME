@@ -60,6 +60,7 @@ public class OccupiedNeighborSwap extends CellProcess {
 
         for (Object tObj : targets) {
             SwapTuple target = (SwapTuple) tObj;
+            System.out.println("Swapping" + target.p + " with " + target.q);
             layer.getUpdateManager().swap(target.p, target.q);
         }
         this.candidates = null;
