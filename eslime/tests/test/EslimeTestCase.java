@@ -36,6 +36,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 
 public abstract class EslimeTestCase extends TestCase {
 
@@ -271,6 +272,17 @@ public abstract class EslimeTestCase extends TestCase {
        return true;
     }
 
+    protected void assertCollectionsEqual(Collection p, Collection q) {
+        if (p.size() != q.size()) {
+            fail("Expected " + p.size() + " elements but found " + q.size());
+        }
+
+        for (Object o : p) {
+           if (!q.contains(o)) {
+               fail("Object " + o + " was expected but not found");
+           }
+        }
+    }
     protected Geometry makeLinearGeometry(int length) {
         Lattice lattice = new LinearLattice();
         Shape shape = new Line(lattice, length);
