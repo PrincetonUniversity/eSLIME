@@ -12,9 +12,9 @@ import test.EslimeTestCase;
 import java.util.Collection;
 import java.util.HashSet;
 
-public class RelationshipManagerTest extends EslimeTestCase {
+public class AgentContinuumManagerTest extends EslimeTestCase {
 
-    private RelationshipManager query;
+    private AgentContinuumManager query;
     private Coordinate c;
 
     @Override
@@ -22,7 +22,7 @@ public class RelationshipManagerTest extends EslimeTestCase {
         super.setUp();
         c = new Coordinate(1, 2, 3);
         SelfLocator locator = () -> c;
-        query = new RelationshipManager(locator);
+        query = new AgentContinuumManager(locator);
     }
 
     public void testGetRelationships() throws Exception {

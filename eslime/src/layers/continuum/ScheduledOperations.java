@@ -94,4 +94,8 @@ public class ScheduledOperations {
     public Matrix getOperator() {
         return operator;
     }
+
+    public void inject(DenseVector delta) {
+        source.add(delta);
+    }
 }

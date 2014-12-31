@@ -23,7 +23,7 @@ public class ContinuumLayerSchedulerTest extends EslimeTestCase {
         geom = makeLinearGeometry(3);
         so = new MockScheduledOperations(geom);
         solver = new MockContinuumSolver();
-        query = new ContinuumLayerScheduler(so, solver);
+        //query = new ContinuumLayerScheduler(so, solver);
     }
 
     public void testHoldRelease() {
@@ -47,10 +47,14 @@ public class ContinuumLayerSchedulerTest extends EslimeTestCase {
         assertTrue(so.isApplied());
     }
 
-    public void testInject() {
+    public void testScalarInject() {
         assertFalse(so.isInjected());
         query.inject(new Coordinate(0, 0, 0), 1.0);
         assertTrue(so.isInjected());
+    }
+
+    public void testVectorInject() {
+        fail("Not yet implemented");
     }
 
     public void testExp() {

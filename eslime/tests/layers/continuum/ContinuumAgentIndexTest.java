@@ -10,7 +10,7 @@ import cells.MockCell;
 import control.identifiers.Coordinate;
 import test.EslimeTestCase;
 
-import java.util.HashMap;
+import java.util.function.Function;
 
 public class ContinuumAgentIndexTest extends EslimeTestCase {
 
@@ -24,34 +24,36 @@ public class ContinuumAgentIndexTest extends EslimeTestCase {
 
         cell = new MockCell();
         tuple = new RelationshipTuple(new Coordinate(1, 2, 3), 1.0);
-        AgentRelationshipLookup lookup = cell -> tuple;
+        Function<BehaviorCell, RelationshipTuple> lookup = cell -> tuple;
         query = new ContinuumAgentIndex(lookup);
     }
 
     public void testLifeCycle() {
-        // Get relationship set -- should be empty
-        HashMap<Coordinate, Double> expected = new HashMap<>(1);
-        assertMapsEqual(expected, query.getRelationShips());
-
-        // Add a relationship
-        query.add(cell);
-
-        // Get relationship set -- should be there
-        expected.put(tuple.getCoordinate(), tuple.getMagnitude());
-        assertMapsEqual(expected, query.getRelationShips());
-
-        // Remove that relationship
-        query.remove(cell);
-
-        // Get relationship set -- should be empty
-        expected.remove(tuple.getCoordinate());
-        assertEquals(expected, query.getRelationShips());
+        fail("This all needs to be migrated");
+//        // Get relationship set -- should be empty
+//        HashMap<Coordinate, Double> expected = new HashMap<>(1);
+//        assertMapsEqual(expected, query.getRelationShips());
+//
+//        // Add a relationship
+//        query.add(cell);
+//
+//        // Get relationship set -- should be there
+//        expected.put(tuple.getCoordinate(), tuple.getMagnitude());
+//        assertMapsEqual(expected, query.getRelationShips());
+//
+//        // Remove that relationship
+//        query.remove(cell);
+//
+//        // Get relationship set -- should be empty
+//        expected.remove(tuple.getCoordinate());
+//        assertEquals(expected, query.getRelationShips());
     }
 
     public void testReset() {
-        query.add(cell);
-        query.reset();
-        HashMap<Coordinate, Double> expected = new HashMap<>(1);
-        assertEquals(expected, query.getRelationShips());
+        fail("This all needs to be migrated");
+//        query.add(cell);
+//        query.reset();
+//        HashMap<Coordinate, Double> expected = new HashMap<>(1);
+//        assertEquals(expected, query.getRelationShips());
     }
 }

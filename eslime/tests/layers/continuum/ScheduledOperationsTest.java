@@ -31,7 +31,7 @@ public class ScheduledOperationsTest extends EslimeTestCase {
         query = new ScheduledOperations(geom);
     }
 
-    public void testInject() throws Exception {
+    public void testScalarInject() throws Exception {
         query.inject(a, 1.0);
         query.inject(a, 0.5);
         query.inject(b, 2.0);
@@ -44,6 +44,10 @@ public class ScheduledOperationsTest extends EslimeTestCase {
 
         assertVectorsEqual(expectedSource, actualSource, epsilon);
         assertTrue(MatrixUtils.equal(expectedOperator, actualOperator));
+    }
+
+    public void testVectorInject() throws Exception {
+        fail("Not yet implemented");
     }
 
     public void testScale() throws Exception {

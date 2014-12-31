@@ -25,13 +25,13 @@ import java.util.Set;
  *
  * Created by dbborens on 12/30/14.
  */
-public class RelationshipManager {
+public class AgentContinuumManager {
 
     private HashMap<String, Double> expMappings;    // Exponentiation
     private HashMap<String, Double> injMappings;    // Injection
     private SelfLocator locator;
 
-    public RelationshipManager(SelfLocator locator) {
+    public AgentContinuumManager(SelfLocator locator) {
         expMappings = new HashMap<>();
         injMappings = new HashMap<>();
         this.locator = locator;

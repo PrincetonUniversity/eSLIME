@@ -13,7 +13,7 @@ public class MockContinuumLayerScheduler extends ContinuumLayerScheduler {
     private boolean reset;
 
     public MockContinuumLayerScheduler() {
-        super(null, null);
+        super(null, null, null, null);
         reset = false;
     }
 

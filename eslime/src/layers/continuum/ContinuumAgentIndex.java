@@ -6,10 +6,12 @@
 package layers.continuum;
 
 import cells.BehaviorCell;
-import control.identifiers.Coordinate;
 
-import java.util.HashMap;
+import java.util.HashSet;
 import java.util.IdentityHashMap;
+import java.util.function.Consumer;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Agents can directly manipulate the continuum value at the coordinate where
@@ -23,15 +25,21 @@ public class ContinuumAgentIndex {
     // Very many cells can be logically equivalent because they are
     // identical agents; we want to track the relationships by name.
     private IdentityHashMap<BehaviorCell, Object> index;
-
-    private AgentRelationshipLookup lookup;
-
-    public ContinuumAgentIndex(AgentRelationshipLookup lookup) {
+    private Function<BehaviorCell, RelationshipTuple> lookup;
+    private ContinuumAgentNotifier notifier;
+    public ContinuumAgentIndex(Function<BehaviorCell, RelationshipTuple> lookup) {
         this.lookup = lookup;
+        notifier = buildNotifier();
         reset();
     }
 
-    public void add(BehaviorCell cell) {
+    private ContinuumAgentNotifier buildNotifier() {
+        Consumer<BehaviorCell> adder = cell -> add(cell);
+        Consumer<BehaviorCell> remover = cell -> remove(cell);
+        return new ContinuumAgentNotifier(adder, remover);
+    }
+
+    private void add(BehaviorCell cell) {
         index.put(cell, null);
     }
 
@@ -40,18 +48,16 @@ public class ContinuumAgentIndex {
      *
      * @return
      */
-    public HashMap<Coordinate, Double> getRelationShips() {
-        HashMap<Coordinate, Double> ret = new HashMap<>(index.size());
+    public HashSet<RelationshipTuple> getRelationShips() {
+        HashSet<RelationshipTuple> ret = new HashSet<>(index.size());
 
-        // I bet there's a nice way to do this with lambdas
-        for (BehaviorCell cell : index.keySet()) {
-            RelationshipTuple tuple = lookup.go(cell);
-            ret.put(tuple.getCoordinate(), tuple.getMagnitude());
-        }
+        // What on earth did IntelliJ do to my humble iterator?
+        ret.addAll(index.keySet().stream().map(lookup::apply).collect(Collectors.toList()));
+
         return ret;
     }
 
-    public void remove(BehaviorCell cell) {
+    private void remove(BehaviorCell cell) {
         if (!index.containsKey(cell)) {
             throw new IllegalStateException("Attempted to remove non-existent key from relationship index");
         }
@@ -60,5 +66,9 @@ public class ContinuumAgentIndex {
 
     public void reset() {
         index = new IdentityHashMap<>();
+    }
+
+    public ContinuumAgentNotifier getNotifier() {
+        return notifier;
     }
 }

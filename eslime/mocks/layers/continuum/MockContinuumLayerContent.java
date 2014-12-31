@@ -15,10 +15,6 @@ public class MockContinuumLayerContent extends ContinuumLayerContent {
     private boolean triggered = false;
     private boolean reset = false;
 
-    public MockContinuumLayerContent() {
-        super(null);
-    }
-
     public boolean isTriggered() {
         return triggered;
     }
