@@ -5,6 +5,8 @@
 
 package cells;
 
+import control.identifiers.Coordinate;
+import layers.continuum.RelationshipTuple;
 import test.EslimeTestCase;
 
 import java.util.Collection;
@@ -13,11 +15,14 @@ import java.util.HashSet;
 public class RelationshipManagerTest extends EslimeTestCase {
 
     private RelationshipManager query;
+    private Coordinate c;
 
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        query = new RelationshipManager();
+        c = new Coordinate(1, 2, 3);
+        SelfLocator locator = () -> c;
+        query = new RelationshipManager(locator);
     }
 
     public void testGetRelationships() throws Exception {
@@ -32,14 +37,21 @@ public class RelationshipManagerTest extends EslimeTestCase {
     }
 
     public void testSetGetInj() throws Exception {
-        assertEquals(0.0, query.getInj("foo"), epsilon);
+        RelationshipTuple expected = new RelationshipTuple(c, 0.0);
+        assertEquals(expected, query.getInj("foo"));
+
         query.setInj("foo", 1.0);
-        assertEquals(1.0, query.getInj("foo"), epsilon);
+        expected = new RelationshipTuple(c, 1.0);
+        assertEquals(expected, query.getInj("foo"));
     }
 
     public void testSetGetExp() throws Exception {
-        assertEquals(0.0, query.getExp("foo"), epsilon);
+        RelationshipTuple expected = new RelationshipTuple(c, 0.0);
+        assertEquals(expected, query.getExp("foo"));
+
         query.setExp("foo", 1.0);
-        assertEquals(1.0, query.getExp("foo"), epsilon);
+        expected = new RelationshipTuple(c, 1.0);
+        assertEquals(expected, query.getExp("foo"));
     }
+
 }

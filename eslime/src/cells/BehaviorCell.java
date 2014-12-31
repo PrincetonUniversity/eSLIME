@@ -28,8 +28,10 @@ public class BehaviorCell extends Cell {
     // Helpers
     private BehaviorDispatcher dispatcher;
     private CallbackManager callbackManager;
+    private RelationshipManager relationshipManager;
 
     // Default constructor for testing
+    @Deprecated
     public BehaviorCell() {
     }
 
@@ -45,6 +47,8 @@ public class BehaviorCell extends Cell {
 
         considerCount = 0;
 
+        SelfLocator locator = () -> callbackManager.getMyLocation();
+        relationshipManager = new RelationshipManager(locator);
     }
 
     @Override
@@ -172,5 +176,9 @@ public class BehaviorCell extends Cell {
 
     public double getThreshold() {
         return threshold;
+    }
+
+    public RelationshipManager getRelationshipManager() {
+        return relationshipManager;
     }
 }

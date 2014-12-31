@@ -37,6 +37,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 
 public abstract class EslimeTestCase extends TestCase {
 
@@ -189,8 +190,7 @@ public abstract class EslimeTestCase extends TestCase {
 
         File fixtureFile = new File(fixture);
         File outputFile = new File(output);
-
-        FileAssert.assertEquals(fixtureFile, outputFile);
+ FileAssert.assertEquals(fixtureFile, outputFile);
     }
     protected void assertBinaryFilesEqual(String filename) {
         String fixture = fixturePath + filename;
@@ -277,10 +277,21 @@ public abstract class EslimeTestCase extends TestCase {
             fail("Expected " + p.size() + " elements but found " + q.size());
         }
 
-        for (Object o : p) {
-           if (!q.contains(o)) {
-               fail("Object " + o + " was expected but not found");
-           }
+        if (!p.containsAll(q)) {
+            fail("Contents of sets do not match");
+        }
+    }
+
+    protected void assertMapsEqual(Map p, Map q) {
+        assertCollectionsEqual(p.keySet(), q.keySet());
+
+        for (Object o : p.keySet()) {
+            Object pVal = p.get(o);
+            Object qVal = q.get(o);
+
+            if (!pVal.equals(qVal)) {
+                fail("Value of key" + o + " does not match");
+            }
         }
     }
     protected Geometry makeLinearGeometry(int length) {

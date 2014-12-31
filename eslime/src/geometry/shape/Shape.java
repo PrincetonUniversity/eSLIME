@@ -17,7 +17,7 @@ public abstract class Shape {
     // The set of sites in this geometry, given the lattice type
     protected Coordinate[] canonicalSites;
 
-    // A reverse lookup of coordinate to index into canonicalSites
+    // A reverse go of coordinate to index into canonicalSites
     protected Map<Coordinate, Integer> coordMap;
 
     protected Lattice lattice;

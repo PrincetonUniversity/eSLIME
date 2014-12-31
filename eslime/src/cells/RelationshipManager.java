@@ -5,6 +5,9 @@
 
 package cells;
 
+import control.identifiers.Coordinate;
+import layers.continuum.RelationshipTuple;
+
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -26,21 +29,21 @@ public class RelationshipManager {
 
     private HashMap<String, Double> expMappings;    // Exponentiation
     private HashMap<String, Double> injMappings;    // Injection
+    private SelfLocator locator;
 
-    public RelationshipManager() {
+    public RelationshipManager(SelfLocator locator) {
         expMappings = new HashMap<>();
         injMappings = new HashMap<>();
+        this.locator = locator;
     }
 
     /**
      * Get the exponent sumand for the specified field.
      * @param id
      * @return
-     */ public double getExp(String id) {
-        if (!expMappings.containsKey(id)) {
-            return 0.0; } else {
-            return expMappings.get(id);
-        }
+     */
+    public RelationshipTuple getExp(String id) {
+        return get(expMappings, id);
     }
 
     /**
@@ -50,12 +53,8 @@ public class RelationshipManager {
      * @param id
      * @return
      */
-    public double getInj(String id) {
-        if (!injMappings.containsKey(id)) {
-            return 0.0;
-        } else {
-            return injMappings.get(id);
-        }
+    public RelationshipTuple getInj(String id) {
+        return get(injMappings, id);
     }
 
     /**
@@ -76,5 +75,14 @@ public class RelationshipManager {
 
     public void setExp(String id, double value) {
         expMappings.put(id, value);
+    }
+
+    private RelationshipTuple get(HashMap<String, Double> index, String id) {
+        Coordinate c = locator.go();
+        if (!index.containsKey(id)) {
+            return new RelationshipTuple(c, 0.0);
+        } else {
+            return new RelationshipTuple(c, index.get(id));
+        }
     }
 }
