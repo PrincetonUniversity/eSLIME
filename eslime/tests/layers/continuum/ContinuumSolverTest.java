@@ -25,7 +25,7 @@ public class ContinuumSolverTest extends EslimeTestCase {
         super.setUp();
 
         Geometry geom = makeLinearGeometry(3);
-        content = new MockContinuumLayerContent();
+//        content = new MockContinuumLayerContent();
         so = new MockScheduledOperations(geom);
         helper = new MockSteadyStateHelper();
 

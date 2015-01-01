@@ -5,6 +5,10 @@
 
 package layers.continuum;
 
+import control.identifiers.Coordinate;
+
+import java.util.function.Function;
+
 /**
  * Created by dbborens on 12/31/14.
  */
@@ -14,8 +18,8 @@ public class ContinuumAgentManager {
     private ContinuumAgentScheduler scheduler;
 
     public ContinuumAgentManager(ContinuumAgentScheduler scheduler, String id) {
-        injIndex = new ContinuumAgentIndex(cell -> cell.getAgentContinuumManager().getInj(id));
-        expIndex = new ContinuumAgentIndex(cell -> cell.getAgentContinuumManager().getExp(id));
+        injIndex = new ContinuumAgentIndex(cell -> cell.getLinker().getInj(id));
+        expIndex = new ContinuumAgentIndex(cell -> cell.getLinker().getExp(id));
         this.scheduler = scheduler;
     }
 
@@ -27,5 +31,11 @@ public class ContinuumAgentManager {
     public void reset() {
         injIndex.reset();
         expIndex.reset();
+    }
+
+    public ContinuumAgentLinker getLinker(Function<Coordinate, Double> stateLookup) {
+        ContinuumAgentNotifier injNotifier = injIndex.getNotifier();
+        ContinuumAgentNotifier expNotifier = expIndex.getNotifier();
+        return new ContinuumAgentLinker(injNotifier, expNotifier, stateLookup);
     }
 }

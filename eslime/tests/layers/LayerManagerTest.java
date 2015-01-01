@@ -41,19 +41,12 @@ public class LayerManagerTest extends EslimeTestCase {
         assertFalse(case2.hasCellLayer());
     }
 
-//    public void testGetSoluteLayerIds() throws Exception {
-//        String[] expected = new String[]{"prr", "prh"};
-//        String[] actual = case1.getSoluteLayerIds();
-//        assertArraysEqual(expected, actual, true);
-//    }
-
-//    public void testGetSoluteLayer() throws Exception {
-//        SoluteLayer prr = case1.getSoluteLayer("prr");
-//        assertEquals("prr", prr.getId());
-//    }
-
     public void testGetCellLayer() throws Exception {
         assertNotNull(case1.getCellLayer());
         assertNull(case2.getCellLayer());
+    }
+
+    public void testGetLinker() {
+        fail("Not yet implemented");
     }
 }

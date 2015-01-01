@@ -19,4 +19,8 @@ public class ContinuumAgentManagerTest extends TestCase {
     public void apply() {
         fail("Not yet implemented");
     }
+
+    public void testGetLinker() {
+        fail("Not yet implemented");
+    }
 }

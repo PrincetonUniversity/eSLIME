@@ -6,11 +6,7 @@
 package cells;
 
 import control.identifiers.Coordinate;
-import layers.continuum.RelationshipTuple;
 import test.EslimeTestCase;
-
-import java.util.Collection;
-import java.util.HashSet;
 
 public class AgentContinuumManagerTest extends EslimeTestCase {
 
@@ -21,37 +17,39 @@ public class AgentContinuumManagerTest extends EslimeTestCase {
     protected void setUp() throws Exception {
         super.setUp();
         c = new Coordinate(1, 2, 3);
-        SelfLocator locator = () -> c;
-        query = new AgentContinuumManager(locator);
+//        selflocator locator = () -> c;
+//        c = new agentcontinuummanager(locator);
     }
 
-    public void testGetRelationships() throws Exception {
-        query.setExp("foo", 1.0);
-        query.setInj("bar", 1.0);
-
-        Collection<String> actual = query.getRelationships();
-        Collection<String> expected = new HashSet<>();
-        expected.add("foo");
-        expected.add("bar");
-        assertCollectionsEqual(expected, actual);
-    }
+//    public void testGetRelationships() throws Exception {
+//        query.setExp("foo", 1.0);
+//        query.setInj("bar", 1.0);
+//
+//        Collection<String> actual = query.getRelationships();
+//        Collection<String> expected = new HashSet<>();
+//        expected.add("foo");
+//        expected.add("bar");
+//        assertCollectionsEqual(expected, actual);
+//    }
 
     public void testSetGetInj() throws Exception {
-        RelationshipTuple expected = new RelationshipTuple(c, 0.0);
-        assertEquals(expected, query.getInj("foo"));
-
-        query.setInj("foo", 1.0);
-        expected = new RelationshipTuple(c, 1.0);
-        assertEquals(expected, query.getInj("foo"));
+        fail("Reimplement");
+//        RelationshipTuple expected = new RelationshipTuple(c, 0.0);
+//        assertEquals(expected, query.getInj("foo"));
+//
+//        query.setInj("foo", 1.0);
+//        expected = new RelationshipTuple(c, 1.0);
+//        assertEquals(expected, query.getInj("foo"));
     }
 
     public void testSetGetExp() throws Exception {
-        RelationshipTuple expected = new RelationshipTuple(c, 0.0);
-        assertEquals(expected, query.getExp("foo"));
-
-        query.setExp("foo", 1.0);
-        expected = new RelationshipTuple(c, 1.0);
-        assertEquals(expected, query.getExp("foo"));
+        fail("Reimplement");
+//        RelationshipTuple expected = new RelationshipTuple(c, 0.0);
+//        assertEquals(expected, query.getExp("foo"));
+//
+//        query.setExp("foo", 1.0);
+//        expected = new RelationshipTuple(c, 1.0);
+//        assertEquals(expected, query.getExp("foo"));
     }
 
 }

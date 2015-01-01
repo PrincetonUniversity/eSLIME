@@ -17,7 +17,7 @@ public class ContinuumLayerTest extends EslimeTestCase {
     @Override
     protected void setUp() throws Exception {
         super.setUp();
-        content = new MockContinuumLayerContent();
+//        content = new MockContinuumLayerContent();
         scheduler = new MockContinuumLayerScheduler();
         query = new ContinuumLayer(scheduler, content, "test");
     }

@@ -11,6 +11,7 @@ import no.uib.cipr.matrix.DenseVector;
 import no.uib.cipr.matrix.Matrix;
 
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Created by dbborens on 12/12/14.
@@ -83,4 +84,7 @@ public class ContinuumLayerScheduler {
         scheduledOperations.reset();
     }
 
+    public ContinuumAgentLinker getLinker(Function<Coordinate, Double> stateLookup) {
+        return agentManager.getLinker(stateLookup);
+    }
 }

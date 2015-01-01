@@ -6,12 +6,11 @@
 package cells;
 
 import control.identifiers.Coordinate;
+import layers.continuum.ContinuumAgentLinker;
 import layers.continuum.RelationshipTuple;
 
-import java.util.Collection;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Cells can manipulate the local concentrations of continuum
@@ -27,62 +26,32 @@ import java.util.Set;
  */
 public class AgentContinuumManager {
 
-    private HashMap<String, Double> expMappings;    // Exponentiation
-    private HashMap<String, Double> injMappings;    // Injection
-    private SelfLocator locator;
+    private AgentContinuumIndex exp;
+    private AgentContinuumIndex inj;
 
-    public AgentContinuumManager(SelfLocator locator) {
-        expMappings = new HashMap<>();
-        injMappings = new HashMap<>();
+    private Supplier<Coordinate> locator;           // Locates self
+    private AgentContinuumScheduler scheduler;      // Adds new relationships
+
+    public AgentContinuumManager(Supplier<Coordinate> locator, Function<String, ContinuumAgentLinker> incomingLinker, BehaviorCell callback) {
         this.locator = locator;
+
+        inj = new AgentContinuumIndex();
+        exp = new AgentContinuumIndex();
+
+        scheduler = new AgentContinuumScheduler(incomingLinker, callback, locator, inj, exp);
     }
 
-    /**
-     * Get the exponent sumand for the specified field.
-     * @param id
-     * @return
-     */
-    public RelationshipTuple getExp(String id) {
-        return get(expMappings, id);
+
+    public AgentContinuumLinker getOutgoingLinker() {
+        Coordinate c = locator.get();
+        Function<String, RelationshipTuple> injLookup = id -> new RelationshipTuple(c, inj.getMagnitude(id));
+        Function<String, RelationshipTuple> expLookup = id -> new RelationshipTuple(c, exp.getMagnitude(id));
+        AgentContinuumLinker linker = new AgentContinuumLinker(injLookup, expLookup);
+
+        return linker;
     }
 
-    /**
-     * Get the direct production (source/injection) sumand for the specified
-     * field.
-     *
-     * @param id
-     * @return
-     */
-    public RelationshipTuple getInj(String id) {
-        return get(injMappings, id);
-    }
-
-    /**
-     * Returns the set of all fields upon which this cell is capable of acting.
-     *
-     * @return
-     */
-    public Collection<String> getRelationships() {
-        Set<String> ret = new HashSet<>(expMappings.keySet());
-        ret.addAll(injMappings.keySet());
-
-        return ret;
-    }
-
-    public void setInj(String id, double value) {
-        injMappings.put(id, value);
-    }
-
-    public void setExp(String id, double value) {
-        expMappings.put(id, value);
-    }
-
-    private RelationshipTuple get(HashMap<String, Double> index, String id) {
-        Coordinate c = locator.go();
-        if (!index.containsKey(id)) {
-            return new RelationshipTuple(c, 0.0);
-        } else {
-            return new RelationshipTuple(c, index.get(id));
-        }
+    public AgentContinuumScheduler getScheduler() {
+        return scheduler;
     }
 }

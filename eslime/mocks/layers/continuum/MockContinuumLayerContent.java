@@ -5,7 +5,10 @@
 
 package layers.continuum;
 
+import control.identifiers.Coordinate;
 import no.uib.cipr.matrix.Vector;
+
+import java.util.function.Function;
 
 /**
  * Created by dbborens on 12/28/14.
@@ -14,6 +17,10 @@ public class MockContinuumLayerContent extends ContinuumLayerContent {
 
     private boolean triggered = false;
     private boolean reset = false;
+
+    public MockContinuumLayerContent(Function<Coordinate, Integer> indexer) {
+        super(indexer);
+    }
 
     public boolean isTriggered() {
         return triggered;

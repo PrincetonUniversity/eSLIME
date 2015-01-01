@@ -6,41 +6,33 @@
 package layers;
 
 import layers.cell.CellLayer;
+import layers.continuum.ContinuumAgentLinker;
+import layers.continuum.ContinuumLayer;
 import processes.StepState;
+
+import java.util.HashMap;
 
 /**
  * Created by David B Borenstein on 12/29/13.
  */
 public class LayerManager {
 
-//    private static final int GEOMETRY_ID = 0;
     protected CellLayer cellLayer;
-//    protected HashMap<String, SoluteLayer> soluteLayers;
+
+    protected HashMap<String, ContinuumLayer> continuumLayers;
     private StepState stepState;
 
     public LayerManager() {
-//        soluteLayers = new HashMap<>();
+        continuumLayers = new HashMap<>();
     }
 
-//    public void addSoluteLayer(String id, SoluteLayer soluteLayer) {
-//        soluteLayers.put(id, soluteLayer);
-//    }
+    public void addContinuumLayer(String id, ContinuumLayer continuumLayer) {
+        continuumLayers.put(id, continuumLayer);
+    }
 
     public boolean hasCellLayer() {
         return (cellLayer != null);
     }
-
-//    public String[] getSoluteLayerIds() {
-//        return soluteLayers.keySet().toArray(new String[0]);
-//    }
-
-//    public SoluteLayer[] getSoluteLayers() {
-//        return soluteLayers.values().toArray(new SoluteLayer[0]);
-//    }
-
-//    public SoluteLayer getSoluteLayer(String id) {
-//        return soluteLayers.get(id);
-//    }
 
     public CellLayer getCellLayer() {
         return cellLayer;
@@ -61,21 +53,21 @@ public class LayerManager {
         if (cellLayer != null ? !cellLayer.equals(that.cellLayer) : that.cellLayer != null)
             return false;
 
-//        if (soluteLayers.size() != that.soluteLayers.size()) {
-//            return false;
-//        }
-//
-//        for (String s : soluteLayers.keySet()) {
-//            if (!that.soluteLayers.containsKey(s)) {
-//                return false;
-//            }
-//
-//            SoluteLayer p = soluteLayers.get(s);
-//            SoluteLayer q = that.soluteLayers.get(s);
-//            if (!p.equals(q)) {
-//                return false;
-//            }
-//        }
+        if (continuumLayers.size() != that.continuumLayers.size()) {
+            return false;
+        }
+
+        for (String s : continuumLayers.keySet()) {
+            if (!that.continuumLayers.containsKey(s)) {
+                return false;
+            }
+
+            ContinuumLayer p = continuumLayers.get(s);
+            ContinuumLayer q = that.continuumLayers.get(s);
+            if (!p.equals(q)) {
+                return false;
+            }
+        }
 
         return true;
     }
@@ -83,7 +75,7 @@ public class LayerManager {
     @Override
     public int hashCode() {
         int result = cellLayer != null ? cellLayer.hashCode() : 0;
-//        result = 31 * result + (soluteLayers != null ? soluteLayers.hashCode() : 0);
+        result = 31 * result + (continuumLayers != null ? continuumLayers.hashCode() : 0);
         return result;
     }
 
@@ -97,5 +89,18 @@ public class LayerManager {
 
     public void reset() {
         cellLayer.reset();
+    }
+
+    /**
+     * Returns a linker through which agents can retrieve the state of a
+     * continuum at their location, or notify the field of their birth or
+     * death.
+     *
+     * @param id
+     * @return
+     */
+    public ContinuumAgentLinker getLinker(String id) {
+        ContinuumLayer layer = continuumLayers.get(id);
+        return layer.getLinker();
     }
 }

@@ -5,13 +5,29 @@
 
 package layers.continuum;
 
+import control.identifiers.Coordinate;
 import no.uib.cipr.matrix.Vector;
+
+import java.util.function.Function;
 
 /**
  * Created by dbborens on 12/26/14.
  */
 public class ContinuumLayerContent {
     protected Vector state;
+
+    // Map of coordinate --> vector index
+    private Function<Coordinate, Integer> indexer;
+
+    public ContinuumLayerContent(Function<Coordinate, Integer> indexer) {
+        this.indexer = indexer;
+    }
+
+    public double get(Coordinate c) {
+        int index = indexer.apply(c);
+        double ret = state.get(index);
+        return ret;
+    }
 
     public Vector getState() {
         return state;

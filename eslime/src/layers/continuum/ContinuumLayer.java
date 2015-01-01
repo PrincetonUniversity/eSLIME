@@ -5,8 +5,11 @@
 
 package layers.continuum;
 
+import control.identifiers.Coordinate;
 import layers.Layer;
 import no.uib.cipr.matrix.Vector;
+
+import java.util.function.Function;
 
 /**
  * Created by dbborens on 12/11/14.
@@ -50,5 +53,10 @@ public class ContinuumLayer extends Layer {
 
     public ContinuumLayerScheduler getScheduler() {
         return scheduler;
+    }
+
+    public ContinuumAgentLinker getLinker() {
+        Function<Coordinate, Double> stateLookup = c -> content.get(c);
+        return scheduler.getLinker(stateLookup);
     }
 }

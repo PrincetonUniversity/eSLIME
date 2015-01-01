@@ -9,7 +9,11 @@ import agent.control.BehaviorDispatcher;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
 import layers.LayerManager;
+import layers.continuum.ContinuumAgentLinker;
 import structural.utilities.EpsilonUtil;
+
+import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Flexible cell class capable of performing arbitrary
@@ -47,8 +51,11 @@ public class BehaviorCell extends Cell {
 
         considerCount = 0;
 
-        SelfLocator locator = () -> callbackManager.getMyLocation();
-        agentContinuumManager = new AgentContinuumManager(locator);
+        Supplier<Coordinate> locator = () -> callbackManager.getMyLocation();
+        Function<String, ContinuumAgentLinker> retrieveLinker =
+                id -> layerManager.getLinker(id);
+
+        agentContinuumManager = new AgentContinuumManager(locator, retrieveLinker, this);
     }
 
     @Override
@@ -178,7 +185,16 @@ public class BehaviorCell extends Cell {
         return threshold;
     }
 
-    public AgentContinuumManager getAgentContinuumManager() {
-        return agentContinuumManager;
+    /**
+     * Retrieves the scheduler, which is used to schedule injection
+     * or exponentiation by the agent into a continuum at the agent's
+     * location.
+     */
+    public AgentContinuumScheduler getScheduler() {
+        return agentContinuumManager.getScheduler();
+    }
+
+    public AgentContinuumLinker getLinker() {
+        return agentContinuumManager.getOutgoingLinker();
     }
 }
