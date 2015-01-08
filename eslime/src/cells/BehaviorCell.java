@@ -8,6 +8,7 @@ package cells;
 import agent.control.BehaviorDispatcher;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
+import factory.cell.Reaction;
 import layers.LayerManager;
 import layers.continuum.ContinuumAgentLinker;
 import structural.utilities.EpsilonUtil;
@@ -185,16 +186,15 @@ public class BehaviorCell extends Cell {
         return threshold;
     }
 
-    /**
-     * Retrieves the scheduler, which is used to schedule injection
-     * or exponentiation by the agent into a continuum at the agent's
-     * location.
-     */
-    public AgentContinuumScheduler getScheduler() {
-        return agentContinuumManager.getScheduler();
-    }
-
     public AgentContinuumLinker getLinker() {
         return agentContinuumManager.getOutgoingLinker();
+    }
+
+    public void load(Reaction reaction) {
+        String id = reaction.getId();
+        AgentContinuumScheduler scheduler = agentContinuumManager.getScheduler();
+
+        scheduler.scheduleExp(id, reaction.getExp());
+        scheduler.scheduleInj(id, reaction.getExp());
     }
 }
