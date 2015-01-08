@@ -19,7 +19,7 @@ public class ContinuumLayerTest extends EslimeTestCase {
         super.setUp();
 //        content = new MockContinuumLayerContent();
         scheduler = new MockContinuumLayerScheduler();
-        query = new ContinuumLayer(scheduler, content, "test");
+        query = new ContinuumLayer(scheduler, content);
     }
 
     public void testGetId() throws Exception {

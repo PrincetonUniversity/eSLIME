@@ -16,8 +16,10 @@ public class ContinuumAgentManager {
     private ContinuumAgentIndex injIndex;    // Injection (source)
     private ContinuumAgentIndex expIndex;    // Exponentiation (feedback, decay)
     private ContinuumAgentScheduler scheduler;
-
+    private String id;
     public ContinuumAgentManager(ContinuumAgentScheduler scheduler, String id) {
+        this.id = id;
+
         injIndex = new ContinuumAgentIndex(cell -> cell.getLinker().getInj(id));
         expIndex = new ContinuumAgentIndex(cell -> cell.getLinker().getExp(id));
         this.scheduler = scheduler;
@@ -37,5 +39,9 @@ public class ContinuumAgentManager {
         ContinuumAgentNotifier injNotifier = injIndex.getNotifier();
         ContinuumAgentNotifier expNotifier = expIndex.getNotifier();
         return new ContinuumAgentLinker(injNotifier, expNotifier, stateLookup);
+    }
+
+    public String getId() {
+        return id;
     }
 }

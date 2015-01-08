@@ -19,7 +19,7 @@ public class MockScheduledOperations extends ScheduledOperations {
     private boolean applied;
 
     public MockScheduledOperations(Geometry geom) {
-        super(geom);
+        super(geom::coordToIndex, geom.getCanonicalSites().length);
     }
 
     @Override

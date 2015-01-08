@@ -28,7 +28,7 @@ public class ScheduledOperationsTest extends EslimeTestCase {
         a = geom.getCanonicalSites()[0];
         b = geom.getCanonicalSites()[1];
 
-        query = new ScheduledOperations(geom);
+        //query = new ScheduledOperations(geom);
     }
 
     public void testScalarInject() throws Exception {

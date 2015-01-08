@@ -87,4 +87,8 @@ public class ContinuumLayerScheduler {
     public ContinuumAgentLinker getLinker(Function<Coordinate, Double> stateLookup) {
         return agentManager.getLinker(stateLookup);
     }
+
+    public String getId() {
+        return agentManager.getId();
+    }
 }

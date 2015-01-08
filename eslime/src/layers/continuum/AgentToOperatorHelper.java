@@ -26,11 +26,11 @@ public class AgentToOperatorHelper {
     private int n;
 
     // Converts coordinates to vector/matrix indices
-    private Function<Coordinate, Integer> index;
+    private Function<Coordinate, Integer> indexer;
 
-    public AgentToOperatorHelper(int n, Function<Coordinate, Integer> index) {
+    public AgentToOperatorHelper(Function<Coordinate, Integer> indexer, int n) {
         this.n = n;
-        this.index = index;
+        this.indexer = indexer;
     }
 
     public DenseMatrix asMatrix(Collection<RelationshipTuple> relationships) {
@@ -51,7 +51,7 @@ public class AgentToOperatorHelper {
         for (RelationshipTuple relationship : relationships) {
             Coordinate c = relationship.getCoordinate();
             Double v = relationship.getMagnitude();
-            Integer i = index.apply(c);
+            Integer i = indexer.apply(c);
             consumer.accept(i, v);
         }
     }

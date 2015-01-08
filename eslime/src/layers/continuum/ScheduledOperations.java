@@ -6,12 +6,13 @@
 package layers.continuum;
 
 import control.identifiers.Coordinate;
-import geometry.Geometry;
 import no.uib.cipr.matrix.DenseMatrix;
 import no.uib.cipr.matrix.DenseVector;
 import no.uib.cipr.matrix.Matrix;
 import no.uib.cipr.matrix.Vector;
 import structural.utilities.MatrixUtils;
+
+import java.util.function.Function;
 
 /**
  * Helper class for continuum layers. Knows what transformations
@@ -20,17 +21,18 @@ import structural.utilities.MatrixUtils;
  */
 public class ScheduledOperations {
 
+    protected final Matrix identity;
+    protected final DenseVector zeroVector;
     protected Matrix operator;
     protected Vector source;
-    protected Geometry geom;
+    protected Function<Coordinate, Integer> indexer;
 
-    protected final Matrix identity;
+    public ScheduledOperations(Function<Coordinate, Integer> indexer, int n) {
+        this.indexer = indexer;
 
-    public ScheduledOperations(Geometry geom) {
-        this.geom = geom;
-
-        Matrix bandIdentity = MatrixUtils.I(geom.getCanonicalSites().length);
+        Matrix bandIdentity = MatrixUtils.I(n);
         identity = new DenseMatrix(bandIdentity);
+        zeroVector = new DenseVector(n);
 
         reset();
     }
@@ -42,7 +44,7 @@ public class ScheduledOperations {
      * @param delta
      */
     public void inject(Coordinate coordinate, double delta) {
-        int index = geom.coordToIndex(coordinate);
+        int index = indexer.apply(coordinate);
         double current = source.get(index);
         double next = current + delta;
 
@@ -56,7 +58,7 @@ public class ScheduledOperations {
      * @param b
      */
     public void exp(Coordinate coordinate, double b) {
-        int index = geom.coordToIndex(coordinate);
+        int index = indexer.apply(coordinate);
         double current = operator.get(index, index);
         double next = current + b;
         operator.set(index, index, next);
@@ -71,7 +73,7 @@ public class ScheduledOperations {
         operator = identity.copy();
 
         // Replace source vector with zero vector
-        source = new DenseVector(geom.getCanonicalSites().length);
+        source = zeroVector.copy();
     }
 
     /**

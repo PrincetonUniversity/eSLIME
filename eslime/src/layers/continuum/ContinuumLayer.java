@@ -19,17 +19,14 @@ public class ContinuumLayer extends Layer {
     private ContinuumLayerScheduler scheduler;
     private ContinuumLayerContent content;
 
-    private String id;
-
-    public ContinuumLayer(ContinuumLayerScheduler scheduler, ContinuumLayerContent content, String id) {
+    public ContinuumLayer(ContinuumLayerScheduler scheduler, ContinuumLayerContent content) {
         this.scheduler = scheduler;
         this.content = content;
-        this.id = id;
     }
 
     @Override
     public String getId() {
-        return id;
+        return scheduler.getId();
     }
 
     @Override
