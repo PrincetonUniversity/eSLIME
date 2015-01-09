@@ -195,6 +195,6 @@ public class BehaviorCell extends Cell {
         AgentContinuumScheduler scheduler = agentContinuumManager.getScheduler();
 
         scheduler.scheduleExp(id, reaction.getExp());
-        scheduler.scheduleInj(id, reaction.getExp());
+        scheduler.scheduleInj(id, reaction.getInj());
     }
 }
