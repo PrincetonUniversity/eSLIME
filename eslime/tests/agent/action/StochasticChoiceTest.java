@@ -7,7 +7,6 @@ package agent.action;
 
 import cells.MockCell;
 import layers.MockLayerManager;
-import structural.MockRangeMap;
 import test.EslimeTestCase;
 
 import java.util.Random;
@@ -34,7 +33,7 @@ public class StochasticChoiceTest extends EslimeTestCase {
         chooser = new MockActionRangeMap();
         chooser.setNextTarget(action);
         layerManager = new MockLayerManager();
-        query = new StochasticChoice(callback, layerManager, chooser, random);
+        //query = new StochasticChoice(callback, layerManager, chooser, random);
     }
 
     public void testRun() throws Exception {
@@ -45,22 +44,22 @@ public class StochasticChoiceTest extends EslimeTestCase {
 
     public void testEquals() throws Exception {
         MockCell otherCell = new MockCell();
-        MockActionRangeMap otherChooser = new MockActionRangeMap();
-
-        StochasticChoice other = new StochasticChoice(otherCell, null, otherChooser, null);
-
-        /*
-         * The only conditions for equality are (1) that both objects are
-         * StochasticChoice objects and (2) that they have equal choice sets.
-         */
-
-        chooser.setReportEquality(true);
-        otherChooser.setReportEquality(true);
-
-        assertEquals(query, other);
-
-        chooser.setReportEquality(false);
-        assertNotEquals(query, other);
+        //MockActionRangeMap otherChooser = new MockActionRangeMap();
+        fail("Rewrite me");
+//        StochasticChoice other = new StochasticChoice(otherCell, null, otherChooser, null);
+//
+//        /*
+//         * The only conditions for equality are (1) that both objects are
+//         * StochasticChoice objects and (2) that they have equal choice sets.
+//         */
+//
+//        chooser.setReportEquality(true);
+//        otherChooser.setReportEquality(true);
+//
+//        assertEquals(query, other);
+//
+//        chooser.setReportEquality(false);
+//        assertNotEquals(query, other);
     }
 
     public void testClone() throws Exception {

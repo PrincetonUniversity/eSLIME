@@ -6,6 +6,7 @@
 package io.factory;
 
 import agent.action.*;
+import agent.action.stochastic.ConstantProbabilitySupplier;
 import agent.targets.TargetRule;
 import agent.targets.TargetSelf;
 import agent.targets.TargetVacantNeighbors;
@@ -63,9 +64,9 @@ public class ActionFactoryTest extends EslimeTestCase {
     public void testStochasticChoice() throws Exception {
         Element e = fixtureRoot.element("stochastic-choice");
         Action actual = ActionFactory.instantiate(e, callback, layerManager, p);
-        ActionRangeMap chooser = new ActionRangeMap(1);
+        DynamicActionRangeMap chooser = new DynamicActionRangeMap(layerManager);
         Action child = new NullAction();
-        chooser.add(child, 1.0);
+        chooser.add(child, new ConstantProbabilitySupplier(1.0));
         Action expected = new StochasticChoice(callback, layerManager, chooser, p.getRandom());
         assertEquals(expected, actual);
     }

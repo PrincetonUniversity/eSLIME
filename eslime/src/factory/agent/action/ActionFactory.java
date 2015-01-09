@@ -10,8 +10,8 @@ import agent.targets.TargetRule;
 import cells.BehaviorCell;
 import control.GeneralParameters;
 import control.arguments.Argument;
-import factory.control.arguments.IntegerArgumentFactory;
 import factory.agent.targets.TargetFactory;
+import factory.control.arguments.IntegerArgumentFactory;
 import layers.LayerManager;
 import org.dom4j.Element;
 import structural.utilities.XmlUtil;
@@ -60,7 +60,7 @@ public class ActionFactory {
     private static Action stochasticChoice(Element e, BehaviorCell callback, LayerManager layerManager,
                                            GeneralParameters p) {
 
-        ActionRangeMap chooser = ActionRangeMapFactory.instantiate(e, callback, layerManager, p);
+        DynamicActionRangeMap chooser = DynamicActionRangeMapFactory.instantiate(e, callback, layerManager, p);
         Random random = p.getRandom();
 
         Action action = new StochasticChoice(callback, layerManager, chooser, random);
