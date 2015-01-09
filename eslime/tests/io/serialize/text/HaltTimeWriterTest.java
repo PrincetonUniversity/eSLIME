@@ -12,7 +12,7 @@ import processes.StepState;
 import test.EslimeLatticeTestCase;
 
 public class HaltTimeWriterTest extends EslimeLatticeTestCase {
-    public void testLifeCycle() {
+    public void testLifeCycle() throws Exception {
         GeneralParameters p = makeMockGeneralParameters();
         HaltTimeWriter writer = new HaltTimeWriter(p, layerManager);
         for (double t = 0; t < 10.0; t += 1.0) {

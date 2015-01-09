@@ -20,9 +20,9 @@ import geometry.set.CoordinateSet;
 import geometry.shape.Line;
 import geometry.shape.Shape;
 import junit.framework.TestCase;
-import junitx.framework.FileAssert;
 import layers.LayerManager;
 import no.uib.cipr.matrix.Vector;
+import org.apache.commons.io.FileUtils;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
@@ -174,35 +174,36 @@ public abstract class EslimeTestCase extends TestCase {
         return ret;
     }
 
-    protected void assertFilesEqual(String filename) {
+    protected void assertFilesEqual(String filename) throws Exception {
         String fixture = fixturePath + filename;
         String output = outputPath + filename;
 
         File fixtureFile = new File(fixture);
         File outputFile = new File(output);
 
-        FileAssert.assertEquals(fixtureFile, outputFile);
+        assertTrue(FileUtils.contentEquals(fixtureFile, outputFile));
     }
 
-    protected void assertFilesEqual(String fixtureFilename, String outputFilename) {
+    protected void assertFilesEqual(String fixtureFilename, String outputFilename) throws Exception {
         String fixture = fixturePath + fixtureFilename;
         String output = outputPath + outputFilename;
 
         File fixtureFile = new File(fixture);
         File outputFile = new File(output);
- FileAssert.assertEquals(fixtureFile, outputFile);
+        assertTrue(FileUtils.contentEquals(fixtureFile, outputFile));
     }
-    protected void assertBinaryFilesEqual(String filename) {
+
+    protected void assertBinaryFilesEqual(String filename) throws Exception {
         String fixture = fixturePath + filename;
         String output = outputPath + filename;
 
         File fixtureFile = new File(fixture);
         File outputFile = new File(output);
 
-        FileAssert.assertBinaryEquals(fixtureFile, outputFile);
+        assertTrue(FileUtils.contentEquals(fixtureFile, outputFile));
     }
 
-    protected void assertBinaryFilesEqual(String fixtureName, String outputName) {
+    protected void assertBinaryFilesEqual(String fixtureName, String outputName) throws Exception {
         String fixture = fixturePath + fixtureName;
         String output = outputPath + outputName;
 
@@ -210,7 +211,7 @@ public abstract class EslimeTestCase extends TestCase {
         File outputFile = new File(output);
 
         System.out.println(fixtureFile.getAbsoluteFile());
-        FileAssert.assertBinaryEquals(fixtureFile, outputFile);
+        assertTrue(FileUtils.contentEquals(fixtureFile, outputFile));
     }
 
     protected Element readXmlFile(String fileName) throws IOException, DocumentException {
@@ -294,6 +295,7 @@ public abstract class EslimeTestCase extends TestCase {
             }
         }
     }
+
     protected Geometry makeLinearGeometry(int length) {
         Lattice lattice = new LinearLattice();
         Shape shape = new Line(lattice, length);
