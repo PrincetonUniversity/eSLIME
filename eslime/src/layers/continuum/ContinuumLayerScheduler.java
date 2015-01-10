@@ -6,11 +6,9 @@
 package layers.continuum;
 
 import control.identifiers.Coordinate;
-import no.uib.cipr.matrix.DenseMatrix;
 import no.uib.cipr.matrix.DenseVector;
 import no.uib.cipr.matrix.Matrix;
 
-import java.util.function.Consumer;
 import java.util.function.Function;
 
 /**
@@ -18,77 +16,44 @@ import java.util.function.Function;
  */
 public class ContinuumLayerScheduler {
 
-    private boolean isHeld;
     private ScheduledOperations scheduledOperations;
-    private ContinuumAgentManager agentManager;
-    private ContinuumSolver solver;
+    private HoldManager holdManager;
 
-    public ContinuumLayerScheduler(ScheduledOperations scheduledOperations, AgentToOperatorHelper agentHelper, ContinuumSolver solver, String id) {
+    public ContinuumLayerScheduler(ScheduledOperations scheduledOperations, HoldManager holdManager) {
         this.scheduledOperations = scheduledOperations;
-        this.solver = solver;
-        agentManager = buildAgentManager(agentHelper, id);
-        isHeld = false;
-    }
-
-    private ContinuumAgentManager buildAgentManager(AgentToOperatorHelper agentHelper, String id) {
-        Consumer<DenseVector> injector = vector -> scheduledOperations.inject(vector);
-        Consumer<DenseMatrix> exponentiator = matrix -> scheduledOperations.apply(matrix);
-        ContinuumAgentScheduler agentScheduler = new ContinuumAgentScheduler(injector, exponentiator, agentHelper);
-        ContinuumAgentManager ret = new ContinuumAgentManager(agentScheduler, id);
-        return ret;
-    }
-
-    public void hold() {
-        if (isHeld) {
-            throw new IllegalStateException("Attempted to initiate hold for already held continuum layer.");
-        }
-
-        isHeld = true;
-    }
-
-    public void release() {
-        if (!isHeld) { throw new IllegalStateException("Attempted to release hold on a continuum layer that was not already held."); }
-        isHeld = false;
-
-        solve();
+        this.holdManager = holdManager;
     }
 
     public void apply(Matrix matrix) {
-        scheduledOperations.apply(matrix);
-        solveIfNotHeld();
+        holdManager.resolve(() -> scheduledOperations.apply(matrix));
     }
 
-    private void solveIfNotHeld() {
-        if (isHeld)
-            return;
-
-        solve();
+    public void inject(DenseVector vector) {
+        holdManager.resolve(() -> scheduledOperations.inject(vector));
     }
 
-    private void solve() {
-        agentManager.apply();
-        solver.solve();
-    }
     public void inject(Coordinate target, double delta) {
-        scheduledOperations.inject(target, delta);
-        solveIfNotHeld();
+        holdManager.resolve(() -> scheduledOperations.inject(target, delta));
     }
 
     public void exp(Coordinate target, double b) {
-        scheduledOperations.exp(target, b);
-        solveIfNotHeld();
+        holdManager.resolve(() -> scheduledOperations.exp(target, b));
     }
 
     public void reset() {
-        isHeld = false;
+        holdManager.reset();
         scheduledOperations.reset();
     }
 
     public ContinuumAgentLinker getLinker(Function<Coordinate, Double> stateLookup) {
-        return agentManager.getLinker(stateLookup);
+        return holdManager.getLinker(stateLookup);
     }
 
     public String getId() {
-        return agentManager.getId();
+        return holdManager.getId();
+    }
+
+    public void solve() {
+        holdManager.solve();
     }
 }

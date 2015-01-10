@@ -5,21 +5,26 @@
 
 package layers.continuum;
 
+import layers.continuum.solve.SteadyState;
 import no.uib.cipr.matrix.DenseMatrix;
 import no.uib.cipr.matrix.DenseVector;
 import no.uib.cipr.matrix.Matrix;
 import no.uib.cipr.matrix.Vector;
+import org.junit.Before;
+import org.junit.Test;
 import structural.utilities.MatrixUtils;
-import test.EslimeTestCase;
+import test.TestBase;
 
-public class SteadyStateHelperTest extends EslimeTestCase {
+import static org.junit.Assert.assertTrue;
+
+public class SteadyStateTest extends TestBase {
 
     private DenseVector initial;
-    private SteadyStateHelper query;
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        query = new SteadyStateHelper();
+    private SteadyState query;
+
+    @Before
+    public void init() throws Exception {
+        query = new SteadyState();
 
         initial = new DenseVector(3);
         initial.set(1, 1.0);
@@ -29,7 +34,8 @@ public class SteadyStateHelperTest extends EslimeTestCase {
      * Identity matrix; no initial concentration or source.
      * @throws Exception
      */
-    public void testTrivialCase() throws Exception {
+    @Test
+    public void trivialCaseReturnsZero() throws Exception {
         Matrix operator = MatrixUtils.I(3);
         DenseVector source = new DenseVector(3);
         initial = new DenseVector(3);               // Zero out initial value
@@ -42,7 +48,8 @@ public class SteadyStateHelperTest extends EslimeTestCase {
      *
      * @throws Exception
      */
-    public void testNoChangeCase() throws Exception {
+    @Test
+    public void identityOperatorReturnsInput() throws Exception {
         Matrix operator = MatrixUtils.I(3);
         DenseVector source = new DenseVector(3);
         doTest(source, operator, initial.copy());
@@ -52,7 +59,8 @@ public class SteadyStateHelperTest extends EslimeTestCase {
      * If there is zero initial value and no source, then the solution
      * remains identically zero.
      */
-    public void testZeroValueCase() throws Exception {
+    @Test
+    public void zeroValueReturnsZero() throws Exception {
         Matrix operator = diffusion();
         DenseVector source = new DenseVector(3);
         initial = new DenseVector(3);               // Zero out initial value
@@ -64,11 +72,12 @@ public class SteadyStateHelperTest extends EslimeTestCase {
      * operator value greater than 1.0, it will diverge--we expect an
      * error.
      */
-    public void testDivergentCaseThrows() {
+    @Test(expected = IllegalStateException.class)
+    public void divergentInputThrows() {
         Matrix operator = new DenseMatrix(3, 3);
         operator.set(1, 1, 2.0);
         DenseVector source = new DenseVector(3);
-        testThrows(source, operator, initial);
+        query.solve(source, operator, initial);
 
     }
 
@@ -76,17 +85,19 @@ public class SteadyStateHelperTest extends EslimeTestCase {
      * If the matrix is not the identity, but every row and column sums to one,
      * then there is no steady state solution -- we expect an error.
      */
-    public void testNoSteadyStateThrows() {
+    @Test(expected = IllegalStateException.class)
+    public void noSteadyStateThrows() {
         Matrix operator = advection();
         DenseVector source = new DenseVector(3);
-        testThrows(source, operator, initial);
+        query.solve(source, operator, initial);
     }
 
     /**
      * If there is no source and the matrix is non-identical and has a steady
      * state solution, that steady state solution must be zero.
      */
-    public void testDecay() {
+    @Test
+    public void decayGoesToZero() {
         DenseVector source = new DenseVector(3);
         Matrix operator = diffusion();
         DenseVector expected = new DenseVector(3);
@@ -100,7 +111,8 @@ public class SteadyStateHelperTest extends EslimeTestCase {
      *
      * @throws Exception
      */
-    public void testGeneralCase() throws Exception {
+    @Test
+    public void generalCaseSolvesMatrix() throws Exception {
         DenseVector source = new DenseVector(3);
         source.set(1, 1);
         Matrix operator = diffusion();

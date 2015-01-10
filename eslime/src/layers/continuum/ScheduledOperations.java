@@ -21,11 +21,11 @@ import java.util.function.Function;
  */
 public class ScheduledOperations {
 
-    protected final Matrix identity;
-    protected final DenseVector zeroVector;
-    protected Matrix operator;
-    protected Vector source;
-    protected Function<Coordinate, Integer> indexer;
+    private final Matrix identity;
+    private final DenseVector zeroVector;
+    private Matrix operator;
+    private Vector source;
+    private Function<Coordinate, Integer> indexer;
 
     public ScheduledOperations(Function<Coordinate, Integer> indexer, int n) {
         this.indexer = indexer;
@@ -49,6 +49,10 @@ public class ScheduledOperations {
         double next = current + delta;
 
         source.set(index, next);
+    }
+
+    public void inject(DenseVector delta) {
+        source.add(delta);
     }
 
     /**
@@ -97,7 +101,4 @@ public class ScheduledOperations {
         return operator;
     }
 
-    public void inject(DenseVector delta) {
-        source.add(delta);
-    }
 }

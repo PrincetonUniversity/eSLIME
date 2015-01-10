@@ -5,13 +5,14 @@
 
 package layers.continuum;
 
+import layers.continuum.solve.SteadyState;
 import no.uib.cipr.matrix.Matrix;
 import no.uib.cipr.matrix.Vector;
 
 /**
  * Created by dbborens on 12/28/14.
  */
-public class MockSteadyStateHelper extends SteadyStateHelper {
+public class MockSteadyStateHelper extends SteadyState {
 
     private Vector source;
     private Matrix operator;

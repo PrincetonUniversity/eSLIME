@@ -5,54 +5,130 @@
 
 package layers.continuum;
 
-import geometry.Geometry;
+import no.uib.cipr.matrix.DenseVector;
+import no.uib.cipr.matrix.Matrix;
+import no.uib.cipr.matrix.Vector;
+import org.junit.Before;
 import org.junit.Test;
+import structural.utilities.MatrixUtils;
 import test.LinearMocks;
-
-import static junit.framework.TestCase.fail;
 
 public class ScheduledOperationsTest extends LinearMocks {
 
-    Geometry geometry;
+    private ScheduledOperations query;
 
-//    @Before
-//    public void setUp() {
-//        geometry = mock(Geometry.class);
-//        when(geometry.getCanonicalSites()).thenReturn(cc);
-//    }
-
-    @Test
-    public void testInject() throws Exception {
-        fail("Not yet implemented");
+    @Before
+    public void initQuery() {
+        query = new ScheduledOperations(indexer, 3);
     }
 
     @Test
-    public void testExp() throws Exception {
+    public void injScalarIncrementsSourceVector() throws Exception {
+        query.inject(a, 1.0);
+        query.inject(a, 0.5);
 
+        Vector expected = vector(1.5, 0, 0);
+        Vector actual = query.getSource();
+
+        assertVectorsEqual(expected, actual, epsilon);
     }
 
     @Test
-    public void testReset() throws Exception {
+    public void injScalarDoesNotAffectOperator() throws Exception {
+        query.inject(a, 1.0);
 
+        Matrix expected = MatrixUtils.I(3);
+        Matrix actual = query.getOperator();
+
+        assertMatricesEqual(expected, actual, epsilon);
     }
 
     @Test
-    public void testApply() throws Exception {
+    public void injVectorIsVectorAddition() throws Exception {
+        DenseVector vector = vector(1.0, 2.0, 3.0);
+        query.inject(vector);
+        query.inject(vector);
 
+        Vector expected = vector(2.0, 4.0, 6.0);
+        Vector actual = query.getSource();
+
+        assertVectorsEqual(expected, actual, epsilon);
     }
 
     @Test
-    public void testGetSource() throws Exception {
+    public void injVectorDoesNotAffectOperator() throws Exception {
+        DenseVector vector = vector(1.0, 2.0, 3.0);
+        query.inject(vector);
 
+        Matrix expected = MatrixUtils.I(3);
+        Matrix actual = query.getOperator();
+
+        assertMatricesEqual(expected, actual, epsilon);
     }
 
     @Test
-    public void testGetOperator() throws Exception {
+    public void expAddsToIdentityMatrix() throws Exception {
+        query.exp(a, 3.0);
+        query.exp(a, 0.5);
 
+        Matrix expected = matrix(4.5, 1, 1);
+        Matrix actual = query.getOperator();
+
+        assertMatricesEqual(expected, actual, epsilon);
     }
 
     @Test
-    public void testInject1() throws Exception {
+    public void expDoesNotAffectSource() throws Exception {
+        query.exp(a, 3.0);
 
+        Vector expected = vector(0, 0, 0);
+        Vector actual = query.getSource();
+
+        assertVectorsEqual(expected, actual, epsilon);
+    }
+
+    @Test
+    public void resetSetsSourceToZero() throws Exception {
+        query.inject(a, 1.0);
+        query.reset();
+
+        Vector expected = vector(0, 0, 0);
+        Vector actual = query.getSource();
+
+        assertVectorsEqual(expected, actual, epsilon);
+    }
+
+    @Test
+    public void resetSetsOperatorToIdentity() throws Exception {
+        Matrix toApply = matrix(1, 2, 3);
+        query.apply(toApply);
+        query.reset();
+
+        Matrix expected = MatrixUtils.I(3);
+        Matrix actual = query.getOperator();
+
+        assertMatricesEqual(expected, actual, epsilon);
+    }
+
+    @Test
+    public void applyIsMatrixAddition() throws Exception {
+        Matrix toApply = matrix(1.0, 2.0, 3.0);
+        query.apply(toApply);
+
+        Matrix expected = matrix(2.0, 3.0, 4.0);
+        Matrix actual = query.getOperator();
+
+        assertMatricesEqual(expected, actual, epsilon);
+    }
+
+    @Test
+    public void applyDoesNotAffectSource() throws Exception {
+        Matrix toApply = matrix(1.0, 2.0, 3.0);
+        query.apply(toApply);
+
+        Vector expected = vector(0, 0, 0);
+        Vector actual = query.getSource();
+
+        assertVectorsEqual(expected, actual, epsilon);
     }
 }
