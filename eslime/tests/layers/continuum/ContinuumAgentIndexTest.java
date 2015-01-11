@@ -6,54 +6,71 @@
 package layers.continuum;
 
 import cells.BehaviorCell;
-import cells.MockCell;
-import control.identifiers.Coordinate;
-import test.EslimeTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
 import java.util.function.Function;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-public class ContinuumAgentIndexTest extends EslimeTestCase {
+import static java.util.Arrays.asList;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+
+public class ContinuumAgentIndexTest {
+
+    private Function<BehaviorCell, RelationshipTuple> lookup;
+    private BehaviorCell cell;
+    private RelationshipTuple relationship;
 
     private ContinuumAgentIndex query;
-    private BehaviorCell cell;
-    private RelationshipTuple tuple;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void init() throws Exception {
+        cell = mock(BehaviorCell.class);
+        relationship = mock(RelationshipTuple.class);
+        lookup = (Function<BehaviorCell, RelationshipTuple>) mock(Function.class);
+        when(lookup.apply(any())).thenReturn(relationship);
 
-        cell = new MockCell();
-        tuple = new RelationshipTuple(new Coordinate(1, 2, 3), 1.0);
-        Function<BehaviorCell, RelationshipTuple> lookup = cell -> tuple;
         query = new ContinuumAgentIndex(lookup);
     }
 
-    public void testLifeCycle() {
-        fail("This all needs to be migrated");
-//        // Get relationship set -- should be empty
-//        HashMap<Coordinate, Double> expected = new HashMap<>(1);
-//        assertMapsEqual(expected, query.getRelationShips());
-//
-//        // Add a relationship
-//        query.add(cell);
-//
-//        // Get relationship set -- should be there
-//        expected.put(tuple.getCoordinate(), tuple.getMagnitude());
-//        assertMapsEqual(expected, query.getRelationShips());
-//
-//        // Remove that relationship
-//        query.remove(cell);
-//
-//        // Get relationship set -- should be empty
-//        expected.remove(tuple.getCoordinate());
-//        assertEquals(expected, query.getRelationShips());
+    @Test
+    public void addViaNotifier() throws Exception {
+        ContinuumAgentNotifier notifier = query.getNotifier();
+        notifier.add(cell);
+        Stream<RelationshipTuple> actual = query.getRelationships();
+        assertEquals(asList(relationship), actual.collect(Collectors.toList()));
     }
 
-    public void testReset() {
-        fail("This all needs to be migrated");
-//        query.add(cell);
-//        query.reset();
-//        HashMap<Coordinate, Double> expected = new HashMap<>(1);
-//        assertEquals(expected, query.getRelationShips());
+    @Test
+    public void removeViaNotifier() throws Exception {
+        ContinuumAgentNotifier notifier = query.getNotifier();
+        notifier.add(cell);
+        notifier.remove(cell);
+        Stream<RelationshipTuple> actual = query.getRelationships();
+        assertEquals(asList(), actual.collect(Collectors.toList()));
+    }
+
+    @Test
+    public void resetClearsContents() throws Exception {
+        ContinuumAgentNotifier notifier = query.getNotifier();
+        notifier.add(cell);
+        query.reset();
+        Stream<RelationshipTuple> actual = query.getRelationships();
+        assertEquals(asList(), actual.collect(Collectors.toList()));
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void removeNonExistentThrows() throws Exception {
+        ContinuumAgentNotifier notifier = query.getNotifier();
+        notifier.remove(cell);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void addExistingThrows() throws Exception {
+        ContinuumAgentNotifier notifier = query.getNotifier();
+        notifier.add(cell);
+        notifier.add(cell);
     }
 }

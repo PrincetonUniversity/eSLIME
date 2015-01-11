@@ -9,9 +9,9 @@ import control.identifiers.Coordinate;
 import no.uib.cipr.matrix.DenseMatrix;
 import no.uib.cipr.matrix.DenseVector;
 
-import java.util.Collection;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
+import java.util.stream.Stream;
 
 /**
  * Converts injections and exponentiations scheduled
@@ -33,26 +33,26 @@ public class AgentToOperatorHelper {
         this.indexer = indexer;
     }
 
-    public DenseMatrix asMatrix(Collection<RelationshipTuple> relationships) {
+    public DenseMatrix asMatrix(Stream<RelationshipTuple> relationships) {
         DenseMatrix matrix = new DenseMatrix(n, n);
         BiConsumer<Integer, Double> consumer = (i, v) -> matrix.add(i, i, v);
         apply(relationships, consumer);
         return matrix;
     }
 
-    public DenseVector asVector(Collection<RelationshipTuple> relationships) {
+    public DenseVector asVector(Stream<RelationshipTuple> relationships) {
         DenseVector vector = new DenseVector(n);
         BiConsumer<Integer, Double> consumer = (i, v) -> vector.add(i, v);
         apply(relationships, consumer);
         return vector;
     }
 
-    private void apply(Collection<RelationshipTuple> relationships, BiConsumer<Integer, Double> consumer) {
-        for (RelationshipTuple relationship : relationships) {
+    private void apply(Stream<RelationshipTuple> relationships, BiConsumer<Integer, Double> consumer) {
+        relationships.forEach(relationship -> {
             Coordinate c = relationship.getCoordinate();
             Double v = relationship.getMagnitude();
             Integer i = indexer.apply(c);
             consumer.accept(i, v);
-        }
+        });
     }
 }

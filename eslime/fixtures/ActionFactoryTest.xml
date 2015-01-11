@@ -50,8 +50,11 @@
     </adjust-health>
 
     <stochastic-choice>
-        <option weight="1.0">
-            <null/>
+        <option>
+            <weight>1.0</weight>
+            <action>
+                <null/>
+            </action>
         </option>
     </stochastic-choice>
 </fixture>

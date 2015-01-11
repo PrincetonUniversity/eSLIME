@@ -5,15 +5,37 @@
 
 package layers.continuum;
 
-import junit.framework.TestCase;
+import no.uib.cipr.matrix.DenseMatrix;
+import no.uib.cipr.matrix.DenseVector;
+import org.junit.Before;
+import org.junit.Test;
+import test.LinearMocks;
 
-public class AgentToOperatorHelperTest extends TestCase {
+import java.util.stream.Stream;
 
-    public void testAsMatrix() throws Exception {
-        fail("Not yet implemented");
+public class AgentToOperatorHelperTest extends LinearMocks {
+
+    private AgentToOperatorHelper query;
+    private Stream<RelationshipTuple> stream;
+
+    @Before
+    public void init() throws Exception {
+        RelationshipTuple relationship = new RelationshipTuple(a, 1.0);
+        stream = Stream.of(relationship);
+        query = new AgentToOperatorHelper(indexer, 3);
     }
 
-    public void testAsVector() throws Exception {
-        fail("Not yet implemented");
+    @Test
+    public void asMatrix() {
+        DenseMatrix expected = matrix(1.0, 0.0, 0.0);
+        DenseMatrix actual = query.asMatrix(stream);
+        assertMatricesEqual(expected, actual, epsilon);
+    }
+
+    @Test
+    public void asVector() {
+        DenseVector expected = vector(1.0, 0.0, 0.0);
+        DenseVector actual = query.asVector(stream);
+        assertVectorsEqual(expected, actual, epsilon);
     }
 }

@@ -5,19 +5,48 @@
 
 package layers.continuum;
 
-import junit.framework.TestCase;
+import control.identifiers.Coordinate;
+import org.junit.Before;
+import org.junit.Test;
+import test.LinearMocks;
 
-public class ContinuumAgentLinkerTest extends TestCase {
+import java.util.function.Function;
 
-    public void testGetInjNotifier() throws Exception {
-        fail("not yet implemented");
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
+
+public class ContinuumAgentLinkerTest extends LinearMocks {
+
+    private ContinuumAgentNotifier injNotifier, expNotifier;
+    private Function<Coordinate, Double> stateLookup;
+    private ContinuumAgentLinker query;
+
+    @Before
+    public void init() throws Exception {
+        injNotifier = mock(ContinuumAgentNotifier.class);
+        expNotifier = mock(ContinuumAgentNotifier.class);
+        stateLookup = (Function<Coordinate, Double>) mock(Function.class);
+
+        // Why do I get a null pointer exception if I don't do this? Why can't
+        // I just return null?
+        when(stateLookup.apply(any())).thenReturn(-1.0);
+
+        query = new ContinuumAgentLinker(injNotifier, expNotifier, stateLookup);
     }
 
-    public void testGetExpNotifier() throws Exception {
-        fail("not yet implemented");
+    @Test
+    public void getInjNotifier() throws Exception {
+        assertTrue(injNotifier == query.getInjNotifier());
     }
 
-    public void testGet() throws Exception {
-        fail("not yet implemented");
+    @Test
+    public void getExpNotifier() throws Exception {
+        assertTrue(expNotifier == query.getExpNotifier());
+    }
+
+    @Test
+    public void getAsksStateLookup() throws Exception {
+        query.get(a);
+        verify(stateLookup).apply(a);
     }
 }

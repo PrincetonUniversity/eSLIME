@@ -78,8 +78,4 @@ public class CellFactoryTest extends EslimeTestCase {
 
         assertFalse(EpsilonUtil.epsilonEquals(0.0, var(results)));
     }
-
-    public void testReactions() {
-        fail("Not yet implemented");
-    }
 }

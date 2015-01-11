@@ -8,30 +8,30 @@ package layers.continuum;
 import no.uib.cipr.matrix.DenseMatrix;
 import no.uib.cipr.matrix.DenseVector;
 
-import java.util.Collection;
 import java.util.function.Consumer;
+import java.util.stream.Stream;
 
 /**
  * Created by dbborens on 12/31/14.
  */
-public class ContinuumAgentScheduler {
+public class ReactionLoader {
 
     private Consumer<DenseVector> injector;
     private Consumer<DenseMatrix> exponentiator;
     private AgentToOperatorHelper helper;
 
-    public ContinuumAgentScheduler(Consumer<DenseVector> injector, Consumer<DenseMatrix> exponentiator, AgentToOperatorHelper helper) {
+    public ReactionLoader(Consumer<DenseVector> injector, Consumer<DenseMatrix> exponentiator, AgentToOperatorHelper helper) {
         this.injector = injector;
         this.exponentiator = exponentiator;
         this.helper = helper;
     }
 
-    public void inject(Collection<RelationshipTuple> relationships) {
+    public void inject(Stream<RelationshipTuple> relationships) {
         DenseVector delta = helper.asVector(relationships);
         injector.accept(delta);
     }
 
-    public void exponentiate(Collection<RelationshipTuple> relationshipTuples) {
+    public void exponentiate(Stream<RelationshipTuple> relationshipTuples) {
         DenseMatrix exponents = helper.asMatrix(relationshipTuples);
         exponentiator.accept(exponents);
     }

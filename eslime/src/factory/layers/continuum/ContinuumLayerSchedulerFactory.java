@@ -32,8 +32,10 @@ public abstract class ContinuumLayerSchedulerFactory {
     private static ContinuumAgentManager buildAgentManager(AgentToOperatorHelper agentHelper, ScheduledOperations so, String id) {
         Consumer<DenseVector> injector = vector -> so.inject(vector);
         Consumer<DenseMatrix> exponentiator = matrix -> so.apply(matrix);
-        ContinuumAgentScheduler agentScheduler = new ContinuumAgentScheduler(injector, exponentiator, agentHelper);
-        ContinuumAgentManager ret = new ContinuumAgentManager(agentScheduler, id);
+        ReactionLoader agentScheduler = new ReactionLoader(injector, exponentiator, agentHelper);
+        ContinuumAgentIndex injIndex = new ContinuumAgentIndex(cell -> cell.getLinker().getInj(id));
+        ContinuumAgentIndex expIndex = new ContinuumAgentIndex(cell -> cell.getLinker().getExp(id));
+        ContinuumAgentManager ret = new ContinuumAgentManager(agentScheduler, injIndex, expIndex, id);
         return ret;
     }
 

@@ -13,21 +13,23 @@ import java.util.function.Function;
  * Created by dbborens on 12/31/14.
  */
 public class ContinuumAgentManager {
+
     private ContinuumAgentIndex injIndex;    // Injection (source)
     private ContinuumAgentIndex expIndex;    // Exponentiation (feedback, decay)
-    private ContinuumAgentScheduler scheduler;
+    private ReactionLoader loader;
     private String id;
-    public ContinuumAgentManager(ContinuumAgentScheduler scheduler, String id) {
+
+    public ContinuumAgentManager(ReactionLoader loader, ContinuumAgentIndex injIndex, ContinuumAgentIndex expIndex, String id) {
         this.id = id;
 
-        injIndex = new ContinuumAgentIndex(cell -> cell.getLinker().getInj(id));
-        expIndex = new ContinuumAgentIndex(cell -> cell.getLinker().getExp(id));
-        this.scheduler = scheduler;
+        this.injIndex = injIndex;
+        this.expIndex = expIndex;
+        this.loader = loader;
     }
 
     public void apply() {
-        scheduler.inject(injIndex.getRelationShips());
-        scheduler.exponentiate(expIndex.getRelationShips());
+        loader.inject(injIndex.getRelationships());
+        loader.exponentiate(expIndex.getRelationships());
     }
 
     public void reset() {

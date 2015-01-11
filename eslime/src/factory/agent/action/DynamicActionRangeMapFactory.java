@@ -49,14 +49,15 @@ public abstract class DynamicActionRangeMapFactory {
     }
 
     private static Action getAction(Element option, BehaviorCell callback, LayerManager layerManager, GeneralParameters p) {
-        List elements = option.elements();
+        Element actionElement = option.element("action");
+        List elements = actionElement.elements();
         if (elements.size() == 0) {
             throw new IllegalArgumentException("Expected an action or list of actions for stochastic choice option.");
         } else if (elements.size() == 1) {
-            Element child = (Element) option.elements().iterator().next();
+            Element child = (Element) actionElement.elements().iterator().next();
             return ActionFactory.instantiate(child, callback, layerManager, p);
         } else {
-            return BehaviorFactory.instantiateAsCompoundAction(option, callback, layerManager, p);
+            return BehaviorFactory.instantiateAsCompoundAction(actionElement, callback, layerManager, p);
         }
     }
 

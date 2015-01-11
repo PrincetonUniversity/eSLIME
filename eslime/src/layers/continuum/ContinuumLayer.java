@@ -7,7 +7,6 @@ package layers.continuum;
 
 import control.identifiers.Coordinate;
 import layers.Layer;
-import no.uib.cipr.matrix.Vector;
 
 import java.util.function.Function;
 
@@ -33,19 +32,6 @@ public class ContinuumLayer extends Layer {
     public void reset() {
         scheduler.reset();
         content.reset();
-    }
-
-    public double[] getState() {
-        Vector stateVector = content.getState();
-
-        int n = stateVector.size();
-        double[] stateArray = new double[n];
-
-        for (int i = 0; i < n; i++) {
-            stateArray[i] = stateVector.get(i);
-        }
-
-        return stateArray;
     }
 
     public ContinuumLayerScheduler getScheduler() {

@@ -37,4 +37,5 @@ public class ContinuumSolver {
         content.setState(solution);
         so.reset();
     }
+
 }

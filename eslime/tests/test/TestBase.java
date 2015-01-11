@@ -10,9 +10,12 @@ import no.uib.cipr.matrix.Vector;
 import org.junit.Before;
 import structural.utilities.EpsilonUtil;
 
+import java.util.Collection;
+import java.util.Map;
 import java.util.stream.IntStream;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 /**
  * Created by dbborens on 1/9/15.
@@ -37,6 +40,21 @@ public abstract class TestBase {
                 .forEach(i -> IntStream.range(0, p.numColumns())
                         .forEach(j ->
                                 assertEquals(p.get(i, j), q.get(i, j), tolerance)));
+    }
+
+    protected static void assertMapsEqual(Map p, Map q) {
+        assertCollectionsEqual(p.keySet(), q.keySet());
+        p.keySet().forEach(key -> assertEquals(p.get(key), q.get(key)));
+    }
+
+    protected static void assertCollectionsEqual(Collection p, Collection q) {
+        if (p.size() != q.size()) {
+            fail("Expected " + p.size() + " elements but found " + q.size());
+        }
+
+        if (!p.containsAll(q)) {
+            fail("Contents of sets do not match");
+        }
     }
 
     @Before

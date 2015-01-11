@@ -3,7 +3,7 @@
  *  Princeton University. All rights reserved.
  */
 
-package factory.cell;//import junit.framework.TestCase;
+package cells;//import junit.framework.TestCase;
 
 import test.EslimeTestCase;
 

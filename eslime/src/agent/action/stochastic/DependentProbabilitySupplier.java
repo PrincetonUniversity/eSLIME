@@ -38,7 +38,7 @@ public class DependentProbabilitySupplier extends ProbabilitySupplier {
                 .getLookupManager()
                 .getCellLocation(cell);
 
-        double value = layerManager.getLinker(fieldName).get(c);
+        double value = layerManager.getContinuumLinker(fieldName).get(c);
         return value;
     }
 

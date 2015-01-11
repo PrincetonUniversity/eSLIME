@@ -7,11 +7,11 @@ package layers.continuum;
 
 import cells.BehaviorCell;
 
-import java.util.HashSet;
 import java.util.IdentityHashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
-import java.util.stream.Collectors;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * Agents can directly manipulate the continuum value at the coordinate where
@@ -22,53 +22,43 @@ import java.util.stream.Collectors;
  */
 public class ContinuumAgentIndex {
 
-    // Very many cells can be logically equivalent because they are
-    // identical agents; we want to track the relationships by name.
-    private IdentityHashMap<BehaviorCell, Object> index;
+    private IdentityHashMap<BehaviorCell, Supplier<RelationshipTuple>> map;
     private Function<BehaviorCell, RelationshipTuple> lookup;
-    private ContinuumAgentNotifier notifier;
+
     public ContinuumAgentIndex(Function<BehaviorCell, RelationshipTuple> lookup) {
         this.lookup = lookup;
-        notifier = buildNotifier();
         reset();
     }
 
-    private ContinuumAgentNotifier buildNotifier() {
+    public void reset() {
+        map = new IdentityHashMap<>();
+    }
+
+    private void add(BehaviorCell cell) {
+        if (map.containsKey(cell)) {
+            throw new IllegalStateException("Attempted to add existing cell to relationship index");
+        }
+        Supplier<RelationshipTuple> supplier = () -> lookup.apply(cell);
+        map.put(cell, supplier);
+    }
+
+    private void remove(BehaviorCell cell) {
+        if (!map.containsKey(cell)) {
+            throw new IllegalStateException("Attempted to remove non-existent key from relationship index");
+        }
+        map.remove(cell);
+    }
+
+    public Stream<RelationshipTuple> getRelationships() {
+        return map.values()
+                .stream()
+                .map(Supplier::get);
+    }
+
+    public ContinuumAgentNotifier getNotifier() {
         Consumer<BehaviorCell> adder = cell -> add(cell);
         Consumer<BehaviorCell> remover = cell -> remove(cell);
         return new ContinuumAgentNotifier(adder, remover);
     }
 
-    private void add(BehaviorCell cell) {
-        index.put(cell, null);
-    }
-
-    /**
-     * Retrieve relationships from indexed cells.
-     *
-     * @return
-     */
-    public HashSet<RelationshipTuple> getRelationShips() {
-        HashSet<RelationshipTuple> ret = new HashSet<>(index.size());
-
-        // What on earth did IntelliJ do to my humble iterator?
-        ret.addAll(index.keySet().stream().map(lookup::apply).collect(Collectors.toList()));
-
-        return ret;
-    }
-
-    private void remove(BehaviorCell cell) {
-        if (!index.containsKey(cell)) {
-            throw new IllegalStateException("Attempted to remove non-existent key from relationship index");
-        }
-        index.remove(cell);
-    }
-
-    public void reset() {
-        index = new IdentityHashMap<>();
-    }
-
-    public ContinuumAgentNotifier getNotifier() {
-        return notifier;
-    }
 }

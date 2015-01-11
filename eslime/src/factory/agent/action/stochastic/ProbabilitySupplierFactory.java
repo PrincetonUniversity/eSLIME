@@ -18,6 +18,9 @@ public abstract class ProbabilitySupplierFactory {
 
     public static ProbabilitySupplier instantiate(Element option, BehaviorCell cell, LayerManager layerManager) {
         Element weight = option.element("weight");
+        if (weight == null) {
+            throw new IllegalArgumentException("Missing required argument 'weight'");
+        }
         if (weight.elements().size() == 0) {
             double value = Double.valueOf(weight.getTextTrim());
             return new ConstantProbabilitySupplier(value);

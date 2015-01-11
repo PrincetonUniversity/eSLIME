@@ -5,14 +5,54 @@
 
 package layers.continuum;
 
+import org.junit.Before;
 import org.junit.Test;
+import test.LinearMocks;
 
-import static org.junit.Assert.fail;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
-public class ContinuumLayerTest {
+public class ContinuumLayerTest extends LinearMocks {
+
+    private ContinuumLayerScheduler scheduler;
+    private ContinuumLayerContent content;
+    private ContinuumLayer query;
+
+    @Before
+    public void init() throws Exception {
+        scheduler = mock(ContinuumLayerScheduler.class);
+        content = mock(ContinuumLayerContent.class);
+        query = new ContinuumLayer(scheduler, content);
+    }
 
     @Test
-    public void nothing() {
-        fail("Not yet implemented");
+    public void getIdAsksScheduler() throws Exception {
+        when(scheduler.getId()).thenReturn("test");
+        assertEquals("test", query.getId());
+    }
+
+    @Test
+    public void resetCallsScheduler() throws Exception {
+        query.reset();
+        verify(scheduler).reset();
+    }
+
+    @Test
+    public void resetCallsContent() throws Exception {
+        query.reset();
+        verify(content).reset();
+    }
+
+    // TODO I can't figure out how to capture a lambda with Mockito.
+    @Test
+    public void linkerCanQueryContent() throws Exception {
+        // This is not really what I'm trying to ask--the real question is commented out here.
+        query.getLinker();
+        verify(scheduler).getLinker(any());
+//        ArgumentCaptor<Function> captor = ArgumentCaptor.forClass(Function.class);
+//        verify(scheduler).getContinuumLinker((Function<Coordinate, Double>) captor);
+//        captor.getValue().apply(a);
+//        verify(content).get(a);
+//        verify(scheduler).getContinuumLinker(any(Function.class));
     }
 }
