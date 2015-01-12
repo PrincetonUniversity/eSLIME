@@ -9,47 +9,42 @@ import cells.BehaviorCell;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
-import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 public class ContinuumAgentNotifierTest {
 
-    private CellCaptor captor;
+    private BiConsumer<BehaviorCell, Supplier<RelationshipTuple>> adder;
+    private Consumer<BehaviorCell> remover;
+    private Supplier<RelationshipTuple> supplier;
+    private ContinuumAgentNotifier query;
     private BehaviorCell cell;
 
     @Before
-    public void init() {
+    public void init() throws Exception {
+        adder = (BiConsumer<BehaviorCell, Supplier<RelationshipTuple>>)
+                mock(BiConsumer.class);
+        remover = (Consumer<BehaviorCell>) mock(Consumer.class);
         cell = mock(BehaviorCell.class);
-        captor = new CellCaptor();
+        supplier = (Supplier<RelationshipTuple>) mock(Supplier.class);
+
+        query = new ContinuumAgentNotifier(adder, remover);
     }
 
     @Test
-    public void add() {
-        ContinuumAgentNotifier query = new ContinuumAgentNotifier(captor, null);
-        query.add(cell);
-        assertTrue(cell == captor.getCaptured());
+    public void addPassesCellAndSupplier() {
+        query.add(cell, supplier);
+        verify(adder).accept(cell, supplier);
     }
 
     @Test
-    public void remove() {
-        ContinuumAgentNotifier query = new ContinuumAgentNotifier(null, captor);
+    public void removePassesCell() {
         query.remove(cell);
-        assertTrue(cell == captor.getCaptured());
-    }
+        verify(remover).accept(cell);
 
-    private class CellCaptor implements Consumer<BehaviorCell> {
-
-        private BehaviorCell captured;
-
-        @Override
-        public void accept(BehaviorCell behaviorCell) {
-            captured = behaviorCell;
-        }
-
-        public BehaviorCell getCaptured() {
-            return captured;
-        }
     }
 }

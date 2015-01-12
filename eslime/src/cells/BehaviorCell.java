@@ -13,6 +13,7 @@ import layers.LayerManager;
 import layers.continuum.ContinuumAgentLinker;
 import structural.utilities.EpsilonUtil;
 
+import java.util.HashSet;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -33,7 +34,7 @@ public class BehaviorCell extends Cell {
     // Helpers
     private BehaviorDispatcher dispatcher;
     private CallbackManager callbackManager;
-    private AgentContinuumManager agentContinuumManager;
+    private AgentContinuumManager reactionManager;
 
     // Default constructor for testing
     @Deprecated
@@ -56,7 +57,10 @@ public class BehaviorCell extends Cell {
         Function<String, ContinuumAgentLinker> retrieveLinker =
                 id -> layerManager.getContinuumLinker(id);
 
-        agentContinuumManager = new AgentContinuumManager(locator, retrieveLinker, this);
+        HashSet<Runnable> removers = new HashSet<>();
+        RemoverIndex removerIndex = new RemoverIndex(removers);
+
+        reactionManager = new AgentContinuumManager(this, removerIndex, locator, retrieveLinker);
     }
 
     @Override
@@ -67,8 +71,6 @@ public class BehaviorCell extends Cell {
 
     @Override
     public void apply() {
-//        setHealth(nextHealth);
-//        checkDivisibility();
         considerCount = 0;
     }
 
@@ -121,6 +123,7 @@ public class BehaviorCell extends Cell {
 
     @Override
     public void die() {
+        reactionManager.removeFromAll();
         callbackManager.die();
     }
 
@@ -186,15 +189,7 @@ public class BehaviorCell extends Cell {
         return threshold;
     }
 
-    public AgentContinuumLinker getLinker() {
-        return agentContinuumManager.getOutgoingLinker();
-    }
-
     public void load(Reaction reaction) {
-        String id = reaction.getId();
-        AgentContinuumScheduler scheduler = agentContinuumManager.getScheduler();
-
-        scheduler.scheduleExp(id, reaction.getExp());
-        scheduler.scheduleInj(id, reaction.getInj());
+        reactionManager.schedule(reaction);
     }
 }

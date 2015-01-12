@@ -11,42 +11,35 @@ import org.junit.Test;
 import test.LinearMocks;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class ContinuumAgentLinkerTest extends LinearMocks {
 
-    private ContinuumAgentNotifier injNotifier, expNotifier;
+    private ContinuumAgentNotifier notifier;
     private Function<Coordinate, Double> stateLookup;
     private ContinuumAgentLinker query;
 
     @Before
     public void init() throws Exception {
-        injNotifier = mock(ContinuumAgentNotifier.class);
-        expNotifier = mock(ContinuumAgentNotifier.class);
+        notifier = mock(ContinuumAgentNotifier.class);
         stateLookup = (Function<Coordinate, Double>) mock(Function.class);
+        when(stateLookup.apply(any())).thenReturn(1.0);
 
-        // Why do I get a null pointer exception if I don't do this? Why can't
-        // I just return null?
-        when(stateLookup.apply(any())).thenReturn(-1.0);
-
-        query = new ContinuumAgentLinker(injNotifier, expNotifier, stateLookup);
+        query = new ContinuumAgentLinker(notifier, stateLookup);
     }
 
     @Test
-    public void getInjNotifier() throws Exception {
-        assertTrue(injNotifier == query.getInjNotifier());
-    }
-
-    @Test
-    public void getExpNotifier() throws Exception {
-        assertTrue(expNotifier == query.getExpNotifier());
+    public void getNotifier() throws Exception {
+        assertEquals(notifier, query.getNotifier());
     }
 
     @Test
     public void getAsksStateLookup() throws Exception {
-        query.get(a);
+        Supplier<Coordinate> supplier = () -> a;
+        query.get(supplier);
         verify(stateLookup).apply(a);
     }
 }

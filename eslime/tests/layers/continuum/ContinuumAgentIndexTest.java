@@ -9,68 +9,63 @@ import cells.BehaviorCell;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.function.Function;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
+import java.util.IdentityHashMap;
+import java.util.function.Supplier;
 
-import static java.util.Arrays.asList;
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 public class ContinuumAgentIndexTest {
 
-    private Function<BehaviorCell, RelationshipTuple> lookup;
+    private IdentityHashMap<BehaviorCell, Supplier<RelationshipTuple>> map;
     private BehaviorCell cell;
-    private RelationshipTuple relationship;
-
+    private Supplier<RelationshipTuple> supplier;
     private ContinuumAgentIndex query;
 
     @Before
     public void init() throws Exception {
+        map = (IdentityHashMap<BehaviorCell, Supplier<RelationshipTuple>>) mock(IdentityHashMap.class);
         cell = mock(BehaviorCell.class);
-        relationship = mock(RelationshipTuple.class);
-        lookup = (Function<BehaviorCell, RelationshipTuple>) mock(Function.class);
-        when(lookup.apply(any())).thenReturn(relationship);
+        supplier = (Supplier<RelationshipTuple>) mock(Supplier.class);
+        query = new ContinuumAgentIndex(map);
 
-        query = new ContinuumAgentIndex(lookup);
     }
 
     @Test
-    public void addViaNotifier() throws Exception {
-        ContinuumAgentNotifier notifier = query.getNotifier();
-        notifier.add(cell);
-        Stream<RelationshipTuple> actual = query.getRelationships();
-        assertEquals(asList(relationship), actual.collect(Collectors.toList()));
-    }
-
-    @Test
-    public void removeViaNotifier() throws Exception {
-        ContinuumAgentNotifier notifier = query.getNotifier();
-        notifier.add(cell);
-        notifier.remove(cell);
-        Stream<RelationshipTuple> actual = query.getRelationships();
-        assertEquals(asList(), actual.collect(Collectors.toList()));
-    }
-
-    @Test
-    public void resetClearsContents() throws Exception {
-        ContinuumAgentNotifier notifier = query.getNotifier();
-        notifier.add(cell);
-        query.reset();
-        Stream<RelationshipTuple> actual = query.getRelationships();
-        assertEquals(asList(), actual.collect(Collectors.toList()));
-    }
-
-    @Test(expected = IllegalStateException.class)
-    public void removeNonExistentThrows() throws Exception {
-        ContinuumAgentNotifier notifier = query.getNotifier();
-        notifier.remove(cell);
+    public void add() throws Exception {
+        query.getNotifier().add(cell, supplier);
+        verify(map).put(cell, supplier);
     }
 
     @Test(expected = IllegalStateException.class)
     public void addExistingThrows() throws Exception {
-        ContinuumAgentNotifier notifier = query.getNotifier();
-        notifier.add(cell);
-        notifier.add(cell);
+        when(map.containsKey(any())).thenReturn(true);
+        query.getNotifier().add(cell, supplier);
     }
+
+    @Test
+    public void remove() throws Exception {
+        when(map.containsKey(any())).thenReturn(true);
+        query.getNotifier().remove(cell);
+        verify(map).remove(cell);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void removeAbsentThrows() throws Exception {
+        when(map.containsKey(any())).thenReturn(false);
+        query.getNotifier().remove(cell);
+    }
+
+
+    // I can't figure out how to mock this. Revisit later.
+//    @Test
+//    public void getRelationships() throws Exception {
+//        map = new IdentityHashMap<>();
+//        query = new ContinuumAgentIndex(map);
+//        map.put(cell, supplier);
+//        when(supplier.get()).thenReturn(tuple);
+//
+//        Stream<RelationshipTuple> expected = Stream.of(tuple);
+//        Stream<RelationshipTuple> actual = query.getRelationships();
+//        assertEquals(expected, actual);
+//    }
 }

@@ -86,6 +86,10 @@ public class RangeMap<T> {
      */
     public T selectTarget(double x) {
 
+        if (x < 0 || x > getTotalWeight()) {
+            throw new IllegalStateException("Attempted to search range map beyond bounds");
+        }
+
         RangeSearchHelper helper = new RangeSearchHelper(floors);
 
         Integer target = helper.findKey(x);

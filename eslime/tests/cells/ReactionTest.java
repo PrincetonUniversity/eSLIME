@@ -5,19 +5,35 @@
 
 package cells;//import junit.framework.TestCase;
 
-import test.EslimeTestCase;
 
-public class ReactionTest extends EslimeTestCase {
+import factory.cell.Reaction;
+import org.junit.Before;
+import org.junit.Test;
+import test.TestBase;
 
-    public void testGetInj() throws Exception {
-        fail("Not yet implemented");
+import static org.junit.Assert.assertEquals;
+
+public class ReactionTest extends TestBase {
+
+    private Reaction query;
+
+    @Before
+    public void init() throws Exception {
+        query = new Reaction(1.0, 2.0, "test");
     }
 
-    public void testGetExp() throws Exception {
-        fail("Not yet implemented");
+    @Test
+    public void getInj() throws Exception {
+        assertEquals(1.0, query.getInj(), epsilon);
     }
 
-    public void testGetId() throws Exception {
-        fail("Not yet implemented");
+    @Test
+    public void getExp() throws Exception {
+        assertEquals(2.0, query.getExp(), epsilon);
+    }
+
+    @Test
+    public void getId() throws Exception {
+        assertEquals("test", query.getId());
     }
 }

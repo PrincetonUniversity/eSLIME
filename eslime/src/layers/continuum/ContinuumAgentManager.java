@@ -14,33 +14,28 @@ import java.util.function.Function;
  */
 public class ContinuumAgentManager {
 
-    private ContinuumAgentIndex injIndex;    // Injection (source)
-    private ContinuumAgentIndex expIndex;    // Exponentiation (feedback, decay)
+    private ContinuumAgentIndex index;
     private ReactionLoader loader;
     private String id;
 
-    public ContinuumAgentManager(ReactionLoader loader, ContinuumAgentIndex injIndex, ContinuumAgentIndex expIndex, String id) {
+    public ContinuumAgentManager(ReactionLoader loader, ContinuumAgentIndex index, String id) {
         this.id = id;
 
-        this.injIndex = injIndex;
-        this.expIndex = expIndex;
+        this.index = index;
         this.loader = loader;
     }
 
     public void apply() {
-        loader.inject(injIndex.getRelationships());
-        loader.exponentiate(expIndex.getRelationships());
+        loader.apply(index.getRelationships());
     }
 
     public void reset() {
-        injIndex.reset();
-        expIndex.reset();
+        index.reset();
     }
 
     public ContinuumAgentLinker getLinker(Function<Coordinate, Double> stateLookup) {
-        ContinuumAgentNotifier injNotifier = injIndex.getNotifier();
-        ContinuumAgentNotifier expNotifier = expIndex.getNotifier();
-        return new ContinuumAgentLinker(injNotifier, expNotifier, stateLookup);
+        ContinuumAgentNotifier notifier = index.getNotifier();
+        return new ContinuumAgentLinker(notifier, stateLookup);
     }
 
     public String getId() {

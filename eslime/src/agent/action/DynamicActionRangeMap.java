@@ -30,7 +30,7 @@ public class DynamicActionRangeMap {
         functionMap.put(action, supplier);
     }
 
-    private void refresh() {
+    public void refresh() {
         valueMap = new ActionRangeMap(functionMap.size());
         functionMap.forEach((action, supplier) -> {
             double value = supplier.get();
@@ -39,14 +39,12 @@ public class DynamicActionRangeMap {
     }
 
     public Action selectTarget(double x) {
-        refresh();
         return valueMap.selectTarget(x);
     }
 
     public double getTotalWeight() {
         return valueMap.getTotalWeight();
     }
-
 
     public DynamicActionRangeMap clone(BehaviorCell child) {
         DynamicActionRangeMap cloned = new DynamicActionRangeMap(layerManager);

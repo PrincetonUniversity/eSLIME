@@ -1,0 +1,46 @@
+/*
+ *  Copyright (c) 2014 David Bruce Borenstein and the Trustees of
+ *  Princeton University. All rights reserved.
+ */
+
+package cells;
+
+
+import org.junit.Before;
+import org.junit.Test;
+import test.TestBase;
+
+import java.util.function.Supplier;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
+public class ContinuumLinkageTest extends TestBase {
+
+    private double magnitude;
+    private Runnable remover;
+    private ContinuumLinkage query;
+
+    @Before
+    public void init() throws Exception {
+        valueGetter = () -> 1.0;
+        remover = mock(Runnable.class);
+        query = new ContinuumLinkage(remover, valueGetter, 2.0);
+    }
+
+    @Test
+    public void getMagnitude() throws Exception {
+        assertEquals(2.0, query.getMagnitude(), epsilon);
+    }
+
+    @Test
+    public void getValue() throws Exception {
+        assertEquals(1.0, query.getValue(), epsilon);
+    }
+
+    @Test
+    public void remove() throws Exception {
+        query.remove();
+        verify(remover).run();
+    }
+}

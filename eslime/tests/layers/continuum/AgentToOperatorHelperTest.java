@@ -5,6 +5,7 @@
 
 package layers.continuum;
 
+import factory.cell.Reaction;
 import no.uib.cipr.matrix.DenseMatrix;
 import no.uib.cipr.matrix.DenseVector;
 import org.junit.Before;
@@ -17,25 +18,28 @@ public class AgentToOperatorHelperTest extends LinearMocks {
 
     private AgentToOperatorHelper query;
     private Stream<RelationshipTuple> stream;
+    private Reaction reaction;
 
     @Before
     public void init() throws Exception {
-        RelationshipTuple relationship = new RelationshipTuple(a, 1.0);
+        reaction = new Reaction(1.0, 2.0, "test");
+        RelationshipTuple relationship = new RelationshipTuple(a, reaction);
         stream = Stream.of(relationship);
         query = new AgentToOperatorHelper(indexer, 3);
     }
 
     @Test
-    public void asMatrix() {
-        DenseMatrix expected = matrix(1.0, 0.0, 0.0);
-        DenseMatrix actual = query.asMatrix(stream);
-        assertMatricesEqual(expected, actual, epsilon);
+    public void getSource() {
+        DenseVector expected = vector(1.0, 0.0, 0.0);
+        DenseVector actual = query.getSource(stream);
+        assertVectorsEqual(expected, actual, epsilon);
     }
 
     @Test
-    public void asVector() {
-        DenseVector expected = vector(1.0, 0.0, 0.0);
-        DenseVector actual = query.asVector(stream);
-        assertVectorsEqual(expected, actual, epsilon);
+    public void getOperator() {
+        DenseMatrix expected = matrix(2.0, 0.0, 0.0);
+        DenseMatrix actual = query.getOperator(stream);
+        assertMatricesEqual(expected, actual, epsilon);
     }
+
 }

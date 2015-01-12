@@ -6,6 +6,7 @@
 package cells;
 
 import control.identifiers.Coordinate;
+import factory.cell.Reaction;
 import layers.continuum.ContinuumAgentLinker;
 import layers.continuum.RelationshipTuple;
 
@@ -13,45 +14,47 @@ import java.util.function.Function;
 import java.util.function.Supplier;
 
 /**
- * Cells can manipulate the local concentrations of continuum
- * layers by either exponentiating the local concentration
- * (decay, feedback) or by directly adding/subtracting from the
- * local concentration at a constrant rate(source/sink).
+ * Created by dbborens on 12/31/14.
  *
- * The RelationshipManager reports the value of these
- * relationships, as well as notifying the related fields when
- * the cell dies.
+ * Provides continuum access to cell reaction index.
  *
- * Created by dbborens on 12/30/14.
+ * This class is a candidate for redesign. It is too complicated.
+ * Perhaps the continuum should just provide a single object that
+ * defines this entire interface, and which can be passed right
+ * through?
  */
 public class AgentContinuumManager {
 
-    private AgentContinuumIndex exp;
-    private AgentContinuumIndex inj;
+    private RemoverIndex index;
+    private BehaviorCell cell;
+    private Supplier<Coordinate> locator;
+    private Function<String, ContinuumAgentLinker> linkerLookup;
 
-    private Supplier<Coordinate> locator;           // Locates self
-    private AgentContinuumScheduler scheduler;      // Adds new relationships
+    public AgentContinuumManager(BehaviorCell cell,
+                                 RemoverIndex index,
+                                 Supplier<Coordinate> locator,
+                                 Function<String, ContinuumAgentLinker> linkerLookup) {
 
-    public AgentContinuumManager(Supplier<Coordinate> locator, Function<String, ContinuumAgentLinker> incomingLinker, BehaviorCell callback) {
+        this.index = index;
+        this.cell = cell;
         this.locator = locator;
-
-        inj = new AgentContinuumIndex();
-        exp = new AgentContinuumIndex();
-
-        scheduler = new AgentContinuumScheduler(incomingLinker, callback, locator, inj, exp);
+        this.linkerLookup = linkerLookup;
     }
 
+    public void schedule(Reaction reaction) {
+        String id = reaction.getId();
+        ContinuumAgentLinker linker = linkerLookup.apply(id);
+        Supplier<RelationshipTuple> supplier = () -> getRelationshipTuple(reaction);
+        linker.getNotifier().add(cell, supplier);
+        index.add(() -> linker.getNotifier().remove(cell));
+    }
 
-    public AgentContinuumLinker getOutgoingLinker() {
+    private RelationshipTuple getRelationshipTuple(Reaction reaction) {
         Coordinate c = locator.get();
-        Function<String, RelationshipTuple> injLookup = id -> new RelationshipTuple(c, inj.getMagnitude(id));
-        Function<String, RelationshipTuple> expLookup = id -> new RelationshipTuple(c, exp.getMagnitude(id));
-        AgentContinuumLinker linker = new AgentContinuumLinker(injLookup, expLookup);
-
-        return linker;
+        return new RelationshipTuple(c, reaction);
     }
 
-    public AgentContinuumScheduler getScheduler() {
-        return scheduler;
+    public void removeFromAll() {
+        index.removeFromAll();
     }
 }

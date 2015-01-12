@@ -5,10 +5,6 @@
 
 package cells;
 
-import structural.Trigger;
-
-import java.util.function.Supplier;
-
 /**
  * Created by dbborens on 12/31/14.
  */
@@ -17,18 +13,13 @@ public class ContinuumLinkage {
     // The value of this cell's effect upon the field
     private double magnitude;
 
-    // Retrieves the value of the continuum at this cell's location
-    private Supplier<Double> valueGetter;
-
     // Notifies the field that this cell should be removed
-    private Trigger remover;
+    private Runnable remover;
 
-    public ContinuumLinkage(Trigger remover,
-                            Supplier<Double> valueGetter,
+    public ContinuumLinkage(Runnable remover,
                             double magnitude) {
 
         this.remover = remover;
-        this.valueGetter = valueGetter;
         this.magnitude = magnitude;
     }
 
@@ -36,11 +27,7 @@ public class ContinuumLinkage {
         return magnitude;
     }
 
-    public Double getValue() {
-        return valueGetter.get();
-    }
-
     public void remove() {
-        remover.go();
+        remover.run();
     }
 }

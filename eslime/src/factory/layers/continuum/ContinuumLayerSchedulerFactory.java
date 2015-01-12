@@ -5,14 +5,17 @@
 
 package factory.layers.continuum;
 
+import cells.BehaviorCell;
 import control.identifiers.Coordinate;
 import layers.continuum.*;
 import layers.continuum.solve.SteadyState;
 import no.uib.cipr.matrix.DenseMatrix;
 import no.uib.cipr.matrix.DenseVector;
 
+import java.util.IdentityHashMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Created by dbborens on 1/8/15.
@@ -33,9 +36,10 @@ public abstract class ContinuumLayerSchedulerFactory {
         Consumer<DenseVector> injector = vector -> so.inject(vector);
         Consumer<DenseMatrix> exponentiator = matrix -> so.apply(matrix);
         ReactionLoader agentScheduler = new ReactionLoader(injector, exponentiator, agentHelper);
-        ContinuumAgentIndex injIndex = new ContinuumAgentIndex(cell -> cell.getLinker().getInj(id));
-        ContinuumAgentIndex expIndex = new ContinuumAgentIndex(cell -> cell.getLinker().getExp(id));
-        ContinuumAgentManager ret = new ContinuumAgentManager(agentScheduler, injIndex, expIndex, id);
+
+        IdentityHashMap<BehaviorCell, Supplier<RelationshipTuple>> map = new IdentityHashMap<>();
+        ContinuumAgentIndex index = new ContinuumAgentIndex(map);
+        ContinuumAgentManager ret = new ContinuumAgentManager(agentScheduler, index, id);
         return ret;
     }
 

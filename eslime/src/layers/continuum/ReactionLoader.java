@@ -27,12 +27,17 @@ public class ReactionLoader {
     }
 
     public void inject(Stream<RelationshipTuple> relationships) {
-        DenseVector delta = helper.asVector(relationships);
+        DenseVector delta = helper.getSource(relationships);
         injector.accept(delta);
     }
 
     public void exponentiate(Stream<RelationshipTuple> relationshipTuples) {
-        DenseMatrix exponents = helper.asMatrix(relationshipTuples);
+        DenseMatrix exponents = helper.getOperator(relationshipTuples);
         exponentiator.accept(exponents);
+    }
+
+    public void apply(Stream<RelationshipTuple> relationships) {
+        inject(relationships);
+        exponentiate(relationships);
     }
 }

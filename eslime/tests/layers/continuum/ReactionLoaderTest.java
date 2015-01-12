@@ -45,7 +45,7 @@ public class ReactionLoaderTest extends LinearMocks {
     @Test
     public void testInject() throws Exception {
         DenseVector vector = vector(1.0, 2.0, 3.0);
-        when(helper.asVector(any())).thenReturn(vector);
+        when(helper.getSource(any())).thenReturn(vector);
         query.inject(stream);
         assertEquals(vector, capturedVector);
     }
@@ -53,7 +53,7 @@ public class ReactionLoaderTest extends LinearMocks {
     @Test
     public void testExponentiate() throws Exception {
         DenseMatrix matrix = matrix(1.0, 2.0, 3.0);
-        when(helper.asMatrix(any())).thenReturn(matrix);
+        when(helper.getOperator(any())).thenReturn(matrix);
         query.exponentiate(stream);
         assertEquals(matrix, capturedMatrix);
     }

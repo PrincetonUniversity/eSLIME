@@ -134,4 +134,5 @@ public class BehaviorCellTest extends EslimeLatticeTestCase {
         assertEquals(expected, layerActual);
         assertEquals(expected, cellActual);
     }
+
 }

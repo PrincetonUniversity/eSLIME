@@ -7,7 +7,9 @@ package layers.continuum;
 
 import cells.BehaviorCell;
 
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
+import java.util.function.Supplier;
 
 /**
  * Notifies a ContinuumAgentIndex that a related cell has been added or
@@ -17,16 +19,16 @@ import java.util.function.Consumer;
  */
 public class ContinuumAgentNotifier {
 
-    private Consumer<BehaviorCell> adder;
+    private BiConsumer<BehaviorCell, Supplier<RelationshipTuple>> adder;
     private Consumer<BehaviorCell> remover;
 
-    public ContinuumAgentNotifier(Consumer<BehaviorCell> adder, Consumer<BehaviorCell> remover) {
+    public ContinuumAgentNotifier(BiConsumer<BehaviorCell, Supplier<RelationshipTuple>> adder, Consumer<BehaviorCell> remover) {
         this.adder = adder;
         this.remover = remover;
     }
 
-    public void add(BehaviorCell cell) {
-        adder.accept(cell);
+    public void add(BehaviorCell cell, Supplier<RelationshipTuple> supplier) {
+        adder.accept(cell, supplier);
     }
 
     public void remove(BehaviorCell cell) {

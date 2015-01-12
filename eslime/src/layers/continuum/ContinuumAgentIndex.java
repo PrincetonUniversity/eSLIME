@@ -8,8 +8,8 @@ package layers.continuum;
 import cells.BehaviorCell;
 
 import java.util.IdentityHashMap;
+import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.function.Function;
 import java.util.function.Supplier;
 import java.util.stream.Stream;
 
@@ -23,22 +23,19 @@ import java.util.stream.Stream;
 public class ContinuumAgentIndex {
 
     private IdentityHashMap<BehaviorCell, Supplier<RelationshipTuple>> map;
-    private Function<BehaviorCell, RelationshipTuple> lookup;
 
-    public ContinuumAgentIndex(Function<BehaviorCell, RelationshipTuple> lookup) {
-        this.lookup = lookup;
-        reset();
+    public ContinuumAgentIndex(IdentityHashMap<BehaviorCell, Supplier<RelationshipTuple>> map) {
+        this.map = map;
     }
 
     public void reset() {
-        map = new IdentityHashMap<>();
+        map.clear();
     }
 
-    private void add(BehaviorCell cell) {
+    private void add(BehaviorCell cell, Supplier<RelationshipTuple> supplier) {
         if (map.containsKey(cell)) {
             throw new IllegalStateException("Attempted to add existing cell to relationship index");
         }
-        Supplier<RelationshipTuple> supplier = () -> lookup.apply(cell);
         map.put(cell, supplier);
     }
 
@@ -56,7 +53,7 @@ public class ContinuumAgentIndex {
     }
 
     public ContinuumAgentNotifier getNotifier() {
-        Consumer<BehaviorCell> adder = cell -> add(cell);
+        BiConsumer<BehaviorCell, Supplier<RelationshipTuple>> adder = (cell, supplier) -> add(cell, supplier);
         Consumer<BehaviorCell> remover = cell -> remove(cell);
         return new ContinuumAgentNotifier(adder, remover);
     }
