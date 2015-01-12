@@ -18,7 +18,7 @@ public class ConstantProbabilitySupplier extends ProbabilitySupplier {
     }
 
     @Override
-    public ProbabilitySupplier clone(BehaviorCell child) {
+    public ConstantProbabilitySupplier clone(BehaviorCell child) {
         return new ConstantProbabilitySupplier(value);
     }
 

@@ -5,68 +5,68 @@
 
 package agent.action;
 
-import cells.MockCell;
-import layers.MockLayerManager;
-import test.EslimeTestCase;
+import cells.BehaviorCell;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InOrder;
+import test.LinearMocks;
 
 import java.util.Random;
 
+import static org.mockito.Mockito.*;
 /**
  * Created by dbborens on 3/6/14.
  */
-public class StochasticChoiceTest extends EslimeTestCase {
+public class StochasticChoiceTest extends LinearMocks {
 
-    private StochasticChoice query;
-    private MockCell callback;
-    private MockLayerManager layerManager;
-    private MockAction action;
-    private MockActionRangeMap chooser;
+    private DynamicActionRangeMap chooser;
     private Random random;
+    private Action action;
+    private StochasticChoice query;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void init() throws Exception {
+        action = mock(Action.class);
 
-        random = new Random(RANDOM_SEED);
-        callback = new MockCell();
-        action = new MockAction();
-        chooser = new MockActionRangeMap();
-        chooser.setNextTarget(action);
-        layerManager = new MockLayerManager();
-        //query = new StochasticChoice(callback, layerManager, chooser, random);
+        random = mock(Random.class);
+        when(random.nextDouble()).thenReturn(0.5);
+
+        chooser = mock(DynamicActionRangeMap.class);
+        when(chooser.getTotalWeight()).thenReturn(5.0);
+        when(chooser.selectTarget(2.5)).thenReturn(action);
+        when(chooser.clone(any())).thenReturn(chooser);
+        query = new StochasticChoice(null, null, chooser, random);
     }
 
-    public void testRun() throws Exception {
-        assertEquals(0, action.getTimesRun());
-        query.run(null);
-        assertEquals(1, action.getTimesRun());
+    @Test
+    public void runCalculatesCorrectValue() throws Exception {
+        query.run(a);
+        verify(chooser).selectTarget(2.5);
     }
 
-    public void testEquals() throws Exception {
-        MockCell otherCell = new MockCell();
-        //MockActionRangeMap otherChooser = new MockActionRangeMap();
-        fail("Rewrite me");
-//        StochasticChoice other = new StochasticChoice(otherCell, null, otherChooser, null);
-//
-//        /*
-//         * The only conditions for equality are (1) that both objects are
-//         * StochasticChoice objects and (2) that they have equal choice sets.
-//         */
-//
-//        chooser.setReportEquality(true);
-//        otherChooser.setReportEquality(true);
-//
-//        assertEquals(query, other);
-//
-//        chooser.setReportEquality(false);
-//        assertNotEquals(query, other);
+    @Test
+    public void runRefreshesChooserBeforeUsing() throws Exception {
+        InOrder inOrder = inOrder(chooser);
+        query.run(a);
+        inOrder.verify(chooser).refresh();
+        inOrder.verify(chooser).getTotalWeight();
     }
 
-    public void testClone() throws Exception {
-        chooser.setReportEquality(true);
-        MockCell child = new MockCell();
+    @Test
+    public void runTriggersSelectionWithCaller() throws Exception {
+        doTriggerTest(query);
+    }
+
+    @Test
+    public void cloneBehavesAsExpected() throws Exception {
+        BehaviorCell child = mock(BehaviorCell.class);
         Action clone = query.clone(child);
-        assertEquals(query, clone);
-        assertEquals(1, chooser.getTimesCloned());
+        verify(chooser).clone(child);
+        doTriggerTest(clone);
+    }
+
+    private void doTriggerTest(Action target) throws Exception {
+        target.run(a);
+        verify(action).run(a);
     }
 }

@@ -5,15 +5,29 @@
 
 package agent.action.stochastic;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
+import test.TestBase;
 
-public class ConstantProbabilitySupplierTest extends TestCase {
+import static org.junit.Assert.assertEquals;
 
-    public void testClone() throws Exception {
-        fail("not yet implemented");
+public class ConstantProbabilitySupplierTest extends TestBase {
+
+    ConstantProbabilitySupplier query;
+
+    @Before
+    public void init() throws Exception {
+        query = new ConstantProbabilitySupplier(1.0);
     }
 
-    public void testGet() throws Exception {
-        fail("not yet implemented");
+    @Test
+    public void getReturnsOriginalValue() throws Exception {
+        assertEquals(1.0, query.get(), epsilon);
+    }
+
+    @Test
+    public void cloneReturnsOriginalValue() throws Exception {
+        ConstantProbabilitySupplier clone = query.clone(null);
+        assertEquals(1.0, clone.get(), epsilon);
     }
 }

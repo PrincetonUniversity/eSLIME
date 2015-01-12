@@ -33,6 +33,7 @@ public class StochasticChoice extends Action {
 
     @Override
     public void run(Coordinate caller) throws HaltCondition {
+        chooser.refresh();
         double range = chooser.getTotalWeight();
         double x = random.nextDouble() * range;
         Action choice = chooser.selectTarget(x);
