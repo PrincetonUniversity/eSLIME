@@ -5,48 +5,69 @@
 
 package layers;
 
-import control.arguments.GeometryDescriptor;
-import factory.control.arguments.GeometryDescriptorFactory;
-import factory.layers.LayerManagerFactory;
-import org.dom4j.Element;
-import test.EslimeTestCase;
+import layers.cell.CellLayer;
+import layers.continuum.ContinuumAgentLinker;
+import layers.continuum.ContinuumLayer;
+import org.junit.Before;
+import org.junit.Test;
+import processes.StepState;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
 /**
  * Created by David B Borenstein on 12/30/13.
  */
-public class LayerManagerTest extends EslimeTestCase {
+public class LayerManagerTest {
 
-    private LayerManager case1;
-    private LayerManager case2;
+    private LayerManager query;
+    private ContinuumLayer continuumLayer;
+    private CellLayer cellLayer;
+    private String id;
 
-    @Override
-    protected void setUp() throws Exception {
-        // Load mock layer object from a fixture file
-        Element root = readXmlFile("LayerManagerFixture.xml");
+    @Before
+    public void init() {
+        ContinuumAgentLinker linker = mock(ContinuumAgentLinker.class);
+        id = "test";
 
-        // Construct geometry manager
-        Element geomElem = root.element("geometry");
-        GeometryDescriptor gm = GeometryDescriptorFactory.instantiate(geomElem);
+        continuumLayer = mock(ContinuumLayer.class);
+        when(continuumLayer.getLinker()).thenReturn(linker);
+        when(continuumLayer.getId()).thenReturn(id);
 
-        // Construct layer manager instances
-        Element lr1 = root.element("first-case");
-        case1 = LayerManagerFactory.instantiate(lr1, gm);
-
-        Element lr2 = root.element("second-case");
-        case2 = LayerManagerFactory.instantiate(lr2, gm);
+        cellLayer = mock(CellLayer.class);
+        query = new LayerManager();
     }
 
-    public void testHasCellLayer() throws Exception {
-        assertTrue(case1.hasCellLayer());
-        assertFalse(case2.hasCellLayer());
+    @Test
+    public void addContinuumLayer() throws Exception {
+        query.addContinuumLayer(continuumLayer);
+        assertEquals(continuumLayer.getLinker(), query.getContinuumLinker(id));
     }
 
-    public void testGetCellLayer() throws Exception {
-        assertNotNull(case1.getCellLayer());
-        assertNull(case2.getCellLayer());
+    @Test
+    public void resetClearsCellLayer() throws Exception {
+        query.setCellLayer(cellLayer);
+        query.reset();
+        verify(cellLayer).reset();
     }
 
-    public void testGetLinker() {
-        fail("Not yet implemented");
+    @Test
+    public void resetClearsContinuumLayer() throws Exception {
+        query.addContinuumLayer(continuumLayer);
+        query.reset();
+        verify(continuumLayer).reset();
+    }
+
+    @Test
+    public void stepState() throws Exception {
+        StepState stepState = mock(StepState.class);
+        query.setStepState(stepState);
+        assertEquals(stepState, query.getStepState());
+    }
+
+    @Test
+    public void cellLayer() throws Exception {
+        query.setCellLayer(cellLayer);
+        assertEquals(cellLayer, query.getCellLayer());
     }
 }

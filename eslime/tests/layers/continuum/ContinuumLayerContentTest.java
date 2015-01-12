@@ -5,35 +5,33 @@
 
 package layers.continuum;
 
-import junit.framework.TestCase;
+import no.uib.cipr.matrix.DenseVector;
+import org.junit.Before;
+import org.junit.Test;
+import test.LinearMocks;
 
-public class ContinuumLayerContentTest extends TestCase {
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
-    public void testGetState() throws Exception {
+public class ContinuumLayerContentTest extends LinearMocks {
 
+    private ContinuumLayerContent query;
+
+    @Before
+    public void init() {
+        query = new ContinuumLayerContent(indexer);
+        DenseVector vector = vector(1.0, 2.0, 3.0);
+        query.setState(vector);
     }
 
-    public void testSetState() throws Exception {
-
+    @Test
+    public void get() {
+        assertEquals(1.0, query.get(a), epsilon);
     }
 
-    public void testReset() throws Exception {
-
-    }
-
-    public void testAddInj() throws Exception {
-
-    }
-
-    public void testAddExp() throws Exception {
-
-    }
-
-    public void testRemoveInj() throws Exception {
-
-    }
-
-    public void testRemoveExp() throws Exception {
-
+    @Test
+    public void reset() {
+        query.reset();
+        assertNull(query.getState());
     }
 }

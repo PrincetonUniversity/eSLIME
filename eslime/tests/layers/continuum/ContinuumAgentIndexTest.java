@@ -6,54 +6,66 @@
 package layers.continuum;
 
 import cells.BehaviorCell;
-import cells.MockCell;
-import control.identifiers.Coordinate;
-import test.EslimeTestCase;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.function.Function;
+import java.util.IdentityHashMap;
+import java.util.function.Supplier;
 
-public class ContinuumAgentIndexTest extends EslimeTestCase {
+import static org.mockito.Mockito.*;
 
-    private ContinuumAgentIndex query;
+public class ContinuumAgentIndexTest {
+
+    private IdentityHashMap<BehaviorCell, Supplier<RelationshipTuple>> map;
     private BehaviorCell cell;
-    private RelationshipTuple tuple;
+    private Supplier<RelationshipTuple> supplier;
+    private ContinuumAgentIndex query;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
+    @Before
+    public void init() throws Exception {
+        map = (IdentityHashMap<BehaviorCell, Supplier<RelationshipTuple>>) mock(IdentityHashMap.class);
+        cell = mock(BehaviorCell.class);
+        supplier = (Supplier<RelationshipTuple>) mock(Supplier.class);
+        query = new ContinuumAgentIndex(map);
 
-        cell = new MockCell();
-        tuple = new RelationshipTuple(new Coordinate(1, 2, 3), 1.0);
-        Function<BehaviorCell, RelationshipTuple> lookup = cell -> tuple;
-        query = new ContinuumAgentIndex(lookup);
     }
 
-    public void testLifeCycle() {
-        fail("This all needs to be migrated");
-//        // Get relationship set -- should be empty
-//        HashMap<Coordinate, Double> expected = new HashMap<>(1);
-//        assertMapsEqual(expected, query.getRelationShips());
-//
-//        // Add a relationship
-//        query.add(cell);
-//
-//        // Get relationship set -- should be there
-//        expected.put(tuple.getCoordinate(), tuple.getMagnitude());
-//        assertMapsEqual(expected, query.getRelationShips());
-//
-//        // Remove that relationship
-//        query.remove(cell);
-//
-//        // Get relationship set -- should be empty
-//        expected.remove(tuple.getCoordinate());
-//        assertEquals(expected, query.getRelationShips());
+    @Test
+    public void add() throws Exception {
+        query.getNotifier().add(cell, supplier);
+        verify(map).put(cell, supplier);
     }
 
-    public void testReset() {
-        fail("This all needs to be migrated");
-//        query.add(cell);
-//        query.reset();
-//        HashMap<Coordinate, Double> expected = new HashMap<>(1);
-//        assertEquals(expected, query.getRelationShips());
+    @Test(expected = IllegalStateException.class)
+    public void addExistingThrows() throws Exception {
+        when(map.containsKey(any())).thenReturn(true);
+        query.getNotifier().add(cell, supplier);
     }
+
+    @Test
+    public void remove() throws Exception {
+        when(map.containsKey(any())).thenReturn(true);
+        query.getNotifier().remove(cell);
+        verify(map).remove(cell);
+    }
+
+    @Test(expected = IllegalStateException.class)
+    public void removeAbsentThrows() throws Exception {
+        when(map.containsKey(any())).thenReturn(false);
+        query.getNotifier().remove(cell);
+    }
+
+
+    // I can't figure out how to mock this. Revisit later.
+//    @Test
+//    public void getRelationships() throws Exception {
+//        map = new IdentityHashMap<>();
+//        query = new ContinuumAgentIndex(map);
+//        map.put(cell, supplier);
+//        when(supplier.get()).thenReturn(tuple);
+//
+//        Stream<RelationshipTuple> expected = Stream.of(tuple);
+//        Stream<RelationshipTuple> actual = query.getRelationships();
+//        assertEquals(expected, actual);
+//    }
 }

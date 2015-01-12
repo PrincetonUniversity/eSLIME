@@ -26,12 +26,9 @@ public class LayerManager {
         continuumLayers = new HashMap<>();
     }
 
-    public void addContinuumLayer(String id, ContinuumLayer continuumLayer) {
+    public void addContinuumLayer(ContinuumLayer continuumLayer) {
+        String id = continuumLayer.getId();
         continuumLayers.put(id, continuumLayer);
-    }
-
-    public boolean hasCellLayer() {
-        return (cellLayer != null);
     }
 
     public CellLayer getCellLayer() {
@@ -88,7 +85,12 @@ public class LayerManager {
     }
 
     public void reset() {
-        cellLayer.reset();
+        if (cellLayer != null) {
+            cellLayer.reset();
+        }
+        continuumLayers.values()
+                .stream()
+                .forEach(ContinuumLayer::reset);
     }
 
     /**
@@ -99,7 +101,7 @@ public class LayerManager {
      * @param id
      * @return
      */
-    public ContinuumAgentLinker getLinker(String id) {
+    public ContinuumAgentLinker getContinuumLinker(String id) {
         ContinuumLayer layer = continuumLayers.get(id);
         return layer.getLinker();
     }

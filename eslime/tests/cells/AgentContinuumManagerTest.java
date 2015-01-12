@@ -6,50 +6,48 @@
 package cells;
 
 import control.identifiers.Coordinate;
-import test.EslimeTestCase;
+import layers.continuum.ContinuumAgentLinker;
+import layers.continuum.ContinuumAgentNotifier;
+import org.junit.Before;
+import test.LinearMocks;
 
-public class AgentContinuumManagerTest extends EslimeTestCase {
+import java.util.function.Supplier;
+
+import static org.junit.Assert.fail;
+import static org.mockito.Mockito.*;
+
+public class AgentContinuumManagerTest extends LinearMocks {
+
+    private ContinuumAgentLinker linker;
+    private BehaviorCell cell;
+    private Supplier<Coordinate> locate;
+    private RemoverIndex index;
+    private ContinuumAgentNotifier notifier;
+    private String id;
 
     private AgentContinuumManager query;
-    private Coordinate c;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        c = new Coordinate(1, 2, 3);
-//        selflocator locator = () -> c;
-//        c = new agentcontinuummanager(locator);
+    @Before
+    public void init() throws Exception {
+        id = "test";
+
+        notifier = mock(ContinuumAgentNotifier.class);
+
+        linker = mock(ContinuumAgentLinker.class);
+        when(linker.get(any())).thenReturn(1.0);
+        when(linker.getNotifier()).thenReturn(notifier);
+
+        cell = mock(BehaviorCell.class);
+
+        locate = (Supplier<Coordinate>) mock(Supplier.class);
+        when(locate.get()).thenReturn(a);
+
+        index = mock(RemoverIndex.class);
+
+//        query = new AgentContinuumScheduler(cell, index, locate, );
     }
 
-//    public void testGetRelationships() throws Exception {
-//        query.setExp("foo", 1.0);
-//        query.setInj("bar", 1.0);
-//
-//        Collection<String> actual = query.getRelationships();
-//        Collection<String> expected = new HashSet<>();
-//        expected.add("foo");
-//        expected.add("bar");
-//        assertCollectionsEqual(expected, actual);
-//    }
-
-    public void testSetGetInj() throws Exception {
-        fail("Reimplement");
-//        RelationshipTuple expected = new RelationshipTuple(c, 0.0);
-//        assertEquals(expected, query.getInj("foo"));
-//
-//        query.setInj("foo", 1.0);
-//        expected = new RelationshipTuple(c, 1.0);
-//        assertEquals(expected, query.getInj("foo"));
+    public void nothing() throws Exception {
+        fail("Implement me");
     }
-
-    public void testSetGetExp() throws Exception {
-        fail("Reimplement");
-//        RelationshipTuple expected = new RelationshipTuple(c, 0.0);
-//        assertEquals(expected, query.getExp("foo"));
-//
-//        query.setExp("foo", 1.0);
-//        expected = new RelationshipTuple(c, 1.0);
-//        assertEquals(expected, query.getExp("foo"));
-    }
-
 }

@@ -3,43 +3,56 @@
  *  Princeton University. All rights reserved.
  */
 
-package layers.continuum;//import junit.framework.TestCase;
+package layers.continuum;
 
-import no.uib.cipr.matrix.DenseVector;
-import test.EslimeTestCase;
+import org.junit.Before;
+import org.junit.Test;
+import test.LinearMocks;
 
-public class ContinuumLayerTest extends EslimeTestCase {
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
 
-    private MockContinuumLayerContent content;
-    private MockContinuumLayerScheduler scheduler;
+public class ContinuumLayerTest extends LinearMocks {
+
+    private ContinuumLayerScheduler scheduler;
+    private ContinuumLayerContent content;
     private ContinuumLayer query;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-//        content = new MockContinuumLayerContent();
-        scheduler = new MockContinuumLayerScheduler();
+    @Before
+    public void init() throws Exception {
+        scheduler = mock(ContinuumLayerScheduler.class);
+        content = mock(ContinuumLayerContent.class);
         query = new ContinuumLayer(scheduler, content);
     }
 
-    public void testGetId() throws Exception {
+    @Test
+    public void getIdAsksScheduler() throws Exception {
+        when(scheduler.getId()).thenReturn("test");
         assertEquals("test", query.getId());
     }
 
-    public void testReset() throws Exception {
+    @Test
+    public void resetCallsScheduler() throws Exception {
         query.reset();
-        assertTrue(content.isReset());
-        assertTrue(scheduler.isReset());
+        verify(scheduler).reset();
     }
 
-    public void testGetState() throws Exception {
-        double[] expected = new double[] {1.0, 2.0, 3.0};
-        content.setState(new DenseVector(expected));
-
-        assertArraysEqual(expected, query.getState(), false);
+    @Test
+    public void resetCallsContent() throws Exception {
+        query.reset();
+        verify(content).reset();
     }
 
-    public void testGetScheduler() throws Exception {
-        assertTrue(scheduler == query.getScheduler());
+    // TODO I can't figure out how to capture a lambda with Mockito.
+    @Test
+    public void linkerCanQueryContent() throws Exception {
+        // This is not really what I'm trying to ask--the real question is commented out here.
+        query.getLinker();
+        verify(scheduler).getLinker(any());
+//        ArgumentCaptor<Function> captor = ArgumentCaptor.forClass(Function.class);
+//        verify(scheduler).getContinuumLinker((Function<Coordinate, Double>) captor);
+//        captor.getValue().apply(a);
+//        verify(content).get(a);
+//        verify(scheduler).getContinuumLinker(any(Function.class));
     }
 }

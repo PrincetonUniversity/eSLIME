@@ -8,10 +8,12 @@ package cells;
 import agent.control.BehaviorDispatcher;
 import control.halt.HaltCondition;
 import control.identifiers.Coordinate;
+import factory.cell.Reaction;
 import layers.LayerManager;
 import layers.continuum.ContinuumAgentLinker;
 import structural.utilities.EpsilonUtil;
 
+import java.util.HashSet;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -32,7 +34,7 @@ public class BehaviorCell extends Cell {
     // Helpers
     private BehaviorDispatcher dispatcher;
     private CallbackManager callbackManager;
-    private AgentContinuumManager agentContinuumManager;
+    private AgentContinuumManager reactionManager;
 
     // Default constructor for testing
     @Deprecated
@@ -53,9 +55,12 @@ public class BehaviorCell extends Cell {
 
         Supplier<Coordinate> locator = () -> callbackManager.getMyLocation();
         Function<String, ContinuumAgentLinker> retrieveLinker =
-                id -> layerManager.getLinker(id);
+                id -> layerManager.getContinuumLinker(id);
 
-        agentContinuumManager = new AgentContinuumManager(locator, retrieveLinker, this);
+        HashSet<Runnable> removers = new HashSet<>();
+        RemoverIndex removerIndex = new RemoverIndex(removers);
+
+        reactionManager = new AgentContinuumManager(this, removerIndex, locator, retrieveLinker);
     }
 
     @Override
@@ -66,8 +71,6 @@ public class BehaviorCell extends Cell {
 
     @Override
     public void apply() {
-//        setHealth(nextHealth);
-//        checkDivisibility();
         considerCount = 0;
     }
 
@@ -120,6 +123,7 @@ public class BehaviorCell extends Cell {
 
     @Override
     public void die() {
+        reactionManager.removeFromAll();
         callbackManager.die();
     }
 
@@ -185,16 +189,7 @@ public class BehaviorCell extends Cell {
         return threshold;
     }
 
-    /**
-     * Retrieves the scheduler, which is used to schedule injection
-     * or exponentiation by the agent into a continuum at the agent's
-     * location.
-     */
-    public AgentContinuumScheduler getScheduler() {
-        return agentContinuumManager.getScheduler();
-    }
-
-    public AgentContinuumLinker getLinker() {
-        return agentContinuumManager.getOutgoingLinker();
+    public void load(Reaction reaction) {
+        reactionManager.schedule(reaction);
     }
 }

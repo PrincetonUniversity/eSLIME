@@ -18,6 +18,8 @@ import layers.LayerManager;
 import layers.cell.CellLayer;
 import org.dom4j.Element;
 
+import java.util.List;
+
 /**
  * Instantiates a cell based on specifications from a cell descriptor
  * XML element. The requirements for this element depend on the class
@@ -94,8 +96,24 @@ public class CellFactory {
         BehaviorDispatcher dispatcher = new BehaviorDispatcher(behaviorRoot, cell, layerManager, p);
         cell.setDispatcher(dispatcher);
 
+        loadReactions(cell, cellDescriptor);
+
         // Return completed object
         return cell;
+    }
+
+    private void loadReactions(BehaviorCell cell, Element cellDescriptor) {
+        Element reactions = cellDescriptor.element("reactions");
+        if (reactions == null) {
+            return;
+        }
+
+        List<Object> elements = reactions.elements();
+
+        elements.stream()
+                .map(x -> (Element) x)
+                .map(ReactionFactory::instantiate)
+                .forEach(cell::load);
     }
 
     private int getNextState() {

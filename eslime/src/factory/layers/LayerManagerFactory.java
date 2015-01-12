@@ -25,14 +25,6 @@ public abstract class LayerManagerFactory {
             CellLayer cellLayer = buildCellLayer(root, geometryDescriptor);
             ret.setCellLayer(cellLayer);
         }
-
-        // Build solute layers, if present
-//        List<Object> slElemObjs = root.elements("solute-layer");
-//        for (Object o : slElemObjs) {
-//            Element e = (Element) o;
-//            initSoluteLayer(e, geometryDescriptor, ret);
-//        }
-
         return ret;
 
     }
@@ -41,12 +33,6 @@ public abstract class LayerManagerFactory {
         Element e = layerRoot.element("cell-layer");
         return CellLayerFactory.instantiate(e, geometryDescriptor);
     }
-
-//    private static void initSoluteLayer(Element e, GeometryDescriptor geometryDescriptor, LayerManager ret) {
-//        String id = e.element("id").getTextTrim();
-//        SoluteLayer layer = SoluteLayerFactory.instantiate(e, geometryDescriptor, ret);
-//        ret.addSoluteLayer(id, layer);
-//    }
 
     private static boolean hasCellElement(Element layerRoot) {
         List<Object> elems = layerRoot.elements("cell-layer");

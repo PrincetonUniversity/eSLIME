@@ -20,37 +20,10 @@
     </content>
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="jdk" jdkName="1.8" jdkType="JavaSDK" />
-    <orderEntry type="module-library">
-      <library name="junit3">
-        <CLASSES>
-          <root url="jar://$APPLICATION_HOME_DIR$/lib/junit.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library name="junit-3.8.2.jar">
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/junit/junit-3.8.2.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
     <orderEntry type="module-library" exported="">
       <library name="dom4j-1.6.1.jar">
         <CLASSES>
           <root url="jar://$MODULE_DIR$/lib/dom4j/dom4j-1.6.1.jar!/" />
-        </CLASSES>
-        <JAVADOC />
-        <SOURCES />
-      </library>
-    </orderEntry>
-    <orderEntry type="module-library" exported="">
-      <library>
-        <CLASSES>
-          <root url="jar://$MODULE_DIR$/lib/junit/junit-addons-1.4.jar!/" />
         </CLASSES>
         <JAVADOC />
         <SOURCES />
@@ -66,5 +39,8 @@
       </library>
     </orderEntry>
     <orderEntry type="library" exported="" name="com.googlecode.matrix-toolkits-java:mtj:1.0.1" level="project" />
+    <orderEntry type="library" exported="" name="org.mockito:mockito-all:1.9.5" level="project" />
+    <orderEntry type="library" exported="" name="junit:junit:4.11" level="project" />
+    <orderEntry type="library" exported="" name="commons-io:commons-io:2.1" level="project" />
   </component>
 </module>

@@ -24,7 +24,7 @@ public class HighlightWriterTest extends EslimeLatticeTestCase {
         checkFiles();
     }
 
-    private void checkFiles() {
+    private void checkFiles() throws Exception {
         for (int channel : channels) {
             String filename = FileConventions.makeHighlightFilename(channel);
             assertBinaryFilesEqual(filename);

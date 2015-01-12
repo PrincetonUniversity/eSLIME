@@ -13,32 +13,29 @@ import java.util.function.Function;
  * Created by dbborens on 12/31/14.
  */
 public class ContinuumAgentManager {
-    private ContinuumAgentIndex injIndex;    // Injection (source)
-    private ContinuumAgentIndex expIndex;    // Exponentiation (feedback, decay)
-    private ContinuumAgentScheduler scheduler;
+
+    private ContinuumAgentIndex index;
+    private ReactionLoader loader;
     private String id;
-    public ContinuumAgentManager(ContinuumAgentScheduler scheduler, String id) {
+
+    public ContinuumAgentManager(ReactionLoader loader, ContinuumAgentIndex index, String id) {
         this.id = id;
 
-        injIndex = new ContinuumAgentIndex(cell -> cell.getLinker().getInj(id));
-        expIndex = new ContinuumAgentIndex(cell -> cell.getLinker().getExp(id));
-        this.scheduler = scheduler;
+        this.index = index;
+        this.loader = loader;
     }
 
     public void apply() {
-        scheduler.inject(injIndex.getRelationShips());
-        scheduler.exponentiate(expIndex.getRelationShips());
+        loader.apply(index.getRelationships());
     }
 
     public void reset() {
-        injIndex.reset();
-        expIndex.reset();
+        index.reset();
     }
 
     public ContinuumAgentLinker getLinker(Function<Coordinate, Double> stateLookup) {
-        ContinuumAgentNotifier injNotifier = injIndex.getNotifier();
-        ContinuumAgentNotifier expNotifier = expIndex.getNotifier();
-        return new ContinuumAgentLinker(injNotifier, expNotifier, stateLookup);
+        ContinuumAgentNotifier notifier = index.getNotifier();
+        return new ContinuumAgentLinker(notifier, stateLookup);
     }
 
     public String getId() {

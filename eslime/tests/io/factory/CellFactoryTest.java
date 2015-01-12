@@ -23,6 +23,35 @@ public class CellFactoryTest extends EslimeTestCase {
     MockLayerManager layerManager = new MockLayerManager();
     MockGeneralParameters p = new MockGeneralParameters();
 
+    /**
+     * Returns the average value in the array a[], NaN if no such value.
+     */
+    protected static double mean(double[] a) {
+        if (a.length == 0) return Double.NaN;
+        double sum = 0.0;
+        for (int i = 0; i < a.length; i++) {
+            sum = sum + a[i];
+        }
+        return sum / a.length;
+    }
+
+    /**
+     * Returns the sample variance in the array a[], NaN if no such value.
+     */
+    protected static double var(double[] a) {
+        if (a.length == 0) return Double.NaN;
+        double avg = mean(a);
+        double sum = 0.0;
+        for (int i = 0; i < a.length; i++) {
+            sum += (a[i] - avg) * (a[i] - avg);
+        }
+        return sum / (a.length - 1);
+    }
+
+    // Statistics impl copied from http://introcs.cs.princeton.edu/java/stdlib/StdStats.java.html
+    // I should really set up Apache commons math, but to do that I have to figure out Maven, which
+    // I'm putting off.
+
     @Override
     protected void setUp() throws Exception {
         fixtureRoot = readXmlFile("CellFactoryTest.xml");
@@ -48,33 +77,5 @@ public class CellFactoryTest extends EslimeTestCase {
         }
 
         assertFalse(EpsilonUtil.epsilonEquals(0.0, var(results)));
-    }
-
-    // Statistics impl copied from http://introcs.cs.princeton.edu/java/stdlib/StdStats.java.html
-    // I should really set up Apache commons math, but to do that I have to figure out Maven, which
-    // I'm putting off.
-    /**
-     * Returns the average value in the array a[], NaN if no such value.
-     */
-    protected static double mean(double[] a) {
-        if (a.length == 0) return Double.NaN;
-        double sum = 0.0;
-        for (int i = 0; i < a.length; i++) {
-            sum = sum + a[i];
-        }
-        return sum / a.length;
-    }
-
-    /**
-     * Returns the sample variance in the array a[], NaN if no such value.
-     */
-    protected static double var(double[] a) {
-        if (a.length == 0) return Double.NaN;
-        double avg = mean(a);
-        double sum = 0.0;
-        for (int i = 0; i < a.length; i++) {
-            sum += (a[i] - avg) * (a[i] - avg);
-        }
-        return sum / (a.length - 1);
     }
 }

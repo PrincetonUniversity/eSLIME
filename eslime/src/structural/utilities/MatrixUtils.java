@@ -6,9 +6,7 @@
 package structural.utilities;
 
 import no.uib.cipr.matrix.BandMatrix;
-import no.uib.cipr.matrix.DenseMatrix;
 import no.uib.cipr.matrix.Matrix;
-import no.uib.cipr.matrix.Vector;
 
 public abstract class MatrixUtils {
     /**
@@ -32,19 +30,6 @@ public abstract class MatrixUtils {
         return sb.toString();
     }
 
-    public static Matrix vectorToMatrix(Vector v, int l) {
-        Matrix matrix = new DenseMatrix(v.size() / l, l);
-        for (int q = 0; q < v.size(); q++) {
-            int i = q / l;
-            int j = q % l;
-
-            Double value = v.get(q);
-            matrix.set(i, j, value);
-        }
-
-        return matrix;
-    }
-
     /**
      * Returns an identity matrix of size n.
      * <p/>
@@ -58,30 +43,4 @@ public abstract class MatrixUtils {
         return m;
     }
 
-    /**
-     * Compares two matrices for numerical equality.
-     */
-    public static boolean equal(Matrix p, Matrix q) {
-        double epsilon = EpsilonUtil.epsilon();
-        if (p.numColumns() != q.numColumns()) {
-            return false;
-        }
-
-        if (p.numRows() != q.numRows()) {
-            return false;
-        }
-
-        for (int i = 0; i < p.numRows(); i++) {
-            for (int j = 0; j < p.numColumns(); j++) {
-                double delta = p.get(i, j) - q.get(i, j);
-                double magnitude = Math.abs(delta);
-
-                if (magnitude > epsilon) {
-                    return false;
-                }
-            }
-        }
-
-        return true;
-    }
 }

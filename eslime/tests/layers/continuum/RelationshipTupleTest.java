@@ -5,26 +5,38 @@
 
 package layers.continuum;
 
-import control.identifiers.Coordinate;
-import test.EslimeTestCase;
+import factory.cell.Reaction;
+import org.junit.Before;
+import org.junit.Test;
+import test.LinearMocks;
 
-public class RelationshipTupleTest extends EslimeTestCase {
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
+public class RelationshipTupleTest extends LinearMocks {
 
     private RelationshipTuple query;
-    private Coordinate c;
+    private Reaction reaction;
 
-    @Override
-    protected void setUp() throws Exception {
-        super.setUp();
-        c = new Coordinate(1, 2, 3);
-        query = new RelationshipTuple(c, 1.0);
+    @Before
+    public void init() throws Exception {
+        reaction = mock(Reaction.class);
+        when(reaction.getExp()).thenReturn(1.0);
+        when(reaction.getInj()).thenReturn(2.0);
+        query = new RelationshipTuple(c, reaction);
     }
 
-    public void testGetCoordinate() throws Exception {
+    @Test
+    public void getCoordinate() throws Exception {
         assertEquals(c, query.getCoordinate());
     }
 
-    public void testGetMagnitude() throws Exception {
-        assertEquals(1.0, query.getMagnitude(), epsilon);
+    public void getExp() throws Exception {
+        assertEquals(1.0, query.getExp(), epsilon);
+    }
+
+    public void getInj() throws Exception {
+        assertEquals(2.0, query.getInj(), epsilon);
     }
 }

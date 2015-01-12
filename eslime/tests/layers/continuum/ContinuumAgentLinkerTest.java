@@ -5,19 +5,41 @@
 
 package layers.continuum;
 
-import junit.framework.TestCase;
+import control.identifiers.Coordinate;
+import org.junit.Before;
+import org.junit.Test;
+import test.LinearMocks;
 
-public class ContinuumAgentLinkerTest extends TestCase {
+import java.util.function.Function;
+import java.util.function.Supplier;
 
-    public void testGetInjNotifier() throws Exception {
-        fail("not yet implemented");
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+
+public class ContinuumAgentLinkerTest extends LinearMocks {
+
+    private ContinuumAgentNotifier notifier;
+    private Function<Coordinate, Double> stateLookup;
+    private ContinuumAgentLinker query;
+
+    @Before
+    public void init() throws Exception {
+        notifier = mock(ContinuumAgentNotifier.class);
+        stateLookup = (Function<Coordinate, Double>) mock(Function.class);
+        when(stateLookup.apply(any())).thenReturn(1.0);
+
+        query = new ContinuumAgentLinker(notifier, stateLookup);
     }
 
-    public void testGetExpNotifier() throws Exception {
-        fail("not yet implemented");
+    @Test
+    public void getNotifier() throws Exception {
+        assertEquals(notifier, query.getNotifier());
     }
 
-    public void testGet() throws Exception {
-        fail("not yet implemented");
+    @Test
+    public void getAsksStateLookup() throws Exception {
+        Supplier<Coordinate> supplier = () -> a;
+        query.get(supplier);
+        verify(stateLookup).apply(a);
     }
 }

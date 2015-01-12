@@ -5,6 +5,7 @@
 
 package layers.continuum;
 
+import layers.continuum.solve.SteadyState;
 import no.uib.cipr.matrix.Matrix;
 import no.uib.cipr.matrix.Vector;
 
@@ -15,14 +16,12 @@ public class ContinuumSolver {
 
     private ContinuumLayerContent content;
     private ScheduledOperations so;
+    private SteadyState steadyState;
 
-    protected SteadyStateHelper helper;
-
-    public ContinuumSolver(ContinuumLayerContent content, ScheduledOperations so) {
+    public ContinuumSolver(ContinuumLayerContent content, ScheduledOperations so, SteadyState steadyState) {
         this.content = content;
         this.so = so;
-
-        helper = new SteadyStateHelper();
+        this.steadyState = steadyState;
     }
 
     /**
@@ -33,9 +32,10 @@ public class ContinuumSolver {
         Matrix operator = so.getOperator();
         Vector template = content.getState().copy();
 
-        Vector solution = helper.solve(source, operator, template);
+        Vector solution = steadyState.solve(source, operator, template);
 
         content.setState(solution);
         so.reset();
     }
+
 }

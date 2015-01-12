@@ -3,7 +3,7 @@
  *  Princeton University. All rights reserved.
  */
 
-package layers.continuum;
+package layers.continuum.solve;
 
 import no.uib.cipr.matrix.DenseVector;
 import no.uib.cipr.matrix.Matrix;
@@ -16,7 +16,7 @@ import structural.utilities.MatrixUtils;
 /**
  * Created by dbborens on 12/26/14.
  */
-public class SteadyStateHelper {
+public class SteadyState {
     /**
      * Solve the difference relation
      *
@@ -39,7 +39,7 @@ public class SteadyStateHelper {
      */
     public Vector solve(Vector source, Matrix operator, Vector initial) {
         // If the operator is the identity matrix and the source is zero,
-        // return the initial value.
+        // return the initial value.SteadyStateHelper
         if (isZeroVector(source) && isIdentity(operator)) {
             return initial.copy();
         }

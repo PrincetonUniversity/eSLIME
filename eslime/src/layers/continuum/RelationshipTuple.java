@@ -6,6 +6,7 @@
 package layers.continuum;
 
 import control.identifiers.Coordinate;
+import factory.cell.Reaction;
 
 /**
  * Created by dbborens on 12/30/14.
@@ -13,41 +14,23 @@ import control.identifiers.Coordinate;
 public class RelationshipTuple {
 
     private final Coordinate coordinate;
-    private final double magnitude;
+    private final Reaction reaction;
 
-    public RelationshipTuple(Coordinate coordinate, double magnitude) {
+    public RelationshipTuple(Coordinate coordinate, Reaction reaction) {
         this.coordinate = coordinate;
-        this.magnitude = magnitude;
+        this.reaction = reaction;
     }
 
     public Coordinate getCoordinate() {
         return coordinate;
     }
 
-    public double getMagnitude() {
-        return magnitude;
+    public double getInj() {
+        return reaction.getInj();
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        RelationshipTuple that = (RelationshipTuple) o;
-
-        if (Double.compare(that.magnitude, magnitude) != 0) return false;
-        if (!coordinate.equals(that.coordinate)) return false;
-
-        return true;
+    public double getExp() {
+        return reaction.getExp();
     }
 
-    @Override
-    public int hashCode() {
-        int result;
-        long temp;
-        result = coordinate.hashCode();
-        temp = Double.doubleToLongBits(magnitude);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        return result;
-    }
 }

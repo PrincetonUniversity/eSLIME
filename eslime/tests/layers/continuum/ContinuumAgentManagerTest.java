@@ -5,22 +5,49 @@
 
 package layers.continuum;
 
-import junit.framework.TestCase;
+import org.junit.Before;
+import org.junit.Test;
+import test.LinearMocks;
 
-public class ContinuumAgentManagerTest extends TestCase {
-    public void testLifeCycle() {
-        fail("Not yet implemented -- move from ContinuumLayerContent");
+import java.util.stream.Stream;
+
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.*;
+
+public class ContinuumAgentManagerTest extends LinearMocks {
+
+    private ContinuumAgentIndex index;
+    private ReactionLoader loader;
+    private String id;
+
+    private ContinuumAgentManager query;
+
+    @Before
+    public void init() {
+        id = "test";
+        index = mock(ContinuumAgentIndex.class);
+
+        loader = mock(ReactionLoader.class);
+
+        query = new ContinuumAgentManager(loader, index, id);
     }
 
-    public void testReset() {
-        fail("Not yet implemented -- move from ContinuumLayerContent");
+    @Test
+    public void applyLoadsRelationshipsFromIndex() {
+        Stream<RelationshipTuple> relationships = (Stream<RelationshipTuple>) mock(Stream.class);
+        when(index.getRelationships()).thenReturn(relationships);
+        query.apply();
+        verify(loader).apply(relationships);
     }
 
-    public void apply() {
-        fail("Not yet implemented");
+
+    @Test
+    public void resetCallsIndex() {
+        query.reset();
+        verify(index).reset();
     }
 
-    public void testGetLinker() {
-        fail("Not yet implemented");
+    public void getId() {
+        assertEquals(id, query.getId());
     }
 }

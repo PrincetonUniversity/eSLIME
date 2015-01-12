@@ -8,34 +8,28 @@ package layers.continuum;
 import control.identifiers.Coordinate;
 
 import java.util.function.Function;
+import java.util.function.Supplier;
 
 /**
  * Created by dbborens on 12/31/14.
  */
 public class ContinuumAgentLinker {
 
-    private ContinuumAgentNotifier injNotifier;
-    private ContinuumAgentNotifier expNotifier;
+    private ContinuumAgentNotifier notifier;
     private Function<Coordinate, Double> stateLookup;
 
-    public ContinuumAgentLinker(ContinuumAgentNotifier injNotifier,
-                                ContinuumAgentNotifier expNotifier,
+    public ContinuumAgentLinker(ContinuumAgentNotifier notifier,
                                 Function<Coordinate, Double> stateLookup) {
 
-        this.injNotifier = injNotifier;
-        this.expNotifier = expNotifier;
+        this.notifier = notifier;
         this.stateLookup = stateLookup;
     }
 
-    public ContinuumAgentNotifier getInjNotifier() {
-        return injNotifier;
+    public double get(Supplier<Coordinate> c) {
+        return stateLookup.apply(c.get());
     }
 
-    public ContinuumAgentNotifier getExpNotifier() {
-        return expNotifier;
-    }
-
-    public double get(Coordinate c) {
-        return stateLookup.apply(c);
+    public ContinuumAgentNotifier getNotifier() {
+        return notifier;
     }
 }
