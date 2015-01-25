@@ -68,7 +68,7 @@ public class OccupiedNeighborSwap extends CellProcess {
 
     private Object[] selectTargets() throws HaltCondition {
 
-        Object[] selectedCoords = MaxTargetHelper.respectMaxTargets(candidates, maxTargets.next(), p.getRandom());
+        Object[] selectedCoords = MaxTargetHelper.respectMaxTargets(candidates, maxTargets.next(), getGeneralParameters().getRandom());
 
 
         return selectedCoords;

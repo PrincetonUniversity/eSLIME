@@ -20,7 +20,7 @@ public abstract class CellProcess extends EcoProcess {
 
     public CellProcess(BaseProcessArguments arguments, CellProcessArguments cpArguments) {
         super(arguments);
-        layer = layerManager.getCellLayer();
+        layer = arguments.getLayerManager().getCellLayer();
         activeSites = cpArguments.getActiveSites();
         maxTargets = cpArguments.getMaxTargets();
     }

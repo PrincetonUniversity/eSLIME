@@ -13,6 +13,7 @@ import org.mockito.ArgumentCaptor;
 import test.LinearMocks;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 import static org.mockito.Mockito.*;
 
 public class ContinuumLayerSchedulerTest extends LinearMocks {
@@ -65,6 +66,18 @@ public class ContinuumLayerSchedulerTest extends LinearMocks {
     public void resetCallsHoldManager() throws Exception {
         query.reset();
         verify(holdManager).reset();
+    }
+
+    @Test
+    public void holdCallsHoldManager() throws Exception {
+        query.hold();
+        verify(holdManager).hold();
+    }
+
+    @Test
+    public void releaseCallsHoldManager() throws Exception {
+        query.release();
+        verify(holdManager).release();
     }
 
     @Test

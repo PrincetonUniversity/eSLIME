@@ -36,7 +36,7 @@ public abstract class DependentProbabilitySupplierFactory {
                 .getLookupManager()
                 .getCellLocation(cell);
 
-        double value = layerManager.getContinuumLinker(fieldName).get(supplier);
+        double value = layerManager.getContinuumLayer(fieldName).getLinker().get(supplier);
         return value;
     }
 }

@@ -27,12 +27,12 @@ public abstract class BulkDivisionProcess extends CellProcess {
 
     @Override
     public void init() {
-        random = p.getRandom();
-        shoveHelper = new ShoveHelper(layerManager, random);
+        random = getGeneralParameters().getRandom();
+        shoveHelper = new ShoveHelper(getLayerManager(), random);
     }
 
     protected void execute(Coordinate[] candidates) throws HaltCondition {
-        Object[] chosen = MaxTargetHelper.respectMaxTargets(candidates, maxTargets.next(), p.getRandom());
+        Object[] chosen = MaxTargetHelper.respectMaxTargets(candidates, maxTargets.next(), getGeneralParameters().getRandom());
         Cell[] chosenCells = toCellArray(chosen);
         for (int i = 0; i < chosenCells.length; i++) {
             Cell cell = chosenCells[i];

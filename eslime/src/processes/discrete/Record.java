@@ -33,6 +33,6 @@ public class Record extends CellProcess {
 
     @Override
     public void fire(StepState state) throws HaltCondition {
-        state.record(layerManager.getCellLayer());
+        state.record(getLayerManager().getCellLayer());
     }
 }

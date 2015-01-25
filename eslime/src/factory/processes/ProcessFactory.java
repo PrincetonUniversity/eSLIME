@@ -20,9 +20,12 @@ import factory.processes.discrete.filter.FilterFactory;
 import geometry.Geometry;
 import geometry.set.CoordinateSet;
 import layers.LayerManager;
+import layers.continuum.ContinuumLayer;
+import no.uib.cipr.matrix.DenseMatrix;
 import org.dom4j.Element;
 import processes.BaseProcessArguments;
 import processes.EcoProcess;
+import processes.continuum.*;
 import processes.discrete.*;
 import processes.discrete.check.CheckForDomination;
 import processes.discrete.check.CheckForExtinction;
@@ -32,6 +35,8 @@ import processes.discrete.filter.Filter;
 import processes.temporal.ExponentialInverse;
 import processes.temporal.Tick;
 import structural.utilities.XmlUtil;
+
+import java.util.function.Consumer;
 
 /**
  * Created by dbborens on 11/23/14.
@@ -103,6 +108,17 @@ public abstract class ProcessFactory {
             CellProcessArguments cpArguments = makeCellProcessArguments(e, layerManager, p);
             return new CheckForExtinction(arguments, cpArguments, threshold);
 
+        } else if (processClass.equalsIgnoreCase("diffusion-process")) {
+            return diffusionProcess(e, layerManager, arguments);
+
+        } else if (processClass.equalsIgnoreCase("release")) {
+            ContinuumLayer layer = resolveLayer(e, layerManager);
+            return new ScheduleRelease(arguments, layer.getScheduler());
+
+        } else if (processClass.equalsIgnoreCase("hold")) {
+            ContinuumLayer layer = resolveLayer(e, layerManager);
+            return new ScheduleHold(arguments, layer.getScheduler());
+
         } else if (processClass.equalsIgnoreCase("record")) {
             CellProcessArguments cpArguments = makeCellProcessArguments(e, layerManager, p);
             return new Record(arguments, cpArguments);
@@ -113,6 +129,25 @@ public abstract class ProcessFactory {
 
             throw new IllegalArgumentException(msg);
         }
+    }
+
+    private static ContinuumLayer resolveLayer(Element e, LayerManager layerManager) {
+        String layerId = XmlUtil.getString(e, "layer");
+        ContinuumLayer layer = layerManager.getContinuumLayer(layerId);
+        return layer;
+    }
+
+    private static OperatorProcess diffusionProcess(Element e, LayerManager layerManager, BaseProcessArguments arguments) {
+        double constant = XmlUtil.getDouble(e, "constant");
+        ContinuumLayer layer = resolveLayer(e, layerManager);
+        Geometry geometry = layer.getGeometry();
+        DiffusionConstantHelper helper = new DiffusionConstantHelper(constant,
+                geometry.getConnectivity(),
+                geometry.getDimensionality());
+        DiffusionOperator operator = new DiffusionOperator(helper, geometry);
+        Consumer<DenseMatrix> target = matrix -> layer.getScheduler().apply(matrix);
+        OperatorProcess process = new OperatorProcess(arguments, operator, target);
+        return process;
     }
 
     protected static BaseProcessArguments makeProcessArguments(Element e,

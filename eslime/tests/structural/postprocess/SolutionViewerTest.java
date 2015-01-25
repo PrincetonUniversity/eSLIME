@@ -36,8 +36,8 @@ public class SolutionViewerTest extends TestCase {
         geom.setCanonicalSites(cc);
 
         // Make sure that got assigned the way we expect
-        assertEquals(0, geom.coordToIndex(origin).intValue());
-        assertEquals(1, geom.coordToIndex(other).intValue());
+        assertEquals(0, geom.getIndexer().apply(origin).intValue());
+        assertEquals(1, geom.getIndexer().apply(other).intValue());
 
         geom.setCenter(origin.canonicalize());
 

@@ -17,6 +17,9 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyInt;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -29,6 +32,31 @@ public abstract class LinearMocks extends TestBase {
     protected Coordinate[] cc;
     protected Coordinate a, b, c;
     protected Function<Coordinate, Integer> indexer;
+
+    @Before
+    public void makeGeometry() {
+        cc = makeCanonicalCoordinates();
+
+        geom = mock(Geometry.class);
+        when(geom.getCanonicalSites()).thenReturn(cc);
+        a = cc[0];
+        b = cc[1];
+        c = cc[2];
+
+        indexer = c -> c.y();
+        when(geom.getIndexer()).thenReturn(indexer);
+
+        makeNeighbors();
+    }
+
+    /**
+     * Absorbing boundary conditions
+     */
+    private void makeNeighbors() {
+        when(geom.getNeighbors(eq(a), anyInt())).thenReturn(new Coordinate[]{b});
+        when(geom.getNeighbors(eq(b), anyInt())).thenReturn(new Coordinate[]{a, c});
+        when(geom.getNeighbors(eq(c), anyInt())).thenReturn(new Coordinate[]{b});
+    }
 
     protected static Coordinate[] makeCanonicalCoordinates() {
         Coordinate[] cc = new Coordinate[3];
@@ -53,19 +81,6 @@ public abstract class LinearMocks extends TestBase {
         return matrix;
     }
 
-    @Before
-    public void makeGeometry() {
-        cc = makeCanonicalCoordinates();
-
-        geom = mock(Geometry.class);
-        when(geom.getCanonicalSites()).thenReturn(cc);
-
-        a = cc[0];
-        b = cc[1];
-        c = cc[2];
-
-        indexer = c -> c.y();
-    }
 
     protected void checkMatrix(Matrix actual, double x0, double x1, double x2) {
         Matrix expected = matrix(x0, x1, x2);

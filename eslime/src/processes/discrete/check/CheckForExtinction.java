@@ -48,7 +48,7 @@ public class CheckForExtinction extends CellProcess {
     @Override
     public void fire(StepState state) throws HaltCondition {
         // Handle true extinction exactly
-        boolean thresholdIsZero = p.epsilonEquals(threshold, 0.0);
+        boolean thresholdIsZero = getGeneralParameters().epsilonEquals(threshold, 0.0);
         boolean noOccupiedSites = layer.getViewer().getOccupiedSites().size() == 0;
         if (thresholdIsZero && noOccupiedSites) {
             throw new ExtinctionEvent();

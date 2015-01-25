@@ -101,8 +101,8 @@ public class LayerManager {
      * @param id
      * @return
      */
-    public ContinuumAgentLinker getContinuumLinker(String id) {
+    public ContinuumLayer getContinuumLayer(String id) {
         ContinuumLayer layer = continuumLayers.get(id);
-        return layer.getLinker();
+        return layer;
     }
 }

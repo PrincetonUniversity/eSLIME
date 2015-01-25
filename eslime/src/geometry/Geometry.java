@@ -13,6 +13,7 @@ import geometry.shape.Shape;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Function;
 
 public class Geometry {
 
@@ -226,7 +227,11 @@ public class Geometry {
         return boundary.isInfinite();
     }
 
-    public Integer coordToIndex(Coordinate coord) {
+    public Function<Coordinate, Integer> getIndexer() {
+        return this::coordToIndex;
+    }
+
+    private Integer coordToIndex(Coordinate coord) {
         Coordinate canonical = coord.canonicalize();
 
         if (!coordinateIndex.containsKey(canonical)) {

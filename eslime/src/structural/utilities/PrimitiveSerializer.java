@@ -104,7 +104,7 @@ public abstract class PrimitiveSerializer {
 
         ArrayList<Integer> intVector = new ArrayList<>(vector.size());
         for (Coordinate coord : vector) {
-            Integer index = geometry.coordToIndex(coord);
+            Integer index = geometry.getIndexer().apply(coord);
             intVector.add(index);
         }
 

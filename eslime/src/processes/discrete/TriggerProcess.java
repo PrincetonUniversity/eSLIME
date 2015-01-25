@@ -63,7 +63,7 @@ public class TriggerProcess extends CellProcess {
         ArrayList<Coordinate> vacancyFiltered = respectVacancyRequirements(activeSites);
         Collection<Coordinate> stateFiltered = filter.apply(vacancyFiltered);
         Collection<? extends Object> neighborFiltered = respectNeighborhoodRequirements(stateFiltered);
-        Object[] selectedCoords = MaxTargetHelper.respectMaxTargets(neighborFiltered, maxTargets.next(), p.getRandom());
+        Object[] selectedCoords = MaxTargetHelper.respectMaxTargets(neighborFiltered, maxTargets.next(), getGeneralParameters().getRandom());
 
         Cell[] selectedCells = new Cell[selectedCoords.length];
         for (int i = 0; i < selectedCells.length; i++) {

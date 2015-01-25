@@ -39,7 +39,7 @@ public class CoordinateIndexer extends Serializer {
 
             for (Coordinate c : geometry.getCanonicalSites()) {
                 StringBuilder sb = new StringBuilder();
-                sb.append(geometry.coordToIndex(c));
+                sb.append(geometry.getIndexer().apply(c));
                 sb.append("\t");
                 sb.append(c.toString());
                 sb.append("\n");

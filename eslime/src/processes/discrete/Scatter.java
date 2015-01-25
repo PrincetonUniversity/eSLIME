@@ -64,7 +64,7 @@ public class Scatter extends CellProcess {
             // Choose target randomly
             Coordinate[] cVec = candidates.toArray(new Coordinate[0]);
 
-            int o = p.getRandom().nextInt(cVec.length);
+            int o = getGeneralParameters().getRandom().nextInt(cVec.length);
             Coordinate target = cVec[o];
 
             Cell cell = cellDescriptor.next();

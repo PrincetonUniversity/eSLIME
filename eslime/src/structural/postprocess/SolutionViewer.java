@@ -33,7 +33,7 @@ public class SolutionViewer {
         Coordinate converted = applyOffset(offset);
 
         //System.out.println("Looking up index of " + converted);
-        Integer index = geometry.coordToIndex(converted);
+        Integer index = geometry.getIndexer().apply(converted);
         if (index == null) {
             return 0D;
         } else {
@@ -46,7 +46,7 @@ public class SolutionViewer {
             throw new IllegalStateException("getAbsolute expects an absolute coordinate, not an offset.");
         }
 
-        Integer index = geometry.coordToIndex(coordinate);
+        Integer index = geometry.getIndexer().apply(coordinate);
         return solution.get(index);
     }
 

@@ -41,7 +41,7 @@ public class LayerManagerTest {
     @Test
     public void addContinuumLayer() throws Exception {
         query.addContinuumLayer(continuumLayer);
-        assertEquals(continuumLayer.getLinker(), query.getContinuumLinker(id));
+        assertEquals(continuumLayer, query.getContinuumLayer(id));
     }
 
     @Test

@@ -56,4 +56,12 @@ public class ContinuumLayerScheduler {
     public void solve() {
         holdManager.solve();
     }
+
+    public void hold() {
+        holdManager.hold();
+    }
+
+    public void release() {
+        holdManager.release();
+    }
 }

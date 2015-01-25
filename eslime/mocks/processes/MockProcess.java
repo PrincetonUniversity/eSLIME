@@ -89,7 +89,6 @@ public class MockProcess extends EcoProcess {
     }
 
     public void setLayerManager(MockLayerManager layerManager) {
-        this.layerManager = layerManager;
     }
 
     @Override

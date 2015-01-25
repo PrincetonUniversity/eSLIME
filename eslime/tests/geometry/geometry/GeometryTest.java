@@ -538,7 +538,7 @@ public class GeometryTest extends EslimeTestCase {
     }
 
     /**
-     * Tests coordToIndex(...) and rebuildIndex()
+     * Tests getIndexer().apply(...) and rebuildIndex()
      */
     public void testCoordinateIndex() {
         MockGeometry geom = new MockGeometry();
@@ -551,14 +551,14 @@ public class GeometryTest extends EslimeTestCase {
         Coordinate[] canonicals = new Coordinate[]{o};
         geom.setCanonicalSites(canonicals);
 
-        assertNull(geom.coordToIndex(p));
-        assertNotNull(geom.coordToIndex(o));
+        assertNull(geom.getIndexer().apply(p));
+        assertNotNull(geom.getIndexer().apply(o));
 
         geom.setCanonicalSites(new Coordinate[]{o, p});
 
-        assertNotNull(geom.coordToIndex(p));
-        assertNotNull(geom.coordToIndex(o));
-        assertFalse(geom.coordToIndex(o).equals(geom.coordToIndex(p)));
+        assertNotNull(geom.getIndexer().apply(p));
+        assertNotNull(geom.getIndexer().apply(o));
+        assertFalse(geom.getIndexer().apply(o).equals(geom.getIndexer().apply(p)));
     }
 
     public void testGetComponentClasses() {

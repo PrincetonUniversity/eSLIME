@@ -12,23 +12,25 @@ import processes.gillespie.GillespieState;
 
 public abstract class EcoProcess {
 
-    protected LayerManager layerManager;
-    protected GeneralParameters p;
-    private int id;
-    private Argument<Integer> period;
-    private Argument<Integer> start;
+    private BaseProcessArguments arguments;
+//    protected LayerManager layerManager;
+//    protected GeneralParameters p;
+//    private int id;
+//    private Argument<Integer> period;
+//    private Argument<Integer> start;
 
 
     public EcoProcess(BaseProcessArguments arguments) {
-        p = arguments.getGeneralParameters();
-        id = arguments.getId();
-        start = arguments.getStart();
-        period = arguments.getPeriod();
-        this.layerManager = arguments.getLayerManager();
+        this.arguments = arguments;
+//        p = arguments.getGeneralParameters();
+//        id = arguments.getId();
+//        start = arguments.getStart();
+//        period = arguments.getPeriod();
+//        this.layerManager = arguments.getLayerManager();
     }
 
     public int getID() {
-        return id;
+        return arguments.getId();
     }
 
 
@@ -60,17 +62,24 @@ public abstract class EcoProcess {
 
     public void iterate() throws HaltCondition {
         target();
-        StepState stepState = layerManager.getStepState();
+        StepState stepState = arguments.getLayerManager().getStepState();
         fire(stepState);
     }
 
     public Argument<Integer> getPeriod() {
-        return period;
+        return arguments.getPeriod();
     }
 
     public Argument<Integer> getStart() {
-        return start;
+        return arguments.getStart();
     }
 
+    protected LayerManager getLayerManager() {
+        return arguments.getLayerManager();
+    }
+
+    protected GeneralParameters getGeneralParameters() {
+        return arguments.getGeneralParameters();
+    }
     public abstract void init();
 }

@@ -45,7 +45,7 @@ public class GeneralNeighborSwap extends CellProcess {
         // Perform swaps.
         for (int i = 0; i < n; i++) {
             // Choose first coordinate. Targets can be swapped multpiple times.
-            int o = p.getRandom().nextInt(activeSitesArr.length);
+            int o = getGeneralParameters().getRandom().nextInt(activeSitesArr.length);
 
             Coordinate first = activeSitesArr[o];
 
@@ -53,7 +53,7 @@ public class GeneralNeighborSwap extends CellProcess {
             Coordinate[] neighbors = layer.getGeometry().
                     getNeighbors(first, Geometry.APPLY_BOUNDARIES);
 
-            int m =  p.getRandom().nextInt(neighbors.length);
+            int m = getGeneralParameters().getRandom().nextInt(neighbors.length);
 
             Coordinate second = neighbors[m];
 
@@ -77,10 +77,10 @@ public class GeneralNeighborSwap extends CellProcess {
      * Remove all out-of-bounds cells from the system.
      */
     private void removeImaginary() {
-        Set<Coordinate> imaginarySites = layerManager.getCellLayer().getViewer().getImaginarySites();
+        Set<Coordinate> imaginarySites = getLayerManager().getCellLayer().getViewer().getImaginarySites();
 
         for (Coordinate c : imaginarySites) {
-            layerManager.getCellLayer().getUpdateManager().banish(c);
+            getLayerManager().getCellLayer().getUpdateManager().banish(c);
         }
     }
 }

@@ -55,7 +55,7 @@ public class BehaviorCell extends Cell {
 
         Supplier<Coordinate> locator = () -> callbackManager.getMyLocation();
         Function<String, ContinuumAgentLinker> retrieveLinker =
-                id -> layerManager.getContinuumLinker(id);
+                id -> layerManager.getContinuumLayer(id).getLinker();
 
         HashSet<Runnable> removers = new HashSet<>();
         RemoverIndex removerIndex = new RemoverIndex(removers);
