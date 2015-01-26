@@ -1,0 +1,79 @@
+/*
+ *  Copyright (c) 2014 David Bruce Borenstein and the Trustees of
+ *  Princeton University. All rights reserved.
+ */
+
+package control.arguments;
+
+import agent.Behavior;
+import agent.action.Action;
+import cells.BehaviorCell;
+import control.identifiers.Coordinate;
+import layers.LayerManager;
+import org.junit.Before;
+import org.junit.Test;
+import org.mockito.InOrder;
+
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
+public class BehaviorDescriptorTest {
+
+    private ActionDescriptor a, b;
+    private Action aa, bb;
+    private LayerManager layerManager;
+    private BehaviorCell cell;
+    private BehaviorDescriptor query;
+
+    @Before
+    public void init() throws Exception {
+        a = (ActionDescriptor<Action>) mock(ActionDescriptor.class);
+        b = (ActionDescriptor<Action>) mock(ActionDescriptor.class);
+
+        aa = mock(Action.class);
+        bb = mock(Action.class);
+
+        cell = mock(BehaviorCell.class);
+
+        when(a.instantiate(cell)).thenReturn(aa);
+        when(b.instantiate(cell)).thenReturn(bb);
+
+        layerManager = mock(LayerManager.class);
+
+        ActionDescriptor[] descriptorArr = new ActionDescriptor[] {a, b};
+        query = new BehaviorDescriptor(layerManager, descriptorArr);
+    }
+
+    /**
+     * Verify that each action is told to instantiate,
+     * in order, with the correct cell.
+     */
+    @Test
+    public void eachActionDescriptorGetsCell() throws Exception {
+        query.instantiate(cell);
+
+        InOrder inOrder = inOrder(a, b);
+        inOrder.verify(a).instantiate(cell);
+        inOrder.verify(b).instantiate(cell);
+    }
+
+    /**
+     * Verify that, when run, the actions are run in the
+     * array order of their descriptors.
+     *
+     * TODO This isn't really a unit test. I have it because I want to verify
+     *      that actions were loaded in order. Refactor so that this can be
+     *      done directly. Would it be so bad to give public access to the
+     *      action list?
+     */
+    @Test
+    public void instantiatesActionsInOrder() throws Exception {
+        Behavior behavior = query.instantiate(cell);
+        Coordinate c = mock(Coordinate.class);
+        behavior.run(c);
+
+        InOrder inOrder = inOrder(aa, bb);
+        inOrder.verify(aa).run(c);
+        inOrder.verify(bb).run(c);
+    }
+}

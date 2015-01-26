@@ -15,6 +15,7 @@ import layers.LayerManager;
 import org.dom4j.Element;
 
 import java.util.HashMap;
+import java.util.stream.Stream;
 
 /**
  * BehaviorDispatcher is a map between behavior names and the
@@ -22,33 +23,13 @@ import java.util.HashMap;
  * and can be used to trigger behaviors in that cell.
  * <p/>
  * Created by David B Borenstein on 1/21/14.
- */
-public class BehaviorDispatcher {
-    private BehaviorCell callback;
-    private LayerManager layerManager;
+ */ public class BehaviorDispatcher {
     private HashMap<String, Behavior> behaviors;
-    private GeneralParameters p;
 
     public BehaviorDispatcher() {
         behaviors = new HashMap<>();
     }
 
-    public BehaviorDispatcher(BehaviorCell callback, LayerManager layerManager, GeneralParameters p) {
-        behaviors = new HashMap<>();
-        this.layerManager = layerManager;
-        this.callback = callback;
-        this.p = p;
-    }
-
-    public BehaviorDispatcher(Element behaviorRoot, BehaviorCell callback, LayerManager layerManager, GeneralParameters p) {
-        this.p = p;
-        behaviors = new HashMap<>();
-        BehaviorLoader loader = new BehaviorLoader(this, callback, layerManager, p);
-        loader.loadAllBehaviors(behaviorRoot);
-
-        this.layerManager = layerManager;
-        this.callback = callback;
-    }
 
     public void map(String name, Behavior behavior) {
         behaviors.put(name, behavior);
@@ -124,6 +105,10 @@ public class BehaviorDispatcher {
 
     public Behavior getMappedBehavior(String behaviorName) {
         return behaviors.get(behaviorName);
+    }
+
+    public Stream<String> getBehaviorNames() {
+        return behaviors.keySet().stream();
     }
 
 }

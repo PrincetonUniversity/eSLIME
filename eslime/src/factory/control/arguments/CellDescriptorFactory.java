@@ -6,14 +6,18 @@
 package factory.control.arguments;
 
 import control.GeneralParameters;
-import control.arguments.Argument;
-import control.arguments.CellDescriptor;
-import control.arguments.ConstantDouble;
-import control.arguments.ConstantInteger;
+import control.arguments.*;
+import factory.agent.BehaviorDescriptorFactory;
+import factory.cell.Reaction;
+import factory.cell.ReactionFactory;
 import layers.LayerManager;
 import org.dom4j.Element;
 
+import java.util.HashMap;
+import java.util.List;
 import java.util.Random;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * Created by dbborens on 11/23/14.
@@ -32,8 +36,51 @@ public abstract class CellDescriptorFactory {
         setCellState(e, cellDescriptor, p.getRandom());
         setThreshold(e, cellDescriptor, p.getRandom());
         setInitialHealth(e, cellDescriptor, p.getRandom());
-        setBehaviorRoot(e, cellDescriptor);
+        loadReactions(e, cellDescriptor);
+        loadBehaviors(e, cellDescriptor, layerManager, p);
+
         return cellDescriptor;
+    }
+
+    private static void loadBehaviors(Element e, CellDescriptor cellDescriptor, LayerManager layerManager, GeneralParameters p) {
+        Element behaviorElem = e.element("behaviors");
+
+        // No behaviors? No problem.
+        if (behaviorElem == null) {
+            cellDescriptor.setBehaviorDescriptors(new HashMap<>(0));
+            return;
+        }
+
+        List<Object> elements = e.elements();
+        HashMap<String, BehaviorDescriptor> behaviorDescriptors = new HashMap<>(elements.size());
+        elements.stream()
+                .map(o -> (Element) o)
+                .forEach(element -> {
+                    String name = element.element("name")
+                            .getTextTrim();
+
+                    BehaviorDescriptor behaviorDescriptor = BehaviorDescriptorFactory.instantiate(e, layerManager, p);
+                    behaviorDescriptors.put(name, behaviorDescriptor);
+                });
+
+        cellDescriptor.setBehaviorDescriptors(behaviorDescriptors);
+    }
+
+
+
+    private static void loadReactions(Element e, CellDescriptor cellDescriptor) {
+        Element reactions = e.element("reactions");
+        if (reactions == null) {
+            return;
+        }
+
+        List<Object> elements = reactions.elements();
+
+        Stream<Reaction> reactionStream = elements.stream()
+                .map(x -> (Element) x)
+                .map(ReactionFactory::instantiate);
+
+        cellDescriptor.setReactions(reactionStream);
     }
 
     public static CellDescriptor makeDefault(LayerManager layerManager, GeneralParameters p) {
@@ -42,11 +89,6 @@ public abstract class CellDescriptorFactory {
         cellDescriptor.setThreshold(new ConstantDouble(DEFAULT_THRESHOLD));
         cellDescriptor.setInitialHealth(new ConstantDouble(DEFAULT_INIT_HEALTH));
         return cellDescriptor;
-    }
-
-    private static void setBehaviorRoot(Element e, CellDescriptor cellDescriptor) {
-        Element behaviorRoot = e.element("behaviors");
-        cellDescriptor.setBehaviorRoot(behaviorRoot);
     }
 
     private static void setInitialHealth(Element e, CellDescriptor cellDescriptor, Random random) {

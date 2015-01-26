@@ -8,35 +8,40 @@ package factory.agent.targets;
 import agent.targets.*;
 import cells.BehaviorCell;
 import control.GeneralParameters;
+import control.arguments.TargetDescriptor;
 import factory.processes.discrete.filter.FilterFactory;
 import layers.LayerManager;
 import org.dom4j.Element;
 import processes.discrete.filter.Filter;
 import processes.discrete.filter.NullFilter;
 
+import java.util.function.Function;
+
 /**
  * Created by dbborens on 2/10/14.
  */
-public abstract class TargetFactory {
-    public static TargetRule instantiate(BehaviorCell callback, LayerManager layerManager, Element descriptor, GeneralParameters p) {
+public abstract class TargetDesciptorFactory {
+    public static TargetDescriptor instantiate(LayerManager layerManager, Element descriptor, GeneralParameters p) {
         String targetName = getName(descriptor);
         int maximum = getMaximum(descriptor);
         Filter filter = getFilter(descriptor, layerManager, p);
         if (targetName.equalsIgnoreCase("all-neighbors")) {
-
-            return new TargetAllNeighbors(callback, layerManager, filter, maximum, p.getRandom());
-
+            Function<BehaviorCell, TargetAllNeighbors> fn = cell -> new TargetAllNeighbors(cell, layerManager, filter, maximum, p.getRandom());
+            return new TargetDescriptor(fn);
         } else if (targetName.equalsIgnoreCase("occupied-neighbors")) {
-            return new TargetOccupiedNeighbors(callback, layerManager, filter, maximum, p.getRandom());
+            Function<BehaviorCell, TargetOccupiedNeighbors> fn = cell -> new TargetOccupiedNeighbors(cell, layerManager, filter, maximum, p.getRandom());
+            return new TargetDescriptor(fn);
 
         } else if (targetName.equalsIgnoreCase("vacant-neighbors")) {
-            return new TargetVacantNeighbors(callback, layerManager, filter, maximum, p.getRandom());
-
+            Function<BehaviorCell, TargetVacantNeighbors> fn = cell -> new TargetVacantNeighbors(cell, layerManager, filter, maximum, p.getRandom());
+            return new TargetDescriptor(fn);
         } else if (targetName.equalsIgnoreCase("caller")) {
-            return new TargetCaller(callback, layerManager, filter, maximum, p.getRandom());
+            Function<BehaviorCell, TargetCaller> fn = cell -> new TargetCaller(cell, layerManager, filter, maximum, p.getRandom());
+            return new TargetDescriptor(fn);
 
         } else if (targetName.equalsIgnoreCase("self")) {
-            return new TargetSelf(callback, layerManager, filter, maximum, p.getRandom());
+            Function<BehaviorCell, TargetSelf> fn = cell -> new TargetSelf(cell, layerManager, filter, maximum, p.getRandom());
+            return new TargetDescriptor(fn);
 
         } else {
             throw new IllegalArgumentException("Unrecognized target '" + targetName + "'");
