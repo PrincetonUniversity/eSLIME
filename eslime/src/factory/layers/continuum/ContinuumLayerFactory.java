@@ -25,7 +25,7 @@ public abstract class ContinuumLayerFactory {
     public static ContinuumLayer instantiate(Element root, GeometryDescriptor geometryDescriptor) {
         Geometry geom = makeGeometry(root, geometryDescriptor);
         int n = geom.getCanonicalSites().length;
-        Function<Coordinate, Integer> indexer = geom::coordToIndex;
+        Function<Coordinate, Integer> indexer = geom.getIndexer();
         String id = root.element("id").getText();
 
         ContinuumLayerContent content = new ContinuumLayerContent(indexer);

@@ -10,8 +10,10 @@ import factory.cell.Reaction;
 import layers.continuum.ContinuumAgentLinker;
 import layers.continuum.RelationshipTuple;
 
+import java.util.HashSet;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * Created by dbborens on 12/31/14.
@@ -29,6 +31,7 @@ public class AgentContinuumManager {
     private BehaviorCell cell;
     private Supplier<Coordinate> locator;
     private Function<String, ContinuumAgentLinker> linkerLookup;
+    private HashSet<String> reactionIds;
 
     public AgentContinuumManager(BehaviorCell cell,
                                  RemoverIndex index,
@@ -39,6 +42,7 @@ public class AgentContinuumManager {
         this.cell = cell;
         this.locator = locator;
         this.linkerLookup = linkerLookup;
+        reactionIds = new HashSet<>();
     }
 
     public void schedule(Reaction reaction) {
@@ -47,6 +51,7 @@ public class AgentContinuumManager {
         Supplier<RelationshipTuple> supplier = () -> getRelationshipTuple(reaction);
         linker.getNotifier().add(cell, supplier);
         index.add(() -> linker.getNotifier().remove(cell));
+        reactionIds.add(id);
     }
 
     private RelationshipTuple getRelationshipTuple(Reaction reaction) {
@@ -56,5 +61,9 @@ public class AgentContinuumManager {
 
     public void removeFromAll() {
         index.removeFromAll();
+    }
+
+    public Stream<String> getReactionIds() {
+        return reactionIds.stream();
     }
 }

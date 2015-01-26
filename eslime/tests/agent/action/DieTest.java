@@ -34,7 +34,7 @@ public class DieTest extends EslimeLatticeTestCase {
         eventName = "TEST";
         Action[] actionSequence = new Action[]{query};
         behavior = new Behavior(cell, layerManager, actionSequence);
-        dispatcher = new BehaviorDispatcher(cell, layerManager, null);
+        dispatcher = new BehaviorDispatcher();
         cell.setDispatcher(dispatcher);
         dispatcher.map(eventName, behavior);
 

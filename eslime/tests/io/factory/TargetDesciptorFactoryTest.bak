@@ -7,7 +7,7 @@ package io.factory;
 
 import agent.targets.*;
 import control.arguments.ConstantInteger;
-import factory.agent.targets.TargetFactory;
+import factory.agent.targets.TargetDesciptorFactory;
 import geometry.Geometry;
 import layers.MockLayerManager;
 import layers.cell.CellLayer;
@@ -22,7 +22,7 @@ import test.EslimeTestCase;
 /**
  * Created by dbborens on 2/10/14.
  */
-public class TargetFactoryTest extends EslimeTestCase {
+public class TargetDesciptorFactoryTest extends EslimeTestCase {
 
     private MockGeneralParameters p;
 
@@ -77,7 +77,7 @@ public class TargetFactoryTest extends EslimeTestCase {
         classElem.add(stateElem);
         element.add(filterElem);
 
-        TargetRule actual = TargetFactory.instantiate(null, layerManager, element, p);
+        TargetRule actual = TargetDesciptorFactory.instantiate(null, layerManager, element, p);
         TargetRule expected = new TargetSelf(null, layerManager, expFilter, -1, p.getRandom());
         assertEquals(expected, actual);
     }
@@ -89,7 +89,7 @@ public class TargetFactoryTest extends EslimeTestCase {
         layerManager.setCellLayer(cellLayer);
         Filter expFilter = new NullFilter();
         Element element = createTargetElement("self");
-        TargetRule actual = TargetFactory.instantiate(null, layerManager, element, p);
+        TargetRule actual = TargetDesciptorFactory.instantiate(null, layerManager, element, p);
         TargetRule expected = new TargetSelf(null, layerManager, expFilter, -1, p.getRandom());
         assertEquals(expected, actual);
     }
@@ -99,19 +99,19 @@ public class TargetFactoryTest extends EslimeTestCase {
         Element max = new BaseElement("max");
         max.setText("2");
         element.add(max);
-        TargetRule targetRule = TargetFactory.instantiate(null, null, element, p);
+        TargetRule targetRule = TargetDesciptorFactory.instantiate(null, null, element, p);
         assertEquals(2, targetRule.getMaximum());
     }
 
     public void testNoMaximum() {
         Element element = createTargetElement("vacant-neighbors");
-        TargetRule targetRule = TargetFactory.instantiate(null, null, element, p);
+        TargetRule targetRule = TargetDesciptorFactory.instantiate(null, null, element, p);
         assertEquals(-1, targetRule.getMaximum());
     }
 
     private void doTest(String targetName, Class expected) {
         Element element = createTargetElement(targetName);
-        TargetRule targetRule = TargetFactory.instantiate(null, null, element, p);
+        TargetRule targetRule = TargetDesciptorFactory.instantiate(null, null, element, p);
         Class actual = targetRule.getClass();
         assertEquals(expected, actual);
     }
