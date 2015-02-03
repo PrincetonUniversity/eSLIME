@@ -19,7 +19,7 @@ public class ContinuumLayerContentTest extends LinearMocks {
 
     @Before
     public void init() {
-        query = new ContinuumLayerContent(indexer);
+        query = new ContinuumLayerContent(indexer, 3);
         DenseVector vector = vector(1.0, 2.0, 3.0);
         query.setState(vector);
     }
@@ -32,6 +32,7 @@ public class ContinuumLayerContentTest extends LinearMocks {
     @Test
     public void reset() {
         query.reset();
-        assertNull(query.getState());
+        DenseVector expected = new DenseVector(3);
+        assertVectorsEqual(expected, query.getState(), epsilon);
     }
 }

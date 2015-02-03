@@ -52,7 +52,7 @@ public abstract class ActionDescriptorFactory {
             case "null":
                 return nullAction();
             default:
-                String msg = "Unrecognized action '" + actionName + "'.";
+                String msg = "Unrecognized action '" + actionName + "'. In parent: " + e.getParent().asXML();
                 throw new IllegalArgumentException(msg);
         }
     }

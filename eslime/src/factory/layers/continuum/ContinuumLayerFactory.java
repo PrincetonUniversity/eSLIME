@@ -28,10 +28,10 @@ public abstract class ContinuumLayerFactory {
         Function<Coordinate, Integer> indexer = geom.getIndexer();
         String id = root.element("id").getText();
 
-        ContinuumLayerContent content = new ContinuumLayerContent(indexer);
+        ContinuumLayerContent content = new ContinuumLayerContent(indexer, geom.getCanonicalSites().length);
         ContinuumLayerScheduler scheduler = ContinuumLayerSchedulerFactory.instantiate(content, indexer, n, id);
 
-        return new ContinuumLayer(scheduler, content);
+        return new ContinuumLayer(scheduler, content, geom);
     }
 
     private static Geometry makeGeometry(Element root, GeometryDescriptor geometryDescriptor) {

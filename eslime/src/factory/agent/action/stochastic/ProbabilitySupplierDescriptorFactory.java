@@ -29,7 +29,7 @@ public abstract class ProbabilitySupplierDescriptorFactory {
             Function<BehaviorCell, ProbabilitySupplier> fn = cell -> new ConstantProbabilitySupplier(value);
             return new ProbabilitySupplierDescriptor(fn);
         } else {
-            return DependentProbabilitySupplierFactory.instantiate(option, layerManager);
+            return DependentProbabilitySupplierFactory.instantiate(weight, layerManager);
         }
     }
 }

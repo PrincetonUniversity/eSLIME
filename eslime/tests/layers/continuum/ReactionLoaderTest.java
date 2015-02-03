@@ -43,18 +43,18 @@ public class ReactionLoaderTest extends LinearMocks {
     }
 
     @Test
-    public void testInject() throws Exception {
+    public void applyResolvesInjections() throws Exception {
         DenseVector vector = vector(1.0, 2.0, 3.0);
         when(helper.getSource(any())).thenReturn(vector);
-        query.inject(stream);
+        query.apply(stream);
         assertEquals(vector, capturedVector);
     }
 
     @Test
-    public void testExponentiate() throws Exception {
+    public void applyResolvesExponentiations() throws Exception {
         DenseMatrix matrix = matrix(1.0, 2.0, 3.0);
         when(helper.getOperator(any())).thenReturn(matrix);
-        query.exponentiate(stream);
+        query.apply(stream);
         assertEquals(matrix, capturedMatrix);
     }
 

@@ -12,6 +12,7 @@ package factory.agent.action;
 
 import agent.action.Action;
 import agent.action.DynamicActionRangeMap;
+import agent.action.NullAction;
 import agent.action.stochastic.ProbabilitySupplier;
 import cells.BehaviorCell;
 import control.GeneralParameters;
@@ -73,7 +74,8 @@ public abstract class DynamicActionRangeMapDescriptorFactory {
         Element actionElement = option.element("action");
         List elements = actionElement.elements();
         if (elements.size() == 0) {
-            throw new IllegalArgumentException("Expected an action or list of actions for stochastic choice option.");
+            Function<BehaviorCell, NullAction> fn = cell -> new NullAction();
+            return new ActionDescriptor(fn);
         } else if (elements.size() == 1) {
             Element child = (Element) actionElement.elements().iterator().next();
             return ActionDescriptorFactory.instantiate(child, layerManager, p);

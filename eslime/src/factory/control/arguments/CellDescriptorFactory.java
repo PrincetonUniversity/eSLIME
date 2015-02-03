@@ -51,15 +51,14 @@ public abstract class CellDescriptorFactory {
             return;
         }
 
-        List<Object> elements = e.elements();
+        List<Object> elements = behaviorElem.elements();
         HashMap<String, BehaviorDescriptor> behaviorDescriptors = new HashMap<>(elements.size());
         elements.stream()
                 .map(o -> (Element) o)
                 .forEach(element -> {
-                    String name = element.element("name")
-                            .getTextTrim();
+                    String name = element.getName();
 
-                    BehaviorDescriptor behaviorDescriptor = BehaviorDescriptorFactory.instantiate(e, layerManager, p);
+                    BehaviorDescriptor behaviorDescriptor = BehaviorDescriptorFactory.instantiate(element, layerManager, p);
                     behaviorDescriptors.put(name, behaviorDescriptor);
                 });
 

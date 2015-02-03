@@ -7,6 +7,7 @@ package structural.utilities;
 
 import no.uib.cipr.matrix.BandMatrix;
 import no.uib.cipr.matrix.Matrix;
+import no.uib.cipr.matrix.Vector;
 
 public abstract class MatrixUtils {
     /**
@@ -25,6 +26,25 @@ public abstract class MatrixUtils {
                 sb.append('\t');
             }
             sb.append('\n');
+        }
+
+        return sb.toString();
+    }
+
+    /**
+     * Returns a vector in a tab-separated matrix form.
+     *
+     * @return
+     */
+    public static String asMatrix(Vector v, int n) {
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < v.size(); i++) {
+            if (i % n == 0) {
+                sb.append("\n");
+            }
+
+            sb.append(String.format("%.3f", v.get(i)));
+            sb.append('\t');
         }
 
         return sb.toString();

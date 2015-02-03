@@ -1,0 +1,171 @@
+<!--
+  ~ * Copyright (c) 2014 David Bruce Borenstein and the Trustees of
+  ~ * Princeton University. All rights reserved.
+  -->
+
+<simulation>
+    <version>0.6.0</version>
+
+    <general>
+        <random-seed>*</random-seed>
+        <instances>1</instances>
+        <path>/Users/dbborens/eco/</path>
+        <project>plos_borenstein</project>
+        <date-stamp>true</date-stamp>
+        <max-step>10</max-step>
+    </general>
+
+    <geometry>
+        <shape>
+            <class>rectangle</class>
+            <height>32</height>
+            <width>32</width>
+        </shape>
+        <lattice>
+            <class>rectangular</class>
+        </lattice>
+    </geometry>
+
+    <layers>
+        <cell-layer>
+            <boundary>
+                <class>periodic</class>
+            </boundary>
+        </cell-layer>
+        <continuum-layer>
+            <id>solute</id>
+            <boundary>
+                <class>periodic</class>
+            </boundary>
+        </continuum-layer>
+    </layers>
+
+    <processes>
+        <tick>
+            <dt>1.0</dt>
+        </tick>
+
+        <!-- Producers -->
+        <scatter>
+            <max-targets>512</max-targets>
+            <cell-descriptor>
+                <class>BehaviorCell</class>
+                <state>1</state>
+                <reactions>
+                    <reaction>
+                        <inj>-1E-3</inj>
+                        <exp>-1E-3</exp>
+                        <target>solute</target>
+                    </reaction>
+                </reactions>
+                <behaviors>
+                    <consider-replacing>
+                        <stochastic-choice>
+                            <option>
+                                <weight>
+                                    <layer>solute</layer>
+                                    <coefficient>4.79E-5</coefficient>
+                                    <offset>0.0</offset>
+                                </weight>
+                                <action>
+                                    <clone>
+                                        <target>
+                                            <class>occupied-neighbors</class>
+                                            <max>1</max>
+                                        </target>
+                                    </clone>
+                                </action>
+                            </option>
+                            <option>
+                                <weight>
+                                    <layer>solute</layer>
+                                    <coefficient>-4.79E-5</coefficient>
+                                    <offset>1.0</offset>
+                                </weight>
+                                <action />
+                            </option>
+                        </stochastic-choice>
+                    </consider-replacing>
+                </behaviors>
+            </cell-descriptor>
+            <start>0</start>
+            <period>0</period>
+        </scatter>
+
+        <!-- Non-producers -->
+        <fill>
+            <cell-descriptor>
+                <class>BehaviorCell</class>
+                <state>2</state>
+                <reactions>
+                    <reaction>
+                        <exp>-1E-3</exp>
+                        <target>solute</target>
+                    </reaction>
+                </reactions>
+                <behaviors>
+                    <consider-replacing>
+                        <stochastic-choice>
+                            <option>
+                                <weight>
+                                    <layer>solute</layer>
+                                    <coefficient>4.79E-5</coefficient>
+                                    <offset>9.77E-7</offset>
+                                </weight>
+                                <action>
+                                    <clone>
+                                        <target>
+                                            <class>occupied-neighbors</class>
+                                            <max>1</max>
+                                        </target>
+                                    </clone>
+                                </action>
+                            </option>
+                            <option>
+                                <weight>
+                                    <layer>solute</layer>
+                                    <coefficient>-4.79E-5</coefficient>
+                                    <offset>0.9999999023</offset>
+                                </weight>
+                                <action />
+                            </option>
+                        </stochastic-choice>
+                    </consider-replacing>
+                </behaviors>
+            </cell-descriptor>
+            <start>0</start>
+            <period>0</period>
+            <skip-filled-sites />
+        </fill>
+
+        <hold>
+            <layer>solute</layer>
+        </hold>
+
+        <diffuse>
+            <layer>solute</layer>
+            <constant>2.5E-2</constant>
+        </diffuse>
+
+        <release>
+            <layer>solute</layer>
+        </release>
+
+        <record />
+    </processes>
+
+    <writers>
+        <individual-halt-writer />
+        <progress-reporter />
+        <coordinate-indexer />
+        <cell-state-writer />
+        <time-writer />
+        <visualization-serializer>
+            <visualization>
+                <class>map</class>
+                <outline>0</outline>
+                <edge>6</edge>
+            </visualization>
+        </visualization-serializer>
+    </writers>
+</simulation>

@@ -9,6 +9,7 @@ import control.identifiers.Coordinate;
 import no.uib.cipr.matrix.DenseMatrix;
 import no.uib.cipr.matrix.DenseVector;
 
+import java.util.List;
 import java.util.function.BiConsumer;
 import java.util.function.Function;
 import java.util.stream.Stream;
@@ -33,7 +34,7 @@ public class AgentToOperatorHelper {
         this.indexer = indexer;
     }
 
-    public DenseMatrix getOperator(Stream<RelationshipTuple> relationships) {
+    public DenseMatrix getOperator(List<RelationshipTuple> relationships) {
         DenseMatrix matrix = new DenseMatrix(n, n);
         BiConsumer<Integer, Double> consumer = (i, v) -> matrix.add(i, i, v);
         Function<RelationshipTuple, Double> expLookup = RelationshipTuple::getExp;
@@ -41,7 +42,7 @@ public class AgentToOperatorHelper {
         return matrix;
     }
 
-    public DenseVector getSource(Stream<RelationshipTuple> relationships) {
+    public DenseVector getSource(List<RelationshipTuple> relationships) {
         DenseVector vector = new DenseVector(n);
         BiConsumer<Integer, Double> consumer = (i, v) -> vector.add(i, v);
         Function<RelationshipTuple, Double> injLookup = RelationshipTuple::getInj;
@@ -49,7 +50,7 @@ public class AgentToOperatorHelper {
         return vector;
     }
 
-    private void apply(Stream<RelationshipTuple> relationships, Function<RelationshipTuple, Double> lookup, BiConsumer<Integer, Double> consumer) {
+    private void apply(List<RelationshipTuple> relationships, Function<RelationshipTuple, Double> lookup, BiConsumer<Integer, Double> consumer) {
         relationships.forEach(relationship -> {
             Coordinate c = relationship.getCoordinate();
             Double v = lookup.apply(relationship);

@@ -8,6 +8,7 @@ package layers.continuum;
 import layers.continuum.solve.SteadyState;
 import no.uib.cipr.matrix.Matrix;
 import no.uib.cipr.matrix.Vector;
+import structural.utilities.MatrixUtils;
 
 /**
  * Created by dbborens on 12/12/14.
@@ -30,11 +31,13 @@ public class ContinuumSolver {
     public void solve() {
         Vector source = so.getSource();
         Matrix operator = so.getOperator();
+
         Vector template = content.getState().copy();
 
         Vector solution = steadyState.solve(source, operator, template);
 
         content.setState(solution);
+        System.out.println(MatrixUtils.asMatrix(solution, 32));
         so.reset();
     }
 

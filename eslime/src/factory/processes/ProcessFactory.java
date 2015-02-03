@@ -108,7 +108,7 @@ public abstract class ProcessFactory {
             CellProcessArguments cpArguments = makeCellProcessArguments(e, layerManager, p);
             return new CheckForExtinction(arguments, cpArguments, threshold);
 
-        } else if (processClass.equalsIgnoreCase("diffusion-process")) {
+        } else if (processClass.equalsIgnoreCase("diffuse")) {
             return diffusionProcess(e, layerManager, arguments);
 
         } else if (processClass.equalsIgnoreCase("release")) {
@@ -119,13 +119,17 @@ public abstract class ProcessFactory {
             ContinuumLayer layer = resolveLayer(e, layerManager);
             return new ScheduleHold(arguments, layer.getScheduler());
 
+        } else if (processClass.equalsIgnoreCase("integrate")) {
+            ContinuumLayer layer = resolveLayer(e, layerManager);
+            return new Integrate(arguments, layer.getScheduler());
+
         } else if (processClass.equalsIgnoreCase("record")) {
             CellProcessArguments cpArguments = makeCellProcessArguments(e, layerManager, p);
             return new Record(arguments, cpArguments);
 
         } else {
             String msg = "Unrecognized process '" +
-                    processClass + ".";
+                    processClass + ".'";
 
             throw new IllegalArgumentException(msg);
         }

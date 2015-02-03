@@ -12,6 +12,8 @@ import no.uib.cipr.matrix.sparse.*;
 import structural.utilities.EpsilonUtil;
 import structural.utilities.MatrixUtils;
 
+import java.util.stream.IntStream;
+
 
 /**
  * Created by dbborens on 12/26/14.
@@ -51,8 +53,14 @@ public class SteadyState {
 
         // If any site starts with a non-zero concentration and is set to
         // inflate, it is going to diverge; throw an exception.
-        if (isDivergence(initial, operator)) {
-            throw new IllegalStateException("Continuum state divergence.");
+        if (isExponentialDivergence(initial, operator)) {
+            throw new IllegalStateException("Continuum state divergence: non-zero initial value set to " +
+                    "exponentiate forever.");
+        }
+
+        if (isLinearDivergence(source, operator)) {
+            throw new IllegalStateException("Continuum state divergence: a non-decaying site has a positive source " +
+                    "term.");
         }
 
         // If the matrix is not the identity, but every row and column sums to
@@ -69,6 +77,17 @@ public class SteadyState {
 
         // In all other cases, just solve the matrix.
         return ssSolve(source, operator, initial);
+    }
+
+    private boolean isLinearDivergence(Vector source, Matrix operator) {
+        for (int i = 0; i < operator.numRows(); i++) {
+            double exp = operator.get(i, i);
+            double inj = source.get(i);
+            if (exp >= 1.0 && inj > 0) {
+                return true;
+            }
+        }
+        return false;
     }
 
     private boolean isDoublyStochastic(Matrix operator) {
@@ -93,7 +112,7 @@ public class SteadyState {
         return true;
     }
 
-    private boolean isDivergence(Vector initial, Matrix operator) {
+    private boolean isExponentialDivergence(Vector initial, Matrix operator) {
         for (int i = 0; i < operator.numRows(); i++) {
             double value = initial.get(i);
             double scale = operator.get(i, i);
