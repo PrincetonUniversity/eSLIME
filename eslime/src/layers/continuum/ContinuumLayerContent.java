@@ -6,6 +6,7 @@
 package layers.continuum;
 
 import control.identifiers.Coordinate;
+import no.uib.cipr.matrix.DenseVector;
 import no.uib.cipr.matrix.Vector;
 
 import java.util.function.Function;
@@ -18,9 +19,11 @@ public class ContinuumLayerContent {
 
     // Map of coordinate --> vector index
     private Function<Coordinate, Integer> indexer;
+    private int n;
 
-    public ContinuumLayerContent(Function<Coordinate, Integer> indexer) {
+    public ContinuumLayerContent(Function<Coordinate, Integer> indexer, int n) {
         this.indexer = indexer;
+        this.n = n;
     }
 
     public double get(Coordinate c) {
@@ -38,7 +41,7 @@ public class ContinuumLayerContent {
     }
 
     public void reset() {
-        this.state = null;
+        this.state = new DenseVector(n);
     }
 
 }

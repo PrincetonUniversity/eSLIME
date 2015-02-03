@@ -8,7 +8,9 @@ package layers.continuum;
 import no.uib.cipr.matrix.DenseMatrix;
 import no.uib.cipr.matrix.DenseVector;
 
+import java.util.List;
 import java.util.function.Consumer;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -26,18 +28,20 @@ public class ReactionLoader {
         this.helper = helper;
     }
 
-    public void inject(Stream<RelationshipTuple> relationships) {
+    private void inject(List<RelationshipTuple> relationships) {
         DenseVector delta = helper.getSource(relationships);
         injector.accept(delta);
     }
 
-    public void exponentiate(Stream<RelationshipTuple> relationshipTuples) {
+    private void exponentiate(List<RelationshipTuple> relationshipTuples) {
         DenseMatrix exponents = helper.getOperator(relationshipTuples);
         exponentiator.accept(exponents);
     }
 
     public void apply(Stream<RelationshipTuple> relationships) {
-        inject(relationships);
-        exponentiate(relationships);
+        // TODO Refactor this hierarchy to pass through stream only once
+        List<RelationshipTuple> list = relationships.collect(Collectors.toList());
+        inject(list);
+        exponentiate(list);
     }
 }

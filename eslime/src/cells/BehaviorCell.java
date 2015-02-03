@@ -16,6 +16,7 @@ import structural.utilities.EpsilonUtil;
 import java.util.HashSet;
 import java.util.function.Function;
 import java.util.function.Supplier;
+import java.util.stream.Stream;
 
 /**
  * Flexible cell class capable of performing arbitrary
@@ -189,6 +190,13 @@ public class BehaviorCell extends Cell {
         return threshold;
     }
 
+    public Stream<String> getReactionIds() {
+        return reactionManager.getReactionIds();
+    }
+
+    public Stream<String> getBehaviorNames() {
+        return dispatcher.getBehaviorNames();
+    }
     public void load(Reaction reaction) {
         reactionManager.schedule(reaction);
     }

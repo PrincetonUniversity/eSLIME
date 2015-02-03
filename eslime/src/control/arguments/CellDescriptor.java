@@ -5,30 +5,37 @@
 
 package control.arguments;
 
+import agent.Behavior;
 import agent.control.BehaviorDispatcher;
 import cells.BehaviorCell;
 import cells.Cell;
 import control.GeneralParameters;
 import control.halt.HaltCondition;
+import factory.cell.Reaction;
+import factory.cell.ReactionFactory;
 import layers.LayerManager;
 import org.dom4j.Element;
 
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
 /**
  * Created by dbborens on 11/23/14.
- */
-public class CellDescriptor extends Argument<Cell> {
+ */ public class CellDescriptor extends Argument<Cell> {
 
     private LayerManager layerManager;
     private GeneralParameters p;
 
     private Argument<Integer> cellState;
 
-
     private Argument<Double> threshold;
     private Argument<Double> initialHealth;
 
-    // TODO Remove non-compliant XML handling (83330654)
-    private Element behaviorRoot;
+    private List<Reaction> reactions;
+    private Map<String, BehaviorDescriptor> behaviorDescriptors;
 
     public CellDescriptor(LayerManager layerManager, GeneralParameters p) {
         this.layerManager = layerManager;
@@ -51,7 +58,7 @@ public class CellDescriptor extends Argument<Cell> {
     }
 
     @Override
-    public Cell next() throws HaltCondition {
+    public BehaviorCell next() throws HaltCondition {
         // Load cell properties
         double initialHealthValue = initialHealth.next();
         double thresholdValue = threshold.next();
@@ -60,10 +67,8 @@ public class CellDescriptor extends Argument<Cell> {
         // Construct cell
         BehaviorCell cell = new BehaviorCell(layerManager, stateValue, initialHealthValue, thresholdValue);
 
-        // Load behaviors
-        BehaviorDispatcher dispatcher = new BehaviorDispatcher(behaviorRoot, cell, layerManager, p);
-        cell.setDispatcher(dispatcher);
-
+        loadReactions(cell);
+        loadBehaviors(cell);
         // Return completed object
         return cell;
     }
@@ -80,9 +85,29 @@ public class CellDescriptor extends Argument<Cell> {
         this.initialHealth = initialHealth;
     }
 
-    @Deprecated
-    public void setBehaviorRoot(Element behaviorRoot) {
-        this.behaviorRoot = behaviorRoot;
+    private void loadReactions(BehaviorCell cell) {
+        reactions.forEach(cell::load);
     }
 
+    private void loadBehaviors(BehaviorCell cell) {
+        BehaviorDispatcher dispatcher = new BehaviorDispatcher();
+
+        behaviorDescriptors.keySet()
+                .stream()
+                .forEach(name -> {
+                    BehaviorDescriptor descriptor = behaviorDescriptors.get(name);
+                    Behavior behavior = descriptor.instantiate(cell);
+                    dispatcher.map(name, behavior);
+                });
+
+        cell.setDispatcher(dispatcher);
+    }
+
+    public void setReactions(Stream<Reaction> reactions) {
+        this.reactions = reactions.collect(Collectors.toList());
+    }
+
+    public void setBehaviorDescriptors(Map<String, BehaviorDescriptor> behaviorDescriptors) {
+        this.behaviorDescriptors = behaviorDescriptors;
+    }
 }

@@ -5,6 +5,7 @@
 
 package control.arguments;
 
+import cells.BehaviorCell;
 import cells.Cell;
 import cells.MockCell;
 import control.halt.HaltCondition;
@@ -25,7 +26,7 @@ public class MockCellDescriptor extends CellDescriptor {
     }
 
     @Override
-    public Cell next() throws HaltCondition {
+    public BehaviorCell next() throws HaltCondition {
         return new MockCell(state);
     }
 

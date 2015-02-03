@@ -22,7 +22,7 @@ public class ContinuumLayerTest extends LinearMocks {
     public void init() throws Exception {
         scheduler = mock(ContinuumLayerScheduler.class);
         content = mock(ContinuumLayerContent.class);
-        query = new ContinuumLayer(scheduler, content);
+        query = new ContinuumLayer(scheduler, content, geom);
     }
 
     @Test

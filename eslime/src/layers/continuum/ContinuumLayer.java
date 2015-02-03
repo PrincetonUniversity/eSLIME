@@ -6,6 +6,7 @@
 package layers.continuum;
 
 import control.identifiers.Coordinate;
+import geometry.Geometry;
 import layers.Layer;
 
 import java.util.function.Function;
@@ -18,9 +19,10 @@ public class ContinuumLayer extends Layer {
     private ContinuumLayerScheduler scheduler;
     private ContinuumLayerContent content;
 
-    public ContinuumLayer(ContinuumLayerScheduler scheduler, ContinuumLayerContent content) {
+    public ContinuumLayer(ContinuumLayerScheduler scheduler, ContinuumLayerContent content, Geometry geometry) {
         this.scheduler = scheduler;
         this.content = content;
+        this.geometry = geometry;
     }
 
     @Override

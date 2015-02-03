@@ -17,7 +17,7 @@ import factory.control.run.RunnerFactory;
 public class ManualLauncher {
 
     public static void main(String[] args) {
-        String path = "/home/dbborens/Downloads/0_h=32_f=0.10_g=5.00_a=0.01.xml";
+        String path = "/home/dbborens/IdeaProjects/eslime/eslime/projects/plos_borenstein.xml";
         Runner runner = RunnerFactory.instantiate(path);
         runner.run();
     }

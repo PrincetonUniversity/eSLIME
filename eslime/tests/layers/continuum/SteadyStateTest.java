@@ -82,6 +82,19 @@ public class SteadyStateTest extends TestBase {
     }
 
     /**
+     * If a non-decaying site also has a positive source term, it will diverge
+     * and we expect an error.
+     *
+     * @throws Exception
+     */
+    @Test(expected = IllegalStateException.class)
+    public void linearDivergenceThrows() throws Exception {
+        Matrix operator = MatrixUtils.I(3);
+        DenseVector source = new DenseVector(3);
+        source.set(0, 1.0);
+        query.solve(source, operator, initial);
+    }
+    /**
      * If the matrix is not the identity, but every row and column sums to one,
      * then there is no steady state solution -- we expect an error.
      */
@@ -123,18 +136,6 @@ public class SteadyStateTest extends TestBase {
     private void doTest(DenseVector source, Matrix operator, DenseVector expected) {
         Vector actual = query.solve(source, operator, initial.copy());
         assertVectorsEqual(expected, actual, 1e-14);
-    }
-
-    private void testThrows(Vector source, Matrix operator, Vector localInitial) {
-        boolean thrown = false;
-
-        try {
-            query.solve(source, operator, localInitial);
-        } catch (IllegalStateException ex) {
-            thrown = true;
-        }
-
-        assertTrue(thrown);
     }
 
     private Matrix diffusion() {

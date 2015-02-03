@@ -25,13 +25,13 @@ public abstract class ContinuumLayerFactory {
     public static ContinuumLayer instantiate(Element root, GeometryDescriptor geometryDescriptor) {
         Geometry geom = makeGeometry(root, geometryDescriptor);
         int n = geom.getCanonicalSites().length;
-        Function<Coordinate, Integer> indexer = geom::coordToIndex;
+        Function<Coordinate, Integer> indexer = geom.getIndexer();
         String id = root.element("id").getText();
 
-        ContinuumLayerContent content = new ContinuumLayerContent(indexer);
+        ContinuumLayerContent content = new ContinuumLayerContent(indexer, geom.getCanonicalSites().length);
         ContinuumLayerScheduler scheduler = ContinuumLayerSchedulerFactory.instantiate(content, indexer, n, id);
 
-        return new ContinuumLayer(scheduler, content);
+        return new ContinuumLayer(scheduler, content, geom);
     }
 
     private static Geometry makeGeometry(Element root, GeometryDescriptor geometryDescriptor) {
