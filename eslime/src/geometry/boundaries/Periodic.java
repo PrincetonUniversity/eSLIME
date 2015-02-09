@@ -11,7 +11,6 @@ import geometry.boundaries.helpers.WrapHelper1D;
 import geometry.boundaries.helpers.WrapHelper2D;
 import geometry.boundaries.helpers.WrapHelper3D;
 import geometry.lattice.Lattice;
-import geometry.lattice.TriangularLattice;
 import geometry.shape.Cuboid;
 import geometry.shape.Line;
 import geometry.shape.Rectangle;
@@ -35,11 +34,6 @@ public class Periodic extends Boundary {
 
     @Override
     protected void verify(Shape shape, Lattice lattice) {
-        if (lattice instanceof TriangularLattice) {
-            throw new UnsupportedOperationException("Periodic boundary " +
-                    "condition not yet supported on triangular lattice.");
-        }
-
         if (!((shape instanceof Cuboid) || (shape instanceof Rectangle) ||
                 (shape instanceof Line))) {
             throw new IllegalArgumentException("Full periodic boundary " +

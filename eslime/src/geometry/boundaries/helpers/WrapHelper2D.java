@@ -8,6 +8,7 @@ package geometry.boundaries.helpers;
 import control.identifiers.Coordinate;
 import control.identifiers.Flags;
 import geometry.lattice.Lattice;
+import geometry.lattice.TriangularLattice;
 import geometry.shape.Rectangle;
 import geometry.shape.Shape;
 
@@ -22,13 +23,17 @@ public class WrapHelper2D extends WrapHelper {
         super(shape, lattice);
 
         if (shape.getClass() != Rectangle.class) {
-            throw new UnsupportedOperationException("WrapHelper2D only supports Rectangle arenas.");
+            throw new IllegalArgumentException("WrapHelper2D only supports Rectangle arenas.");
         }
 
         Rectangle rect = (Rectangle) shape;
 
         width = rect.getDimensions()[0];
         height = rect.getDimensions()[1];
+
+        if (lattice instanceof TriangularLattice && width % 2 != 0) {
+            throw new IllegalArgumentException("Periodic behavior on triangular lattice requires even width");
+        }
     }
 
     public Coordinate wrapAll(Coordinate toWrap) {
