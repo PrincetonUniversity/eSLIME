@@ -22,7 +22,9 @@ public abstract class RunnerFactory {
 
     // Version -- checked against parameters file to make sure they're
     // compatible
-    private final static String VERSION = "0.6.0";
+    private final static String VERSION = "0.6.1";
+
+    // This line is included so that git will detect a change
 
     public static Runner instantiate(String projectPath) {
         Element root = DocumentFactory.instantiate(projectPath);
