@@ -33,7 +33,9 @@ public abstract class BoundaryFactory {
         } else if (className.equalsIgnoreCase("periodic")) {
             return new Periodic(shape, lattice);
         } else if (className.equalsIgnoreCase("halt")) {
-            return new HaltBoundary(shape, lattice);
+            return new HaltArena(shape, lattice);
+        } else if (className.equalsIgnoreCase("tetris")) {
+            return new TetrisBoundary(shape, lattice);
         } else {
             String msg = "Unrecognized boundary class '" +
                     className + "'.";

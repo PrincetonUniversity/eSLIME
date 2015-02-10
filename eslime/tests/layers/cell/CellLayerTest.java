@@ -9,7 +9,7 @@ import cells.MockCell;
 import control.identifiers.Coordinate;
 import geometry.Geometry;
 import geometry.MockGeometry;
-import geometry.boundaries.HaltBoundary;
+import geometry.boundaries.HaltArena;
 import test.EslimeTestCase;
 
 /**
@@ -35,7 +35,7 @@ public class CellLayerTest extends EslimeTestCase {
         Class[] componentClasses = new Class[] {
                 Object.class,
                 Object.class,
-                HaltBoundary.class
+                HaltArena.class
         };
 
         geom.setComponentClasses(componentClasses);

@@ -49,7 +49,11 @@ public class BoundaryFactoryTest extends EslimeTestCase {
     }
 
     public void testHaltCase() {
-        doTest("halt-case", HaltBoundary.class);
+        doTest("halt-case", HaltArena.class);
+    }
+
+    public void testTetrisCase() {
+        doTest("tetris-case", TetrisBoundary.class);
     }
 
     private void doTest(String eName, Class expected) {

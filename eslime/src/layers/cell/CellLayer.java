@@ -70,7 +70,8 @@ public class CellLayer extends Layer {
 
         // Oh man, do I hate the following two lines and the
         // "getComponentClasses" cloodge that makes them possible
-        if (geometry.getComponentClasses()[2].equals(HaltBoundary.class)) {
+        Class boundaryClass = geometry.getComponentClasses()[2];
+        if (HaltBoundary.class.isAssignableFrom(boundaryClass)) {
             content = new HaltCellLayerContent(geometry, indices);
         } else if (geometry.isInfinite()) {
             content = new InfiniteCellLayerContent(geometry, indices);

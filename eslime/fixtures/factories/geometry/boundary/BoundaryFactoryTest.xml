@@ -27,4 +27,8 @@
     <halt-case>
         <class>halt</class>
     </halt-case>
+
+    <tetris-case>
+        <class>tetris</class>
+    </tetris-case>
 </fixture>

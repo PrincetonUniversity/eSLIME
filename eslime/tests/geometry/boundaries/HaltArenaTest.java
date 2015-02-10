@@ -9,9 +9,9 @@ import geometry.boundary.ArenaTest;
 import geometry.lattice.Lattice;
 import geometry.shape.Shape;
 
-public class HaltBoundaryTest extends ArenaTest {
+public class HaltArenaTest extends ArenaTest {
     @Override
     protected Boundary makeBoundary(Shape shape, Lattice lattice) {
-        return new HaltBoundary(shape, lattice);
+        return new HaltArena(shape, lattice);
     }
 }
