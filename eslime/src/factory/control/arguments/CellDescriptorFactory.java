@@ -16,7 +16,6 @@ import org.dom4j.Element;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Random;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 /**
@@ -32,7 +31,7 @@ public abstract class CellDescriptorFactory {
         if (e == null) {
             return makeDefault(layerManager, p);
         }
-        CellDescriptor cellDescriptor = new CellDescriptor(layerManager, p);
+        CellDescriptor cellDescriptor = new CellDescriptor(layerManager);
         setCellState(e, cellDescriptor, p.getRandom());
         setThreshold(e, cellDescriptor, p.getRandom());
         setInitialHealth(e, cellDescriptor, p.getRandom());
@@ -83,7 +82,7 @@ public abstract class CellDescriptorFactory {
     }
 
     public static CellDescriptor makeDefault(LayerManager layerManager, GeneralParameters p) {
-        CellDescriptor cellDescriptor = new CellDescriptor(layerManager, p);
+        CellDescriptor cellDescriptor = new CellDescriptor(layerManager);
         cellDescriptor.setCellState(new ConstantInteger(DEFAULT_STATE));
         cellDescriptor.setThreshold(new ConstantDouble(DEFAULT_THRESHOLD));
         cellDescriptor.setInitialHealth(new ConstantDouble(DEFAULT_INIT_HEALTH));

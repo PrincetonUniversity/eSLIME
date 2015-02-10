@@ -7,7 +7,6 @@ package control.arguments;
 
 import agent.Behavior;
 import cells.BehaviorCell;
-import control.GeneralParameters;
 import control.identifiers.Coordinate;
 import factory.cell.Reaction;
 import layers.LayerManager;
@@ -18,7 +17,8 @@ import layers.cell.CellUpdateManager;
 import layers.continuum.ContinuumAgentLinker;
 import layers.continuum.ContinuumAgentNotifier;
 import layers.continuum.ContinuumLayer;
-import org.junit.*;
+import org.junit.Before;
+import org.junit.Test;
 import test.TestBase;
 
 import java.util.Arrays;
@@ -28,7 +28,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 /**
@@ -45,20 +45,11 @@ public class CellDescriptorTest extends TestBase {
 
     private CellDescriptor query;
 
-    @Before
-    public void init() throws Exception {
+    private void initEverythingButReactions() {
         threshold = new ConstantDouble(0.5);
         initialHealth = new ConstantDouble(0.75);
         cellState = new ConstantInteger(1);
 
-        // TODO Assignment of reactions should be handled by a helper
-        reaction1 = mock(Reaction.class);
-        when(reaction1.getId()).thenReturn("1");
-
-        reaction2 = mock(Reaction.class);
-        when(reaction2.getId()).thenReturn("2");
-
-        Stream<Reaction> reactions = Arrays.asList(new Reaction[] {reaction1, reaction2}).stream();
 
         // TODO Instantiation of behaviors from descriptors should be handled by a helper
         behaviorDescriptor = mock(BehaviorDescriptor.class);
@@ -67,7 +58,6 @@ public class CellDescriptorTest extends TestBase {
         Map<String, BehaviorDescriptor> behaviorDescriptors = new HashMap<>(1);
         behaviorDescriptors.put("behavior", behaviorDescriptor);
 
-        GeneralParameters p = mock(GeneralParameters.class);
         LayerManager layerManager = mock(LayerManager.class);
 
         // TODO: Refactor CellLayer hierarchy (86866040)
@@ -89,12 +79,28 @@ public class CellDescriptorTest extends TestBase {
         when(continuumLayer.getLinker()).thenReturn(linker);
         when(layerManager.getContinuumLayer(any())).thenReturn(continuumLayer);
 
-        query = new CellDescriptor(layerManager, p);
+        query = new CellDescriptor(layerManager);
         query.setCellState(cellState);
         query.setInitialHealth(initialHealth);
         query.setThreshold(threshold);
-        query.setReactions(reactions);
         query.setBehaviorDescriptors(behaviorDescriptors);
+    }
+
+    private void initReactions() {
+        // TODO Assignment of reactions should be handled by a helper
+        reaction1 = mock(Reaction.class);
+        when(reaction1.getId()).thenReturn("1");
+
+        reaction2 = mock(Reaction.class);
+        when(reaction2.getId()).thenReturn("2");
+        Stream<Reaction> reactions = Arrays.asList(new Reaction[]{reaction1, reaction2}).stream();
+        query.setReactions(reactions);
+    }
+
+    @Before
+    public void init() throws Exception {
+        initEverythingButReactions();
+        initReactions();
     }
 
     @Test
@@ -131,6 +137,13 @@ public class CellDescriptorTest extends TestBase {
         List<String> expected = Stream.of("behavior").collect(Collectors.toList());
         verify(behaviorDescriptor).instantiate(any());
         assertEquals(expected, result.getBehaviorNames().collect(Collectors.toList()));
+    }
+
+    @Test
+    public void nullReactionsAccepted() throws Exception {
+        initEverythingButReactions();
+        BehaviorCell result = query.next();
+        assertEquals(0, result.getReactionIds().count());
     }
 
 }

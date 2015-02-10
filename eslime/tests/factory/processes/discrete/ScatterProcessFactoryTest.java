@@ -83,7 +83,7 @@ public class ScatterProcessFactoryTest extends EslimeTestCase {
 
     private CellDescriptor makeCellDescriptor() {
 
-        CellDescriptor descriptor = new CellDescriptor(layerManager, p);
+        CellDescriptor descriptor = new CellDescriptor(layerManager);
         descriptor.setCellState(new ConstantInteger(5));
         descriptor.setThreshold(new ConstantDouble(2.0));
         descriptor.setInitialHealth(new ConstantDouble(1.0));

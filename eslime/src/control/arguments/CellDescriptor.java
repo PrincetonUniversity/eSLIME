@@ -9,14 +9,11 @@ import agent.Behavior;
 import agent.control.BehaviorDispatcher;
 import cells.BehaviorCell;
 import cells.Cell;
-import control.GeneralParameters;
 import control.halt.HaltCondition;
 import factory.cell.Reaction;
-import factory.cell.ReactionFactory;
 import layers.LayerManager;
-import org.dom4j.Element;
 
-import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -27,7 +24,6 @@ import java.util.stream.Stream;
  */ public class CellDescriptor extends Argument<Cell> {
 
     private LayerManager layerManager;
-    private GeneralParameters p;
 
     private Argument<Integer> cellState;
 
@@ -37,9 +33,9 @@ import java.util.stream.Stream;
     private List<Reaction> reactions;
     private Map<String, BehaviorDescriptor> behaviorDescriptors;
 
-    public CellDescriptor(LayerManager layerManager, GeneralParameters p) {
+    public CellDescriptor(LayerManager layerManager) {
         this.layerManager = layerManager;
-        this.p = p;
+        reactions = new ArrayList<>(0);
     }
 
     @Override

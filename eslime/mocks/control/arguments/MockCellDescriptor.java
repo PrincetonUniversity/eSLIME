@@ -6,7 +6,6 @@
 package control.arguments;
 
 import cells.BehaviorCell;
-import cells.Cell;
 import cells.MockCell;
 import control.halt.HaltCondition;
 
@@ -17,11 +16,11 @@ public class MockCellDescriptor extends CellDescriptor {
     private int state = 1;
 
     public MockCellDescriptor() {
-        super(null, null);
+        super(null);
     }
 
     public MockCellDescriptor(int state) {
-        super(null, null);
+        super(null);
         this.state = state;
     }
 
