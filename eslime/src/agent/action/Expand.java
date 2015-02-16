@@ -24,7 +24,7 @@ import java.util.Random;
  *
  * Created by dbborens on 5/2/14.
  */
-public class Expand extends Action{
+public class Expand extends Action {
 
     // Highlight channels for the targeting and targeted cells
     private Argument<Integer> selfChannel;
@@ -76,7 +76,6 @@ public class Expand extends Action{
         doHighlight(targetChannel, target);
         doHighlight(selfChannel, ownLocation);
     }
-
 
     @Override
     public boolean equals(Object o) {

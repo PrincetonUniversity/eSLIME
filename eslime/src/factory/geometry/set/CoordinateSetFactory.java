@@ -32,8 +32,8 @@ public abstract class CoordinateSetFactory {
             return DiscSetFactory.instantiate(descriptor, geom, p);
         } else if (name.equals("list")) {
             return CustomSetFactory.instantiate(descriptor, geom);
-        } else if (name.equals("line")) {
-            throw new UnsupportedOperationException("Coordinate set 'line' has been disabled until it is re-implemented in standard Factory logic and tested thoroughly.");
+        } else if (name.equals("horizontal-line")) {
+            return HorizontalLineSetFactory.instantiate(descriptor, geom);
         } else if (name.equals("rectangle")) {
             throw new UnsupportedOperationException("Coordinate set 'rectangle' has been disabled until it is re-implemented in standard Factory logic and tested thoroughly.");
         } else {
